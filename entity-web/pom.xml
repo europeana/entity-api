@@ -1,0 +1,225 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	
+	<artifactId>entity-web</artifactId>
+	<name>Europeana Entity Collection - WEB API </name>
+	<packaging>war</packaging>
+	<description>The implementation of the &quot;Entity Collection&quot; service</description>
+
+	<parent>
+		<artifactId>entity-api</artifactId>
+		<groupId>eu.europeana.entity</groupId>
+		 <version>0.0.1-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+
+	<repositories>
+		<!-- jetty repos -->
+		<repository>
+			<id>repo1.maven.org</id>
+			<url>http://repo1.maven.org/maven2/</url>
+		</repository>
+
+	    <repository>
+	      <id>jcenter-release</id>
+	      <name>jcenter</name>
+	      <url>http://oss.jfrog.org/artifactory/oss-release-local/</url>
+	    </repository>
+	</repositories>
+
+	<dependencies>
+
+		<!-- entity projects -->
+		<dependency>
+			<groupId>eu.europeana.entity</groupId>
+			<artifactId>entity-mongo</artifactId>
+			<version>${version.entityApiSnapshot}</version>
+		</dependency>
+		<dependency>
+			<groupId>eu.europeana.entity</groupId>
+			<artifactId>entity-solr</artifactId>
+			<version>${version.entityApiSnapshot}</version>
+		</dependency>
+		<!--
+		<dependency>
+			<groupId>eu.europeana.annotation</groupId>
+			<artifactId>annotation-utils</artifactId>
+			<version>${version.entityApiSnapshot}</version>
+		</dependency>
+		-->
+		
+		<!-- spring -->
+		<dependency>
+		    <groupId>com.mangofactory</groupId>
+		    <artifactId>swagger-springmvc</artifactId>
+		    <version>1.0.1</version>
+		    <exclusions>
+		    	<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-webmvc</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-web</artifactId>
+				</exclusion>
+		    </exclusions>
+		</dependency>
+		
+		<dependency>
+		    <groupId>javax.ws.rs</groupId>
+		    <artifactId>javax.ws.rs-api</artifactId>
+		    <version>2.0-m01</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-xc</artifactId>
+			<version>1.9.9</version>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>${version.servletJstl}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<scope>provided</scope>
+			<version>2.5</version>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${version.junit}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aop</artifactId>
+			<version>${version.springCore}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${version.springCore}</version>
+		</dependency>
+ 		
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-tx</artifactId>
+			<version>${version.springCore}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-oxm</artifactId>
+			<version>${version.springCore}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot</artifactId>
+			<version>1.2.0.RELEASE</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		
+		<!--
+		<dependency>
+			<groupId>com.github.jsonld-java</groupId>
+			<artifactId>jsonld-java-jena</artifactId>
+			<version>0.2</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-log4j12</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>log4j</groupId>
+					<artifactId>log4j</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		-->
+
+	    <dependency>
+	        <groupId>org.codehaus.jettison</groupId>
+	        <artifactId>jettison</artifactId>
+		    <version>1.1</version>
+	    </dependency>
+
+		<!--
+	    <dependency>
+	        <groupId>com.google.code.gson</groupId>
+	        <artifactId>gson</artifactId>
+		    <version>2.3.1</version>
+	    </dependency>
+		-->
+	    
+	    
+		<!--  test dependencies -->
+		<!--
+		<dependency>
+			<groupId>eu.europeana.entity</groupId>
+			<artifactId>entity-definitions</artifactId>
+			<version>${version.annotationApiSnapshot}</version>
+			<classifier>tests</classifier>
+			<scope>test</scope>
+		</dependency>
+		-->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${version.springCore}</version>
+			<scope>test</scope>
+		</dependency>
+
+	</dependencies>
+
+	<!-- configure source and output locations -->
+
+	<build>
+		<directory>target</directory>
+		<outputDirectory>target/classes</outputDirectory>
+		<finalName>${artifactId}-${version}</finalName>
+		<testOutputDirectory>target/test-classes</testOutputDirectory>
+		<sourceDirectory>src/main/java</sourceDirectory>
+		<scriptSourceDirectory>src/main/scripts</scriptSourceDirectory>
+		<testSourceDirectory>src/test/java</testSourceDirectory>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+		<testResources>
+			<testResource>
+				<directory>src/test/resources</directory>
+			</testResource>
+		</testResources>
+
+		<plugins>
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<properties>
+		<version.slf4j>1.7.5</version.slf4j>
+	</properties>
+
+</project>

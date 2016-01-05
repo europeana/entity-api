@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2007-2013 The Europeana Foundation Licenced under the EUPL, 
+	Version 1.1 (the "Licence") and subsequent versions as approved by the European 
+	Commission; You may not use this work except in compliance with the Licence. 
+	You may obtain a copy of the Licence at: http://joinup.ec.europa.eu/software/page/eupl 
+	Unless required by applicable law or agreed to in writing, software distributed 
+	under the Licence is distributed on an "AS IS" basis, without warranties 
+	or conditions of any kind, either express or implied. See the Licence for 
+	the specific language governing permissions and limitations under the Licence. -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>eu.europeana.entity</groupId>
+	<artifactId>entity-api</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<name>Entity API parent</name>
+
+	<parent>
+		<artifactId>corelib</artifactId>
+		<groupId>eu.europeana</groupId>
+		<version>2.1-SNAPSHOT</version>
+	</parent>
+	
+	<repositories>
+		<repository>
+			<id>libs-release-local</id>
+			<name>europeana-releases</name>
+			<url>http://artifactory.eanadev.org/artifactory/libs-release-local/</url>
+		</repository>
+		<repository>
+			<id>libs-snapshots-local</id>
+			<name>europeana-snapshots</name>
+			<url>http://artifactory.eanadev.org/artifactory/libs-snapshot-local/</url>
+		</repository>
+	</repositories>
+	
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<version.java>1.7</version.java>
+		<version.junit>4.11</version.junit>
+		<!--  
+		<version.springAop>4.0.9.RELEASE</version.springAop>
+		<version.springCore>4.0.9.RELEASE</version.springCore>
+		<version.spring.tx>4.0.9.RELEASE</version.spring.tx>
+		<version.spring>4.0.9.RELEASE</version.spring>
+		 -->
+		<version.corelib>2.1</version.corelib>
+		<version.log4j>1.2.12</version.log4j>
+		<version.entityApiSnapshot>0.0.1-SNAPSHOT</version.entityApiSnapshot>
+		<version.entityApi>0.0.1</version.entityApi>
+		<!-- 
+		<version.commonsLang>2.6</version.commonsLang>
+		-->
+		<version.commonsLang3>3.0</version.commonsLang3>
+		 
+		</properties>
+	<modules>
+		<module>entity-definitions</module>
+		<module>entity-solr</module>
+		<module>entity-web</module>
+		<module>entity-mongo</module>
+	</modules>
+	<build>
+		<!--  configure source and output locations -->
+		<directory>target</directory>
+		<outputDirectory>target/classes</outputDirectory>
+		<finalName>${artifactId}-${version}</finalName>
+		<testOutputDirectory>target/test-classes</testOutputDirectory>
+		<sourceDirectory>src/main/java</sourceDirectory>
+		<testSourceDirectory>src/test/java</testSourceDirectory>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+			</resource>
+		</resources>
+		<testResources>
+			<testResource>
+				<directory>src/test/resources</directory>
+			</testResource>
+		</testResources>
+
+		<!--  plugins -->
+		<plugins>
+			<plugin>
+				<inherited>true</inherited>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>${version.java}</source>
+					<target>${version.java}</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

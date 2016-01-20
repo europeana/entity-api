@@ -40,7 +40,11 @@
 			<artifactId>commons-lang3</artifactId>
 			<version>${version.commonsLang3}</version>
 		</dependency>
-
+		<dependency>
+			<groupId>eu.europeana.corelib</groupId>
+			<artifactId>corelib-definitions</artifactId>
+			<version>2.2-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 
 <build>

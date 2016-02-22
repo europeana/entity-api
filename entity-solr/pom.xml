@@ -30,14 +30,79 @@
 		<dependency>
 			<groupId>eu.europeana.entity</groupId>
 			<artifactId>entity-definitions</artifactId>
-			<version>${version.entityApiSnapshot}</version>			
+			<version>${version.entityApiSnapshot}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>log4j</artifactId>
+					<groupId>log4j</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>morphia</artifactId>
+					<groupId>com.google.code.morphia</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>commons-lang</artifactId>
+					<groupId>commons-lang</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		
 		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context-support</artifactId>
-			<version>${version.springCore}</version>
+			<groupId>eu.europeana.corelib</groupId>
+			<artifactId>corelib-storage</artifactId>
+			<version>${version.corelib}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>corelib-web</artifactId>
+					<groupId>eu.europeana.corelib</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>jetty-jndi</artifactId>
+					<groupId>org.eclipse.jetty</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>log4j</artifactId>
+					<groupId>log4j</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>javax.persistence</artifactId>
+					<groupId>org.eclipse.persistence</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>jdo-api</artifactId>
+					<groupId>javax.jdo</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>jackson-xc</artifactId>
+					<groupId>org.codehaus.jackson</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>spring-context-support</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>morphia</artifactId>
+					<groupId>com.google.code.morphia</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>lucene-core</artifactId>
+					<groupId>org.apache.lucene</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>wstx-asl</artifactId>
+					<groupId>org.codehaus.woodstox</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>commons-lang</artifactId>
+					<groupId>commons-lang</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>publication-common</artifactId>
+					<groupId>eu.europeana.publication</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
+		
 		<!-- Other -->
 		<dependency>
 			<scope>test</scope>
@@ -57,6 +122,12 @@
 			<groupId>org.apache.solr</groupId>
 			<artifactId>solr-solrj</artifactId>
 			<version>${version.apacheSolr}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>wstx-asl</artifactId>
+					<groupId>org.codehaus.woodstox</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
                 <groupId>org.apache.solr</groupId>
@@ -67,6 +138,22 @@
                 		<artifactId>jdk.tools</artifactId>
                 		<groupId>jdk.tools</groupId>
                 	</exclusion>
+                	<exclusion>
+                		<artifactId>log4j</artifactId>
+                		<groupId>log4j</groupId>
+                	</exclusion>
+                	<exclusion>
+                		<artifactId>lucene-core</artifactId>
+                		<groupId>org.apache.lucene</groupId>
+                	</exclusion>
+                	<exclusion>
+                		<artifactId>wstx-asl</artifactId>
+                		<groupId>org.codehaus.woodstox</groupId>
+                	</exclusion>
+                	<exclusion>
+                		<artifactId>commons-lang</artifactId>
+                		<groupId>commons-lang</groupId>
+                	</exclusion>
                 </exclusions>
 		</dependency>
 	    <dependency>
@@ -74,17 +161,25 @@
 			<artifactId>solr-test-framework</artifactId>
 			<version>${version.apacheSolr}</version>
 			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<artifactId>log4j</artifactId>
+					<groupId>log4j</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>lucene-core</artifactId>
+					<groupId>org.apache.lucene</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>wstx-asl</artifactId>
+					<groupId>org.codehaus.woodstox</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>commons-lang</artifactId>
+					<groupId>commons-lang</groupId>
+				</exclusion>
+			</exclusions>
 	    </dependency>
-	    <dependency>
-			<groupId>org.codehaus.woodstox</groupId>
-			<artifactId>wstx-asl</artifactId>
-			<version>${version.woodstox}</version>
-		</dependency>
-		<dependency>
-            <groupId>org.apache.lucene</groupId>
-            <artifactId>lucene-core</artifactId>
-		    <version>${version.apacheSolr}</version>
-        </dependency>			
 	</dependencies>
 	
 	<organization>

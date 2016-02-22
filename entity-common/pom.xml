@@ -53,7 +53,9 @@
 		<directory>target</directory>
 		<outputDirectory>target/classes</outputDirectory>
 		<finalName>${artifactId}-${version}</finalName>
+		<!-- 
 		<testOutputDirectory>target/test-classes</testOutputDirectory>
+		 -->
 		<sourceDirectory>src/main/java</sourceDirectory>
 		<testSourceDirectory>src/test/java</testSourceDirectory>
 		<resources>

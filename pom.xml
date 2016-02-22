@@ -60,6 +60,7 @@
 	<modules>
 		<module>entity-common</module>
 		<module>entity-definitions</module>
+		<module>entity-utils</module>
 		<module>entity-solr</module>
 		<module>entity-web</module>
 		<module>entity-mongo</module>		

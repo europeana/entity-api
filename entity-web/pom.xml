@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	
+
 	<artifactId>entity-web</artifactId>
 	<name>Europeana Entity Collection - WEB API </name>
 	<packaging>war</packaging>
@@ -10,7 +10,7 @@
 	<parent>
 		<artifactId>entity-api</artifactId>
 		<groupId>eu.europeana.entity</groupId>
-		 <version>0.0.1-SNAPSHOT</version>
+		<version>0.0.1-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
@@ -21,61 +21,71 @@
 			<url>http://repo1.maven.org/maven2/</url>
 		</repository>
 
-	    <repository>
-	      <id>jcenter-release</id>
-	      <name>jcenter</name>
-	      <url>http://oss.jfrog.org/artifactory/oss-release-local/</url>
-	    </repository>
+		<repository>
+			<id>jcenter-release</id>
+			<name>jcenter</name>
+			<url>http://oss.jfrog.org/artifactory/oss-release-local/</url>
+		</repository>
 	</repositories>
 
 	<dependencies>
 
 		<!-- entity projects -->
+		
+		<dependency>
+			<groupId>eu.europeana.entity</groupId>
+			<artifactId>entity-common</artifactId>
+			<version>${version.entityApiSnapshot}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>eu.europeana.entity</groupId>
+			<artifactId>entity-utils</artifactId>
+			<version>${version.entityApiSnapshot}</version>
+		</dependency>
+		
+		<!-- 
 		<dependency>
 			<groupId>eu.europeana.entity</groupId>
 			<artifactId>entity-mongo</artifactId>
 			<version>${version.entityApiSnapshot}</version>
 		</dependency>
+		 -->
 		<dependency>
 			<groupId>eu.europeana.entity</groupId>
 			<artifactId>entity-solr</artifactId>
 			<version>${version.entityApiSnapshot}</version>
 		</dependency>
-		<!--
-		<dependency>
-			<groupId>eu.europeana.annotation</groupId>
-			<artifactId>annotation-utils</artifactId>
-			<version>${version.entityApiSnapshot}</version>
-		</dependency>
-		-->
-		
+		<!-- <dependency> <groupId>eu.europeana.annotation</groupId> <artifactId>annotation-utils</artifactId> 
+			<version>${version.entityApiSnapshot}</version> </dependency> -->
+
 		<!-- spring -->
+		<!-- <dependency> <groupId>com.mangofactory</groupId> <artifactId>swagger-springmvc</artifactId> 
+			<version>1.0.1</version> <exclusions> <exclusion> <groupId>org.springframework</groupId> 
+			<artifactId>spring-webmvc</artifactId> </exclusion> <exclusion> <groupId>org.springframework</groupId> 
+			<artifactId>spring-web</artifactId> </exclusion> </exclusions> </dependency> -->
+
 		<dependency>
-		    <groupId>com.mangofactory</groupId>
-		    <artifactId>swagger-springmvc</artifactId>
-		    <version>1.0.1</version>
-		    <exclusions>
-		    	<exclusion>
-					<groupId>org.springframework</groupId>
-					<artifactId>spring-webmvc</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.springframework</groupId>
-					<artifactId>spring-web</artifactId>
-				</exclusion>
-		    </exclusions>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>2.3.0</version>
 		</dependency>
-		
+
 		<dependency>
-		    <groupId>javax.ws.rs</groupId>
-		    <artifactId>javax.ws.rs-api</artifactId>
-		    <version>2.0-m01</version>
+			<groupId>javax.ws.rs</groupId>
+			<artifactId>javax.ws.rs-api</artifactId>
+			<version>2.0-m01</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-xc</artifactId>
 			<version>1.9.9</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.2.1</version>
 		</dependency>
 
 		<dependency>
@@ -107,7 +117,7 @@
 			<artifactId>spring-webmvc</artifactId>
 			<version>${version.springCore}</version>
 		</dependency>
- 		
+
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-tx</artifactId>
@@ -118,62 +128,27 @@
 			<artifactId>spring-oxm</artifactId>
 			<version>${version.springCore}</version>
 		</dependency>
-		
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot</artifactId>
-			<version>1.2.0.RELEASE</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-starter-logging</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		
-		<!--
-		<dependency>
-			<groupId>com.github.jsonld-java</groupId>
-			<artifactId>jsonld-java-jena</artifactId>
-			<version>0.2</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.slf4j</groupId>
-					<artifactId>slf4j-log4j12</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>log4j</groupId>
-					<artifactId>log4j</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		-->
 
-	    <dependency>
-	        <groupId>org.codehaus.jettison</groupId>
-	        <artifactId>jettison</artifactId>
-		    <version>1.1</version>
-	    </dependency>
 
-		<!--
-	    <dependency>
-	        <groupId>com.google.code.gson</groupId>
-	        <artifactId>gson</artifactId>
-		    <version>2.3.1</version>
-	    </dependency>
-		-->
-	    
-	    
-		<!--  test dependencies -->
-		<!--
+		<!-- <dependency> <groupId>com.github.jsonld-java</groupId> <artifactId>jsonld-java-jena</artifactId> 
+			<version>0.2</version> <exclusions> <exclusion> <groupId>org.slf4j</groupId> 
+			<artifactId>slf4j-log4j12</artifactId> </exclusion> <exclusion> <groupId>log4j</groupId> 
+			<artifactId>log4j</artifactId> </exclusion> </exclusions> </dependency> -->
+
 		<dependency>
-			<groupId>eu.europeana.entity</groupId>
-			<artifactId>entity-definitions</artifactId>
-			<version>${version.annotationApiSnapshot}</version>
-			<classifier>tests</classifier>
-			<scope>test</scope>
+			<groupId>org.codehaus.jettison</groupId>
+			<artifactId>jettison</artifactId>
+			<version>1.1</version>
 		</dependency>
-		-->
+
+		<!-- <dependency> <groupId>com.google.code.gson</groupId> <artifactId>gson</artifactId> 
+			<version>2.3.1</version> </dependency> -->
+
+
+		<!-- test dependencies -->
+		<!-- <dependency> <groupId>eu.europeana.entity</groupId> <artifactId>entity-definitions</artifactId> 
+			<version>${version.annotationApiSnapshot}</version> <classifier>tests</classifier> 
+			<scope>test</scope> </dependency> -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
@@ -181,6 +156,7 @@
 			<scope>test</scope>
 		</dependency>
 
+		
 	</dependencies>
 
 	<!-- configure source and output locations -->
@@ -206,7 +182,7 @@
 		</testResources>
 
 		<plugins>
-			
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>

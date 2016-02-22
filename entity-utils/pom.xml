@@ -1,0 +1,78 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>entity-utils</artifactId>
+	<name>Entity utils package</name>
+	<description>Utility classes for Entity API</description>
+
+	<parent>
+		<groupId>eu.europeana.entity</groupId>
+		<artifactId>entity-api</artifactId>
+		<!-- 
+		<version>${version.entityApiSnapshot}</version>
+		 -->
+		<version>0.0.1-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+	
+	<dependencies>
+		<dependency>
+			<groupId>eu.europeana.entity</groupId>
+			<artifactId>entity-definitions</artifactId>
+			<version>${version.entityApiSnapshot}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>at.ac.ait.ngcms</groupId>
+			<artifactId>annotation-ld</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+
+
+		<!-- moved from annotation-web -->
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-xc</artifactId>
+			<version>1.9.9</version>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${version.junit}</version>
+			<scope>test</scope>
+		</dependency>
+<!-- 
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-jdk14</artifactId>
+			<version>${version.slf4j}</version>
+		</dependency>
+ -->
+
+		<dependency>
+			<groupId>org.codehaus.jettison</groupId>
+			<artifactId>jettison</artifactId>
+			<version>1.1</version>
+		</dependency>
+
+<!--		
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.3.1</version>
+		</dependency>
+-->		
+		<dependency>
+            <groupId>org.apache.jena</groupId>
+            <artifactId>apache-jena-libs</artifactId> 
+            <type>pom</type>
+            <version>2.13.0</version>
+        </dependency>
+						
+	</dependencies>
+</project>
+
+
+		
+					

@@ -21,4 +21,4 @@ springfox.documentation.swagger.v2.path=/api-docs
 springfox.host = localhost:8080
 springfox.application.title = Entity Collection - REST API
 springfox.application.description = This Swagger API console provides an overview of and interface to the Entity Collection REST API. For more help and information, head to our comprehensive <a href=\"http://labs.europeana.api/api/\">online documentation</a>.
-springfox.application.version =
+springfox.application.version = 0.0.1

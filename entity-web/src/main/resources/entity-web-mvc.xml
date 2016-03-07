@@ -42,14 +42,11 @@
 	<bean class="eu.europeana.api.common.config.swagger.SwaggerConfig">
 	</bean>
 
+	<bean class="springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper">
+	</bean>
 
 	<context:component-scan base-package="eu.europeana.entity.web.controller">
 	</context:component-scan>
-
-	<!-- <bean class="com.mangofactory.swagger.configuration.SpringSwaggerConfig"> 
-		</bean> -->
-	<!-- <bean class="springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration" 
-		/> -->
 
 	<!--Basic application beans. -->
 	<bean id="viewResolver"

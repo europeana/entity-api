@@ -2,7 +2,6 @@ package eu.europeana.entity.solr.service;
 
 import eu.europeana.entity.definitions.model.Concept;
 import eu.europeana.entity.definitions.model.search.Query;
-import eu.europeana.entity.definitions.model.search.SearchProfiles;
 import eu.europeana.entity.definitions.model.search.result.ResultSet;
 import eu.europeana.entity.definitions.model.vocabulary.SkosConceptSolrFields;
 import eu.europeana.entity.solr.exception.EntityServiceException;

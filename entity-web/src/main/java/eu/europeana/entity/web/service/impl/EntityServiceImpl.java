@@ -14,6 +14,7 @@ import eu.europeana.entity.definitions.model.search.result.ResultSet;
 import eu.europeana.entity.solr.exception.EntityServiceException;
 import eu.europeana.entity.solr.service.SolrEntityService;
 import eu.europeana.entity.web.controller.WebEntityFields;
+import eu.europeana.entity.web.model.view.ConceptView;
 import eu.europeana.entity.web.service.EntityService;
 
 public class EntityServiceImpl implements EntityService {
@@ -51,6 +52,7 @@ public class EntityServiceImpl implements EntityService {
 	 * @see eu.europeana.entity.web.service.EntityService#suggest(java.lang.String, java.lang.String, java.lang.String, java.lang.String, int)
 	 */
 	@Override	
+//	public ResultSet<? extends ConceptView> suggest(String text, String language, String type, String namespace, int rows) throws HttpException {
 	public ResultSet<? extends Concept> suggest(String text, String language, String type, String namespace, int rows) throws HttpException {
 
 //		String suggestUrl = "entity/suggest?";

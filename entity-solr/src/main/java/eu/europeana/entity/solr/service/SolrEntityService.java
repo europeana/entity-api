@@ -32,6 +32,7 @@ public interface SolrEntityService {
 	 * @throws EntityServiceException 
 	 */
 	public ResultSet<? extends Concept> search(Query searchQuery) throws EntityServiceException;
+//	public ResultSet<? extends ConceptView> search(Query searchQuery) throws EntityServiceException;
 	
 	
 }

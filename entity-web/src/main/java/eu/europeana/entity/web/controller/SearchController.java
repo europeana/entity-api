@@ -23,6 +23,8 @@ import eu.europeana.entity.web.exception.HttpException;
 import eu.europeana.entity.web.exception.InternalServerException;
 import eu.europeana.entity.web.exception.ParamValidationException;
 import eu.europeana.entity.web.http.HttpHeaders;
+import eu.europeana.entity.web.jsonld.ConceptSetSerializer;
+import eu.europeana.entity.web.model.view.ConceptView;
 import eu.europeana.entity.web.service.EntityService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -58,30 +60,46 @@ public class SearchController {
 			
 			String language = WebEntityFields.PARAM_LANGUAGE_EN;
 
-			ResultSet<? extends Concept> entities = entityService.suggest(text, language, typeStr, namespace, rows);
+			ResultSet<? extends Concept> results = entityService.suggest(text, language, typeStr, namespace, rows);
 			
-	        if (entities == null || entities.getResultSize() == 0)
+			
+//	        ResultSet<? extends ConceptView> results = entityService.suggest(text, language, typeStr, namespace, rows);
+//
+	        if (results == null || results.getResultSize() == 0)
 	        	throw new ParamValidationException(ParamValidationException.MESSAGE_BLANK_PARAMETER_VALUE,
 	        			WebEntityFields.PARAM_QUERY, action + ":" + text);
 
-			Concept entity = entities.getResults().get(0);
-			
-			EuropeanaEntityLd entityLd = new EuropeanaEntityLd(entity);
-			
-			String jsonLd = new String(entityLd.toString(4));
+	        ConceptSetSerializer serializer = new ConceptSetSerializer(results);
+	        String jsonLd = serializer.serialize();
 
-			Date etagDate = (entity.getTimestamp() == null)? entity.getTimestamp() : new Date();
-			int etag = etagDate.hashCode(); 
-			
 			MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>(5);
 			headers.add(HttpHeaders.VARY, HttpHeaders.ACCEPT);
-			headers.add(HttpHeaders.ETAG, "" + etag);
-			headers.add(HttpHeaders.LINK, HttpHeaders.VALUE_LDP_RESOURCE);
-			headers.add(HttpHeaders.ALLOW, HttpHeaders.ALLOW_GET);
+			headers.add(HttpHeaders.LINK, HttpHeaders.VALUE_LDP_CONTAINER);
+			headers.add(HttpHeaders.ALLOW, HttpHeaders.ALLOW_GET+"," +  HttpHeaders.ALLOW_POST);
 
 			ResponseEntity<String> response = new ResponseEntity<String>(jsonLd, headers, HttpStatus.OK);
-			
+
 			return response;
+
+			
+//			Concept entity = results.getResults().get(0);
+//			
+//			EuropeanaEntityLd entityLd = new EuropeanaEntityLd(entity);
+//			
+//			String jsonLd = new String(entityLd.toString(4));
+//
+//			Date etagDate = (entity.getTimestamp() == null)? entity.getTimestamp() : new Date();
+//			int etag = etagDate.hashCode(); 
+//			
+//			MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>(5);
+//			headers.add(HttpHeaders.VARY, HttpHeaders.ACCEPT);
+//			headers.add(HttpHeaders.ETAG, "" + etag);
+//			headers.add(HttpHeaders.LINK, HttpHeaders.VALUE_LDP_RESOURCE);
+//			headers.add(HttpHeaders.ALLOW, HttpHeaders.ALLOW_GET);
+//
+//			ResponseEntity<String> response = new ResponseEntity<String>(jsonLd, headers, HttpStatus.OK);
+//			
+//			return response;
 		}catch (RuntimeException e) {
 			//not found .. 
 			throw new InternalServerException(e);

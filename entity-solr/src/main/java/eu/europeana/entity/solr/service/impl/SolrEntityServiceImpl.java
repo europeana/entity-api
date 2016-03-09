@@ -79,7 +79,7 @@ public class SolrEntityServiceImpl extends SolrEntityUtils implements SolrEntity
 		try {
 			getLogger().info("search obj: " + searchQuery);
 			QueryResponse rsp = solrServer.query(query);
-			res =  buildResultSet(rsp);
+			res = buildResultSet(rsp);
 			getLogger().debug("search obj res size: " + res.getResultSize());
 		} catch (SolrServerException e) {
 			throw new EntityServiceException(

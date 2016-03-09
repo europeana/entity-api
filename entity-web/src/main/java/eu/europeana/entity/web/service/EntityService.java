@@ -23,8 +23,7 @@ public interface EntityService {
 	 * 
 	 * e.g. GET /entity/suggest?text=leonard&language=en
 	 */
-//	ResultSet<? extends ConceptView> suggest(
-	ResultSet<? extends Concept> suggest(
+	ResultSet<? extends ConceptView> suggest(
 			String text, String language, String type, String namespace, int rows) throws HttpException;
 
 }

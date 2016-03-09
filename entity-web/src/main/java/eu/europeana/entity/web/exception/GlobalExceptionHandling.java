@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 
 import eu.europeana.entity.web.controller.ApiResponseBuilder;
-import eu.europeana.entity.web.controller.WebEntityFields;
+import eu.europeana.entity.web.controller.WebEntityConstants;
 import eu.europeana.entity.web.http.HttpHeaders;
 import eu.europeana.entity.web.model.EntityApiResponse;
 
@@ -53,7 +53,7 @@ public class GlobalExceptionHandling extends ApiResponseBuilder {
 
 	private ResponseEntity<String> buildResponseEntity(Exception ex, HttpServletRequest req,
 			HttpServletResponse response, HttpStatus status) {
-		EntityApiResponse res = getValidationReport(req.getParameter(WebEntityFields.PARAM_WSKEY), req.getServletPath(),
+		EntityApiResponse res = getValidationReport(req.getParameter(WebEntityConstants.PARAM_WSKEY), req.getServletPath(),
 				null, ex);
 		
 		response.setContentType(MediaType.APPLICATION_JSON_VALUE);

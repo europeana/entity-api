@@ -5,10 +5,10 @@ import java.util.List;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.response.QueryResponse;
 
-import eu.europeana.entity.definitions.model.Concept;
 import eu.europeana.entity.definitions.model.search.Query;
 import eu.europeana.entity.definitions.model.search.result.ResultSet;
-import eu.europeana.entity.solr.model.SolrConceptImpl;
+import eu.europeana.entity.solr.view.ConceptViewAdapter;
+import eu.europeana.entity.web.model.view.ConceptView;
 
 public class SolrEntityUtils {
 
@@ -41,11 +41,11 @@ public class SolrEntityUtils {
 		return solrQuery;
 	}
 
-	protected <T extends Concept> ResultSet<T> buildResultSet(QueryResponse rsp) {
+	protected <T extends ConceptView> ResultSet<T> buildResultSet(QueryResponse rsp) {
 
 		ResultSet<T> resultSet = new ResultSet<>();
 		@SuppressWarnings("unchecked")
-		List<T> beans = (List<T>) rsp.getBeans(SolrConceptImpl.class);
+		List<T> beans = (List<T>) rsp.getBeans(ConceptViewAdapter.class);
 		resultSet.setResults(beans);
 		
 		resultSet.setResultSize(rsp.getResults().getNumFound());

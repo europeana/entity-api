@@ -3,12 +3,9 @@ package eu.europeana.entity.solr.service;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.util.List;
-
 import javax.annotation.Resource;
 
 import org.apache.log4j.Logger;
-import org.apache.solr.client.solrj.response.QueryResponse;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,8 +17,8 @@ import eu.europeana.entity.definitions.model.search.Query;
 import eu.europeana.entity.definitions.model.search.QueryImpl;
 import eu.europeana.entity.definitions.model.search.result.ResultSet;
 import eu.europeana.entity.solr.exception.EntityServiceException;
-import eu.europeana.entity.solr.model.SolrConceptImpl;
 import eu.europeana.entity.solr.service.impl.SolrEntityServiceImpl;
+import eu.europeana.entity.web.model.view.ConceptView;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({ "/entity-solr-test.xml" })
@@ -52,7 +49,7 @@ public class SolrEntityServiceTest {
 	public void testSearch() throws EntityServiceException{
 		
 		Query searchQuery = new QueryImpl("\"Geistliches Drama\"", 10);
-		ResultSet<? extends Concept> rs = solrEntityService.search(searchQuery);
+		ResultSet<? extends ConceptView> rs = solrEntityService.search(searchQuery);
 		
 		assertNotNull(rs.getResults());
 		assertTrue(rs.getResultSize() >= 1 );

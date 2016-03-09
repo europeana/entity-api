@@ -1,6 +1,8 @@
 package eu.europeana.entity.web.controller;
 
-public interface WebEntityFields {
+import eu.europeana.entity.utils.jsonld.WebEntityFields;
+
+public interface WebEntityConstants extends WebEntityFields{
 
 	String PARAM_WSKEY = "wskey";
 	String PATH_PARAM_TYPE = "type";
@@ -15,10 +17,10 @@ public interface WebEntityFields {
 	
 	String PARAM_ALL = "all";
 	String PARAM_LANGUAGE_EN = "en";
-	String PARAM_AGENTS = "agents";
-	String PARAM_PLACES = "places";
-	String PARAM_CONCEPTS = "concepts";
-	String PARAM_TIMESPANS = "timespans";
+	String PARAM_AGENT = "agent";
+	String PARAM_PLACE = "place";
+	String PARAM_CONCEPT = "concept";
+	String PARAM_TIMESPAN = "timespan";
 	String PARAM_QUERY = "query";
 	String PARAM_DEFAULT_ROWS = "10";
 
@@ -70,5 +72,6 @@ public interface WebEntityFields {
 
 	public static final String WA_CONTEXT = "https://www.w3.org/ns/anno.jsonld";
 	public static final String TOTAL_ITEMS = "totalItems";
+	
 	
 }

@@ -5,6 +5,7 @@ import eu.europeana.entity.definitions.model.search.Query;
 import eu.europeana.entity.definitions.model.search.result.ResultSet;
 import eu.europeana.entity.definitions.model.vocabulary.SkosConceptSolrFields;
 import eu.europeana.entity.solr.exception.EntityServiceException;
+import eu.europeana.entity.web.model.view.ConceptView;
 
 public interface SolrEntityService {
 
@@ -31,8 +32,7 @@ public interface SolrEntityService {
 	 * @return
 	 * @throws EntityServiceException 
 	 */
-	public ResultSet<? extends Concept> search(Query searchQuery) throws EntityServiceException;
-//	public ResultSet<? extends ConceptView> search(Query searchQuery) throws EntityServiceException;
+	public ResultSet<? extends ConceptView> search(Query searchQuery) throws EntityServiceException;
 	
 	
 }

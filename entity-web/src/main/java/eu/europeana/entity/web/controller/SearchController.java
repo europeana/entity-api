@@ -1,7 +1,5 @@
 package eu.europeana.entity.web.controller;
 
-import java.util.Date;
-
 import javax.annotation.Resource;
 
 import org.springframework.http.HttpStatus;
@@ -15,9 +13,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import eu.europeana.api.common.config.swagger.SwaggerSelect;
-import eu.europeana.entity.definitions.model.Concept;
 import eu.europeana.entity.definitions.model.search.result.ResultSet;
-import eu.europeana.entity.utils.jsonld.EuropeanaEntityLd;
+import eu.europeana.entity.solr.model.vocabulary.EntityTypes;
 import eu.europeana.entity.web.exception.ApplicationAuthenticationException;
 import eu.europeana.entity.web.exception.HttpException;
 import eu.europeana.entity.web.exception.InternalServerException;
@@ -40,12 +37,12 @@ public class SearchController {
 	@ApiOperation(value = "Request for auto-completion for given text query", nickname = "getSuggestion", response = java.lang.Void.class)
 	@RequestMapping(value = {"/entity/suggest", "/entity/suggest.jsonld"}, method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE, "application/ld+json"})
 	public ResponseEntity<String> getSuggestion(
-			@RequestParam(value = WebEntityFields.PARAM_WSKEY) String wskey,
-			@RequestParam(value = WebEntityFields.QUERY_PARAM_TEXT) String text,
-//			@RequestParam(value = WebEntityFields.QUERY_PARAM_LANGUAGE, defaultValue = WebEntityFields.PARAM_LANGUAGE_EN) String language,
-			@RequestParam(value = WebEntityFields.QUERY_PARAM_TYPE, defaultValue = WebEntityFields.PARAM_ALL) DatasetTypes type,
-			@RequestParam(value = WebEntityFields.QUERY_PARAM_NAMESPACE, required = false) String namespace,
-			@RequestParam(value = WebEntityFields.QUERY_PARAM_ROWS, defaultValue = WebEntityFields.PARAM_DEFAULT_ROWS) int rows
+			@RequestParam(value = WebEntityConstants.PARAM_WSKEY) String wskey,
+			@RequestParam(value = WebEntityConstants.QUERY_PARAM_TEXT) String text,
+			@RequestParam(value = WebEntityConstants.QUERY_PARAM_LANGUAGE, defaultValue = WebEntityConstants.PARAM_LANGUAGE_EN) String language,
+			@RequestParam(value = WebEntityConstants.QUERY_PARAM_TYPE, defaultValue = WebEntityConstants.PARAM_ALL) EntityTypes type,
+			@RequestParam(value = WebEntityConstants.QUERY_PARAM_NAMESPACE, required = false) String namespace,
+			@RequestParam(value = WebEntityConstants.QUERY_PARAM_ROWS, defaultValue = WebEntityConstants.PARAM_DEFAULT_ROWS) int rows
 			) throws HttpException  {
 
 		try {
@@ -54,20 +51,18 @@ public class SearchController {
 			// Check client access (a valid “wskey” must be provided)
 			validateApiKey(wskey);
 			
-	        String typeStr = DatasetTypes.all.getSolrType();
-			if (type != null)
-				typeStr = type.getSolrType();				
+	        //String typeStr = EntityTypes.all.getSolrType();
+//			if (type != null)
+//				typeStr = type.getSolrType();				
 			
-			String language = WebEntityFields.PARAM_LANGUAGE_EN;
-
-			ResultSet<? extends Concept> results = entityService.suggest(text, language, typeStr, namespace, rows);
+			ResultSet<? extends ConceptView> results = entityService.suggest(text, language, type.getInternalType(), namespace, rows);
 			
 			
 //	        ResultSet<? extends ConceptView> results = entityService.suggest(text, language, typeStr, namespace, rows);
 //
 	        if (results == null || results.getResultSize() == 0)
 	        	throw new ParamValidationException(ParamValidationException.MESSAGE_BLANK_PARAMETER_VALUE,
-	        			WebEntityFields.PARAM_QUERY, action + ":" + text);
+	        			WebEntityConstants.PARAM_QUERY, action + ":" + text);
 
 	        ConceptSetSerializer serializer = new ConceptSetSerializer(results);
 	        String jsonLd = serializer.serialize();

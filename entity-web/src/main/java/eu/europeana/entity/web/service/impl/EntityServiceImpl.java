@@ -11,9 +11,11 @@ import eu.europeana.entity.definitions.model.Concept;
 import eu.europeana.entity.definitions.model.search.Query;
 import eu.europeana.entity.definitions.model.search.QueryImpl;
 import eu.europeana.entity.definitions.model.search.result.ResultSet;
+import eu.europeana.entity.definitions.model.vocabulary.SkosConceptFields;
+import eu.europeana.entity.definitions.model.vocabulary.SkosConceptSolrFields;
 import eu.europeana.entity.solr.exception.EntityServiceException;
 import eu.europeana.entity.solr.service.SolrEntityService;
-import eu.europeana.entity.web.controller.WebEntityFields;
+import eu.europeana.entity.web.controller.WebEntityConstants;
 import eu.europeana.entity.web.model.view.ConceptView;
 import eu.europeana.entity.web.service.EntityService;
 
@@ -41,7 +43,7 @@ public class EntityServiceImpl implements EntityService {
 		Query searchQuery = new QueryImpl();
 		searchQuery.setQuery(queryString);
 		searchQuery.setRows(Math.min(rows, Query.MAX_PAGE_SIZE));	
-//		searchQuery.setFilters(filters);
+		searchQuery.setFilters(filters);
 		
 		return searchQuery;
 	}
@@ -52,9 +54,8 @@ public class EntityServiceImpl implements EntityService {
 	 * @see eu.europeana.entity.web.service.EntityService#suggest(java.lang.String, java.lang.String, java.lang.String, java.lang.String, int)
 	 */
 	@Override	
-//	public ResultSet<? extends ConceptView> suggest(String text, String language, String type, String namespace, int rows) throws HttpException {
-	public ResultSet<? extends Concept> suggest(String text, String language, String type, String namespace, int rows) throws HttpException {
-
+	public ResultSet<? extends ConceptView> suggest(String text, String language, String type, String namespace, int rows) throws HttpException {
+	
 //		String suggestUrl = "entity/suggest?";
 //				
 //        StringBuilder url = new StringBuilder();
@@ -67,8 +68,9 @@ public class EntityServiceImpl implements EntityService {
 		
 		List<String> filterList = new ArrayList<String>();
 //		filterList.add(WebEntityFields.QUERY_PARAM_LANGUAGE + ":" + language);
-		filterList.add(WebEntityFields.SOLR_INTERNAL_TYPE + ":" + type);
-		filterList.add(WebEntityFields.QUERY_PARAM_NAMESPACE + ":" + namespace);
+//		filterList.add(buildQueryFilter(WebEntityConstants.QUERY_PARAM_NAMESPACE, namespace);
+		
+		filterList.add(buildQueryFilter(SkosConceptSolrFields.INTERNAL_TYPE, type));
 		String[] filters = filterList.toArray(new String[filterList.size()]);
 				
 		try {
@@ -77,6 +79,11 @@ public class EntityServiceImpl implements EntityService {
 		} catch (EntityServiceException e) {
 			throw new HttpException("Cannot retrieve entity by URI", e);
 		}
+	}
+
+
+	private String buildQueryFilter(String solrField, String value) {
+		return  solrField + ":" + value;
 	}
 	
 }

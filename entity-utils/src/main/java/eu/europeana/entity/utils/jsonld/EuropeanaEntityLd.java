@@ -1,11 +1,6 @@
 package eu.europeana.entity.utils.jsonld;
 
-import java.util.List;
-import java.util.Map;
-
 import org.apache.stanbol.commons.jsonld.JsonLd;
-import org.apache.stanbol.commons.jsonld.JsonLdProperty;
-import org.apache.stanbol.commons.jsonld.JsonLdPropertyValue;
 import org.apache.stanbol.commons.jsonld.JsonLdResource;
 
 import eu.europeana.entity.definitions.model.Concept;
@@ -79,44 +74,6 @@ public class EuropeanaEntityLd extends JsonLd {
 		put(jsonLdResource);
 
 	}
-
-	/**
-	 * build appropriate property representation for string arrays
-	 * 
-	 * @param propertyName
-	 * @param valueList
-	 * @return
-	 */
-	protected JsonLdProperty buildMapProperty(String propertyName, Map<String, List<String>> values,
-			String solrFieldPrefix) {
-
-		if (values == null)
-			return null;
-
-		String key;
-		//remove the key prefix e.g. "prefLabel" + "."   
-		int prefixLength = solrFieldPrefix.length() +1 ;
-		
-		JsonLdProperty mapProperty = new JsonLdProperty(propertyName);
-		JsonLdPropertyValue mapPropertyValue = new JsonLdPropertyValue();
-		JsonLdProperty entryProperty;
-
-		for (Map.Entry<String, List<String>> entry : values.entrySet()) {
-			key = entry.getKey();
-			if(solrFieldPrefix != null) {
-				key = key.substring(prefixLength);
-			}
-			
-			entryProperty = new JsonLdProperty(key);
-			for (String listEntry : entry.getValue()) {
-				entryProperty.addSingleValue(listEntry);
-			}
-			
-			mapPropertyValue.putProperty(entryProperty);			
-		}
-		
-		mapProperty.addValue(mapPropertyValue);
-		return mapProperty;
-	}
+	
 
 }

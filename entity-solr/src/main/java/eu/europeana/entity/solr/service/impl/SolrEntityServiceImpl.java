@@ -17,6 +17,7 @@ import eu.europeana.entity.definitions.model.vocabulary.SkosConceptSolrFields;
 import eu.europeana.entity.solr.exception.EntityServiceException;
 import eu.europeana.entity.solr.model.SolrConceptImpl;
 import eu.europeana.entity.solr.service.SolrEntityService;
+import eu.europeana.entity.web.model.view.ConceptView;
 
 public class SolrEntityServiceImpl extends SolrEntityUtils implements SolrEntityService {
 
@@ -71,9 +72,9 @@ public class SolrEntityServiceImpl extends SolrEntityUtils implements SolrEntity
 	}
 
 	@Override
-	public ResultSet<? extends Concept> search(
+	public ResultSet<? extends ConceptView> search(
 			Query searchQuery) throws EntityServiceException {
-		ResultSet<? extends Concept> res = null;
+		ResultSet<? extends ConceptView> res = null;
 		SolrQuery query = toSolrQuery(searchQuery);
 
 		try {

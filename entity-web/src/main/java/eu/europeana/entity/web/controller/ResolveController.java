@@ -36,10 +36,10 @@ public class ResolveController {
 	@ApiOperation(value = "Retrieve a known entity", nickname = "getEntity", response = java.lang.Void.class)
 	@RequestMapping(value = {"/entity/{type}/{namespace}/{identifier}", "/entity/{type}/{namespace}/{identifier}.jsonld"}, method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE, "application/ld+json"})
 	public ResponseEntity<String> getEntity(
-			@RequestParam(value = WebEntityFields.PARAM_WSKEY) String wskey,
-			@PathVariable(value = WebEntityFields.PATH_PARAM_TYPE) String type,
-			@PathVariable(value = WebEntityFields.PATH_PARAM_NAMESPACE) String namespace,
-			@PathVariable(value = WebEntityFields.PATH_PARAM_IDENTIFIER) String identifier
+			@RequestParam(value = WebEntityConstants.PARAM_WSKEY) String wskey,
+			@PathVariable(value = WebEntityConstants.PATH_PARAM_TYPE) String type,
+			@PathVariable(value = WebEntityConstants.PATH_PARAM_NAMESPACE) String namespace,
+			@PathVariable(value = WebEntityConstants.PATH_PARAM_IDENTIFIER) String identifier
 			) throws HttpException  {
 
 		try {

@@ -13,7 +13,7 @@
 
 	<groupId>eu.europeana.entity</groupId>
 	<artifactId>entity-api</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>${version.entityApi}</version>
 	<packaging>pom</packaging>
 	<name>Entity API parent</name>
 
@@ -41,19 +41,10 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<version.java>1.7</version.java>
 		<version.junit>4.11</version.junit>
-		<!--  
-		<version.springAop>4.0.9.RELEASE</version.springAop>
-		<version.springCore>4.0.9.RELEASE</version.springCore>
-		<version.spring.tx>4.0.9.RELEASE</version.spring.tx>
-		<version.spring>4.0.9.RELEASE</version.spring>
-		 -->
 		<version.corelib>2.1</version.corelib>
 		<version.log4j>1.2.12</version.log4j>
-		<version.entityApiSnapshot>0.0.1-SNAPSHOT</version.entityApiSnapshot>
-		<version.entityApi>0.0.1</version.entityApi>
-		<!-- 
-		<version.commonsLang>2.6</version.commonsLang>
-		-->
+		<version.entityApi>0.0.1-SNAPSHOT</version.entityApi>
+		<version.annotationLd>1.0.0-RELEASE</version.annotationLd>
 		<version.commonsLang3>3.0</version.commonsLang3>
 		 
 		</properties>

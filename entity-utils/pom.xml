@@ -8,10 +8,7 @@
 	<parent>
 		<groupId>eu.europeana.entity</groupId>
 		<artifactId>entity-api</artifactId>
-		<!-- 
-		<version>${version.entityApiSnapshot}</version>
-		 -->
-		<version>0.0.1-SNAPSHOT</version>
+		<version>${version.entityApi}</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	
@@ -19,13 +16,13 @@
 		<dependency>
 			<groupId>eu.europeana.entity</groupId>
 			<artifactId>entity-definitions</artifactId>
-			<version>${version.entityApiSnapshot}</version>
+			<version>${version.entityApi}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>at.ac.ait.ngcms</groupId>
 			<artifactId>annotation-ld</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
+			<version>${version.annotationLd}</version>
 		</dependency>
 
 

@@ -17,7 +17,7 @@
 		<artifactId>entity-api</artifactId>
 		<groupId>eu.europeana.entity</groupId>
 		<!-- <version>${version.annotationApiSnapshot}</version> -->
-		<version>0.0.1-SNAPSHOT</version>
+		<version>${version.entityApi}</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 

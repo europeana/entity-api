@@ -10,7 +10,7 @@
 	<parent>
 		<artifactId>entity-api</artifactId>
 		<groupId>eu.europeana.entity</groupId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>${version.entityApi}</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
@@ -35,36 +35,22 @@
 		<dependency>
 			<groupId>eu.europeana.entity</groupId>
 			<artifactId>entity-common</artifactId>
-			<version>${version.entityApiSnapshot}</version>
+			<version>${version.entityApi}</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>eu.europeana.entity</groupId>
 			<artifactId>entity-utils</artifactId>
-			<version>${version.entityApiSnapshot}</version>
+			<version>${version.entityApi}</version>
 		</dependency>
 		
-		<!-- 
-		<dependency>
-			<groupId>eu.europeana.entity</groupId>
-			<artifactId>entity-mongo</artifactId>
-			<version>${version.entityApiSnapshot}</version>
-		</dependency>
-		 -->
 		<dependency>
 			<groupId>eu.europeana.entity</groupId>
 			<artifactId>entity-solr</artifactId>
-			<version>${version.entityApiSnapshot}</version>
+			<version>${version.entityApi}</version>
 		</dependency>
-		<!-- <dependency> <groupId>eu.europeana.annotation</groupId> <artifactId>annotation-utils</artifactId> 
-			<version>${version.entityApiSnapshot}</version> </dependency> -->
-
+		
 		<!-- spring -->
-		<!-- <dependency> <groupId>com.mangofactory</groupId> <artifactId>swagger-springmvc</artifactId> 
-			<version>1.0.1</version> <exclusions> <exclusion> <groupId>org.springframework</groupId> 
-			<artifactId>spring-webmvc</artifactId> </exclusion> <exclusion> <groupId>org.springframework</groupId> 
-			<artifactId>spring-web</artifactId> </exclusion> </exclusions> </dependency> -->
-
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger2</artifactId>

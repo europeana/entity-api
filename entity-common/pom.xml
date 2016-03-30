@@ -13,7 +13,7 @@
 		<artifactId>entity-api</artifactId>
 		<groupId>eu.europeana.entity</groupId>
 		<relativePath>../pom.xml</relativePath>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>${version.entityApi}</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 

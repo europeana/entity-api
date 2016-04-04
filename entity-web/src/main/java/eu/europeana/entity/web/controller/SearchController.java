@@ -57,9 +57,6 @@ public class SearchController {
 			
 			ResultSet<? extends ConceptView> results = entityService.suggest(text, language, type.getInternalType(), namespace, rows);
 			
-			
-//	        ResultSet<? extends ConceptView> results = entityService.suggest(text, language, typeStr, namespace, rows);
-//
 	        if (results == null || results.getResultSize() == 0)
 	        	throw new ParamValidationException(ParamValidationException.MESSAGE_BLANK_PARAMETER_VALUE,
 	        			WebEntityConstants.PARAM_QUERY, action + ":" + text);
@@ -76,25 +73,6 @@ public class SearchController {
 
 			return response;
 
-			
-//			Concept entity = results.getResults().get(0);
-//			
-//			EuropeanaEntityLd entityLd = new EuropeanaEntityLd(entity);
-//			
-//			String jsonLd = new String(entityLd.toString(4));
-//
-//			Date etagDate = (entity.getTimestamp() == null)? entity.getTimestamp() : new Date();
-//			int etag = etagDate.hashCode(); 
-//			
-//			MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>(5);
-//			headers.add(HttpHeaders.VARY, HttpHeaders.ACCEPT);
-//			headers.add(HttpHeaders.ETAG, "" + etag);
-//			headers.add(HttpHeaders.LINK, HttpHeaders.VALUE_LDP_RESOURCE);
-//			headers.add(HttpHeaders.ALLOW, HttpHeaders.ALLOW_GET);
-//
-//			ResponseEntity<String> response = new ResponseEntity<String>(jsonLd, headers, HttpStatus.OK);
-//			
-//			return response;
 		}catch (RuntimeException e) {
 			//not found .. 
 			throw new InternalServerException(e);

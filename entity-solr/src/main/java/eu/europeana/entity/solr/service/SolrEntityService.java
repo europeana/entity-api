@@ -34,5 +34,12 @@ public interface SolrEntityService {
 	 */
 	public ResultSet<? extends ConceptView> search(Query searchQuery) throws EntityServiceException;
 	
+	/**
+	 * This method retrieves available Entities that meet the .
+	 * @param searchQuery The search query
+	 * @return
+	 * @throws EntityServiceException 
+	 */
+	public ResultSet<? extends ConceptView> suggest(Query searchQuery, String language) throws EntityServiceException;
 	
 }

@@ -11,11 +11,9 @@ import eu.europeana.entity.definitions.model.Concept;
 import eu.europeana.entity.definitions.model.search.Query;
 import eu.europeana.entity.definitions.model.search.QueryImpl;
 import eu.europeana.entity.definitions.model.search.result.ResultSet;
-import eu.europeana.entity.definitions.model.vocabulary.SkosConceptFields;
 import eu.europeana.entity.definitions.model.vocabulary.SkosConceptSolrFields;
 import eu.europeana.entity.solr.exception.EntityServiceException;
 import eu.europeana.entity.solr.service.SolrEntityService;
-import eu.europeana.entity.web.controller.WebEntityConstants;
 import eu.europeana.entity.web.model.view.ConceptView;
 import eu.europeana.entity.web.service.EntityService;
 
@@ -55,16 +53,6 @@ public class EntityServiceImpl implements EntityService {
 	 */
 	@Override	
 	public ResultSet<? extends ConceptView> suggest(String text, String language, String type, String namespace, int rows) throws HttpException {
-	
-//		String suggestUrl = "entity/suggest?";
-//				
-//        StringBuilder url = new StringBuilder();
-//        url.append(BASE_URL_DATA).append(suggestUrl);
-//        url.append("&" + WebEntityFields.QUERY_PARAM_TEXT + "=").append(URLEncoder.encode(text, "UTF-8"));
-//        url.append("&" + WebEntityFields.QUERY_PARAM_LANGUAGE + "=" + language);
-//        url.append("&" + WebEntityFields.QUERY_PARAM_DATASET + "=" + dataset);
-//        url.append("&" + WebEntityFields.QUERY_PARAM_SCHEME + "=" + scheme);
-//        url.append("&" + WebEntityFields.QUERY_PARAM_ROWS + "=" + rows);
 		
 		List<String> filterList = new ArrayList<String>();
 //		filterList.add(WebEntityFields.QUERY_PARAM_LANGUAGE + ":" + language);
@@ -75,7 +63,7 @@ public class EntityServiceImpl implements EntityService {
 				
 		try {
 			Query query = buildSearchQuery(text, filters, rows);
-			return solrEntityService.search(query);
+			return solrEntityService.suggest(query, language);
 		} catch (EntityServiceException e) {
 			throw new HttpException("Cannot retrieve entity by URI", e);
 		}

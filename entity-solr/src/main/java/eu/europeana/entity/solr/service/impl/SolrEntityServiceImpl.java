@@ -101,6 +101,32 @@ public class SolrEntityServiceImpl extends SolrEntityUtils implements SolrEntity
 		return log;
 	}
 
+	@Override
+	public ResultSet<? extends ConceptView> suggest(Query searchQuery, String language) throws EntityServiceException {
+		
+		ResultSet<? extends ConceptView> res = null;
+		SolrQuery query = toSolrQuery(searchQuery);
+		String handler = "/suggestConcept/";
+		if(language != null)
+			handler += language;
+		
+		query.setRequestHandler(handler);
+		
+		try {
+			getLogger().info("suggest entity: " + searchQuery);
+			QueryResponse rsp = solrServer.query(query);
+			res = buildResultSet(rsp);
+			getLogger().debug("search obj res size: " + res.getResultSize());
+		} catch (SolrServerException e) {
+			throw new EntityServiceException(
+					"Unexpected exception occured when searching annotations for solrAnnotation: "
+							+ searchQuery.toString(),
+					e);
+		}
+
+		return res;	
+	}
+
 
 
 }

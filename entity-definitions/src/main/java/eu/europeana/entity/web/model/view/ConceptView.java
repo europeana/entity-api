@@ -7,7 +7,7 @@ import eu.europeana.entity.definitions.model.search.result.IdBean;
 
 public interface ConceptView extends IdBean {
 
-	Map<String, List<String>> getPrefLabel();
-	
 	String getEntityType();
+	
+	Map<String, List<String>> getPrefLabel();
 }

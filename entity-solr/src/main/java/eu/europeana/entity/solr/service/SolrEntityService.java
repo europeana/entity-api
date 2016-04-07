@@ -6,6 +6,7 @@ import eu.europeana.entity.definitions.model.search.result.ResultSet;
 import eu.europeana.entity.definitions.model.vocabulary.SkosConceptSolrFields;
 import eu.europeana.entity.solr.exception.EntityServiceException;
 import eu.europeana.entity.web.model.view.ConceptView;
+import eu.europeana.entity.web.model.view.EntityPreview;
 
 public interface SolrEntityService {
 
@@ -37,9 +38,11 @@ public interface SolrEntityService {
 	/**
 	 * This method retrieves available Entities that meet the .
 	 * @param searchQuery The search query
+	 * @param language
+	 * @param rows
 	 * @return
 	 * @throws EntityServiceException 
 	 */
-	public ResultSet<? extends ConceptView> suggest(Query searchQuery, String language) throws EntityServiceException;
+	public ResultSet<? extends EntityPreview> suggest(Query searchQuery, String language, int rows) throws EntityServiceException;
 	
 }

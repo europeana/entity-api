@@ -15,7 +15,7 @@
  *  the Licence.
  */
 
-package eu.europeana.entity.definitions.model.search.result;
+package eu.europeana.entity.definitions.model.suggest.result;
 
 import java.util.List;
 import java.util.Map;
@@ -27,7 +27,7 @@ import eu.europeana.entity.definitions.model.search.Query;
  * @author Sergiu Gordea @ait
  * @author Willem-Jan Boogerd <www.eledge.net/contact>
  */
-public class ResultSet<T> {
+public class EntitySuggestionResultSet<T> {
 
 	/**
 	 * The request query object
@@ -35,27 +35,26 @@ public class ResultSet<T> {
 	private Query query;
 
 	/**
-	 * The list of result objects
+	 * The list of result objects using exact match 
 	 */
 	private List<T> results;
-
+	
 	/**
-	 * The list of facets
+	 * The list of result objects using fuzzy match 
 	 */
-	private List<FacetFieldView> facetFields;
-
-	/**
-	 * The query facets response
-	 */
-	private Map<String, Integer> queryFacets;
-
-	// statistics
+	private List<T> fuzzyResults;
 
 	/**
 	 * The total number of results
 	 */
 	private long resultSize;
 
+	/**
+	 * The list of result objects using exact match 
+	 */
+	private long fuzzyResultSize;
+
+	
 	/**
 	 * The time in millisecond how long the search has been taken
 	 */
@@ -69,7 +68,7 @@ public class ResultSet<T> {
 		return results;
 	}
 
-	public ResultSet<T> setResults(List<T> list) {
+	public EntitySuggestionResultSet<T> setResults(List<T> list) {
 		this.results = list;
 		return this;
 	}
@@ -78,17 +77,8 @@ public class ResultSet<T> {
 		return query;
 	}
 
-	public ResultSet<T> setQuery(Query query) {
+	public EntitySuggestionResultSet<T> setQuery(Query query) {
 		this.query = query;
-		return this;
-	}
-
-	public List<FacetFieldView> getFacetFields() {
-		return facetFields;
-	}
-
-	public ResultSet<T> setFacetFields(List<FacetFieldView> facetFields) {
-		this.facetFields = facetFields;
 		return this;
 	}
 
@@ -100,7 +90,7 @@ public class ResultSet<T> {
 		return resultSize;
 	}
 
-	public ResultSet<T> setResultSize(long resultSize) {
+	public EntitySuggestionResultSet<T> setResultSize(long resultSize) {
 		this.resultSize = resultSize;
 		return this;
 	}
@@ -109,29 +99,35 @@ public class ResultSet<T> {
 		return searchTime;
 	}
 
-	public ResultSet<T> setSearchTime(long l) {
+	public EntitySuggestionResultSet<T> setSearchTime(long l) {
 		this.searchTime = l;
-		return this;
-	}
-
-	public Map<String, Integer> getQueryFacets() {
-		return queryFacets;
-	}
-
-	public ResultSet<T> setQueryFacets(Map<String, Integer> queryFacets) {
-		this.queryFacets = queryFacets;
 		return this;
 	}
 
 	@Override
 	public String toString() {
 		return "ResultSet [query=" + query + ", results=" + results
-				+ ", facetFields=" + facetFields 
-				+ ", resultSize=" + resultSize + ", searchTime=" + searchTime
+				+ ", facetFields=" + getFuzzyResults() 
+				+ ", resultSize=" + getResultSize() 
+				+ ", fuzzyResultSize=" + getFuzzyResultSize() 
+				+ ", searchTime=" + searchTime
 				+ "]";
 	}
 
-	public boolean isEmpty(){
-		return getResults() == null || getResults().isEmpty();
+	public List<T> getFuzzyResults() {
+		return fuzzyResults;
 	}
+
+	public void setFuzzyResults(List<T> fuzzyResults) {
+		this.fuzzyResults = fuzzyResults;
+	}
+
+	public long getFuzzyResultSize() {
+		return fuzzyResultSize;
+	}
+
+	public void setFuzzyResultSize(long fuzzyResultSize) {
+		this.fuzzyResultSize = fuzzyResultSize;
+	}
+
 }

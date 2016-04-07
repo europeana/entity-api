@@ -17,7 +17,9 @@ import eu.europeana.entity.definitions.model.vocabulary.SkosConceptSolrFields;
 import eu.europeana.entity.solr.exception.EntityServiceException;
 import eu.europeana.entity.solr.model.SolrConceptImpl;
 import eu.europeana.entity.solr.service.SolrEntityService;
+import eu.europeana.entity.solr.view.EntityPreviewImpl;
 import eu.europeana.entity.web.model.view.ConceptView;
+import eu.europeana.entity.web.model.view.EntityPreview;
 
 public class SolrEntityServiceImpl extends SolrEntityUtils implements SolrEntityService {
 
@@ -34,7 +36,6 @@ public class SolrEntityServiceImpl extends SolrEntityUtils implements SolrEntity
 		return null;
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public Concept searchByUrl(String entityId) throws EntityServiceException {
 		
@@ -102,11 +103,11 @@ public class SolrEntityServiceImpl extends SolrEntityUtils implements SolrEntity
 	}
 
 	@Override
-	public ResultSet<? extends ConceptView> suggest(Query searchQuery, String language) throws EntityServiceException {
+	public ResultSet<? extends EntityPreview> suggest(Query searchQuery, String language, int rows) throws EntityServiceException {
 		
-		ResultSet<? extends ConceptView> res = null;
+		ResultSet<? extends EntityPreview> res = null;
 		SolrQuery query = toSolrQuery(searchQuery);
-		String handler = "/suggestConcept/";
+		String handler = "/suggestEntity/";
 		if(language != null)
 			handler += language;
 		
@@ -115,7 +116,7 @@ public class SolrEntityServiceImpl extends SolrEntityUtils implements SolrEntity
 		try {
 			getLogger().info("suggest entity: " + searchQuery);
 			QueryResponse rsp = solrServer.query(query);
-			res = buildResultSet(rsp);
+			res = buildSuggestionSet(rsp, language, rows, EntityPreviewImpl.class);
 			getLogger().debug("search obj res size: " + res.getResultSize());
 		} catch (SolrServerException e) {
 			throw new EntityServiceException(

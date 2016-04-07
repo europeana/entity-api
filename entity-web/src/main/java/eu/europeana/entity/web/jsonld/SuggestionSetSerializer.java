@@ -8,20 +8,21 @@ import org.apache.stanbol.commons.jsonld.JsonLdResource;
 import eu.europeana.entity.definitions.model.search.result.ResultSet;
 import eu.europeana.entity.web.controller.WebEntityConstants;
 import eu.europeana.entity.web.model.view.ConceptView;
+import eu.europeana.entity.web.model.view.EntityPreview;
 
 
-public class ConceptSetSerializer extends JsonLd {
+public class SuggestionSetSerializer extends JsonLd {
 
 	// private static final Logger logger =
 	// LoggerFactory.getLogger(ConceptLd.class);
 
-	ResultSet<? extends ConceptView> conceptSet;
+	ResultSet<? extends EntityPreview> conceptSet;
 
-	public ResultSet<? extends ConceptView> getConceptSet() {
+	public ResultSet<? extends EntityPreview> getConceptSet() {
 		return conceptSet;
 	}
 
-	public void setConceptSet(ResultSet<? extends ConceptView> conceptSet) {
+	public void setConceptSet(ResultSet<? extends EntityPreview> conceptSet) {
 		this.conceptSet = conceptSet;
 	}
 
@@ -29,7 +30,7 @@ public class ConceptSetSerializer extends JsonLd {
 	/**
 	 * @param conceptSet
 	 */
-	public ConceptSetSerializer(ResultSet<? extends ConceptView> conceptSet) {
+	public SuggestionSetSerializer(ResultSet<? extends EntityPreview> conceptSet) {
 		setConceptSet(conceptSet);
 	}
 
@@ -65,10 +66,14 @@ public class ConceptSetSerializer extends JsonLd {
 	
 	protected void serializeItems(JsonLdResource jsonLdResource) {
 
+		//do not serialize if empty
+		if(getConceptSet().isEmpty())
+			return;
+		
 		JsonLdProperty containsProperty = new JsonLdProperty(WebEntityConstants.CONTAINS);
 		JsonLdPropertyValue propertyValue;
 		
-		for (ConceptView entityPreview : getConceptSet().getResults()) {
+		for (EntityPreview entityPreview : getConceptSet().getResults()) {
 				propertyValue = buildConceptViewPropertyValue(entityPreview);
 				containsProperty.addValue(propertyValue);
 		}
@@ -77,15 +82,11 @@ public class ConceptSetSerializer extends JsonLd {
 			
 	}
 
-	private JsonLdPropertyValue buildConceptViewPropertyValue(ConceptView entityPreview) {
+	private JsonLdPropertyValue buildConceptViewPropertyValue(EntityPreview entityPreview) {
 		
 		JsonLdPropertyValue entityPreviewPropValue = new JsonLdPropertyValue();
 		entityPreviewPropValue.putProperty(new JsonLdProperty(WebEntityConstants.AT_ID, entityPreview.getEntityId()));
-		entityPreviewPropValue.putProperty(new JsonLdProperty(WebEntityConstants.AT_TYPE, entityPreview.getEntityType()));
-		
-		String solrFieldPrefix = WebEntityConstants.PREF_LABEL+".";
-		entityPreviewPropValue.putProperty(
-				buildMapProperty(WebEntityConstants.PREF_LABEL, entityPreview.getPrefLabel(), solrFieldPrefix));
+		entityPreviewPropValue.putProperty(new JsonLdProperty(WebEntityConstants.PREF_LABEL, entityPreview.getPreferredLabel()));
 				
 		return entityPreviewPropValue;
 	}

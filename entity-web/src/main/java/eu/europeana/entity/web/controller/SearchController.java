@@ -14,14 +14,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import eu.europeana.api.common.config.swagger.SwaggerSelect;
 import eu.europeana.entity.definitions.model.search.result.ResultSet;
-import eu.europeana.entity.solr.model.vocabulary.EntityTypes;
 import eu.europeana.entity.web.exception.ApplicationAuthenticationException;
 import eu.europeana.entity.web.exception.HttpException;
 import eu.europeana.entity.web.exception.InternalServerException;
 import eu.europeana.entity.web.exception.ParamValidationException;
 import eu.europeana.entity.web.http.HttpHeaders;
-import eu.europeana.entity.web.jsonld.ConceptSetSerializer;
-import eu.europeana.entity.web.model.view.ConceptView;
+import eu.europeana.entity.web.jsonld.SuggestionSetSerializer;
+import eu.europeana.entity.web.model.view.EntityPreview;
 import eu.europeana.entity.web.service.EntityService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -39,9 +38,10 @@ public class SearchController {
 	public ResponseEntity<String> getSuggestion(
 			@RequestParam(value = WebEntityConstants.PARAM_WSKEY) String wskey,
 			@RequestParam(value = WebEntityConstants.QUERY_PARAM_TEXT) String text,
-			@RequestParam(value = WebEntityConstants.QUERY_PARAM_LANGUAGE, defaultValue = WebEntityConstants.PARAM_LANGUAGE_EN) String language,
-			@RequestParam(value = WebEntityConstants.QUERY_PARAM_TYPE, defaultValue = WebEntityConstants.PARAM_ALL) EntityTypes type,
-			@RequestParam(value = WebEntityConstants.QUERY_PARAM_NAMESPACE, required = false) String namespace,
+			@RequestParam(value = WebEntityConstants.QUERY_PARAM_LANGUAGE, defaultValue = WebEntityConstants.PARAM_LANGUAGE_EN) String language
+			,
+//			@RequestParam(value = WebEntityConstants.QUERY_PARAM_TYPE, defaultValue = WebEntityConstants.PARAM_ALL) EntityTypes type,
+//			@RequestParam(value = WebEntityConstants.QUERY_PARAM_NAMESPACE, required = false) String namespace,
 			@RequestParam(value = WebEntityConstants.QUERY_PARAM_ROWS, defaultValue = WebEntityConstants.PARAM_DEFAULT_ROWS) int rows
 			) throws HttpException  {
 
@@ -51,17 +51,13 @@ public class SearchController {
 			// Check client access (a valid “wskey” must be provided)
 			validateApiKey(wskey);
 			
-	        //String typeStr = EntityTypes.all.getSolrType();
-//			if (type != null)
-//				typeStr = type.getSolrType();				
+			ResultSet<? extends EntityPreview> results = entityService.suggest(text, language, null, null, rows);
 			
-			ResultSet<? extends ConceptView> results = entityService.suggest(text, language, type.getInternalType(), namespace, rows);
-			
-	        if (results == null || results.getResultSize() == 0)
-	        	throw new ParamValidationException(ParamValidationException.MESSAGE_BLANK_PARAMETER_VALUE,
-	        			WebEntityConstants.PARAM_QUERY, action + ":" + text);
+//	        if (results == null || results.getResultSize() == 0)
+//	        	throw new ParamValidationException(ParamValidationException.MESSAGE_BLANK_PARAMETER_VALUE,
+//	        			WebEntityConstants.PARAM_QUERY, action + ":" + text);
 
-	        ConceptSetSerializer serializer = new ConceptSetSerializer(results);
+	        SuggestionSetSerializer serializer = new SuggestionSetSerializer(results);
 	        String jsonLd = serializer.serialize();
 
 			MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>(5);

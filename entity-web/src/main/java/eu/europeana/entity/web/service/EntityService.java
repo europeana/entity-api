@@ -4,7 +4,7 @@ import org.apache.http.HttpException;
 
 import eu.europeana.entity.definitions.model.Concept;
 import eu.europeana.entity.definitions.model.search.result.ResultSet;
-import eu.europeana.entity.web.model.view.ConceptView;
+import eu.europeana.entity.web.model.view.EntityPreview;
 
 public interface EntityService {
 
@@ -23,7 +23,7 @@ public interface EntityService {
 	 * 
 	 * e.g. GET /entity/suggest?text=leonard&language=en
 	 */
-	ResultSet<? extends ConceptView> suggest(
+	ResultSet<? extends EntityPreview> suggest(
 			String text, String language, String type, String namespace, int rows) throws HttpException;
 
 }

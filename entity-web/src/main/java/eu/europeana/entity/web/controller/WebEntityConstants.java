@@ -73,5 +73,9 @@ public interface WebEntityConstants extends WebEntityFields{
 	public static final String WA_CONTEXT = "https://www.w3.org/ns/anno.jsonld";
 	public static final String TOTAL_ITEMS = "totalItems";
 	
+	/**
+	 * PARAMS
+	 */
+	public static final String PARAM_INCLUDE_ERROR_STACK = "includeErrorStack";
 	
 }

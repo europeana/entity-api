@@ -1,6 +1,6 @@
 package eu.europeana.entity.web.service;
 
-import org.apache.http.HttpException;
+import eu.europeana.entity.web.exception.HttpException;
 
 import eu.europeana.entity.definitions.model.Concept;
 import eu.europeana.entity.definitions.model.search.result.ResultSet;

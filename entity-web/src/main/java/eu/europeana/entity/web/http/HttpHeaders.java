@@ -25,5 +25,4 @@ public interface HttpHeaders extends javax.ws.rs.core.HttpHeaders{
 			"<http://www.w3.org/TR/annotation-protocol/constraints>;\n" +
 			"rel=\"http://www.w3.org/ns/ldp#constrainedBy\"";
 	
-	
 }

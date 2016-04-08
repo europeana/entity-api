@@ -53,10 +53,6 @@ public class SearchController {
 			
 			ResultSet<? extends EntityPreview> results = entityService.suggest(text, language, null, null, rows);
 			
-//	        if (results == null || results.getResultSize() == 0)
-//	        	throw new ParamValidationException(ParamValidationException.MESSAGE_BLANK_PARAMETER_VALUE,
-//	        			WebEntityConstants.PARAM_QUERY, action + ":" + text);
-
 	        SuggestionSetSerializer serializer = new SuggestionSetSerializer(results);
 	        String jsonLd = serializer.serialize();
 
@@ -72,9 +68,9 @@ public class SearchController {
 		}catch (RuntimeException e) {
 			//not found .. 
 			throw new InternalServerException(e);
-//		} catch (HttpException e) {
-//			//avoid wrapping http exception
-//			throw e;
+		} catch (HttpException e) {
+			//avoid wrapping http exception
+			throw e;
 		} catch (Exception e) {
 			throw new InternalServerException(e);
 		}

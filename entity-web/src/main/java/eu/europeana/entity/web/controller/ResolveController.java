@@ -4,6 +4,7 @@ import java.util.Date;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ import eu.europeana.entity.definitions.model.Concept;
 import eu.europeana.entity.utils.jsonld.EuropeanaEntityLd;
 import eu.europeana.entity.web.exception.HttpException;
 import eu.europeana.entity.web.exception.InternalServerException;
+import eu.europeana.entity.web.exception.authentication.EntityAuthenticationException;
 import eu.europeana.entity.web.http.HttpHeaders;
 import eu.europeana.entity.web.service.EntityService;
 import io.swagger.annotations.Api;
@@ -28,7 +30,7 @@ import io.swagger.annotations.ApiOperation;
 @Controller
 @SwaggerSelect
 @Api(tags = "Entity retrieval", description=" ")
-public class ResolveController {
+public class ResolveController extends BaseRest {
 	
 	@Resource 
 	EntityService entityService;
@@ -44,6 +46,9 @@ public class ResolveController {
 
 		try {
 			String action = "get:/entity/{type}/{namespace}/{identifier}";
+			
+			validateApiKey(wskey);
+
 			//return getAnnotationById(wskey, provider, identifier, action);
 			Concept entity = entityService.retrieveByUrl(type, namespace, identifier);
 			

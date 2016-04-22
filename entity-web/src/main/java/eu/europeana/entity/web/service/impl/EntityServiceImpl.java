@@ -4,14 +4,13 @@ import javax.annotation.Resource;
 
 import org.springframework.http.HttpStatus;
 
-import eu.europeana.entity.web.exception.HttpException;
-
 import eu.europeana.entity.definitions.model.Concept;
 import eu.europeana.entity.definitions.model.search.Query;
 import eu.europeana.entity.definitions.model.search.QueryImpl;
 import eu.europeana.entity.definitions.model.search.result.ResultSet;
 import eu.europeana.entity.solr.exception.EntityServiceException;
 import eu.europeana.entity.solr.service.SolrEntityService;
+import eu.europeana.entity.web.exception.HttpException;
 import eu.europeana.entity.web.model.view.EntityPreview;
 import eu.europeana.entity.web.service.EntityService;
 
@@ -57,7 +56,7 @@ public class EntityServiceImpl implements EntityService {
 	 */
 	@Override	
 	public ResultSet<? extends EntityPreview> suggest(String text, String language, String type, String namespace, int rows) throws HttpException {
-		
+
 		try {
 			Query query = buildSearchQuery(text, null, rows);
 			return solrEntityService.suggest(query, language, rows);

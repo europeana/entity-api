@@ -46,9 +46,14 @@
 		<version.entityApi>0.0.1-SNAPSHOT</version.entityApi>
 		<version.annotationLd>1.0.0-RELEASE</version.annotationLd>
 		<version.commonsLang3>3.0</version.commonsLang3>
+		<version.springAop>4.0.9.RELEASE</version.springAop>
+		<version.springCore>4.0.9.RELEASE</version.springCore>
+		<version.spring.tx>4.0.9.RELEASE</version.spring.tx>
+		<version.spring>4.0.9.RELEASE</version.spring>
 		 
 		</properties>
 	<modules>
+		<module>entity-client</module>
 		<module>entity-common</module>
 		<module>entity-definitions</module>
 		<module>entity-utils</module>

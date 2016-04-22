@@ -26,5 +26,11 @@ public interface WebEntityFields {
 	public static final String NARROW_MATCH = "narrowMatch";
 	public static final String RELATED_MATCH = "relatedMatch";
 	
+    // REST API query
+	public static final String SLASH = "/";
+	public static final String PAR_CHAR = "?";
+	public static final String AND = "&";
+	public static final String EQUALS = "=";
+	public static final String PARAM_WSKEY = "wskey";
 
 }

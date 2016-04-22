@@ -3,6 +3,10 @@ package eu.europeana.entity.utils.json;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.apache.commons.lang.StringUtils;
 
 /**
  * @Deprecated the provided methods must be replaced by proper usage of the json to annotation parser 
@@ -108,4 +112,36 @@ private static final String SEPARATOR_COLON = ":";
 		return builder.toString();
 	}	
 			
+	
+	public static String extractEntityListStringFromJsonString(String jsonString) {
+		return extractEntityListStringFromJsonString(jsonString, "\":(.*?)}}]");
+	}
+
+	
+	public static String extractEntityListStringFromJsonString(String jsonString, String regex) {
+		String res = "";
+		String ITEMS = "contains";
+		if (StringUtils.isNotEmpty(jsonString)) {
+			Pattern pattern = Pattern.compile(ITEMS + regex);
+			Matcher matcher = pattern.matcher(jsonString);
+			if (matcher.find())
+			{
+			    res = matcher.group(1) + "}}]";
+			}
+		}
+		return res;
+	}
+    
+
+    /**
+     * This method converts Entity JSON list string to array.
+     * @param value The input string
+     * @return resulting map
+     */
+    public static String[] splitEntityListStringToArray(String value) {
+        return value.split("\\}\\},\\{");
+    }
+    
+	
+	
 }

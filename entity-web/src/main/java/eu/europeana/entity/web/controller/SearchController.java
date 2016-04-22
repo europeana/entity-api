@@ -31,6 +31,7 @@ public class SearchController extends BaseRest {
 	@Resource 
 	EntityService entityService;
 	
+	@SuppressWarnings("unchecked")
 	@ApiOperation(value = "Request for auto-completion for given text query", nickname = "getSuggestion", response = java.lang.Void.class)
 	@RequestMapping(value = {"/entity/suggest", "/entity/suggest.jsonld"}, method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE, "application/ld+json"})
 	public ResponseEntity<String> getSuggestion(

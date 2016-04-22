@@ -1,0 +1,6 @@
+# the uri of the entity service (REST API) => 
+# for testing within the development environment a local URI can be used e.g. localhost:8080/entity-web/entities/  
+entity.service.uri = http://localhost:8080/entity
+
+# the user key used to access Europeana API. For more information see http://pro.europeana.eu/api 
+entity.api.key = 

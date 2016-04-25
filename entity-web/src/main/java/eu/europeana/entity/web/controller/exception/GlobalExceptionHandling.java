@@ -77,7 +77,7 @@ public class GlobalExceptionHandling extends ApiResponseBuilder {
 
 		// TODO remove the usage of Model and View
 		boolean includeErrorStack = new Boolean(req.getParameter(WebEntityConstants.PARAM_INCLUDE_ERROR_STACK));
-		EntityApiResponse res = getValidationReport(req.getParameter(WebEntityConstants.PARAM_WSKEY), req.getServletPath(),
+		EntityApiResponse res = getErrorReport(req.getParameter(WebEntityConstants.PARAM_WSKEY), req.getServletPath(),
 				null, ex, includeErrorStack);
 
 		return buildErrorResponse(ex, req, response, res, ex.getStatus());
@@ -90,7 +90,7 @@ public class GlobalExceptionHandling extends ApiResponseBuilder {
 
 		// TODO remove the usage of Model and View
 		boolean includeErrorStack =new Boolean(req.getParameter(WebEntityConstants.PARAM_INCLUDE_ERROR_STACK));
-		EntityApiResponse res = getValidationReport(req.getParameter(WebEntityConstants.PARAM_WSKEY), req.getServletPath(),
+		EntityApiResponse res = getErrorReport(req.getParameter(WebEntityConstants.PARAM_WSKEY), req.getServletPath(),
 				ex.getMessage(), ex, includeErrorStack);
 
 		return buildErrorResponse(ex, req, response, res, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -109,7 +109,7 @@ public class GlobalExceptionHandling extends ApiResponseBuilder {
 			statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
 		
 		// TODO remove the usage of Model and View
-		EntityApiResponse res = getValidationReport(req.getParameter(WebEntityConstants.PARAM_WSKEY), req.getServletPath(),
+		EntityApiResponse res = getErrorReport(req.getParameter(WebEntityConstants.PARAM_WSKEY), req.getServletPath(),
 				ex.getMessage(), ex, includeErrorStack);
 		
 		return buildErrorResponse(ex, req, response, res, statusCode);

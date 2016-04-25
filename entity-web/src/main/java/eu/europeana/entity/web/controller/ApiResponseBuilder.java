@@ -39,7 +39,7 @@ public class ApiResponseBuilder {
 		return response;
 	}
 
-	protected EntityApiResponse getValidationReport(String apiKey, String action, String errorMessage,
+	protected EntityApiResponse getErrorReport(String apiKey, String action, String errorMessage,
 			Throwable th, boolean includeErrorStack) {
 
 		EntityApiResponse response = new EntityApiResponse(apiKey, action);

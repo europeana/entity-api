@@ -1,6 +1,8 @@
 package eu.europeana.entity.web.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.JsonGenerationException;
@@ -55,9 +57,20 @@ public class ApiResponseBuilder {
 
 		response = buildErrorResponse(message, response.action, response.apikey);
 
+		if(includeErrorStack && th != null)
+			response.setStackTrace(getStackTraceAsString(th));
+		
 		return response;
 	}
 
+	
+	String getStackTraceAsString(Throwable th) {
+		StringWriter out = new StringWriter();
+		th.printStackTrace(new PrintWriter(out));
+		return out.toString();
+	}
+
+	
 	protected String serializeResponse(EntityApiResponse res) {
 		String errorMessage;
 		try {

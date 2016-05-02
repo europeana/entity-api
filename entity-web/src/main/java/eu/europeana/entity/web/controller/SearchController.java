@@ -11,6 +11,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import eu.europeana.api.common.config.swagger.SwaggerSelect;
 import eu.europeana.entity.definitions.model.search.result.ResultSet;
@@ -18,6 +19,7 @@ import eu.europeana.entity.web.exception.HttpException;
 import eu.europeana.entity.web.exception.InternalServerException;
 import eu.europeana.entity.web.http.HttpHeaders;
 import eu.europeana.entity.web.jsonld.SuggestionSetSerializer;
+import eu.europeana.entity.web.model.EntityApiResponse;
 import eu.europeana.entity.web.model.view.EntityPreview;
 import eu.europeana.entity.web.service.EntityService;
 import io.swagger.annotations.Api;
@@ -44,9 +46,9 @@ public class SearchController extends BaseRest {
 			@RequestParam(value = WebEntityConstants.QUERY_PARAM_ROWS, defaultValue = WebEntityConstants.PARAM_DEFAULT_ROWS) int rows
 			) throws HttpException  {
 
-		try {
-			String action = "get:/entity/suggest";
-			
+		String action = "get:/entity/suggest";
+
+		try {			
 			// Check client access (a valid “wskey” must be provided)
 			validateApiKey(wskey);
 			
@@ -64,14 +66,23 @@ public class SearchController extends BaseRest {
 
 			return response;
 
-		}catch (RuntimeException e) {
+		} catch (RuntimeException e) {
 			//not found .. 
-			throw new InternalServerException(e);
+//			throw new InternalServerException(e);
+			return buildErrorResponse(e, 
+					getErrorReport(wskey, action, EntityApiResponse.ERROR_SUGGESTION_NOT_FOUND, null, false)
+					, HttpStatus.NOT_FOUND);	
 		} catch (HttpException e) {
 			//avoid wrapping http exception
-			throw e;
+//			throw e;
+			return buildErrorResponse(e, 
+					getErrorReport(wskey, action, EntityApiResponse.ERROR_SUGGESTION_NOT_FOUND, null, false)
+					, HttpStatus.NOT_FOUND);	
 		} catch (Exception e) {
-			throw new InternalServerException(e);
+//			throw new InternalServerException(e);
+			return buildErrorResponse(e, 
+					getErrorReport(wskey, action, EntityApiResponse.ERROR_SUGGESTION_NOT_FOUND, null, false)
+					, HttpStatus.NOT_FOUND);	
 		}
 			
 	}

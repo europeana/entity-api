@@ -131,6 +131,17 @@ public class GlobalExceptionHandling extends ApiResponseBuilder {
 		return responseEntity;
 	}
 	
+	protected ResponseEntity<String> buildErrorResponse(Exception ex, EntityApiResponse res, HttpStatus status) {
+		
+		ModelAndView mv = JsonWebUtils.toJson(res);
+		String body = (String) mv.getModel().get("json");
+		
+		MultiValueMap<String, String> headers = buildHeadersMap();
+
+		ResponseEntity<String> responseEntity = new ResponseEntity<String>(body, headers, status);
+		return responseEntity;
+	}
+	
 	protected MultiValueMap<String, String> buildHeadersMap() {
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>(5);
 		headers.add(HttpHeaders.VARY, HttpHeaders.ACCEPT);

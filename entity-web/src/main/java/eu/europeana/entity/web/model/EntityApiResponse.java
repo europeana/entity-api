@@ -7,6 +7,7 @@ public class EntityApiResponse extends ApiResponse{
 	
 	Concept entity;
 	String status;
+	String stackTrace;
 
 	public static String ERROR_NO_OBJECT_FOUND = "No Object Found!";
 	public static String ERROR_VISIBILITY_CHECK = "This annotation object is marked as not visible!";
@@ -24,6 +25,9 @@ public class EntityApiResponse extends ApiResponse{
 	public static String ERROR_STATUS_ALREADY_SET = 
 			"A given status type is already set: ";
 	
+	public static String ERROR_SUGGESTION_NOT_FOUND = "Suggestion not found!";
+	public static String ERROR_ENTITY_NOT_FOUND = "Entity not found!";
+
 	public EntityApiResponse(String apiKey, String action){
 		super(apiKey, action);
 	}
@@ -42,6 +46,14 @@ public class EntityApiResponse extends ApiResponse{
 
 	public void setEntity(Concept entity) {
 		this.entity = entity;
+	}
+
+	public String getStackTrace() {
+		return stackTrace;
+	}
+
+	public void setStackTrace(String stackTrace) {
+		this.stackTrace = stackTrace;
 	}
 
 }

@@ -23,6 +23,7 @@ import eu.europeana.entity.web.exception.HttpException;
 import eu.europeana.entity.web.exception.InternalServerException;
 import eu.europeana.entity.web.exception.authentication.EntityAuthenticationException;
 import eu.europeana.entity.web.http.HttpHeaders;
+import eu.europeana.entity.web.model.EntityApiResponse;
 import eu.europeana.entity.web.service.EntityService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -44,8 +45,9 @@ public class ResolveController extends BaseRest {
 			@PathVariable(value = WebEntityConstants.PATH_PARAM_IDENTIFIER) String identifier
 			) throws HttpException  {
 
+		String action = "get:/entity/{type}/{namespace}/{identifier}";
+
 		try {
-			String action = "get:/entity/{type}/{namespace}/{identifier}";
 			
 			validateApiKey(wskey);
 
@@ -68,16 +70,26 @@ public class ResolveController extends BaseRest {
 			ResponseEntity<String> response = new ResponseEntity<String>(jsonLd, headers, HttpStatus.OK);
 			
 			return response;
-		}catch (RuntimeException e) {
+	
+		} catch (RuntimeException e) {
 			//not found .. 
-			throw new InternalServerException(e);
+	//		throw new InternalServerException(e);
+			return buildErrorResponse(e, 
+					getErrorReport(wskey, action, EntityApiResponse.ERROR_ENTITY_NOT_FOUND, null, false)
+					, HttpStatus.NOT_FOUND);	
 		} catch (HttpException e) {
 			//avoid wrapping http exception
-			throw e;
+	//		throw e;
+			return buildErrorResponse(e, 
+					getErrorReport(wskey, action, EntityApiResponse.ERROR_ENTITY_NOT_FOUND, null, false)
+					, HttpStatus.NOT_FOUND);	
 		} catch (Exception e) {
-			throw new InternalServerException(e);
+	//		throw new InternalServerException(e);
+			return buildErrorResponse(e, 
+					getErrorReport(wskey, action, EntityApiResponse.ERROR_ENTITY_NOT_FOUND, null, false)
+					, HttpStatus.NOT_FOUND);	
 		}
-			
+					
 	}
 
 }

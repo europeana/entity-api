@@ -7,7 +7,7 @@ import eu.europeana.entity.web.controller.exception.GlobalExceptionHandling;
 import eu.europeana.entity.web.exception.authentication.EntityAuthenticationException;
 import eu.europeana.entity.web.model.EntitySearchResults;
 
-public class BaseRest extends GlobalExceptionHandling {
+public class BaseRest{
 
 	public BaseRest() {
 		super();

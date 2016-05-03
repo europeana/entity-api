@@ -23,26 +23,15 @@ public class JsonWebUtils {
 	private static final Logger log = Logger.getLogger(JsonWebUtils.class);
 	private static ObjectMapper objectMapper = new ObjectMapper();
 	
-	public static ModelAndView toJson(Object object) {
-		return toJson(object, null);
+	public static String toJson(Object object) {
+		return toJson(object, null, false, -1);
 	}
 	
-	public static ModelAndView toJson(String json, String callback) {
-		String resultPage = "json";
-		Map<String, Object> model = new HashMap<String, Object>();
-		model.put(resultPage, json);
-		if (StringUtils.isNotBlank(callback)) {
-			resultPage = "jsonp";
-			model.put("callback", callback);
-		}
-		return new ModelAndView(resultPage, model);
-	}
-
-	public static ModelAndView toJson(Object object, String callback) {
+	public static String toJson(Object object, String callback) {
 		return toJson(object, callback, false, -1);
 	}
 		
-	public static ModelAndView toJson(Object object, String callback, boolean shortObject, int objectId) {
+	public static String toJson(Object object, String callback, boolean shortObject, int objectId) {
 			
 		objectMapper.setSerializationInclusion(Inclusion.NON_NULL);
 		String errorMessage = null;
@@ -55,7 +44,7 @@ public class JsonWebUtils {
 				jsonStr = jsonStr.substring(0, startIdPos) + idBeginStr.substring(0, idBeginStr.length() - 1) 
 				    + Integer.valueOf(objectId) + jsonStr.substring(endIdPos + 1);
 			}
-			return toJson(jsonStr, callback);
+			return jsonStr;
 		} catch (JsonGenerationException e) {
 			log.error("Json Generation Exception: " + e.getMessage(),e);
 			errorMessage = "Json Generation Exception: " + e.getMessage() + " See error logs!";
@@ -67,8 +56,7 @@ public class JsonWebUtils {
 			errorMessage = "I/O Exception: " + e.getMessage() + " See error logs!";
 		}
 		//Report technical errors...
-		String resultPage = "json";
-		return new ModelAndView(resultPage, "errorMessage", errorMessage);
+		return errorMessage;
 	}
 		
 }

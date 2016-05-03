@@ -73,21 +73,12 @@ public class ResolveController extends BaseRest {
 	
 		} catch (RuntimeException e) {
 			//not found .. 
-	//		throw new InternalServerException(e);
-			return buildErrorResponse(e, 
-					getErrorReport(wskey, action, EntityApiResponse.ERROR_ENTITY_NOT_FOUND, null, false)
-					, HttpStatus.NOT_FOUND);	
+			throw new InternalServerException(e);
 		} catch (HttpException e) {
 			//avoid wrapping http exception
-	//		throw e;
-			return buildErrorResponse(e, 
-					getErrorReport(wskey, action, EntityApiResponse.ERROR_ENTITY_NOT_FOUND, null, false)
-					, HttpStatus.NOT_FOUND);	
+			throw e;
 		} catch (Exception e) {
-	//		throw new InternalServerException(e);
-			return buildErrorResponse(e, 
-					getErrorReport(wskey, action, EntityApiResponse.ERROR_ENTITY_NOT_FOUND, null, false)
-					, HttpStatus.NOT_FOUND);	
+			throw new InternalServerException(e);
 		}
 					
 	}

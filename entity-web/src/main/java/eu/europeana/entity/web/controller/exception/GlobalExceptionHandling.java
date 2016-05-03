@@ -80,7 +80,7 @@ public class GlobalExceptionHandling extends ApiResponseBuilder {
 		EntityApiResponse res = getErrorReport(req.getParameter(WebEntityConstants.PARAM_WSKEY), req.getServletPath(),
 				null, ex, includeErrorStack);
 
-		return buildErrorResponse(ex, req, response, res, ex.getStatus());
+		return buildErrorResponse(res, ex.getStatus());
 
 	}
 
@@ -93,8 +93,7 @@ public class GlobalExceptionHandling extends ApiResponseBuilder {
 		EntityApiResponse res = getErrorReport(req.getParameter(WebEntityConstants.PARAM_WSKEY), req.getServletPath(),
 				ex.getMessage(), ex, includeErrorStack);
 
-		return buildErrorResponse(ex, req, response, res, HttpStatus.INTERNAL_SERVER_ERROR);
-
+		return buildErrorResponse(res, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 	@ExceptionHandler({ServletException.class, NestedRuntimeException.class, MethodArgumentNotValidException.class, BindException.class})
@@ -112,29 +111,12 @@ public class GlobalExceptionHandling extends ApiResponseBuilder {
 		EntityApiResponse res = getErrorReport(req.getParameter(WebEntityConstants.PARAM_WSKEY), req.getServletPath(),
 				ex.getMessage(), ex, includeErrorStack);
 		
-		return buildErrorResponse(ex, req, response, res, statusCode);
-	}
-
-	protected ResponseEntity<String> buildErrorResponse(Exception ex, HttpServletRequest req,
-			HttpServletResponse response, EntityApiResponse res, HttpStatus status) {
-		
-		ModelAndView mv = JsonWebUtils.toJson(res);
-		String body = (String) mv.getModel().get("json");
-		
-		logger.error("An error occured during the invocation of :" + req.getServletPath(), ex);
-
-		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-
-		MultiValueMap<String, String> headers = buildHeadersMap();
-
-		ResponseEntity<String> responseEntity = new ResponseEntity<String>(body, headers, status);
-		return responseEntity;
+		return buildErrorResponse(res, statusCode);
 	}
 	
-	protected ResponseEntity<String> buildErrorResponse(Exception ex, EntityApiResponse res, HttpStatus status) {
+	protected ResponseEntity<String> buildErrorResponse(EntityApiResponse res, HttpStatus status) {
 		
-		ModelAndView mv = JsonWebUtils.toJson(res);
-		String body = (String) mv.getModel().get("json");
+		String body = JsonWebUtils.toJson(res);
 		
 		MultiValueMap<String, String> headers = buildHeadersMap();
 

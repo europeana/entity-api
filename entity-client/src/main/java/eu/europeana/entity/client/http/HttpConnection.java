@@ -31,6 +31,7 @@ public class HttpConnection {
     private static final int TIMEOUT_CONNECTION = 40000;
     private static final int STATUS_OK_START = 200;
     private static final int STATUS_OK_END = 299;
+    private static final int STATUS_UNAUTHORIZED = 401;
     private static final String ENCODING = "UTF-8";
     private HttpClient httpClient = null;
 
@@ -44,6 +45,9 @@ public class HttpConnection {
             if (get.getStatusCode() >= STATUS_OK_START && get.getStatusCode() <= STATUS_OK_END) {
                 byte[] byteResponse = get.getResponseBody();
                 String res = new String(byteResponse, ENCODING);
+                return res;
+            } else if (get.getStatusCode() == STATUS_UNAUTHORIZED) {
+            	String res = "{\"status_code\":" + get.getStatusText() + "}";
                 return res;
             } else {
                 return null;

@@ -3,6 +3,7 @@ package eu.europeana.entity.client.web;
 import java.io.IOException;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.http.ResponseEntity;
 
 import eu.europeana.entity.client.BaseEntityApi;
@@ -43,6 +44,9 @@ public class WebEntityProtocolApiImpl extends BaseEntityApi implements WebEntity
 		EntitySearchResults res;
 		try {
 			res = apiConnection.getSuggestions(apiKey, text, language, rows);
+			if (StringUtils.isNotEmpty(res.getError()))
+				throw new TechnicalRuntimeException(
+						"Authorisation failed", null);
 		} catch (IOException e) {
 			throw new TechnicalRuntimeException(
 					"Exception occured when invoking the EntityJsonApi getSuggestion method", e);

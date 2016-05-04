@@ -1,16 +1,11 @@
 package eu.europeana.annotation.client.integration.web;
 
-import static org.junit.Assert.assertTrue;
-
 import java.lang.reflect.InvocationTargetException;
-import java.util.List;
 
 import org.apache.stanbol.commons.exception.JsonParseException;
 import org.junit.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
-import eu.europeana.entity.definitions.model.Concept;
 
 
 /**

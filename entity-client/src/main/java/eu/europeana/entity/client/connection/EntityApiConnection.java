@@ -109,18 +109,22 @@ public class EntityApiConnection extends BaseApiConnection {
 		asr.setAction("create:/entity/suggest");
 		try {
         	JSONObject jsonListObj = new JSONObject(json);
-        	JSONArray jsonArray = jsonListObj.getJSONArray(("contains"));
-        	if(jsonArray!=null && jsonArray.length()>0){
-		        List<Concept> entityList = new ArrayList<Concept>();
-                for (int i = 0; i < jsonArray.length(); i++) {
-                	JSONObject jsonObj = jsonArray.getJSONObject(i);
-			        Concept entityObject = new BaseEntity();
-		        	entityObject.setEntityId(jsonObj.getString("@id"));
-		        	entityObject.setDefinition(jsonObj.getString("prefLabel"));
-					entityList.add(entityObject);
-			    }
-			    asr.setItems(entityList);
-			}
+        	if (json.contains("Unauthorized")) {
+        		asr.setError(json);
+        	} else {
+	        	JSONArray jsonArray = jsonListObj.getJSONArray(("contains"));
+	        	if(jsonArray!=null && jsonArray.length()>0){
+			        List<Concept> entityList = new ArrayList<Concept>();
+	                for (int i = 0; i < jsonArray.length(); i++) {
+	                	JSONObject jsonObj = jsonArray.getJSONObject(i);
+				        Concept entityObject = new BaseEntity();
+			        	entityObject.setEntityId(jsonObj.getString("@id"));
+			        	entityObject.setDefinition(jsonObj.getString("prefLabel"));
+						entityList.add(entityObject);
+				    }
+				    asr.setItems(entityList);
+				}
+        	}
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -128,7 +132,7 @@ public class EntityApiConnection extends BaseApiConnection {
 	}
 
 	/**
-	 * This method consturcts url dependent on search parameter.
+	 * This method constructs url dependent on search parameter.
 	 * @param apiKey
 	 * @param query
 	 * @param language
@@ -139,7 +143,10 @@ public class EntityApiConnection extends BaseApiConnection {
 		
 		StringBuilder builder = new StringBuilder();
 		builder.append(getEntityServiceUri());
-		builder.append("/suggest?wskey=").append(getApiKey());
+//		String wskey = apiKey;
+//		if (StringUtils.isEmpty(apiKey))
+//			wskey = getApiKey();
+		builder.append("/suggest?wskey=").append(apiKey);
 		if (StringUtils.isNotEmpty(query)) {
 			builder.append("&text=").append(query);
 		}

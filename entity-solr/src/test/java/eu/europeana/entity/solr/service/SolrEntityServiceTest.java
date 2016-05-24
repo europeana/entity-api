@@ -16,7 +16,7 @@ import eu.europeana.entity.definitions.model.Concept;
 import eu.europeana.entity.definitions.model.search.Query;
 import eu.europeana.entity.definitions.model.search.QueryImpl;
 import eu.europeana.entity.definitions.model.search.result.ResultSet;
-import eu.europeana.entity.solr.exception.EntityServiceException;
+import eu.europeana.entity.solr.exception.EntityRetrievalException;
 import eu.europeana.entity.solr.service.impl.SolrEntityServiceImpl;
 import eu.europeana.entity.web.model.view.ConceptView;
 
@@ -30,7 +30,7 @@ public class SolrEntityServiceTest {
 	private final Logger log = Logger.getLogger(getClass());
 	
 	@Before
-	public void cleanAllSolr() throws EntityServiceException {
+	public void cleanAllSolr() throws EntityRetrievalException {
 		/**
 		 * clean up all SOLR Annotations
 		 */
@@ -38,7 +38,7 @@ public class SolrEntityServiceTest {
 	}
 
 	@Test
-	public void testSearchByUrl() throws EntityServiceException {
+	public void testSearchByUrl() throws EntityRetrievalException {
 
 		Concept entity = solrEntityService.searchByUrl("\"http://d-nb.info/gnd/4019862-5\"");
 		assertNotNull(entity);
@@ -46,7 +46,7 @@ public class SolrEntityServiceTest {
 	}
 	
 	@Test
-	public void testSearch() throws EntityServiceException{
+	public void testSearch() throws EntityRetrievalException{
 		
 		Query searchQuery = new QueryImpl("\"Geistliches Drama\"", 10);
 		ResultSet<? extends ConceptView> rs = solrEntityService.search(searchQuery);

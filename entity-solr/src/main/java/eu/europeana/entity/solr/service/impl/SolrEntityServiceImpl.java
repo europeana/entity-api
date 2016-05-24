@@ -1,6 +1,10 @@
 package eu.europeana.entity.solr.service.impl;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Resource;
 
@@ -9,36 +13,40 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.common.util.SimpleOrderedMap;
 
 import eu.europeana.entity.definitions.model.Concept;
 import eu.europeana.entity.definitions.model.search.Query;
 import eu.europeana.entity.definitions.model.search.result.ResultSet;
 import eu.europeana.entity.definitions.model.vocabulary.SkosConceptSolrFields;
-import eu.europeana.entity.solr.exception.EntityServiceException;
+import eu.europeana.entity.solr.exception.EntityRetrievalException;
+import eu.europeana.entity.solr.exception.EntitySuggestionException;
 import eu.europeana.entity.solr.model.SolrConceptImpl;
+import eu.europeana.entity.solr.model.vocabulary.SuggestionFields;
 import eu.europeana.entity.solr.service.SolrEntityService;
 import eu.europeana.entity.solr.view.EntityPreviewImpl;
 import eu.europeana.entity.web.model.view.ConceptView;
 import eu.europeana.entity.web.model.view.EntityPreview;
 
-public class SolrEntityServiceImpl extends SolrEntityUtils implements SolrEntityService {
+public class SolrEntityServiceImpl extends BaseEntityService implements SolrEntityService {
 
 	@Resource
 	SolrServer solrServer;
+	SuggestionUtils suggestionHelper = null;
+
 	private final Logger log = Logger.getLogger(getClass());
-	
 
 	public void setSolrServer(SolrServer solrServer) {
 		this.solrServer = solrServer;
 	}
 
-	public Concept searchById(String entityId) throws EntityServiceException{
+	public Concept searchById(String entityId) throws EntityRetrievalException {
 		return null;
 	}
-	
+
 	@Override
-	public Concept searchByUrl(String entityId) throws EntityServiceException {
-		
+	public Concept searchByUrl(String entityId) throws EntityRetrievalException {
+
 		getLogger().debug("search entity by id: " + entityId);
 
 		/**
@@ -46,35 +54,34 @@ public class SolrEntityServiceImpl extends SolrEntityUtils implements SolrEntity
 		 */
 		SolrQuery query = new SolrQuery();
 		query.setQuery(SkosConceptSolrFields.ENTITY_ID + ":\"" + entityId + "\"");
-		
+
 		getLogger().trace("query: " + query);
 
 		List<? extends Concept> beans = null;
-		
+
 		/**
 		 * Query the server
 		 */
 		try {
 			QueryResponse rsp = solrServer.query(query);
-			
+
 			beans = rsp.getBeans(SolrConceptImpl.class);
-			//rs = buildResultSet(rsp);
+			// rs = buildResultSet(rsp);
 		} catch (SolrServerException e) {
-			throw new EntityServiceException(
+			throw new EntityRetrievalException(
 					"Unexpected exception occured when searching entities for id: " + entityId, e);
 		}
 
 		if (beans == null || beans.size() == 0)
 			return null;
 		if (beans.size() != 1)
-			throw new EntityServiceException("Expected one result but found: " + beans.size());
+			throw new EntityRetrievalException("Expected one result but found: " + beans.size());
 
 		return beans.get(0);
 	}
 
 	@Override
-	public ResultSet<? extends ConceptView> search(
-			Query searchQuery) throws EntityServiceException {
+	public ResultSet<? extends ConceptView> search(Query searchQuery) throws EntityRetrievalException {
 		ResultSet<? extends ConceptView> res = null;
 		SolrQuery query = toSolrQuery(searchQuery);
 
@@ -84,18 +91,19 @@ public class SolrEntityServiceImpl extends SolrEntityUtils implements SolrEntity
 			res = buildResultSet(rsp);
 			getLogger().debug("search obj res size: " + res.getResultSize());
 		} catch (SolrServerException e) {
-			throw new EntityServiceException(
+			throw new EntityRetrievalException(
 					"Unexpected exception occured when searching annotations for solrAnnotation: "
 							+ searchQuery.toString(),
 					e);
 		}
 
-		return res;	
+		return res;
 	}
 
 	public void cleanUpAll() {
 		// TODO Auto-generated method stub
-		//pay attention, this method should be run only on development environment 		
+		// pay attention, this method should be run only on development
+		// environment
 	}
 
 	public Logger getLogger() {
@@ -103,31 +111,129 @@ public class SolrEntityServiceImpl extends SolrEntityUtils implements SolrEntity
 	}
 
 	@Override
-	public ResultSet<? extends EntityPreview> suggest(Query searchQuery, String language, int rows) throws EntityServiceException {
-		
+	public ResultSet<? extends EntityPreview> suggest(Query searchQuery, String language, int rows)
+			throws EntitySuggestionException {
+
 		ResultSet<? extends EntityPreview> res = null;
 		SolrQuery query = toSolrQuery(searchQuery);
 		String handler = "/suggestEntity/";
-		if(language != null)
+		if (language != null)
 			handler += language;
-		
+
 		query.setRequestHandler(handler);
-		
+
 		try {
 			getLogger().info("suggest entity: " + searchQuery);
 			QueryResponse rsp = solrServer.query(query);
+
 			res = buildSuggestionSet(rsp, language, rows, EntityPreviewImpl.class);
 			getLogger().debug("search obj res size: " + res.getResultSize());
 		} catch (SolrServerException e) {
-			throw new EntityServiceException(
+			throw new EntitySuggestionException(
 					"Unexpected exception occured when searching annotations for solrAnnotation: "
 							+ searchQuery.toString(),
 					e);
 		}
 
-		return res;	
+		return res;
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	protected <T extends EntityPreview> ResultSet<T> buildSuggestionSet(QueryResponse rsp, String language, int rows,
+			Class<T> entityPreviewClass) throws EntitySuggestionException {
 
+		ResultSet<T> resultSet = new ResultSet<>();
+
+		Map<String, Object> suggest = (Map<String, Object>) rsp.getResponse().get(SuggestionFields.SUGGEST);
+
+		SimpleOrderedMap<?> exactMatchGroup = (SimpleOrderedMap) suggest
+				.get(SuggestionFields.PREFIX_SUGGEST_ENTITY + language + SuggestionFields.SUFFIX_EXACT);
+		SimpleOrderedMap<?> fuzzyMatchGroup = (SimpleOrderedMap) suggest
+				.get(SuggestionFields.PREFIX_SUGGEST_ENTITY + language + SuggestionFields.SUFFIX_FUZZY);
+
+		List<SimpleOrderedMap<?>> exactSuggestions = (List<SimpleOrderedMap<?>>) ((SimpleOrderedMap) exactMatchGroup
+				.getVal(0)).get(SuggestionFields.SUGGESTIONS);
+		List<SimpleOrderedMap<?>> fuzzySuggestions = (List<SimpleOrderedMap<?>>) ((SimpleOrderedMap) fuzzyMatchGroup
+				.getVal(0)).get(SuggestionFields.SUGGESTIONS);
+
+		List<T> beans = extractBeans(exactSuggestions, fuzzySuggestions, rows, entityPreviewClass);
+
+		resultSet.setResults(beans);
+		resultSet.setResultSize(beans.size());
+
+		return resultSet;
+	}
+
+	private <T extends EntityPreview> List<T> extractBeans(List<SimpleOrderedMap<?>> exactSuggestions,
+			List<SimpleOrderedMap<?>> fuzzySuggestions, int rows, Class<T> entityPreviewClass)
+					throws EntitySuggestionException {
+		Set<String> ids = new HashSet<String>();
+		List<T> beans = new ArrayList<T>();
+
+		// add exact matches to list
+		if (exactSuggestions != null) 
+			processSuggestionMap(exactSuggestions, ids, beans, rows, entityPreviewClass);
+		
+		// add fuzzy matches to list but avoid dupplications with exact match
+		if (fuzzySuggestions != null)
+			processSuggestionMap(fuzzySuggestions, ids, beans, rows, entityPreviewClass);
+		
+		return beans;
+	}
+
+	private <T extends EntityPreview> void processSuggestionMap(List<SimpleOrderedMap<?>> suggestionMap, Set<String> ids,
+			List<T> beans, int rows, Class<T> entityPreviewClass) throws EntitySuggestionException {
+		
+		T preview;
+
+		for (SimpleOrderedMap<?> entry : suggestionMap) {
+			// cut to rows
+			if (ids.size() == rows)
+				return;
+
+			preview = buildEntityPreview(entry, entityPreviewClass);
+
+			if (!ids.contains(preview.getEntityId())) {
+				beans.add(preview);
+				ids.add(preview.getEntityId());
+			} else {
+				getLog().debug("Ignored dupplicated entry: " + preview.getEntityId() + "\nterm: " + preview.getPreferredLabel() 
+				+ "; " + preview.getEntityId());
+			}
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private <T extends EntityPreview> T buildEntityPreview(SimpleOrderedMap<?> entry, Class<T> entityPreviewClass)
+			throws EntitySuggestionException {
+		String label;
+		String payload;
+		T preview;
+		label = (String) entry.get(SuggestionFields.TERM);
+
+		preview = (T) buildEntityPreview(entityPreviewClass, label);
+		payload = (String) entry.get(SuggestionFields.PAYLOAD);
+		getSuggestionHelper().parsePayload(preview, payload);
+
+		return preview;
+	}
+
+	private <T extends EntityPreview> EntityPreview buildEntityPreview(Class<T> entityPreviewClass, String label)
+			throws EntitySuggestionException {
+		try {
+			T preview = entityPreviewClass.newInstance();
+			preview.setPreferredLabel(label);
+			return preview;
+		} catch (Exception e) {
+			throw new EntitySuggestionException(
+					"Cannot instantiate Entity Preview class" + entityPreviewClass.getCanonicalName(), e);
+		}
+	}
+
+	public SuggestionUtils getSuggestionHelper() {
+		if (suggestionHelper == null)
+			suggestionHelper = new SuggestionUtils();
+		return suggestionHelper;
+	}
 
 }

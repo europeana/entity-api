@@ -8,7 +8,8 @@ import eu.europeana.entity.definitions.model.Concept;
 import eu.europeana.entity.definitions.model.search.Query;
 import eu.europeana.entity.definitions.model.search.QueryImpl;
 import eu.europeana.entity.definitions.model.search.result.ResultSet;
-import eu.europeana.entity.solr.exception.EntityServiceException;
+import eu.europeana.entity.solr.exception.EntityRetrievalException;
+import eu.europeana.entity.solr.exception.EntitySuggestionException;
 import eu.europeana.entity.solr.service.SolrEntityService;
 import eu.europeana.entity.web.exception.HttpException;
 import eu.europeana.entity.web.model.view.EntityPreview;
@@ -28,7 +29,7 @@ public class EntityServiceImpl implements EntityService {
 		Concept result;
 		try {
 			result = solrEntityService.searchByUrl(entityUri);
-		} catch (EntityServiceException e) {
+		} catch (EntityRetrievalException e) {
 			throw new HttpException("Cannot retrieve entity by URI", HttpStatus.INTERNAL_SERVER_ERROR, e);
 		}
 		//if not found send appropriate error message
@@ -60,7 +61,7 @@ public class EntityServiceImpl implements EntityService {
 		try {
 			Query query = buildSearchQuery(text, null, rows);
 			return solrEntityService.suggest(query, language, rows);
-		} catch (EntityServiceException e) {
+		} catch (EntitySuggestionException e) {
 			throw new HttpException("Cannot retrieve entity by URI", HttpStatus.INTERNAL_SERVER_ERROR, e);
 		}
 	}

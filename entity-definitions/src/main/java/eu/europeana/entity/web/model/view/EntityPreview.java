@@ -13,7 +13,7 @@ public interface EntityPreview extends IdBean {
 	
 	public void setEntityId(String entityId);
 	
-	public void setPreferredLabel(String entityId);
+	public void setPreferredLabel(String prefferedLabel);
 
 	void setDeathDate(Date deathDate);
 
@@ -23,9 +23,13 @@ public interface EntityPreview extends IdBean {
 
 	Date getBirthDate();
 
-	void setTimeRange(String timeRange);
+	void setTimeSpanStart(String timeSpanStart);
 
-	String getTimeRange();
+	String getTimeSpanStart();
+
+	void setTimeSpanEnd(String timeSpanEnd);
+
+	String getTimeSpanEnd();
 
 	void setCountry(String country);
 
@@ -38,4 +42,12 @@ public interface EntityPreview extends IdBean {
 	void setLanguage(String language);
 
 	Date getTimestampUpdated();
+
+	void setMatchedTerm(String matchedTerm);
+
+	String getMatchedTerm();
+
+	void setSearchedTerm(String searchedTerm);
+
+	String getSearchedTerm();
 }

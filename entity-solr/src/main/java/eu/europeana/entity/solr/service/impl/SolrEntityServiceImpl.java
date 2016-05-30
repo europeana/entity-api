@@ -147,16 +147,25 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 		Map<String, Object> suggest = (Map<String, Object>) rsp.getResponse().get(SuggestionFields.SUGGEST);
 
 		SimpleOrderedMap<?> exactMatchGroup = (SimpleOrderedMap) suggest
-				.get(SuggestionFields.PREFIX_SUGGEST_ENTITY + language + SuggestionFields.SUFFIX_EXACT);
-		SimpleOrderedMap<?> fuzzyMatchGroup = (SimpleOrderedMap) suggest
-				.get(SuggestionFields.PREFIX_SUGGEST_ENTITY + language + SuggestionFields.SUFFIX_FUZZY);
+				.get(SuggestionFields.PREFIX_SUGGEST_ENTITY + language);
+//		SimpleOrderedMap<?> fuzzyMatchGroup = (SimpleOrderedMap) suggest
+//				.get(SuggestionFields.PREFIX_SUGGEST_ENTITY + language + SuggestionFields.SUFFIX_FUZZY);
 
-		List<SimpleOrderedMap<?>> exactSuggestions = (List<SimpleOrderedMap<?>>) ((SimpleOrderedMap) exactMatchGroup
+		List<SimpleOrderedMap<?>> exactSuggestions = null;
+//		List<SimpleOrderedMap<?>> fuzzySuggestions = null;
+		
+		if((SimpleOrderedMap) exactMatchGroup.getVal(0) != null){
+			exactSuggestions = (List<SimpleOrderedMap<?>>) ((SimpleOrderedMap) exactMatchGroup
 				.getVal(0)).get(SuggestionFields.SUGGESTIONS);
-		List<SimpleOrderedMap<?>> fuzzySuggestions = (List<SimpleOrderedMap<?>>) ((SimpleOrderedMap) fuzzyMatchGroup
-				.getVal(0)).get(SuggestionFields.SUGGESTIONS);
-
-		List<T> beans = extractBeans(exactSuggestions, fuzzySuggestions, rows, entityPreviewClass);
+		}
+				
+//		if((SimpleOrderedMap) fuzzyMatchGroup.getVal(0) != null){
+//			fuzzySuggestions = (List<SimpleOrderedMap<?>>) ((SimpleOrderedMap) exactMatchGroup
+//					.getVal(0)).get(SuggestionFields.SUGGESTIONS);
+//		}		
+					
+//		List<T> beans = extractBeans(exactSuggestions, fuzzySuggestions, rows, entityPreviewClass);
+		List<T> beans = extractBeans(exactSuggestions, null, rows, entityPreviewClass, language);
 
 		resultSet.setResults(beans);
 		resultSet.setResultSize(beans.size());
@@ -164,25 +173,25 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 		return resultSet;
 	}
 
-	private <T extends EntityPreview> List<T> extractBeans(List<SimpleOrderedMap<?>> exactSuggestions,
-			List<SimpleOrderedMap<?>> fuzzySuggestions, int rows, Class<T> entityPreviewClass)
+	private <T extends EntityPreview> List<T> extractBeans(List<SimpleOrderedMap<?>> suggestions,
+			List<SimpleOrderedMap<?>> fuzzySuggestions, int rows, Class<T> entityPreviewClass, String language)
 					throws EntitySuggestionException {
 		Set<String> ids = new HashSet<String>();
 		List<T> beans = new ArrayList<T>();
 
 		// add exact matches to list
-		if (exactSuggestions != null) 
-			processSuggestionMap(exactSuggestions, ids, beans, rows, entityPreviewClass);
+		if (suggestions != null) 
+			processSuggestionMap(suggestions, ids, beans, rows, entityPreviewClass, language);
 		
 		// add fuzzy matches to list but avoid dupplications with exact match
 		if (fuzzySuggestions != null)
-			processSuggestionMap(fuzzySuggestions, ids, beans, rows, entityPreviewClass);
+			processSuggestionMap(fuzzySuggestions, ids, beans, rows, entityPreviewClass, language);
 		
 		return beans;
 	}
 
 	private <T extends EntityPreview> void processSuggestionMap(List<SimpleOrderedMap<?>> suggestionMap, Set<String> ids,
-			List<T> beans, int rows, Class<T> entityPreviewClass) throws EntitySuggestionException {
+			List<T> beans, int rows, Class<T> entityPreviewClass, String language) throws EntitySuggestionException {
 		
 		T preview;
 
@@ -191,7 +200,7 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 			if (ids.size() == rows)
 				return;
 
-			preview = buildEntityPreview(entry, entityPreviewClass);
+			preview = buildEntityPreview(entry, entityPreviewClass, language);
 
 			if (!ids.contains(preview.getEntityId())) {
 				beans.add(preview);
@@ -204,25 +213,25 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 	}
 
 	@SuppressWarnings("unchecked")
-	private <T extends EntityPreview> T buildEntityPreview(SimpleOrderedMap<?> entry, Class<T> entityPreviewClass)
+	private <T extends EntityPreview> T buildEntityPreview(SimpleOrderedMap<?> entry, Class<T> entityPreviewClass, String language)
 			throws EntitySuggestionException {
-		String label;
+		String term;
 		String payload;
 		T preview;
-		label = (String) entry.get(SuggestionFields.TERM);
+		term = (String) entry.get(SuggestionFields.TERM);
 
-		preview = (T) buildEntityPreview(entityPreviewClass, label);
+		preview = (T) buildEntityPreview(entityPreviewClass, term, language);
 		payload = (String) entry.get(SuggestionFields.PAYLOAD);
 		getSuggestionHelper().parsePayload(preview, payload);
 
 		return preview;
 	}
 
-	private <T extends EntityPreview> EntityPreview buildEntityPreview(Class<T> entityPreviewClass, String label)
+	private <T extends EntityPreview> EntityPreview buildEntityPreview(Class<T> entityPreviewClass, String term, String language)
 			throws EntitySuggestionException {
 		try {
 			T preview = entityPreviewClass.newInstance();
-			preview.setPreferredLabel(label);
+			preview.setSearchedTerm(term);
 			return preview;
 		} catch (Exception e) {
 			throw new EntitySuggestionException(

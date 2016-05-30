@@ -11,6 +11,8 @@ public interface SuggestionFields {
 	public static final String TERM = "term";
 	public static final String PAYLOAD = "payload";
 	public static final String ENTITY_ID = "entity_id";
-	
-	
+	public static final String TIME_SPAN_START = "lifespanStart";
+	public static final String TIME_SPAN_END = "lifespanEnd";
+	public static final String PREF_LABEL = "prefLabel";
+	public static final String TYPE = "type";
 }

@@ -8,10 +8,13 @@ public class EntityPreviewImpl implements EntityPreview{
 
 	String entityId;
 	String type; 
+	String searchedTerm;
+	String matchedTerm;
 	String language;
 	String preferredLabel;
 	String country;
-	String timeRange;
+	String timeSpanStart;
+	String timeSpanEnd;
 	Date birthDate;
 	Date deathDate;
 	
@@ -78,16 +81,6 @@ public class EntityPreviewImpl implements EntityPreview{
 	}
 
 	@Override
-	public String getTimeRange() {
-		return timeRange;
-	}
-
-	@Override
-	public void setTimeRange(String timeRange) {
-		this.timeRange = timeRange;
-	}
-
-	@Override
 	public Date getBirthDate() {
 		return birthDate;
 	}
@@ -105,5 +98,41 @@ public class EntityPreviewImpl implements EntityPreview{
 	@Override
 	public void setDeathDate(Date deathDate) {
 		this.deathDate = deathDate;
+	}
+
+	public String getTimeSpanStart() {
+		return timeSpanStart;
+	}
+
+	public void setTimeSpanStart(String timeSpanStart) {
+		this.timeSpanStart = timeSpanStart;
+	}
+
+	public String getTimeSpanEnd() {
+		return timeSpanEnd;
+	}
+
+	public void setTimeSpanEnd(String timeSpanEnd) {
+		this.timeSpanEnd = timeSpanEnd;
+	}
+
+	@Override
+	public String getMatchedTerm() {
+		return matchedTerm;
+	}
+
+	@Override
+	public void setMatchedTerm(String matchedTerm) {
+		this.matchedTerm = matchedTerm;
+	}
+
+	@Override
+	public String getSearchedTerm() {
+		return searchedTerm;
+	}
+
+	@Override
+	public void setSearchedTerm(String searchedTerm) {
+		this.searchedTerm = searchedTerm;
 	}
 }

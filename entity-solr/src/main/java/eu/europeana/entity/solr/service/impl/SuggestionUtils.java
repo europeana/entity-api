@@ -31,16 +31,33 @@ public class SuggestionUtils {
 		try {
 			JsonParser parser = jsonFactory.createJsonParser(payload);
 			parser.setCodec(objectMapper);
-			JsonNode node = objectMapper.readTree(payload);
-			JsonNode entityIdNode = node.get(SuggestionFields.ENTITY_ID);
+			JsonNode payloadNode = objectMapper.readTree(payload);
 			
-			preview.setEntityId(entityIdNode.getTextValue());
+			JsonNode propertyNode = payloadNode.get(SuggestionFields.ENTITY_ID);
+			preview.setEntityId(propertyNode.getTextValue());
+			
+			propertyNode = payloadNode.get(SuggestionFields.TERM);
+			if(propertyNode != null)
+				preview.setMatchedTerm(propertyNode.getTextValue());
+			
+			propertyNode = payloadNode.get(SuggestionFields.PREF_LABEL);
+			preview.setPreferredLabel(propertyNode.getTextValue());
+			
+			propertyNode = payloadNode.get(SuggestionFields.TYPE);
+			preview.setType(propertyNode.getTextValue());
+			
+			propertyNode = payloadNode.get(SuggestionFields.TIME_SPAN_START);
+			if(propertyNode != null)
+				preview.setTimeSpanStart(propertyNode.getTextValue());
+			
+			propertyNode = payloadNode.get(SuggestionFields.TIME_SPAN_END);
+			if(propertyNode != null)
+				preview.setTimeSpanEnd(propertyNode.getTextValue());
 			
 		} catch (Exception e) {
 			throw new EntitySuggestionException("Cannot parse suggestion payload: " + payload, e);
 		}		
-   
-		
+   		
 	}
 	
 	

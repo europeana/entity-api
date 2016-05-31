@@ -13,6 +13,11 @@ public interface SuggestionFields {
 	public static final String ENTITY_ID = "entity_id";
 	public static final String TIME_SPAN_START = "lifespanStart";
 	public static final String TIME_SPAN_END = "lifespanEnd";
+	public static final String BIRTH_DATE = "lifespanStart";
+	public static final String DEATH_DATE = "lifespanEnd";
+	public static final String LATITUDE = "latitude";
+	public static final String LONGITUDE = "longitude";
+	public static final String ROLE = "role";
 	public static final String PREF_LABEL = "prefLabel";
 	public static final String TYPE = "type";
 }

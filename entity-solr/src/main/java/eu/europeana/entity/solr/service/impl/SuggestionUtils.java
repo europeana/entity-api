@@ -1,5 +1,7 @@
 package eu.europeana.entity.solr.service.impl;
 
+import java.util.Date;
+
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonNode;
@@ -53,6 +55,27 @@ public class SuggestionUtils {
 			propertyNode = payloadNode.get(SuggestionFields.TIME_SPAN_END);
 			if(propertyNode != null)
 				preview.setTimeSpanEnd(propertyNode.getTextValue());
+			
+			propertyNode = payloadNode.get(SuggestionFields.BIRTH_DATE);
+			if(propertyNode != null)
+				preview.setBirthDate(new Date(propertyNode.getLongValue()));
+			
+			propertyNode = payloadNode.get(SuggestionFields.DEATH_DATE);
+			if(propertyNode != null)
+				preview.setDeathDate(new Date(propertyNode.getLongValue()));
+			
+			propertyNode = payloadNode.get(SuggestionFields.ROLE);
+			if(propertyNode != null)
+				preview.setRole(propertyNode.getTextValue());
+			
+			propertyNode = payloadNode.get(SuggestionFields.LATITUDE);
+			if(propertyNode != null)
+				preview.setLatitude(propertyNode.getTextValue());
+			
+			propertyNode = payloadNode.get(SuggestionFields.LONGITUDE);
+			if(propertyNode != null)
+				preview.setLongitude(propertyNode.getTextValue());
+			
 			
 		} catch (Exception e) {
 			throw new EntitySuggestionException("Cannot parse suggestion payload: " + payload, e);

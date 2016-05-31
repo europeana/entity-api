@@ -2,8 +2,8 @@ package eu.europeana.entity.solr.view;
 
 import java.util.Date;
 
+import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.solr.model.SolrConceptImpl;
-import eu.europeana.entity.solr.model.vocabulary.EntityTypes;
 import eu.europeana.entity.web.model.view.ConceptView;
 
 public class ConceptViewAdapter extends SolrConceptImpl implements ConceptView {

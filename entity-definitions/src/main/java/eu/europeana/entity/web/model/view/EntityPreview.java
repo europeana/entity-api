@@ -50,4 +50,17 @@ public interface EntityPreview extends IdBean {
 	void setSearchedTerm(String searchedTerm);
 
 	String getSearchedTerm();
+
+	void setRole(String role);
+
+	String getRole();
+
+	void setLongitude(String longitude);
+
+	String getLongitude();
+
+	void setLatitude(String latitude);
+
+	String getLatitude();
+	
 }

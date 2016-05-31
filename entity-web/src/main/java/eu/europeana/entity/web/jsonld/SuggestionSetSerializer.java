@@ -1,13 +1,17 @@
 package eu.europeana.entity.web.jsonld;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.apache.stanbol.commons.jsonld.JsonLd;
 import org.apache.stanbol.commons.jsonld.JsonLdProperty;
 import org.apache.stanbol.commons.jsonld.JsonLdPropertyValue;
 import org.apache.stanbol.commons.jsonld.JsonLdResource;
 
 import eu.europeana.entity.definitions.model.search.result.ResultSet;
+import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.web.controller.WebEntityConstants;
-import eu.europeana.entity.web.model.view.ConceptView;
 import eu.europeana.entity.web.model.view.EntityPreview;
 
 
@@ -87,9 +91,65 @@ public class SuggestionSetSerializer extends JsonLd {
 		JsonLdPropertyValue entityPreviewPropValue = new JsonLdPropertyValue();
 		entityPreviewPropValue.putProperty(new JsonLdProperty(WebEntityConstants.AT_ID, entityPreview.getEntityId()));
 		entityPreviewPropValue.putProperty(new JsonLdProperty(WebEntityConstants.PREF_LABEL, entityPreview.getPreferredLabel()));
+		
+		String typeUri = entityPreview.getType();
+		EntityTypes entityType = EntityTypes.getByHttpUri(typeUri);
+		
+		if(entityType!= null){
+			entityPreviewPropValue.putProperty(new JsonLdProperty(WebEntityConstants.AT_TYPE, entityType.getHttpUri()));
+			
+			switch (entityType){
+				case Concept:
+					//add top concept, when available
+					break;
+				case Agent:
+					if(entityPreview.getBirthDate() != null)
+						entityPreviewPropValue.putProperty(new JsonLdProperty(WebEntityConstants.BIRTH_DATE, 
+								convertDateToStr(entityPreview.getBirthDate())));
+					
+					if(entityPreview.getDeathDate() != null)
+						entityPreviewPropValue.putProperty(new JsonLdProperty(WebEntityConstants.DEATH_DATE, 
+								convertDateToStr(entityPreview.getDeathDate())));
 				
+					if(entityPreview.getRole() != null)
+						entityPreviewPropValue.putProperty(new JsonLdProperty(WebEntityConstants.AT_TYPE, 
+								entityType.getHttpUri()));
+					
+					break;
+					
+				case Place:
+					if(entityPreview.getLatitude() != null)
+						entityPreviewPropValue.putProperty(new JsonLdProperty(WebEntityConstants.GEO_LAT, 
+								entityPreview.getLatitude()));
+					
+					if(entityPreview.getLongitude() != null)
+						entityPreviewPropValue.putProperty(new JsonLdProperty(WebEntityConstants.GEO_LONG, 
+								entityPreview.getLongitude()));
+					break;
+				
+				case Timespan:
+					if(entityPreview.getTimeSpanStart() != null)
+						entityPreviewPropValue.putProperty(new JsonLdProperty(WebEntityConstants.TIME_SPAN_FROM, 
+								entityPreview.getTimeSpanStart()));
+					
+					if(entityPreview.getTimeSpanEnd() != null)
+						entityPreviewPropValue.putProperty(new JsonLdProperty(WebEntityConstants.TIME_SPAN_TO, 
+								entityPreview.getTimeSpanEnd()));	
+					break;
+					
+				default:
+					break;
+			}
+			
+			entityPreviewPropValue.putProperty(new JsonLdProperty(WebEntityConstants.AT_ID, entityPreview.getEntityId()));
+		}
+			
 		return entityPreviewPropValue;
 	}
 
+	 public String convertDateToStr(Date date) {
+	    	DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+	    	return df.format(date);    
+	 }
 
 }

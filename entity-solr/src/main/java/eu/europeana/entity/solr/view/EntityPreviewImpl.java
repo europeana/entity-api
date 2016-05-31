@@ -17,6 +17,9 @@ public class EntityPreviewImpl implements EntityPreview{
 	String timeSpanEnd;
 	Date birthDate;
 	Date deathDate;
+	String role;
+	String latitude;
+	String longitude;
 	
 	
 	@Override
@@ -134,5 +137,35 @@ public class EntityPreviewImpl implements EntityPreview{
 	@Override
 	public void setSearchedTerm(String searchedTerm) {
 		this.searchedTerm = searchedTerm;
+	}
+
+	@Override
+	public String getRole() {
+		return role;
+	}
+
+	@Override
+	public void setRole(String role) {
+		this.role = role;
+	}
+
+	@Override
+	public String getLatitude() {
+		return latitude;
+	}
+
+	@Override
+	public void setLatitude(String latitude) {
+		this.latitude = latitude;
+	}
+
+	@Override
+	public String getLongitude() {
+		return longitude;
+	}
+
+	@Override
+	public void setLongitude(String longitude) {
+		this.longitude = longitude;
 	}
 }

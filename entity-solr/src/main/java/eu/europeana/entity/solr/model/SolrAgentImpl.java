@@ -14,22 +14,6 @@ import eu.europeana.entity.definitions.model.vocabulary.SkosConceptSolrFields;
 
 public class SolrAgentImpl extends BaseAgent implements Agent {
 
-//	@Override
-//	public ObjectId getId() {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//	@Override
-//	public void setId(ObjectId arg0) {
-//		// TODO Auto-generated method stub
-//		
-//	}
-
-//	public SolrAgentImpl() {
-//		System.out.println("Solr Agent created!");
-//	}
-	
 	@Override
 	@Field(SkosAgentSolrFields.DATE)
 	public void setDate(Date date) {
@@ -56,13 +40,13 @@ public class SolrAgentImpl extends BaseAgent implements Agent {
 	
 	@Override
 	@Field(SkosAgentSolrFields.BEGIN)
-	public void setBegin(Date begin) {
+	public void setBegin(List<Date> begin) {
 		super.setBegin(begin);
 	}
 	
 	@Override
 	@Field(SkosAgentSolrFields.END)
-	public void setEnd(Date end) {
+	public void setEnd(List<Date> end) {
 		super.setEnd(end);
 	}
 	
@@ -86,13 +70,13 @@ public class SolrAgentImpl extends BaseAgent implements Agent {
 	
 	@Override
 	@Field(SkosAgentSolrFields.BIOGRAPHICAL_INFORMATION)
-	public void setBiographicalInformation(Map<String, String> biographicalInformation) {
+	public void setBiographicalInformation(List<String> biographicalInformation) {
 		super.setBiographicalInformation(biographicalInformation);
 	}
 	
 	@Override
 	@Field(SkosAgentSolrFields.DATE_OF_BIRTH)
-	public void setDateOfBirth(Date dateOfBirth) {
+	public void setDateOfBirth(List<Date> dateOfBirth) {
 		super.setDateOfBirth(dateOfBirth);
 	}
 	
@@ -101,12 +85,6 @@ public class SolrAgentImpl extends BaseAgent implements Agent {
 	public void setDateOfDeath(List<Date> dateOfDeath) {
 		super.setDateOfDeath(dateOfDeath);
 	}
-//	public void setDateOfDeath(String dateOfDeath) {
-//		super.setDateOfDeath(dateOfDeath);
-//	}
-//	public void setDateOfDeath(Date dateOfDeath) {
-//		setDateOfDeath(dateOfDeath);
-//	}
 	
 	@Override
 	@Field(SkosAgentSolrFields.PLACE_OF_BIRTH)
@@ -150,6 +128,38 @@ public class SolrAgentImpl extends BaseAgent implements Agent {
 		super.setInternalType(internalType);
 	}
 
+	@Override
+	@Field(SkosAgentSolrFields.RDF_ABOUT)
+	public void setRdfAbout(String rdfAbout) {
+		super.setRdfAbout(rdfAbout);
+	}
+
+	@Override
+	@Field(SkosAgentSolrFields.WIKIPEDIA_CLICKS)
+	public void setWikipediaClicks(int wikipediaClicks) {
+		super.setWikipediaClicks(wikipediaClicks);
+	}
+
+	@Override
+	@Field(SkosAgentSolrFields.EUROPEANA_DOC_COUNT)
+	public void setEuropeanaDocCount(int europeanaDocCount) {
+		super.setEuropeanaDocCount(europeanaDocCount);
+	}
+
+	@Override
+	@Field(SkosAgentSolrFields.DERIVED_SCORE)
+	public void setDerivedScore(float derivedScore) {
+		super.setDerivedScore(derivedScore);
+	}
+
+	@Override
+	@Field(SkosAgentSolrFields.TEXT)
+	public void setText(List<String> text) {
+		super.setText(text);
+	}
+	
+	
+	
 	/**
 	 * Concept fields
 	 */

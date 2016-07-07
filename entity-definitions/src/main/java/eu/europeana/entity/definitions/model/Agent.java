@@ -16,26 +16,22 @@ public interface Agent extends Concept {
 	public void setHasPart(String hasPart);
 	public String getIsPartOf();
 	public void setIsPartOf(String isPartOf);
-	public Date getBegin();
-	public void setBegin(Date begin);
-	public Date getEnd();
-	public void setEnd(Date end);
+	public List<Date> getBegin();
+	public void setBegin(List<Date> begin);
+	public List<Date> getEnd();
+	public void setEnd(List<Date> end);
 	public String getHasMet();
 	public void setHasMet(String hasMet);
 	public String getIsRelatedTo();
 	public void setIsRelatedTo(String isRelatedTo);
 	public Map<String, String> getName();
 	public void setName(Map<String, String> name);
-	public Map<String, String> getBiographicalInformation();
-	public void setBiographicalInformation(Map<String, String> biographicalInformation);
-	public Date getDateOfBirth();
-	public void setDateOfBirth(Date dateOfBirth);
+	public List<String> getBiographicalInformation();
+	public void setBiographicalInformation(List<String> biographicalInformation);
+	public List<Date> getDateOfBirth();
+	public void setDateOfBirth(List<Date> dateOfBirth);
 	public List<Date> getDateOfDeath();
 	public void setDateOfDeath(List<Date> dateOfDeath);
-//	public String getDateOfDeath();
-//	public void setDateOfDeath(String dateOfDeath);
-//	public Date getDateOfDeath();
-//	public void setDateOfDeath(Date dateOfDeath);
 	public Map<String, String> getPlaceOfBirth();
 	public void setPlaceOfBirth(Map<String, String> placeOfBirth);
 	public Map<String, String> getPlaceOfDeath();
@@ -49,5 +45,10 @@ public interface Agent extends Concept {
 	public Map<String, String> getProfessionOrOccupation();
 	public void setProfessionOrOccupation(Map<String, String> professionOrOccupation);	
 	
-
+	public void setRdfAbout(String rdfAbout);
+	public void setWikipediaClicks(int wikipediaClicks);
+	public void setEuropeanaDocCount(int europeanaDocCount);
+	public void setDerivedScore(float derivedScore);
+	public void setText(List<String> text);
+	
 }

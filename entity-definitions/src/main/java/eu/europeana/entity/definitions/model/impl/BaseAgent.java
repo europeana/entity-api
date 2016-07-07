@@ -13,16 +13,14 @@ public class BaseAgent extends BaseEntity implements Agent {
 	private String identifier;
 	private String hasPart;
 	private String isPartOf;
-	private Date begin; // format "YYYY-MM-DD" 
-	private Date end; // format "YYYY-MM-DD"
+	private List<Date> begin; // format "YYYY-MM-DD" 
+	private List<Date> end; // format "YYYY-MM-DD"
 	private String hasMet;
 	private String isRelatedTo;
 	private Map<String,String> name;
-	private Map<String,String> biographicalInformation;
-	private Date dateOfBirth; // format "YYYY-MM-DD" 
+	private List<String> biographicalInformation;
+	private List<Date> dateOfBirth; // format "YYYY-MM-DD" 
 	private List<Date> dateOfDeath; // format "YYYY"
-//	private String dateOfDeath; // format "YYYY"
-//	private Date dateOfDeath; // format "YYYY-MM-DD"
 	private Map<String,String> placeOfBirth;
 	private Map<String,String> placeOfDeath;
 	private Date dateOfEstablishment; // format "YYYY"
@@ -30,7 +28,13 @@ public class BaseAgent extends BaseEntity implements Agent {
 	private String gender;
 	private Map<String,String> professionOrOccupation;
 		
+	private String rdfAbout;
+	private int wikipediaClicks; 
+	private int europeanaDocCount;
+	private float derivedScore;
+	private List<String> text;
 
+	
 	public String getContext() {
 		return context;
 	}
@@ -61,16 +65,16 @@ public class BaseAgent extends BaseEntity implements Agent {
 	public void setIsPartOf(String isPartOf) {
 		this.isPartOf = isPartOf;
 	}
-	public Date getBegin() {
+	public List<Date> getBegin() {
 		return begin;
 	}
-	public void setBegin(Date begin) {
+	public void setBegin(List<Date> begin) {
 		this.begin = begin;
 	}
-	public Date getEnd() {
+	public List<Date> getEnd() {
 		return end;
 	}
-	public void setEnd(Date end) {
+	public void setEnd(List<Date> end) {
 		this.end = end;
 	}
 	public String getHasMet() {
@@ -91,36 +95,24 @@ public class BaseAgent extends BaseEntity implements Agent {
 	public void setName(Map<String, String> name) {
 		this.name = name;
 	}
-	public Map<String, String> getBiographicalInformation() {
+	public List<String> getBiographicalInformation() {
 		return biographicalInformation;
 	}
-	public void setBiographicalInformation(Map<String, String> biographicalInformation) {
+	public void setBiographicalInformation(List<String> biographicalInformation) {
 		this.biographicalInformation = biographicalInformation;
 	}
-	public Date getDateOfBirth() {
+	public List<Date> getDateOfBirth() {
 		return dateOfBirth;
 	}
-	public void setDateOfBirth(Date dateOfBirth) {
+	public void setDateOfBirth(List<Date> dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
 	}
 	public List<Date> getDateOfDeath() {
 		return dateOfDeath;
 	}
-//	public String getDateOfDeath() {
-//		return dateOfDeath;
-//	}
-//	public Date getDateOfDeath() {
-//		return dateOfDeath;
-//	}
 	public void setDateOfDeath(List<Date> dateOfDeath) {
 		this.dateOfDeath = dateOfDeath;
 	}
-//	public void setDateOfDeath(String dateOfDeath) {
-//		this.dateOfDeath = dateOfDeath;
-//	}
-//	public void setDateOfDeath(Date dateOfDeath) {
-//		this.dateOfDeath = dateOfDeath;
-//	}
 	public Map<String, String> getPlaceOfBirth() {
 		return placeOfBirth;
 	}
@@ -156,6 +148,36 @@ public class BaseAgent extends BaseEntity implements Agent {
 	}
 	public void setProfessionOrOccupation(Map<String, String> professionOrOccupation) {
 		this.professionOrOccupation = professionOrOccupation;
+	}
+	public String getRdfAbout() {
+		return rdfAbout;
+	}
+	public void setRdfAbout(String rdfAbout) {
+		this.rdfAbout = rdfAbout;
+	}
+	public int getWikipediaClicks() {
+		return wikipediaClicks;
+	}
+	public void setWikipediaClicks(int wikipediaClicks) {
+		this.wikipediaClicks = wikipediaClicks;
+	}
+	public int getEuropeanaDocCount() {
+		return europeanaDocCount;
+	}
+	public void setEuropeanaDocCount(int europeanaDocCount) {
+		this.europeanaDocCount = europeanaDocCount;
+	}
+	public float getDerivedScore() {
+		return derivedScore;
+	}
+	public void setDerivedScore(float derivedScore) {
+		this.derivedScore = derivedScore;
+	}
+	public List<String> getText() {
+		return text;
+	}
+	public void setText(List<String> text) {
+		this.text = text;
 	}
 
 }

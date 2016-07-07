@@ -1,8 +1,16 @@
 package eu.europeana.entity.utils.jsonld;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import org.apache.stanbol.commons.jsonld.JsonLd;
 import org.apache.stanbol.commons.jsonld.JsonLdResource;
 
+import eu.europeana.entity.definitions.model.Agent;
 import eu.europeana.entity.definitions.model.Concept;
 import eu.europeana.entity.definitions.model.vocabulary.SkosConceptSolrFields;
 
@@ -71,8 +79,49 @@ public class EuropeanaEntityLd extends JsonLd {
 		if (entity.getRelatedMatch() != null)
 			jsonLdResource.putProperty(buildArrayProperty(WebEntityFields.RELATED_MATCH, entity.getRelatedMatch()));
 
+		jsonLdResource.putProperty(WebEntityFields.RDF_ABOUT, ((Agent) entity).getRdfAbout());
+		jsonLdResource.putProperty(WebEntityFields.DERIVED_SCORE, ((Agent) entity).getDerivedScore());
+		jsonLdResource.putProperty(WebEntityFields.WIKIPEDIA_CLICKS, ((Agent) entity).getWikipediaClicks());
+		putAgentStringList(WebEntityFields.TEXT, ((Agent) entity).getText(), jsonLdResource);
+		putAgentStringList(WebEntityFields.BIOGRAPHICAL_INFORMATION, ((Agent) entity).getBiographicalInformation(), jsonLdResource);
+		putAgentDateList(WebEntityFields.DATE_OF_DEATH, ((Agent) entity).getDateOfDeath(), jsonLdResource);
+		putAgentDateList(WebEntityFields.DATE_OF_BIRTH, ((Agent) entity).getDateOfBirth(), jsonLdResource);
+		putAgentDateList(WebEntityFields.BEGIN, ((Agent) entity).getBegin(), jsonLdResource);
+		putAgentDateList(WebEntityFields.END, ((Agent) entity).getEnd(), jsonLdResource);
+
 		put(jsonLdResource);
 
+	}
+
+	
+	private void putAgentStringList(String fieldName, List<String> list, JsonLdResource jsonLdResource) {
+		if (list != null) {
+			String[] array = list.toArray(new String[0]);
+			jsonLdResource.putProperty(buildArrayProperty(fieldName, array));
+		}
+	}
+	
+
+	private void putAgentDateList(String fieldName, List<Date> list, JsonLdResource jsonLdResource) {
+		if (list != null) {
+			List<String> stringList = convertDateListToStringList(list);
+			putAgentStringList(fieldName, stringList, jsonLdResource);
+		}
+	}
+	
+	
+	private List<String> convertDateListToStringList(List<Date> dateList) {
+		
+		List<String> stringList = new ArrayList<String>();
+		
+//		DateFormat simpleDateFormat = new SimpleDateFormat("yyyy");
+	    for (Object date : dateList) {
+        	stringList.add(date.toString());
+//    	    for (Date date : dateList) {
+//            	stringList.add(simpleDateFormat.format(date));
+	    }	
+	    
+	    return stringList;
 	}
 	
 

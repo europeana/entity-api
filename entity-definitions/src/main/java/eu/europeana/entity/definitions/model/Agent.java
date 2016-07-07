@@ -50,5 +50,10 @@ public interface Agent extends Concept {
 	public void setEuropeanaDocCount(int europeanaDocCount);
 	public void setDerivedScore(float derivedScore);
 	public void setText(List<String> text);
+	public String getRdfAbout();
+	public int getWikipediaClicks();
+	public int getEuropeanaDocCount();
+	public float getDerivedScore();
+	public List<String> getText();
 	
 }

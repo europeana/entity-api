@@ -25,7 +25,7 @@ public class EntityServiceImpl implements EntityService {
 	@Override
 	public Concept retrieveByUrl(String type, String namespace, String identifier) throws HttpException{
 		
-		String entityUri = BASE_URL_DATA + type + "/" + namespace + "/" + identifier;
+		String entityUri = BASE_URL_DATA + type.toLowerCase() + "/" + namespace + "/" + identifier;
 		Concept result;
 		try {
 			result = solrEntityService.searchByUrl(entityUri);

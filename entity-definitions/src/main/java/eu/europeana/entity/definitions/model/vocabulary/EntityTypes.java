@@ -90,6 +90,14 @@ public enum EntityTypes implements EntityKeyword{
 		return null;
 	}	
 		
+	public static EntityTypes getByInternalType(String internalType){
+
+		for(EntityTypes agentType : EntityTypes.values()){
+			if(agentType.getInternalType().equalsIgnoreCase(internalType))
+				return agentType;
+		}
+		return null;
+	}	
 	
 	@Override
 	public String getJsonValue() {

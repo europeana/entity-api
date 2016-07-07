@@ -7,6 +7,8 @@ import org.junit.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
+
 
 /**
  * This class aims at testing of the entity methods.
@@ -15,9 +17,9 @@ import org.springframework.http.ResponseEntity;
 public class EntityRetrievalTest extends BaseEntityTest { 
 
 
-	private final String TEST_ENTITY_TYPE = "agent";
+	private final String TEST_ENTITY_TYPE = EntityTypes.Agent.getInternalType();
 	private final String TEST_ENTITY_NAMESPACE = "base";
-	private final String TEST_ENTITY_ID = "1";
+	private final String TEST_ENTITY_ID = "33041";
 
 	
 	@Test

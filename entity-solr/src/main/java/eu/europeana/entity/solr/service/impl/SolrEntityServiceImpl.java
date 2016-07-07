@@ -21,9 +21,12 @@ import eu.europeana.entity.definitions.model.search.result.ResultSet;
 import eu.europeana.entity.definitions.model.vocabulary.SkosConceptSolrFields;
 import eu.europeana.entity.solr.exception.EntityRetrievalException;
 import eu.europeana.entity.solr.exception.EntitySuggestionException;
+import eu.europeana.entity.solr.model.SolrAgentImpl;
 import eu.europeana.entity.solr.model.SolrConceptImpl;
+import eu.europeana.entity.solr.model.factory.ConceptObjectFactory;
 import eu.europeana.entity.solr.model.vocabulary.SuggestionFields;
 import eu.europeana.entity.solr.service.SolrEntityService;
+import eu.europeana.entity.solr.view.AgentViewAdapter;
 import eu.europeana.entity.solr.view.EntityPreviewImpl;
 import eu.europeana.entity.web.model.view.ConceptView;
 import eu.europeana.entity.web.model.view.EntityPreview;
@@ -44,6 +47,19 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 		return null;
 	}
 
+	
+	public String getTypeFromEntityId(String entityId) {
+		
+		String res = "";
+		
+		int ENTITY_TYPE_POS = 3;
+		res = entityId.replace("/", "//").split("//")[ENTITY_TYPE_POS];
+		res = Character.toUpperCase(res.charAt(0)) + res.substring(1);
+		
+		return res;
+	}
+	
+	
 	@Override
 	public Concept searchByUrl(String entityId) throws EntityRetrievalException {
 
@@ -65,7 +81,15 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 		try {
 			QueryResponse rsp = solrServer.query(query);
 
-			beans = rsp.getBeans(SolrConceptImpl.class);
+			Class<? extends Concept> concreteClass = null;
+			String entityType = getTypeFromEntityId(entityId);
+			concreteClass = ConceptObjectFactory.getInstance().getClassForType(
+					(entityType));
+
+			beans = rsp.getBeans(concreteClass);
+//			beans = rsp.getBeans(AgentViewAdapter.class);
+//			beans = rsp.getBeans(SolrAgentImpl.class);
+//			beans = rsp.getBeans(SolrConceptImpl.class);
 			// rs = buildResultSet(rsp);
 		} catch (SolrServerException e) {
 			throw new EntityRetrievalException(

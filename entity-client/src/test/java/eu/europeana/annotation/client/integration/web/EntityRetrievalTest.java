@@ -21,8 +21,12 @@ public class EntityRetrievalTest extends BaseEntityTest {
 	private final String TEST_ENTITY_NAMESPACE = "base";
 	private final String TEST_ENTITY_ID = "33041";
 
+	private final String TEST_PLACE_ENTITY_TYPE = EntityTypes.Place.getInternalType();
+	private final String TEST_PLACE_ENTITY_NAMESPACE = "base";
+	private final String TEST_PLACE_ENTITY_ID = "124437";
+
 	
-	@Test
+//	@Test
 	public void getEntity() throws JsonParseException, IllegalAccessException, 
 									IllegalArgumentException, InvocationTargetException {
 		
@@ -34,6 +38,24 @@ public class EntityRetrievalTest extends BaseEntityTest {
 				, TEST_ENTITY_TYPE
 				, TEST_ENTITY_NAMESPACE
 				, TEST_ENTITY_ID
+				);
+		
+		validateResponse(response, HttpStatus.OK);
+	}
+	
+	
+	@Test
+	public void getPlaceEntity() throws JsonParseException, IllegalAccessException, 
+									IllegalArgumentException, InvocationTargetException {
+		
+		/**
+		 * get entity by type, namespace and identifier
+		 */
+		ResponseEntity<String> response = retrieveEntity(
+				getApiKey()
+				, TEST_PLACE_ENTITY_TYPE
+				, TEST_PLACE_ENTITY_NAMESPACE
+				, TEST_PLACE_ENTITY_ID
 				);
 		
 		validateResponse(response, HttpStatus.OK);

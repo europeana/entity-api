@@ -12,7 +12,7 @@ public class BaseAgent extends BaseEntity implements Agent {
 	private Date date; // format "YYYY"
 	private String identifier;
 	private String hasPart;
-	private String isPartOf;
+	private List<String> isPartOf;
 	private List<Date> begin; // format "YYYY-MM-DD" 
 	private List<Date> end; // format "YYYY-MM-DD"
 	private String hasMet;
@@ -59,10 +59,10 @@ public class BaseAgent extends BaseEntity implements Agent {
 	public void setHasPart(String hasPart) {
 		this.hasPart = hasPart;
 	}
-	public String getIsPartOf() {
+	public List<String>  getIsPartOf() {
 		return isPartOf;
 	}
-	public void setIsPartOf(String isPartOf) {
+	public void setIsPartOf(List<String>  isPartOf) {
 		this.isPartOf = isPartOf;
 	}
 	public List<Date> getBegin() {

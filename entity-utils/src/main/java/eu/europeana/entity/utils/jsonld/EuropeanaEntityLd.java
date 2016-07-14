@@ -84,6 +84,7 @@ public class EuropeanaEntityLd extends JsonLd {
 		jsonLdResource.putProperty(WebEntityFields.WIKIPEDIA_CLICKS, ((Agent) entity).getWikipediaClicks());
 		putAgentStringList(WebEntityFields.TEXT, ((Agent) entity).getText(), jsonLdResource);
 		putAgentStringList(WebEntityFields.BIOGRAPHICAL_INFORMATION, ((Agent) entity).getBiographicalInformation(), jsonLdResource);
+		putAgentStringList(WebEntityFields.IS_PART_OF, ((Agent) entity).getIsPartOf(), jsonLdResource);
 		putAgentDateList(WebEntityFields.DATE_OF_DEATH, ((Agent) entity).getDateOfDeath(), jsonLdResource);
 		putAgentDateList(WebEntityFields.DATE_OF_BIRTH, ((Agent) entity).getDateOfBirth(), jsonLdResource);
 		putAgentDateList(WebEntityFields.BEGIN, ((Agent) entity).getBegin(), jsonLdResource);

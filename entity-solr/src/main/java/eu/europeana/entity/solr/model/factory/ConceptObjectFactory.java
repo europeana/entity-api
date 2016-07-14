@@ -49,6 +49,9 @@ public class ConceptObjectFactory extends AbstractModelObjectFactory<Concept, En
 		case Agent:
 			ret = SolrAgentImpl.class;
 			break;
+		case Place:
+			ret = SolrAgentImpl.class;
+			break;
 		default:
 			throw new RuntimeException(
 					"The given type is not supported by the web model");

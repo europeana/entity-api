@@ -14,8 +14,8 @@ public interface Agent extends Concept {
 	public void setIdentifier(String identifier);
 	public String getHasPart();
 	public void setHasPart(String hasPart);
-	public String getIsPartOf();
-	public void setIsPartOf(String isPartOf);
+	public List<String>  getIsPartOf();
+	public void setIsPartOf(List<String> isPartOf);
 	public List<Date> getBegin();
 	public void setBegin(List<Date> begin);
 	public List<Date> getEnd();

@@ -18,15 +18,13 @@ import org.apache.solr.common.util.SimpleOrderedMap;
 import eu.europeana.entity.definitions.model.Concept;
 import eu.europeana.entity.definitions.model.search.Query;
 import eu.europeana.entity.definitions.model.search.result.ResultSet;
+import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.definitions.model.vocabulary.SkosConceptSolrFields;
 import eu.europeana.entity.solr.exception.EntityRetrievalException;
 import eu.europeana.entity.solr.exception.EntitySuggestionException;
-import eu.europeana.entity.solr.model.SolrAgentImpl;
-import eu.europeana.entity.solr.model.SolrConceptImpl;
 import eu.europeana.entity.solr.model.factory.ConceptObjectFactory;
 import eu.europeana.entity.solr.model.vocabulary.SuggestionFields;
 import eu.europeana.entity.solr.service.SolrEntityService;
-import eu.europeana.entity.solr.view.AgentViewAdapter;
 import eu.europeana.entity.solr.view.EntityPreviewImpl;
 import eu.europeana.entity.web.model.view.ConceptView;
 import eu.europeana.entity.web.model.view.EntityPreview;
@@ -47,7 +45,12 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 		return null;
 	}
 
-	
+	/**
+	 * replace it with the usage of internal type
+	 * @deprecated
+	 * @param entityId
+	 * @return
+	 */
 	public String getTypeFromEntityId(String entityId) {
 		
 		String res = "";
@@ -61,9 +64,9 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 	
 	
 	@Override
-	public Concept searchByUrl(String entityId) throws EntityRetrievalException {
+	public Concept searchByUrl(String type, String entityId) throws EntityRetrievalException {
 
-		getLogger().debug("search entity by id: " + entityId);
+		getLogger().debug("search entity (type:" +type+" ) by id: " + entityId);
 
 		/**
 		 * Construct a SolrQuery
@@ -82,9 +85,9 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 			QueryResponse rsp = solrServer.query(query);
 
 			Class<? extends Concept> concreteClass = null;
-			String entityType = getTypeFromEntityId(entityId);
+			//String entityType = getTypeFromEntityId(entityId);
 			concreteClass = ConceptObjectFactory.getInstance().getClassForType(
-					(entityType));
+					EntityTypes.getByInternalType(type));
 
 			beans = rsp.getBeans(concreteClass);
 //			beans = rsp.getBeans(AgentViewAdapter.class);

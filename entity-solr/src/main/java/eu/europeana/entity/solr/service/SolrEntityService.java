@@ -26,7 +26,7 @@ public interface SolrEntityService {
 	 * @return
 	 * @throws EntityRetrievalException 
 	 */
-	public Concept searchByUrl(String entityUri) throws EntityRetrievalException;
+	public Concept searchByUrl(String type, String entityUri) throws EntityRetrievalException;
 	
 	/**
 	 * This method retrieves available Entities that meet the .

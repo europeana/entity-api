@@ -9,6 +9,7 @@ import org.bson.types.ObjectId;
 
 import eu.europeana.entity.definitions.model.Concept;
 import eu.europeana.entity.definitions.model.impl.BaseConcept;
+import eu.europeana.entity.definitions.model.vocabulary.SkosAgentSolrFields;
 import eu.europeana.entity.definitions.model.vocabulary.SkosConceptSolrFields;
 
 
@@ -123,12 +124,6 @@ public class SolrConceptImpl extends BaseConcept implements Concept{
 	}
 
 	@Override
-	public String[] getSameAs() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	@Field(SkosConceptSolrFields.ENTITY_ID)
 	public void setEntityId(String entityId) {
 		super.setEntityId(entityId);
@@ -145,7 +140,28 @@ public class SolrConceptImpl extends BaseConcept implements Concept{
 	public void setInternalType(String internalType) {
 		super.setInternalType(internalType);
 	}
-
 	
+	@Override
+	@Field(SkosAgentSolrFields.IS_RELATED_TO)
+	public void setIsRelatedTo(String[] isRelatedTo) {
+		super.setIsRelatedTo(isRelatedTo);
+	}
 	
+	@Override
+	@Field(SkosAgentSolrFields.HAS_PART)
+	public void setHasPart(String[] hasPart) {
+		super.setHasPart(hasPart);
+	}
+	
+	@Override
+	@Field(SkosAgentSolrFields.IS_PART_OF)
+	public void setIsPartOf(String[]  isPartOf) {
+		super.setIsPartOf(isPartOf);
+	}
+	
+	@Override
+	@Field(SkosAgentSolrFields.SAME_AS)
+	public void setSameAs(String[] sameAs) {
+		super.setSameAs(sameAs);
+	}
 }

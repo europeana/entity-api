@@ -28,7 +28,7 @@ public class EntityServiceImpl implements EntityService {
 		String entityUri = BASE_URL_DATA + type.toLowerCase() + "/" + namespace + "/" + identifier;
 		Concept result;
 		try {
-			result = solrEntityService.searchByUrl(entityUri);
+			result = solrEntityService.searchByUrl(type, entityUri);
 		} catch (EntityRetrievalException e) {
 			throw new HttpException("Cannot retrieve entity by URI", HttpStatus.INTERNAL_SERVER_ERROR, e);
 		}

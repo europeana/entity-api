@@ -19,6 +19,17 @@ public interface Concept extends eu.europeana.corelib.definitions.edm.entity.Con
 	void setTimestamp(Date timestamp);
 
 	Date getTimestamp();
+
+	String getIdentifier();
+
+	void setIdentifier(String identifier);
+	
+	public String[] getHasPart();
+	public void setHasPart(String[] hasPart);
+	public String[]  getIsPartOf();
+	public void setIsPartOf(String[] isPartOf);
+	public String[] getIsRelatedTo();
+	public void setIsRelatedTo(String[] isRelatedTo);
 	
 
 }

@@ -14,8 +14,7 @@ public class BaseEntity extends BaseConcept implements Concept {
 	@Override
 	public void setId(ObjectId id) {
 		// TODO Auto-generated method stub
-		
 	}
-		
-
+	
+	
 }

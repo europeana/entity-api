@@ -5,12 +5,14 @@ import java.util.List;
 import java.util.Map;
 
 import eu.europeana.entity.definitions.model.Concept;
+import eu.europeana.entity.definitions.model.RankedEntity;
 
-public abstract class BaseConcept implements Concept {
+public abstract class BaseConcept implements Concept, RankedEntity {
 
 	private String about;
 	private String internalType;
 	private String entityId;
+	private String identifier;
 	private String definition;
 	private String[] broader;
 	private String[] narrower;
@@ -27,8 +29,48 @@ public abstract class BaseConcept implements Concept {
 	private Map<String,List<String>> hiddenLabel;
 	private Map<String,List<String>> note;
 	private String[] inScheme;
-	private Date timestamp; 
+	private String[] isRelatedTo;
+	private String[] hasPart;
+	private String[] isPartOf;
 	
+	//technical fields 
+	private Date timestamp; 
+	private int wikipediaClicks; 
+	private int europeanaDocCount;
+	private float derivedScore;
+	
+	@Override
+	public Date getTimestamp() {
+		return timestamp;
+	}
+	@Override
+	public void setTimestamp(Date timestamp) {
+		this.timestamp = timestamp;
+	}
+	@Override
+	public int getWikipediaClicks() {
+		return wikipediaClicks;
+	}
+	@Override
+	public void setWikipediaClicks(int wikipediaClicks) {
+		this.wikipediaClicks = wikipediaClicks;
+	}
+	@Override
+	public int getEuropeanaDocCount() {
+		return europeanaDocCount;
+	}
+	@Override
+	public void setEuropeanaDocCount(int europeanaDocCount) {
+		this.europeanaDocCount = europeanaDocCount;
+	}
+	@Override
+	public float getDerivedScore() {
+		return derivedScore;
+	}
+	@Override
+	public void setDerivedScore(float derivedScore) {
+		this.derivedScore = derivedScore;
+	}
 	
 	public String[] getBroader() {
 		return broader;
@@ -148,14 +190,33 @@ public abstract class BaseConcept implements Concept {
 	public void setEntityId(String entityId) {
 		this.entityId = entityId;
 	}
+	
 	@Override
-	public Date getTimestamp() {
-		return timestamp;
+	public String getIdentifier() {
+		return identifier;
 	}
 	@Override
-	public void setTimestamp(Date timestamp) {
-		this.timestamp = timestamp;
+	public void setIdentifier(String identifier) {
+		this.identifier = identifier;
 	}
 		
+	public String[] getIsRelatedTo() {
+		return isRelatedTo;
+	}
+	public void setIsRelatedTo(String[] isRelatedTo) {
+		this.isRelatedTo = isRelatedTo;
+	}
 
+	public String[] getHasPart() {
+		return hasPart;
+	}
+	public void setHasPart(String[] hasPart) {
+		this.hasPart = hasPart;
+	}
+	public String[]  getIsPartOf() {
+		return isPartOf;
+	}
+	public void setIsPartOf(String[]  isPartOf) {
+		this.isPartOf = isPartOf;
+	}
 }

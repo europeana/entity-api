@@ -40,9 +40,10 @@ public class SolrEntityServiceTest {
 	@Test
 	public void testSearchByUrl() throws EntityRetrievalException {
 
-		Concept entity = solrEntityService.searchByUrl("\"http://d-nb.info/gnd/4019862-5\"");
+		//Concept entity = solrEntityService.searchByUrl("\"http://d-nb.info/gnd/4019862-5\"");
+		Concept entity = solrEntityService.searchByUrl("agent", "\"http://data.europeana.eu/agent/base/33286\"");
 		assertNotNull(entity);
-		assertTrue("http://d-nb.info/gnd/4019862-5".equals(entity.getAbout()));
+		assertTrue("http://data.europeana.eu/agent/base/33286".equals(entity.getAbout()));
 	}
 	
 	@Test

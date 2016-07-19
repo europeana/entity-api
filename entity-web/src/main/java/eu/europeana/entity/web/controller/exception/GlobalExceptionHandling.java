@@ -80,6 +80,7 @@ public class GlobalExceptionHandling extends ApiResponseBuilder {
 		EntityApiResponse res = getErrorReport(req.getParameter(WebEntityConstants.PARAM_WSKEY), req.getServletPath(),
 				null, ex, includeErrorStack);
 
+		logger.debug(ex);
 		return buildErrorResponse(res, ex.getStatus());
 
 	}
@@ -93,6 +94,7 @@ public class GlobalExceptionHandling extends ApiResponseBuilder {
 		EntityApiResponse res = getErrorReport(req.getParameter(WebEntityConstants.PARAM_WSKEY), req.getServletPath(),
 				ex.getMessage(), ex, includeErrorStack);
 
+		logger.debug(ex);
 		return buildErrorResponse(res, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
@@ -110,7 +112,7 @@ public class GlobalExceptionHandling extends ApiResponseBuilder {
 		// TODO remove the usage of Model and View
 		EntityApiResponse res = getErrorReport(req.getParameter(WebEntityConstants.PARAM_WSKEY), req.getServletPath(),
 				ex.getMessage(), ex, includeErrorStack);
-		
+		logger.debug(ex);
 		return buildErrorResponse(res, statusCode);
 	}
 	

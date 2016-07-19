@@ -25,7 +25,7 @@ public interface SkosConceptSolrFields {
 	public static final String HIDDEN_LABEL = "skos_hiddenLabel";
 	
 	public static final String RDF_ABOUT = "rdf_about";
-	public static final String SAME_AS = "same_as";
+	public static final String SAME_AS = "owl_sameAs";
 	
 	public static final String ENTITY_ID = "entity_id";
 	public static final String INTERNAL_TYPE = "internal_type";

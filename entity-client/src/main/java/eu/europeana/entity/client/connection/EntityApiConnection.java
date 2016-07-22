@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import eu.europeana.entity.client.config.ClientConfiguration;
 import eu.europeana.entity.client.model.result.EntitySearchResults;
 import eu.europeana.entity.definitions.model.Concept;
+import eu.europeana.entity.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.impl.BaseEntity;
 import eu.europeana.entity.utils.jsonld.WebEntityFields;
 
@@ -114,10 +115,10 @@ public class EntityApiConnection extends BaseApiConnection {
         	} else {
 	        	JSONArray jsonArray = jsonListObj.getJSONArray(("contains"));
 	        	if(jsonArray!=null && jsonArray.length()>0){
-			        List<Concept> entityList = new ArrayList<Concept>();
+			        List<Entity> entityList = new ArrayList<Entity>();
 	                for (int i = 0; i < jsonArray.length(); i++) {
 	                	JSONObject jsonObj = jsonArray.getJSONObject(i);
-				        Concept entityObject = new BaseEntity();
+	                	BaseEntity entityObject = new BaseEntity();
 			        	entityObject.setEntityId(jsonObj.getString("@id"));
 			        	entityObject.setDefinition(jsonObj.getString("prefLabel"));
 						entityList.add(entityObject);

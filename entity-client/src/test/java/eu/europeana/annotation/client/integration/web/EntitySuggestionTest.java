@@ -8,7 +8,7 @@ import java.util.List;
 import org.apache.stanbol.commons.exception.JsonParseException;
 import org.junit.Test;
 
-import eu.europeana.entity.definitions.model.Concept;
+import eu.europeana.entity.definitions.model.Entity;
 
 
 /**
@@ -30,7 +30,7 @@ public class EntitySuggestionTest extends BaseEntityTest {
 		/**
 		 * get suggestion by text and language
 		 */
-		List<Concept> response = getApiClient().getSuggestions(
+		List<Entity> response = getApiClient().getSuggestions(
 				getApiKey()
 				, SUGGESTION_TEXT
 				, SUGGESTION_LANGUAGE

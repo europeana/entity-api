@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import eu.europeana.entity.client.BaseEntityApi;
 import eu.europeana.entity.client.exception.TechnicalRuntimeException;
 import eu.europeana.entity.client.model.result.EntitySearchResults;
-import eu.europeana.entity.definitions.model.Concept;
+import eu.europeana.entity.definitions.model.Entity;
 
 
 public class WebEntityProtocolApiImpl extends BaseEntityApi implements WebEntityProtocolApi {
@@ -34,7 +34,7 @@ public class WebEntityProtocolApiImpl extends BaseEntityApi implements WebEntity
 	}
 
 	@Override
-	public List<Concept> getSuggestions(
+	public List<Entity> getSuggestions(
 			String apiKey
 			, String text
 			, String language

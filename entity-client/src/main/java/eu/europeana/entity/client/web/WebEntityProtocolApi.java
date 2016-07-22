@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 
 import eu.europeana.entity.definitions.model.Concept;
+import eu.europeana.entity.definitions.model.Entity;
 
 public interface WebEntityProtocolApi {
 
@@ -30,6 +31,6 @@ public interface WebEntityProtocolApi {
 	 * @param rows
 	 * @return response entity containing body, headers and status code.
 	 */
-	public List<Concept> getSuggestions(String apiKey, String text, String language, String rows);
+	public List<Entity> getSuggestions(String apiKey, String text, String language, String rows);
 
 }

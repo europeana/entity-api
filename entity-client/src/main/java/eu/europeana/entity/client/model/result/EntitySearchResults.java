@@ -3,13 +3,14 @@ package eu.europeana.entity.client.model.result;
 import java.util.List;
 
 import eu.europeana.entity.definitions.model.Concept;
+import eu.europeana.entity.definitions.model.Entity;
 
 
 public class EntitySearchResults extends AbstractEntityApiResponse{
 
 	private String itemsCount;
 	private String totalResults;
-	private List<Concept> items;
+	private List<Entity> items;
 	private String json;
 	
 	public String getItemsCount() {
@@ -24,11 +25,11 @@ public class EntitySearchResults extends AbstractEntityApiResponse{
 	public void setTotalResults(String totalResults) {
 		this.totalResults = totalResults;
 	}
-	public List<Concept> getItems() {
+	public List<Entity> getItems() {
 		return items;
 	}
-	public void setItems(List<Concept> annotations) {
-		this.items = annotations;
+	public void setItems(List<Entity> entities) {
+		this.items = entities;
 	}
 	public String getJson() {
 		return json;

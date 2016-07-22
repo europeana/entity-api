@@ -1,9 +1,10 @@
 package eu.europeana.entity.solr.service;
 
 import eu.europeana.entity.definitions.model.Concept;
+import eu.europeana.entity.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.search.Query;
 import eu.europeana.entity.definitions.model.search.result.ResultSet;
-import eu.europeana.entity.definitions.model.vocabulary.SkosConceptSolrFields;
+import eu.europeana.entity.definitions.model.vocabulary.ConceptSolrFields;
 import eu.europeana.entity.solr.exception.EntityRetrievalException;
 import eu.europeana.entity.solr.exception.EntitySuggestionException;
 import eu.europeana.entity.web.model.view.ConceptView;
@@ -18,15 +19,15 @@ public interface SolrEntityService {
 	 * @return
 	 * @throws EntityRetrievalException 
 	 */
-	public Concept searchById(String entityId) throws EntityRetrievalException;
+	public Entity searchById(String entityId) throws EntityRetrievalException;
 
 	/**
 	 * This method retrieves available Annotations by searching the given entity URI.
-	 * @param entityUri - See {@link SkosConceptSolrFields#ENTITY_ID}
+	 * @param entityUri - See {@link ConceptSolrFields#ENTITY_ID}
 	 * @return
 	 * @throws EntityRetrievalException 
 	 */
-	public Concept searchByUrl(String type, String entityUri) throws EntityRetrievalException;
+	public Entity searchByUrl(String type, String entityUri) throws EntityRetrievalException;
 	
 	/**
 	 * This method retrieves available Entities that meet the .

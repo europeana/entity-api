@@ -1,6 +1,6 @@
 package eu.europeana.entity.definitions.model.vocabulary;
 
-public interface SkosConceptSolrFields {
+public interface ConceptSolrFields {
 	
 	
 	public static final String PREF_LABEL = "skos_prefLabel";
@@ -31,5 +31,13 @@ public interface SkosConceptSolrFields {
 	public static final String INTERNAL_TYPE = "internal_type";
 	public static final String TIMESTAMP = "timestamp";
 		
+	public static final String WIKIPEDIA_CLICKS         = "wikipedia_clicks";
+	public static final String EUROPEANA_DOC_COUNT      = "europeana_doc_count";
+	public static final String DERIVED_SCORE            = "derived_score";
+	
+	public static final String IDENTIFIER               = "dc_identifier";
+	//Fields common to some entities
+	public static final String HAS_PART                 = "skos_hasPart";
+	public static final String IS_PART_OF               = "skos_isPartOf";
 	
 }

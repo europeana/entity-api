@@ -16,13 +16,14 @@ import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.util.SimpleOrderedMap;
 
 import eu.europeana.entity.definitions.model.Concept;
+import eu.europeana.entity.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.search.Query;
 import eu.europeana.entity.definitions.model.search.result.ResultSet;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
-import eu.europeana.entity.definitions.model.vocabulary.SkosConceptSolrFields;
+import eu.europeana.entity.definitions.model.vocabulary.ConceptSolrFields;
 import eu.europeana.entity.solr.exception.EntityRetrievalException;
 import eu.europeana.entity.solr.exception.EntitySuggestionException;
-import eu.europeana.entity.solr.model.factory.ConceptObjectFactory;
+import eu.europeana.entity.solr.model.factory.EntityObjectFactory;
 import eu.europeana.entity.solr.model.vocabulary.SuggestionFields;
 import eu.europeana.entity.solr.service.SolrEntityService;
 import eu.europeana.entity.solr.view.EntityPreviewImpl;
@@ -41,7 +42,7 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 		this.solrServer = solrServer;
 	}
 
-	public Concept searchById(String entityId) throws EntityRetrievalException {
+	public Entity searchById(String entityId) throws EntityRetrievalException {
 		return null;
 	}
 
@@ -64,7 +65,7 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 	
 	
 	@Override
-	public Concept searchByUrl(String type, String entityId) throws EntityRetrievalException {
+	public Entity searchByUrl(String type, String entityId) throws EntityRetrievalException {
 
 		getLogger().debug("search entity (type:" +type+" ) by id: " + entityId);
 
@@ -72,11 +73,11 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 		 * Construct a SolrQuery
 		 */
 		SolrQuery query = new SolrQuery();
-		query.setQuery(SkosConceptSolrFields.ENTITY_ID + ":\"" + entityId + "\"");
+		query.setQuery(ConceptSolrFields.ENTITY_ID + ":\"" + entityId + "\"");
 
 		getLogger().trace("query: " + query);
 
-		List<? extends Concept> beans = null;
+		List<? extends Entity> beans = null;
 
 		/**
 		 * Query the server
@@ -84,9 +85,9 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 		try {
 			QueryResponse rsp = solrServer.query(query);
 
-			Class<? extends Concept> concreteClass = null;
+			Class<? extends Entity> concreteClass = null;
 			//String entityType = getTypeFromEntityId(entityId);
-			concreteClass = ConceptObjectFactory.getInstance().getClassForType(
+			concreteClass = EntityObjectFactory.getInstance().getClassForType(
 					EntityTypes.getByInternalType(type));
 
 			beans = rsp.getBeans(concreteClass);

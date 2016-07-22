@@ -1,24 +1,26 @@
 package eu.europeana.entity.solr.model.factory;
 
 import eu.europeana.entity.definitions.model.Concept;
+import eu.europeana.entity.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.solr.model.SolrAgentImpl;
 import eu.europeana.entity.solr.model.SolrConceptImpl;
+import eu.europeana.entity.solr.model.SolrPlaceImpl;
 
 
-public class ConceptObjectFactory extends AbstractModelObjectFactory<Concept, EntityTypes>{
+public class EntityObjectFactory extends AbstractModelObjectFactory<Entity, EntityTypes>{
 
-	private static ConceptObjectFactory singleton;
+	private static EntityObjectFactory singleton;
 
 	// force singleton usage
-	private ConceptObjectFactory() {
+	private EntityObjectFactory() {
 	};
 
-	public static ConceptObjectFactory getInstance() {
+	public static EntityObjectFactory getInstance() {
 
 		if (singleton == null) {
-			synchronized (ConceptObjectFactory.class) {
-				singleton = new ConceptObjectFactory();
+			synchronized (EntityObjectFactory.class) {
+				singleton = new EntityObjectFactory();
 			}
 		}
 
@@ -28,18 +30,18 @@ public class ConceptObjectFactory extends AbstractModelObjectFactory<Concept, En
 	
 	
 	@Override
-	public Concept createObjectInstance(Enum<EntityTypes> modelObjectType) {
-		Concept res = super.createObjectInstance(modelObjectType);
+	public Entity createObjectInstance(Enum<EntityTypes> modelObjectType) {
+		Entity res = super.createObjectInstance(modelObjectType);
 //		res.setInternalType(modelObjectType.name());
 		return res;
 	}
 
 	
 	@Override
-	public Class<? extends Concept> getClassForType(
+	public Class<? extends Entity> getClassForType(
 			Enum<EntityTypes> modelType) {
 		
-		Class<? extends Concept> ret = null;
+		Class<? extends Entity> ret = null;
 		EntityTypes entityType = EntityTypes.valueOf(modelType.name());
 		
 		switch (entityType) {
@@ -50,7 +52,7 @@ public class ConceptObjectFactory extends AbstractModelObjectFactory<Concept, En
 			ret = SolrAgentImpl.class;
 			break;
 		case Place:
-			ret = SolrAgentImpl.class;
+			ret = SolrPlaceImpl.class;
 			break;
 		default:
 			throw new RuntimeException(

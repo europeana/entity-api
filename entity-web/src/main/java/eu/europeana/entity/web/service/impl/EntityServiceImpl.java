@@ -4,7 +4,7 @@ import javax.annotation.Resource;
 
 import org.springframework.http.HttpStatus;
 
-import eu.europeana.entity.definitions.model.Concept;
+import eu.europeana.entity.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.search.Query;
 import eu.europeana.entity.definitions.model.search.QueryImpl;
 import eu.europeana.entity.definitions.model.search.result.ResultSet;
@@ -23,10 +23,10 @@ public class EntityServiceImpl implements EntityService {
 	SolrEntityService solrEntityService;
 	
 	@Override
-	public Concept retrieveByUrl(String type, String namespace, String identifier) throws HttpException{
+	public Entity retrieveByUrl(String type, String namespace, String identifier) throws HttpException{
 		
 		String entityUri = BASE_URL_DATA + type.toLowerCase() + "/" + namespace + "/" + identifier;
-		Concept result;
+		Entity result;
 		try {
 			result = solrEntityService.searchByUrl(type, entityUri);
 		} catch (EntityRetrievalException e) {

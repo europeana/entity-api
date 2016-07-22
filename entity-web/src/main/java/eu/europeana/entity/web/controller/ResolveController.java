@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import eu.europeana.api.common.config.swagger.SwaggerSelect;
 import eu.europeana.entity.definitions.model.Concept;
+import eu.europeana.entity.definitions.model.Entity;
+import eu.europeana.entity.definitions.model.RankedEntity;
 import eu.europeana.entity.utils.jsonld.EuropeanaEntityLd;
 import eu.europeana.entity.web.exception.HttpException;
 import eu.europeana.entity.web.exception.InternalServerException;
@@ -52,13 +54,14 @@ public class ResolveController extends BaseRest {
 			validateApiKey(wskey);
 
 			//return getAnnotationById(wskey, provider, identifier, action);
-			Concept entity = entityService.retrieveByUrl(type, namespace, identifier);
+			Entity entity = entityService.retrieveByUrl(type, namespace, identifier);
 			
 			EuropeanaEntityLd entityLd = new EuropeanaEntityLd(entity);
 			
 			String jsonLd = new String(entityLd.toString(4));
 
-			Date etagDate = (entity.getTimestamp() == null)? entity.getTimestamp() : new Date();
+			Date timestamp = ((RankedEntity)entity).getTimestamp();
+			Date etagDate = (timestamp != null)? timestamp : new Date();
 			int etag = etagDate.hashCode(); 
 			
 			MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>(5);

@@ -12,7 +12,7 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import eu.europeana.entity.definitions.model.Concept;
+import eu.europeana.entity.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.search.Query;
 import eu.europeana.entity.definitions.model.search.QueryImpl;
 import eu.europeana.entity.definitions.model.search.result.ResultSet;
@@ -41,7 +41,7 @@ public class SolrEntityServiceTest {
 	public void testSearchByUrl() throws EntityRetrievalException {
 
 		//Concept entity = solrEntityService.searchByUrl("\"http://d-nb.info/gnd/4019862-5\"");
-		Concept entity = solrEntityService.searchByUrl("agent", "\"http://data.europeana.eu/agent/base/33286\"");
+		Entity entity = solrEntityService.searchByUrl("agent", "\"http://data.europeana.eu/agent/base/33286\"");
 		assertNotNull(entity);
 		assertTrue("http://data.europeana.eu/agent/base/33286".equals(entity.getAbout()));
 	}

@@ -1,17 +1,13 @@
 package eu.europeana.entity.web.service;
 
-import eu.europeana.entity.web.exception.HttpException;
-
-import java.util.List;
-
-import eu.europeana.entity.definitions.model.Concept;
+import eu.europeana.entity.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.search.result.ResultSet;
-import eu.europeana.entity.web.model.EntitySearchResults;
+import eu.europeana.entity.web.exception.HttpException;
 import eu.europeana.entity.web.model.view.EntityPreview;
 
 public interface EntityService {
 
-	Concept retrieveByUrl(String type, String namespace, String identifier) throws HttpException;
+	Entity retrieveByUrl(String type, String namespace, String identifier) throws HttpException;
 
 	/**
 	 * This method provides suggestions for auto-completion

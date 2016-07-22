@@ -1,11 +1,8 @@
 package eu.europeana.entity.definitions.model.vocabulary;
 
-public interface SkosAgentSolrFields extends SkosConceptSolrFields{
+public interface AgentSolrFields extends ConceptSolrFields{
 		
 	public static final String DATE                     = "skos_date";
-	public static final String IDENTIFIER               = "dc_identifier";
-	public static final String HAS_PART                 = "skos_hasPart";
-	public static final String IS_PART_OF               = "skos_isPartOf";
 	public static final String BEGIN                    = "edm_begin";
 	public static final String END                      = "edm_end";
 	public static final String HAS_MET                  = "skos_hasMet";
@@ -23,13 +20,7 @@ public interface SkosAgentSolrFields extends SkosConceptSolrFields{
 	public static final String GENDER                   = "rdagr2_gender";
 	public static final String PROFESSION_OR_OCCUPATION = "rdagr2_professionOrOccupation";
 	public static final String PROFESSION_OR_OCCUPATION_ALL = "rdagr2_professionOrOccupation"+".*";
-	public static final String RDF_ABOUT                = "rdf_about";
-	public static final String WIKIPEDIA_CLICKS         = "wikipedia_clicks";
-	public static final String EUROPEANA_DOC_COUNT      = "europeana_doc_count";
-	public static final String DERIVED_SCORE            = "derived_score";
-//	public static final String TEXT                     = "text";
 	
-	public static final String INTERNAL_TYPE            = "internal_type";
 		
 	
 }

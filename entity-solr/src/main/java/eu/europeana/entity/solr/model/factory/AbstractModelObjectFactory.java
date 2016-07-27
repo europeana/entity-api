@@ -1,7 +1,6 @@
 package eu.europeana.entity.solr.model.factory;
 
 import eu.europeana.entity.definitions.exceptions.ConceptInstantiationException;
-import eu.europeana.entity.definitions.model.Entity;
 
 
 public abstract class AbstractModelObjectFactory <O , E extends Enum<E>> {

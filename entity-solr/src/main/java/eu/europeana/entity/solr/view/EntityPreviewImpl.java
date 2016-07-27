@@ -2,6 +2,7 @@ package eu.europeana.entity.solr.view;
 
 import java.util.Date;
 
+import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.web.model.view.EntityPreview;
 
 public class EntityPreviewImpl implements EntityPreview{
@@ -12,15 +13,9 @@ public class EntityPreviewImpl implements EntityPreview{
 	String matchedTerm;
 	String language;
 	String preferredLabel;
-	String country;
 	String timeSpanStart;
 	String timeSpanEnd;
-	Date birthDate;
-	Date deathDate;
-	String role;
-	String latitude;
-	String longitude;
-	
+	EntityTypes entityType;
 	
 	@Override
 	public Date getTimestampUpdated() {
@@ -72,36 +67,7 @@ public class EntityPreviewImpl implements EntityPreview{
 	public void setType(String type) {
 		this.type = type;
 	}
-
-	@Override
-	public String getCountry() {
-		return country;
-	}
-
-	@Override
-	public void setCountry(String country) {
-		this.country = country;
-	}
-
-	@Override
-	public Date getBirthDate() {
-		return birthDate;
-	}
-
-	@Override
-	public void setBirthDate(Date birthDate) {
-		this.birthDate = birthDate;
-	}
-
-	@Override
-	public Date getDeathDate() {
-		return deathDate;
-	}
-
-	@Override
-	public void setDeathDate(Date deathDate) {
-		this.deathDate = deathDate;
-	}
+	
 
 	public String getTimeSpanStart() {
 		return timeSpanStart;
@@ -140,32 +106,14 @@ public class EntityPreviewImpl implements EntityPreview{
 	}
 
 	@Override
-	public String getRole() {
-		return role;
+	public EntityTypes getEntityType() {
+		return entityType;
 	}
 
 	@Override
-	public void setRole(String role) {
-		this.role = role;
+	public void setEntityType(EntityTypes entityType) {
+		this.entityType = entityType;
 	}
 
-	@Override
-	public String getLatitude() {
-		return latitude;
-	}
-
-	@Override
-	public void setLatitude(String latitude) {
-		this.latitude = latitude;
-	}
-
-	@Override
-	public String getLongitude() {
-		return longitude;
-	}
-
-	@Override
-	public void setLongitude(String longitude) {
-		this.longitude = longitude;
-	}
+	
 }

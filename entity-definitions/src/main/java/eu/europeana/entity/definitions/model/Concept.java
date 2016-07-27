@@ -11,9 +11,5 @@ public interface Concept extends eu.europeana.corelib.definitions.edm.entity.Con
 	void setTimestamp(Date timestamp);
 
 	Date getTimestamp();
-
-	String getIdentifier();
-
-	void setIdentifier(String identifier);
-
+	
 }

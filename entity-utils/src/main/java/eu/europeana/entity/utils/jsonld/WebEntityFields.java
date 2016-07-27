@@ -60,6 +60,7 @@ public interface WebEntityFields {
 	public static final String LONGITUDE = "long";
 	public static final String ALTITUDE = "alt";
 	public static final String IS_NEXT_IN_SEQUENCE = "isNextInSequence";
+	public static final String COUNTRY = "country";
 	
 	//Technical fields
 	 public static final String DERIVED_SCORE = "derived_score";

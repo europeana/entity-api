@@ -5,6 +5,7 @@ import eu.europeana.entity.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.search.Query;
 import eu.europeana.entity.definitions.model.search.result.ResultSet;
 import eu.europeana.entity.definitions.model.vocabulary.ConceptSolrFields;
+import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.solr.exception.EntityRetrievalException;
 import eu.europeana.entity.solr.exception.EntitySuggestionException;
 import eu.europeana.entity.web.model.view.ConceptView;
@@ -46,6 +47,8 @@ public interface SolrEntityService {
 	 * @throws EntityRetrievalException 
 	 * @throws EntitySuggestionException 
 	 */
-	public ResultSet<? extends EntityPreview> suggest(Query searchQuery, String language, int rows) throws EntitySuggestionException;
-	
+	public ResultSet<? extends EntityPreview> suggest(Query searchQuery, String language, EntityTypes entityType,  int rows) throws EntitySuggestionException;
+
+	public ResultSet<? extends EntityPreview> suggest(Query searchQuery, String language, String internalEntityType,  int rows) throws EntitySuggestionException;
+
 }

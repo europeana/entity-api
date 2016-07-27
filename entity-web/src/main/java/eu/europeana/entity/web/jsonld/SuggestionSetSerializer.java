@@ -12,37 +12,38 @@ import org.apache.stanbol.commons.jsonld.JsonLdResource;
 import eu.europeana.entity.definitions.model.search.result.ResultSet;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.web.controller.WebEntityConstants;
+import eu.europeana.entity.web.model.view.AgentPreview;
 import eu.europeana.entity.web.model.view.EntityPreview;
-
+import eu.europeana.entity.web.model.view.PlacePreview;
+import eu.europeana.entity.web.model.view.TimeSpanPreview;
 
 public class SuggestionSetSerializer extends JsonLd {
 
 	// private static final Logger logger =
 	// LoggerFactory.getLogger(ConceptLd.class);
 
-	ResultSet<? extends EntityPreview> conceptSet;
+	ResultSet<? extends EntityPreview> entitySet;
 
-	public ResultSet<? extends EntityPreview> getConceptSet() {
-		return conceptSet;
+	public ResultSet<? extends EntityPreview> getEntitySet() {
+		return entitySet;
 	}
 
-	public void setConceptSet(ResultSet<? extends EntityPreview> conceptSet) {
-		this.conceptSet = conceptSet;
+	public void setConceptSet(ResultSet<? extends EntityPreview> entitySet) {
+		this.entitySet = entitySet;
 	}
-
 
 	/**
 	 * @param conceptSet
 	 */
-	public SuggestionSetSerializer(ResultSet<? extends EntityPreview> conceptSet) {
-		setConceptSet(conceptSet);
+	public SuggestionSetSerializer(ResultSet<? extends EntityPreview> entitySet) {
+		setConceptSet(entitySet);
 	}
 
 	/**
-	 * Adds the given concept to this JsonLd object using the resource's
-	 * subject as key. If the key is NULL and there does not exist a resource
-	 * with an empty String as key the resource will be added using an empty
-	 * String ("") as key.
+	 * Adds the given concept to this JsonLd object using the resource's subject
+	 * as key. If the key is NULL and there does not exist a resource with an
+	 * empty String as key the resource will be added using an empty String ("")
+	 * as key.
 	 * 
 	 * @param concept
 	 */
@@ -57,99 +58,114 @@ public class SuggestionSetSerializer extends JsonLd {
 		jsonLdResource.putProperty(WebEntityConstants.AT_CONTEXT, WebEntityConstants.WA_CONTEXT);
 		String[] oaType = new String[] { "BasicContainer", "Collection" };
 		jsonLdResource.putProperty(buildArrayProperty(WebEntityConstants.AT_TYPE, oaType));
-		jsonLdResource.putProperty(WebEntityConstants.TOTAL_ITEMS, getConceptSet().getResultSize());
+		jsonLdResource.putProperty(WebEntityConstants.TOTAL_ITEMS, getEntitySet().getResultSize());
 
 		serializeItems(jsonLdResource);
-		
+
 		put(jsonLdResource);
 
 		return toString(4);
 	}
 
-	
-	
 	protected void serializeItems(JsonLdResource jsonLdResource) {
 
-		//do not serialize if empty
-		if(getConceptSet().isEmpty())
+		// do not serialize if empty
+		if (getEntitySet().isEmpty())
 			return;
-		
+
 		JsonLdProperty containsProperty = new JsonLdProperty(WebEntityConstants.CONTAINS);
 		JsonLdPropertyValue propertyValue;
-		
-		for (EntityPreview entityPreview : getConceptSet().getResults()) {
-				propertyValue = buildConceptViewPropertyValue(entityPreview);
-				containsProperty.addValue(propertyValue);
+
+		for (EntityPreview entityPreview : getEntitySet().getResults()) {
+			propertyValue = buildEntityPreviewPropertyValue(entityPreview);
+			containsProperty.addValue(propertyValue);
 		}
-		
+
 		jsonLdResource.putProperty(containsProperty);
-			
+
 	}
 
-	private JsonLdPropertyValue buildConceptViewPropertyValue(EntityPreview entityPreview) {
-		
+	private JsonLdPropertyValue buildEntityPreviewPropertyValue(EntityPreview entityPreview) {
+
 		JsonLdPropertyValue entityPreviewPropValue = new JsonLdPropertyValue();
 		entityPreviewPropValue.putProperty(new JsonLdProperty(WebEntityConstants.AT_ID, entityPreview.getEntityId()));
-		entityPreviewPropValue.putProperty(new JsonLdProperty(WebEntityConstants.PREF_LABEL, entityPreview.getPreferredLabel()));
-		
+		entityPreviewPropValue
+				.putProperty(new JsonLdProperty(WebEntityConstants.PREF_LABEL, entityPreview.getPreferredLabel()));
+
 		String typeUri = entityPreview.getType();
 		EntityTypes entityType = EntityTypes.getByHttpUri(typeUri);
-		
-		if(entityType!= null){
+
+		if (entityType != null) {
 			entityPreviewPropValue.putProperty(new JsonLdProperty(WebEntityConstants.AT_TYPE, entityType.getHttpUri()));
-			
-			switch (entityType){
-				case Concept:
-					//add top concept, when available
-					break;
-				case Agent:
-					if(entityPreview.getBirthDate() != null)
-						entityPreviewPropValue.putProperty(new JsonLdProperty(WebEntityConstants.BIRTH_DATE, 
-								convertDateToStr(entityPreview.getBirthDate())));
-					
-					if(entityPreview.getDeathDate() != null)
-						entityPreviewPropValue.putProperty(new JsonLdProperty(WebEntityConstants.DEATH_DATE, 
-								convertDateToStr(entityPreview.getDeathDate())));
-				
-					if(entityPreview.getRole() != null)
-						entityPreviewPropValue.putProperty(new JsonLdProperty(WebEntityConstants.AT_TYPE, 
-								entityType.getHttpUri()));
-					
-					break;
-					
-				case Place:
-					if(entityPreview.getLatitude() != null)
-						entityPreviewPropValue.putProperty(new JsonLdProperty(WebEntityConstants.GEO_LAT, 
-								entityPreview.getLatitude()));
-					
-					if(entityPreview.getLongitude() != null)
-						entityPreviewPropValue.putProperty(new JsonLdProperty(WebEntityConstants.GEO_LONG, 
-								entityPreview.getLongitude()));
-					break;
-				
-				case Timespan:
-					if(entityPreview.getTimeSpanStart() != null)
-						entityPreviewPropValue.putProperty(new JsonLdProperty(WebEntityConstants.TIME_SPAN_FROM, 
-								entityPreview.getTimeSpanStart()));
-					
-					if(entityPreview.getTimeSpanEnd() != null)
-						entityPreviewPropValue.putProperty(new JsonLdProperty(WebEntityConstants.TIME_SPAN_TO, 
-								entityPreview.getTimeSpanEnd()));	
-					break;
-					
-				default:
-					break;
+
+			switch (entityType) {
+			case Concept:
+				// add top concept, when available
+				break;
+			case Agent:
+				putAgentSpecificProperties((AgentPreview)entityPreview, entityPreviewPropValue);
+
+				break;
+
+			case Place:
+				putPlaceSpecificProperties((PlacePreview)entityPreview, entityPreviewPropValue);
+				break;
+
+			case Timespan:
+				putTimespanSpecificProperties((TimeSpanPreview)entityPreview, entityPreviewPropValue);
+				break;
+
+			default:
+				break;
 			}
-			
-			entityPreviewPropValue.putProperty(new JsonLdProperty(WebEntityConstants.AT_ID, entityPreview.getEntityId()));
+
+			entityPreviewPropValue
+					.putProperty(new JsonLdProperty(WebEntityConstants.AT_ID, entityPreview.getEntityId()));
 		}
-			
+
 		return entityPreviewPropValue;
 	}
 
-	 public String convertDateToStr(Date date) {
-	    	DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-	    	return df.format(date);    
-	 }
+	private void putTimespanSpecificProperties(TimeSpanPreview entityPreview,
+			JsonLdPropertyValue entityPreviewPropValue) {
+		if (entityPreview.getBegin() != null)
+			entityPreviewPropValue.putProperty(
+					new JsonLdProperty(WebEntityConstants.BEGIN, entityPreview.getBegin()));
 
+		if (entityPreview.getEnd() != null)
+			entityPreviewPropValue
+					.putProperty(new JsonLdProperty(WebEntityConstants.END, entityPreview.getEnd()));
+	}
+
+	//TODO: replace by using the put<Type> methods used in entity serializer
+	private void putPlaceSpecificProperties(PlacePreview entityPreview, JsonLdPropertyValue entityPreviewPropValue) {
+		if (entityPreview.getCountry() != null)
+			entityPreviewPropValue
+					.putProperty(new JsonLdProperty(WebEntityConstants.COUNTRY, entityPreview.getCountry()));
+
+		if (entityPreview.getIsPartOf() != null)
+			entityPreviewPropValue
+					.putProperty(buildArrayProperty(WebEntityConstants.IS_PART_OF, entityPreview.getIsPartOf())); 
+	}
+
+	private void putAgentSpecificProperties(AgentPreview entityPreview, JsonLdPropertyValue entityPreviewPropValue) {
+		if (entityPreview.getDateOfBirth() != null)
+			entityPreviewPropValue
+					.putProperty(new JsonLdProperty(WebEntityConstants.DATE_OF_BIRTH, entityPreview.getDateOfBirth()));
+
+		if (entityPreview.getDateOfDeath() != null)
+			entityPreviewPropValue
+					.putProperty(new JsonLdProperty(WebEntityConstants.DATE_OF_DEATH, entityPreview.getDateOfDeath()));
+
+		if (entityPreview.getProfessionOrOccuation() != null)
+			entityPreviewPropValue.putProperty(new JsonLdProperty(WebEntityConstants.PROFESSION_OR_OCCUPATION,
+					entityPreview.getProfessionOrOccuation()));
+	}
+
+	public String convertDateToStr(Date date) {
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+		return df.format(date);
+	}
+
+	
 }

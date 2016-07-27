@@ -1,47 +1,24 @@
 package eu.europeana.entity.web.model.view;
 
-import java.util.Date;
-
 import eu.europeana.entity.definitions.model.search.result.IdBean;
+import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 
 public interface EntityPreview extends IdBean {
 
-	public String getPreferredLabel();
-	
-	public String getLanguage();
-	//String getEntityType();
-	
+	//functional fields
 	public void setEntityId(String entityId);
 	
 	public void setPreferredLabel(String prefferedLabel);
+	
+	public String getPreferredLabel();
+	
+	void setLanguage(String language);
 
-	void setDeathDate(Date deathDate);
-
-	Date getDeathDate();
-
-	void setBirthDate(Date birthDate);
-
-	Date getBirthDate();
-
-	void setTimeSpanStart(String timeSpanStart);
-
-	String getTimeSpanStart();
-
-	void setTimeSpanEnd(String timeSpanEnd);
-
-	String getTimeSpanEnd();
-
-	void setCountry(String country);
-
-	String getCountry();
-
+	public String getLanguage();
+	
 	void setType(String type);
 
 	String getType();
-
-	void setLanguage(String language);
-
-	Date getTimestampUpdated();
 
 	void setMatchedTerm(String matchedTerm);
 
@@ -51,16 +28,8 @@ public interface EntityPreview extends IdBean {
 
 	String getSearchedTerm();
 
-	void setRole(String role);
+	void setEntityType(EntityTypes entityType);
 
-	String getRole();
-
-	void setLongitude(String longitude);
-
-	String getLongitude();
-
-	void setLatitude(String latitude);
-
-	String getLatitude();
+	EntityTypes getEntityType();
 	
 }

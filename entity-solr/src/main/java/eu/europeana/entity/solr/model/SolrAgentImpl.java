@@ -35,7 +35,7 @@ public class SolrAgentImpl extends BaseAgent implements Agent {
 
 	@Override
 	@Field(AgentSolrFields.IDENTIFIER)
-	public void setIdentifier(String identifier) {
+	public void setIdentifier(String[] identifier) {
 		super.setIdentifier(identifier);
 	}
 	

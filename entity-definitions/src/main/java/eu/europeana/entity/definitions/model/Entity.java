@@ -8,9 +8,9 @@ public interface Entity extends ContextualClass {
 
 	public void setContext(String context);
 
-	public String getIdentifier();
+	public String[] getIdentifier();
 
-	public void setIdentifier(String identifier);
+	public void setIdentifier(String[] identifier);
 
 	public String[] getIsRelatedTo();
 

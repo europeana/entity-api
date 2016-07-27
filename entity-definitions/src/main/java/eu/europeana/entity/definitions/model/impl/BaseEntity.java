@@ -15,12 +15,12 @@ public class BaseEntity implements Entity, RankedEntity {
 	private String about;
 	private String internalType;
 	private String entityId;
-	private String identifier;
 	private Map<String, List<String>> note;
 	private Map<String, List<String>> prefLabel;
 	private Map<String, List<String>> altLabel;
 	private Map<String, List<String>> hiddenLabel;
 	private String definition;
+	private String identifier[];
 	private String[] sameAs;
 	private String[] isRelatedTo;
 
@@ -102,11 +102,11 @@ public class BaseEntity implements Entity, RankedEntity {
 		this.entityId = entityId;
 	}
 
-	public String getIdentifier() {
+	public String[] getIdentifier() {
 		return identifier;
 	}
 
-	public void setIdentifier(String identifier) {
+	public void setIdentifier(String[] identifier) {
 		this.identifier = identifier;
 	}
 

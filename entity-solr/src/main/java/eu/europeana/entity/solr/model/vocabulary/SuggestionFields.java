@@ -20,4 +20,10 @@ public interface SuggestionFields {
 	public static final String ROLE = "role";
 	public static final String PREF_LABEL = "prefLabel";
 	public static final String TYPE = "type";
+	
+	public static final String COUNTRY = "country";
+	public static final String IS_PART_OF = "isPartOf";
+	
+	public static final String IN_SCHEME = "inScheme";
+	
 }

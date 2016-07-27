@@ -8,6 +8,7 @@ import eu.europeana.entity.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.search.Query;
 import eu.europeana.entity.definitions.model.search.QueryImpl;
 import eu.europeana.entity.definitions.model.search.result.ResultSet;
+import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.solr.exception.EntityRetrievalException;
 import eu.europeana.entity.solr.exception.EntitySuggestionException;
 import eu.europeana.entity.solr.service.SolrEntityService;
@@ -56,11 +57,11 @@ public class EntityServiceImpl implements EntityService {
 	 * @see eu.europeana.entity.web.service.EntityService#suggest(java.lang.String, java.lang.String, java.lang.String, java.lang.String, int)
 	 */
 	@Override	
-	public ResultSet<? extends EntityPreview> suggest(String text, String language, String type, String namespace, int rows) throws HttpException {
+	public ResultSet<? extends EntityPreview> suggest(String text, String language, EntityTypes internalEntityType, String namespace, int rows) throws HttpException {
 
 		try {
 			Query query = buildSearchQuery(text, null, rows);
-			return solrEntityService.suggest(query, language, rows);
+			return solrEntityService.suggest(query, language, internalEntityType, rows);
 		} catch (EntitySuggestionException e) {
 			throw new HttpException("Cannot retrieve entity by URI", HttpStatus.INTERNAL_SERVER_ERROR, e);
 		}

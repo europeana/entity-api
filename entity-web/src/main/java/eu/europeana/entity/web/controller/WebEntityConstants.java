@@ -62,14 +62,15 @@ public interface WebEntityConstants extends WebEntityFields{
 //	public static final String PURPOSE = "purpose";
 
 	public static final String PREF_LABEL = "prefLabel";
-	public static final String BIRTH_DATE = "dateOfBirth";
-	public static final String DEATH_DATE = "dateOfDeath";
-	public static final String TOP_CONCEPT = "topConcept";
-	public static final String TIME_SPAN_FROM = "timeSpanFrom";
-	public static final String TIME_SPAN_TO = "timeSpanTo";
-	public static final String GEO_LAT = "lat";
-	public static final String GEO_LONG = "lat";
 	
+	public static final String TOP_CONCEPT = "topConcept";
+	public static final String BEGIN = "begin";
+	public static final String END = "end";
+	public static final String GEO_LAT = "lat";
+	public static final String GEO_LONG = "long";
+	
+	public static final String COUNTRY = "country";
+	public static final String IS_PART_OF = "isPartOf";
 	
 	
 	/**

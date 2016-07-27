@@ -51,7 +51,7 @@ public class SearchController extends BaseRest {
 			// Check client access (a valid “wskey” must be provided)
 			validateApiKey(wskey);
 			
-			ResultSet<? extends EntityPreview> results = entityService.suggest(text, language, null, null, rows);
+			ResultSet<? extends EntityPreview> results = entityService.suggest(text, language, type, null, rows);
 			
 	        SuggestionSetSerializer serializer = new SuggestionSetSerializer(results);
 	        String jsonLd = serializer.serialize();

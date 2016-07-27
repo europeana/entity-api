@@ -154,7 +154,7 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 			query.add("suggest.cfq", entityType.getInternalType());
 
 		try {
-			getLogger().debug("suggest entity: " + searchQuery);
+			getLogger().debug("suggest entity: " + query);
 			QueryResponse rsp = solrServer.query(query);
 
 			res = buildSuggestionSet(rsp, language, rows, EntityPreviewImpl.class);

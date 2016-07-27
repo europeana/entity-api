@@ -16,11 +16,11 @@ import eu.europeana.entity.definitions.model.Agent;
 import eu.europeana.entity.definitions.model.Concept;
 import eu.europeana.entity.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.Place;
+import eu.europeana.entity.definitions.model.Timespan;
 import eu.europeana.entity.definitions.model.impl.BaseEntity;
-import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.definitions.model.vocabulary.AgentSolrFields;
 import eu.europeana.entity.definitions.model.vocabulary.ConceptSolrFields;
-import riotcmd.json;
+import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 
 public class EuropeanaEntityLd extends JsonLd {
 
@@ -90,6 +90,10 @@ public class EuropeanaEntityLd extends JsonLd {
 			putPlaceSpecificProperties((Place) entity, jsonLdResource);
 			break;
 			
+		case Timespan:
+			putPlaceSpecificProperties((Timespan) entity, jsonLdResource);
+			break;
+			
 		default:
 			break;
 		}
@@ -97,6 +101,13 @@ public class EuropeanaEntityLd extends JsonLd {
 	}
 
 	
+
+	private void putPlaceSpecificProperties(Timespan entity, JsonLdResource jsonLdResource) {
+		//TODO: in corelib these are maps of string list
+		putStringArrayProperty(WebEntityFields.BEGIN, entity.getBegin(), jsonLdResource);
+		putStringArrayProperty(WebEntityFields.END, entity.getEnd(), jsonLdResource);
+		
+	}
 
 	private void putPlaceSpecificProperties(Place entity, JsonLdResource jsonLdResource) {
 		putBaseEntityProperties((BaseEntity)entity, jsonLdResource);

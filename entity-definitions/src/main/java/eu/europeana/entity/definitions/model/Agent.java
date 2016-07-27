@@ -10,14 +10,6 @@ public interface Agent extends Entity {
 
 	public void setDate(Date date);
 
-	public String[] getBegin();
-
-	public void setBegin(String[] begin);
-
-	public String[] getEnd();
-
-	public void setEnd(String[] end);
-
 	public String getHasMet();
 
 	public void setHasMet(String hasMet);
@@ -41,6 +33,14 @@ public interface Agent extends Entity {
 	public String[] getDateOfDeath();
 
 	public void setDateOfDeath(String[] dateOfDeath);
+	
+	public String[] getBegin();
+
+	public void setBegin(String[] begin);
+
+	public String[] getEnd();
+
+	public void setEnd(String[] end);
 
 	public Map<String, List<String>> getPlaceOfBirth();
 

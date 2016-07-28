@@ -2,6 +2,7 @@ package eu.europeana.entity.web.controller;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import eu.europeana.entity.definitions.model.search.result.ResultSet;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.web.exception.HttpException;
 import eu.europeana.entity.web.exception.InternalServerException;
+import eu.europeana.entity.web.exception.ParamValidationException;
 import eu.europeana.entity.web.http.HttpHeaders;
 import eu.europeana.entity.web.jsonld.SuggestionSetSerializer;
 import eu.europeana.entity.web.model.view.EntityPreview;
@@ -38,9 +40,8 @@ public class SearchController extends BaseRest {
 	public ResponseEntity<String> getSuggestion(
 			@RequestParam(value = WebEntityConstants.PARAM_WSKEY) String wskey,
 			@RequestParam(value = WebEntityConstants.QUERY_PARAM_TEXT) String text,
-			@RequestParam(value = WebEntityConstants.QUERY_PARAM_LANGUAGE, defaultValue = WebEntityConstants.PARAM_LANGUAGE_EN) String language
-			,
-			@RequestParam(value = WebEntityConstants.QUERY_PARAM_TYPE, defaultValue = WebEntityConstants.PARAM_ALL) EntityTypes type,
+			@RequestParam(value = WebEntityConstants.QUERY_PARAM_LANGUAGE, defaultValue = WebEntityConstants.PARAM_LANGUAGE_EN) String language,
+			@RequestParam(value = WebEntityConstants.QUERY_PARAM_TYPE, defaultValue = WebEntityConstants.PARAM_ALL) String type,
 //			@RequestParam(value = WebEntityConstants.QUERY_PARAM_NAMESPACE, required = false) String namespace,
 			@RequestParam(value = WebEntityConstants.QUERY_PARAM_ROWS, defaultValue = WebEntityConstants.PARAM_DEFAULT_ROWS) int rows
 			) throws HttpException  {
@@ -51,7 +52,11 @@ public class SearchController extends BaseRest {
 			// Check client access (a valid “wskey” must be provided)
 			validateApiKey(wskey);
 			
-			ResultSet<? extends EntityPreview> results = entityService.suggest(text, language, type, null, rows);
+			EntityTypes entityType = EntityTypes.getByInternalType(type);
+			if(StringUtils.isNotBlank(type) && entityType == null)
+				throw new ParamValidationException("Invalid request param: ", WebEntityConstants.QUERY_PARAM_TYPE, type);
+			
+			ResultSet<? extends EntityPreview> results = entityService.suggest(text, language, entityType, null, rows);
 			
 	        SuggestionSetSerializer serializer = new SuggestionSetSerializer(results);
 	        String jsonLd = serializer.serialize();

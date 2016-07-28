@@ -6,7 +6,7 @@ public enum EntityTypes implements EntityKeyword{
 	Agent("edm", "Agent", "http://www.europeana.eu/schemas/edm/Agent"), 
 	Place("edm", "Place", "http://www.europeana.eu/schemas/edm/Place"), 
 	Timespan("edm", "Timespan", "http://www.europeana.eu/schemas/edm/Timespan"), 
-	All("*", "all", "http://www.europeana.eu/schemas/*");
+	All("*", "All", "http://www.europeana.eu/schemas/edm/Entity");
 	
 	
 	private String modelNameSpace;

@@ -15,7 +15,7 @@ public interface WebEntityConstants extends WebEntityFields{
 	String QUERY_PARAM_NAMESPACE = "namespace";
 	String QUERY_PARAM_ROWS = "rows";
 	
-	String PARAM_ALL = "all";
+	String PARAM_ALL = "All";
 	String PARAM_LANGUAGE_EN = "en";
 	String PARAM_AGENT = "agent";
 	String PARAM_PLACE = "place";

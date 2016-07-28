@@ -54,7 +54,7 @@ public class SearchController extends BaseRest {
 			
 			EntityTypes entityType = EntityTypes.getByInternalType(type);
 			if(StringUtils.isNotBlank(type) && entityType == null)
-				throw new ParamValidationException("Invalid request param: ", WebEntityConstants.QUERY_PARAM_TYPE, type);
+				throw new ParamValidationException("Invalid value for the request param! ", WebEntityConstants.QUERY_PARAM_TYPE, type);
 			
 			ResultSet<? extends EntityPreview> results = entityService.suggest(text, language, entityType, null, rows);
 			

@@ -49,14 +49,14 @@ public interface WebEntityConstants extends WebEntityFields{
 //	public static final String SOURCE = "source";
 //	public static final String SELECTOR = "selector";
 //	public static final String STYLE_CLASS = "styleClass";
-	public static final String AT_TYPE = "@type";
+	public static final String TYPE = "type";
 //	public static final String BODY = "body";
 	public static final String DC_LANGUAGE = "language";
 //	public static final String FORMAT = "format";
 //	public static final String MEDIA_TYPE = "mediaType";
 //	public static final String PAGE = "page";
 //	public static final String TARGET = "target";
-	public static final String AT_ID = "@id";
+	public static final String ID = "id";
 //	public static final String TYPE = "type";
 	public static final String CONTAINS = "contains";
 //	public static final String PURPOSE = "purpose";
@@ -82,7 +82,10 @@ public interface WebEntityConstants extends WebEntityFields{
 	public static final String SEARCH_RESP_FACETS_LABEL = "label";
 	public static final String SEARCH_RESP_FACETS_COUNT = "count";
 
-	public static final String WA_CONTEXT = "https://www.w3.org/ns/anno.jsonld";
+//	public static final String WA_CONTEXT = "https://www.w3.org/ns/anno.jsonld";
+	public static final String LDP_CONTEXT = "https://www.w3.org/ns/ldp.jsonld";
+//	public static final String LDP_CONTEXT = "https://www.w3.org/ns/ldp.jsonld";
+	public static final String ENTITY_CONTEXT = "http://www.europeana.eu/schemas/context/entity.jsonld";
 	public static final String TOTAL_ITEMS = "totalItems";
 	
 	/**

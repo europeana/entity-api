@@ -42,8 +42,8 @@ public class EuropeanaEntityLd extends JsonLd {
 		jsonLdResource.putProperty(WebEntityFields.CONTEXT, WebEntityFields.ENTITY_CONTEXT);
 
 		//common EntityProperties
-		jsonLdResource.putProperty(WebEntityFields.AT_ID, entity.getEntityId());
-		jsonLdResource.putProperty(WebEntityFields.AT_TYPE, entity.getInternalType());
+		jsonLdResource.putProperty(WebEntityFields.ID, entity.getEntityId());
+		jsonLdResource.putProperty(WebEntityFields.TYPE, entity.getInternalType());
 		putStringArrayProperty(WebEntityFields.IDENTIFIER, entity.getIdentifier(), jsonLdResource);
 		putStringArrayProperty(WebEntityFields.SAME_AS, entity.getSameAs(), jsonLdResource);
 		jsonLdResource.putProperty(WebEntityFields.RDF_ABOUT, entity.getAbout());

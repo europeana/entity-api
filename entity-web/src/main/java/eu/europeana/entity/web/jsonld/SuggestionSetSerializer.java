@@ -55,9 +55,16 @@ public class SuggestionSetSerializer extends JsonLd {
 
 		JsonLdResource jsonLdResource = new JsonLdResource();
 		jsonLdResource.setSubject("");
-		jsonLdResource.putProperty(WebEntityConstants.AT_CONTEXT, WebEntityConstants.WA_CONTEXT);
-		String[] oaType = new String[] { "BasicContainer", "Collection" };
-		jsonLdResource.putProperty(buildArrayProperty(WebEntityConstants.AT_TYPE, oaType));
+//		jsonLdResource.putProperty(WebEntityConstants.AT_CONTEXT, WebEntityConstants.WA_CONTEXT);
+		
+		String[] contextValues = new String[]{WebEntityConstants.LDP_CONTEXT, WebEntityConstants.ENTITY_CONTEXT};
+		jsonLdResource.putProperty(buildArrayProperty(
+				WebEntityConstants.AT_CONTEXT, contextValues));
+		
+		//TODO: update annotation LD and add the @language:en to context 
+		
+		String[] type = new String[] { "BasicContainer", "Collection" };
+		jsonLdResource.putProperty(buildArrayProperty(WebEntityConstants.TYPE, type));
 		jsonLdResource.putProperty(WebEntityConstants.TOTAL_ITEMS, getEntitySet().getResultSize());
 
 		serializeItems(jsonLdResource);
@@ -88,7 +95,7 @@ public class SuggestionSetSerializer extends JsonLd {
 	private JsonLdPropertyValue buildEntityPreviewPropertyValue(EntityPreview entityPreview) {
 
 		JsonLdPropertyValue entityPreviewPropValue = new JsonLdPropertyValue();
-		entityPreviewPropValue.putProperty(new JsonLdProperty(WebEntityConstants.AT_ID, entityPreview.getEntityId()));
+		entityPreviewPropValue.putProperty(new JsonLdProperty(WebEntityConstants.ID, entityPreview.getEntityId()));
 		entityPreviewPropValue
 				.putProperty(new JsonLdProperty(WebEntityConstants.PREF_LABEL, entityPreview.getPreferredLabel()));
 
@@ -96,7 +103,7 @@ public class SuggestionSetSerializer extends JsonLd {
 		EntityTypes entityType = EntityTypes.getByHttpUri(typeUri);
 
 		if (entityType != null) {
-			entityPreviewPropValue.putProperty(new JsonLdProperty(WebEntityConstants.AT_TYPE, entityType.getHttpUri()));
+			entityPreviewPropValue.putProperty(new JsonLdProperty(WebEntityConstants.TYPE, entityType.getInternalType()));
 
 			switch (entityType) {
 			case Concept:
@@ -120,7 +127,7 @@ public class SuggestionSetSerializer extends JsonLd {
 			}
 
 			entityPreviewPropValue
-					.putProperty(new JsonLdProperty(WebEntityConstants.AT_ID, entityPreview.getEntityId()));
+					.putProperty(new JsonLdProperty(WebEntityConstants.ID, entityPreview.getEntityId()));
 		}
 
 		return entityPreviewPropValue;

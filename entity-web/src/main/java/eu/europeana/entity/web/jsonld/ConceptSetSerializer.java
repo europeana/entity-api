@@ -49,9 +49,9 @@ public class ConceptSetSerializer extends JsonLd {
 
 		JsonLdResource jsonLdResource = new JsonLdResource();
 		jsonLdResource.setSubject("");
-		jsonLdResource.putProperty(WebEntityConstants.AT_CONTEXT, WebEntityConstants.WA_CONTEXT);
+		jsonLdResource.putProperty(WebEntityConstants.AT_CONTEXT, WebEntityConstants.ENTITY_CONTEXT);
 		String[] oaType = new String[] { "BasicContainer", "Collection" };
-		jsonLdResource.putProperty(buildArrayProperty(WebEntityConstants.AT_TYPE, oaType));
+		jsonLdResource.putProperty(buildArrayProperty(WebEntityConstants.TYPE, oaType));
 		jsonLdResource.putProperty(WebEntityConstants.TOTAL_ITEMS, getConceptSet().getResultSize());
 
 		serializeItems(jsonLdResource);
@@ -80,8 +80,8 @@ public class ConceptSetSerializer extends JsonLd {
 	private JsonLdPropertyValue buildConceptViewPropertyValue(ConceptView entityPreview) {
 		
 		JsonLdPropertyValue entityPreviewPropValue = new JsonLdPropertyValue();
-		entityPreviewPropValue.putProperty(new JsonLdProperty(WebEntityConstants.AT_ID, entityPreview.getEntityId()));
-		entityPreviewPropValue.putProperty(new JsonLdProperty(WebEntityConstants.AT_TYPE, entityPreview.getEntityType()));
+		entityPreviewPropValue.putProperty(new JsonLdProperty(WebEntityConstants.ID, entityPreview.getEntityId()));
+		entityPreviewPropValue.putProperty(new JsonLdProperty(WebEntityConstants.TYPE, entityPreview.getEntityType()));
 		
 		String solrFieldPrefix = WebEntityConstants.PREF_LABEL+".";
 		entityPreviewPropValue.putProperty(

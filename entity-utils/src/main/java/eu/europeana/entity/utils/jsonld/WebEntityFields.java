@@ -7,8 +7,8 @@ public interface WebEntityFields {
 	public static final String ENTITY_CONTEXT = "http://data.europeana.eu/entity/context.json";
 
 	// common fields
-	public static final String AT_ID = "@id";
-	public static final String AT_TYPE = "@type";
+	public static final String ID = "id";
+	public static final String TYPE = "type";
 	// public static final String IN_SCHEME = "inScheme";
 	public static final String SAME_AS = "sameAs";
 	public static final String IDENTIFIER = "identifier";

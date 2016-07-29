@@ -32,7 +32,7 @@ public class AgentPreviewImpl extends EntityPreviewImpl implements AgentPreview 
 
 	@Override
 	public void setProfessionOrOccuation(String role) {
-		
+		this.professionOrOccupation = role;
 	}
 
 	@Override

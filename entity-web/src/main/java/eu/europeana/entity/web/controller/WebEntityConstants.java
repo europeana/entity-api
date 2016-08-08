@@ -24,6 +24,8 @@ public interface WebEntityConstants extends WebEntityFields{
 	String PARAM_QUERY = "query";
 	String PARAM_DEFAULT_ROWS = "10";
 
+	String TYPE_BASIC_CONTAINER = "BasicContainer";
+	
 	/**
 	 * Solr fields
 	 */

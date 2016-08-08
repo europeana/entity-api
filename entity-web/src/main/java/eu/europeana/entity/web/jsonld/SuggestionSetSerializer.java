@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.stanbol.commons.jsonld.JsonLd;
 import org.apache.stanbol.commons.jsonld.JsonLdProperty;
 import org.apache.stanbol.commons.jsonld.JsonLdPropertyValue;
@@ -58,8 +59,18 @@ public class SuggestionSetSerializer extends JsonLd {
 //		jsonLdResource.putProperty(WebEntityConstants.AT_CONTEXT, WebEntityConstants.WA_CONTEXT);
 		
 		String[] contextValues = new String[]{WebEntityConstants.LDP_CONTEXT, WebEntityConstants.ENTITY_CONTEXT};
-		jsonLdResource.putProperty(buildArrayProperty(
-				WebEntityConstants.AT_CONTEXT, contextValues));
+		JsonLdProperty contextProperty = buildArrayProperty(
+				WebEntityConstants.AT_CONTEXT, contextValues);
+		String language = getEntitySet().getLanguage();
+		
+		if(language != null){
+			JsonLdPropertyValue languageProp = new JsonLdPropertyValue();
+			languageProp.putProperty(new JsonLdProperty(WebEntityConstants.AT_LANGUAGE, language));
+			contextProperty.getValues().add(languageProp);
+		}
+			
+		
+		jsonLdResource.putProperty(contextProperty);
 		
 		//TODO: update annotation LD and add the @language:en to context 
 		

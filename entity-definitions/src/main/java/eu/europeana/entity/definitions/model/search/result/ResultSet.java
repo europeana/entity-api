@@ -35,6 +35,11 @@ public class ResultSet<T> {
 	private Query query;
 
 	/**
+	 * The language to be used by search handler
+	 */
+	private String language;
+
+	/**
 	 * The list of result objects
 	 */
 	private List<T> results;
@@ -133,5 +138,13 @@ public class ResultSet<T> {
 
 	public boolean isEmpty(){
 		return getResults() == null || getResults().isEmpty();
+	}
+
+	public String getLanguage() {
+		return language;
+	}
+
+	public void setLanguage(String language) {
+		this.language = language;
 	}
 }

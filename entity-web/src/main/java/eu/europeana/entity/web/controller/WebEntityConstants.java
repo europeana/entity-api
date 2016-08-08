@@ -52,6 +52,8 @@ public interface WebEntityConstants extends WebEntityFields{
 	public static final String TYPE = "type";
 //	public static final String BODY = "body";
 	public static final String DC_LANGUAGE = "language";
+	public static final String AT_LANGUAGE = "@language";
+	
 //	public static final String FORMAT = "format";
 //	public static final String MEDIA_TYPE = "mediaType";
 //	public static final String PAGE = "page";

@@ -174,6 +174,7 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 			Class<T> entityPreviewClass) throws EntitySuggestionException {
 
 		ResultSet<T> resultSet = new ResultSet<>();
+		resultSet.setLanguage(language);
 
 		Map<String, Object> suggest = (Map<String, Object>) rsp.getResponse().get(SuggestionFields.SUGGEST);
 

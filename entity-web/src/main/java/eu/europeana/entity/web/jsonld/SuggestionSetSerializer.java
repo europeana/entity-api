@@ -109,8 +109,8 @@ public class SuggestionSetSerializer extends JsonLd {
 		entityPreviewPropValue
 				.putProperty(new JsonLdProperty(WebEntityConstants.PREF_LABEL, entityPreview.getPreferredLabel()));
 
-		String typeUri = entityPreview.getType();
-		EntityTypes entityType = EntityTypes.getByHttpUri(typeUri);
+		String type = entityPreview.getType();
+		EntityTypes entityType = EntityTypes.getByInternalType(type);
 
 		if (entityType != null) {
 			entityPreviewPropValue.putProperty(new JsonLdProperty(WebEntityConstants.TYPE, entityType.getInternalType()));

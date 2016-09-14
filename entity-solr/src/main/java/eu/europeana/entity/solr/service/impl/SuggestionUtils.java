@@ -44,7 +44,7 @@ public class SuggestionUtils {
 			preview = createPreviewObjectInstance(entityType); 
 			preview.setType(propertyNode.getTextValue());
 			
-			propertyNode = payloadNode.get(SuggestionFields.ENTITY_ID);
+			propertyNode = payloadNode.get(SuggestionFields.ID);
 			preview.setEntityId(propertyNode.getTextValue());
 			
 			propertyNode = payloadNode.get(SuggestionFields.TERM);
@@ -133,9 +133,10 @@ public class SuggestionUtils {
 		
 	}
 
-	private EntityPreview createPreviewObjectInstance(String entityTypeUri) {
-		EntityTypes entityType = EntityTypes.getByHttpUri(entityTypeUri);
+	private EntityPreview createPreviewObjectInstance(String entityTypeStr) {
+		//EntityTypes entityType = EntityTypes.getByHttpUri(entityTypeUri);
 		
+		EntityTypes entityType = EntityTypes.getByInternalType(entityTypeStr);
 		return EntityPreviewObjectFactory.getInstance().createObjectInstance(
 				entityType);		
 	}

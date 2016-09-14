@@ -154,7 +154,8 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 			query.add("suggest.cfq", entityType.getInternalType());
 
 		try {
-			getLogger().debug("suggest entity: " + query);
+			getLogger().debug("invoke suggest handler: " + handler);
+			getLogger().debug("suggest query: " + query);
 			QueryResponse rsp = solrServer.query(query);
 
 			res = buildSuggestionSet(rsp, language, rows, EntityPreviewImpl.class);
@@ -175,9 +176,9 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 
 		ResultSet<T> resultSet = new ResultSet<>();
 		resultSet.setLanguage(language);
-
+		
 		Map<String, Object> suggest = (Map<String, Object>) rsp.getResponse().get(SuggestionFields.SUGGEST);
-
+		
 		SimpleOrderedMap<?> exactMatchGroup = (SimpleOrderedMap) suggest
 				.get(SuggestionFields.PREFIX_SUGGEST_ENTITY + language);
 

@@ -44,7 +44,11 @@
 		<version.corelib>2.1</version.corelib>
 		<version.log4j>1.2.12</version.log4j>
 		<version.entityApi>0.0.1-SNAPSHOT</version.entityApi>
+		<!-- 
 		<version.annotationLd>1.0.0-RELEASE</version.annotationLd>
+		 -->
+		
+		<version.annotationLd>1.0.1-RELEASE</version.annotationLd>
 		<version.commonsLang3>3.0</version.commonsLang3>
 		<version.springAop>4.0.9.RELEASE</version.springAop>
 		<version.springCore>4.0.9.RELEASE</version.springCore>

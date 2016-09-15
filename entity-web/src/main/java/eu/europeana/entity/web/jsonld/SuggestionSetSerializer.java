@@ -60,6 +60,7 @@ public class SuggestionSetSerializer extends JsonLd {
 		String[] contextValues = new String[]{WebEntityConstants.LDP_CONTEXT, WebEntityConstants.ENTITY_CONTEXT};
 		JsonLdProperty contextProperty = buildArrayProperty(
 				WebEntityConstants.AT_CONTEXT, contextValues);
+		
 		String language = getEntitySet().getLanguage();
 		
 		if(language != null){
@@ -75,6 +76,7 @@ public class SuggestionSetSerializer extends JsonLd {
 		
 		//String[] type = new String[] { "BasicContainer", "Collection" };
 		jsonLdResource.putProperty(WebEntityConstants.TYPE, WebEntityConstants.TYPE_BASIC_CONTAINER);
+//		putStringProperty(WebEntityConstants.TYPE, WebEntityConstants.TYPE_BASIC_CONTAINER, jsonLdResource);
 		jsonLdResource.putProperty(WebEntityConstants.TOTAL_ITEMS, getEntitySet().getResultSize());
 
 		serializeItems(jsonLdResource);
@@ -160,10 +162,11 @@ public class SuggestionSetSerializer extends JsonLd {
 			entityPreviewPropValue
 					.putProperty(new JsonLdProperty(WebEntityConstants.COUNTRY, entityPreview.getCountry()));
 
-		if (entityPreview.getIsPartOf() != null)
-			entityPreviewPropValue
-					.putProperty(buildArrayProperty(WebEntityConstants.IS_PART_OF, entityPreview.getIsPartOf())); 
+		String[] propertyValue = entityPreview.getIsPartOf();
+		String propertyName = WebEntityConstants.IS_PART_OF;
+		putArrayProperty(entityPreviewPropValue, propertyName, propertyValue);		 
 	}
+	
 
 	private void putAgentSpecificProperties(AgentPreview entityPreview, JsonLdPropertyValue entityPreviewPropValue) {
 		if (entityPreview.getDateOfBirth() != null)

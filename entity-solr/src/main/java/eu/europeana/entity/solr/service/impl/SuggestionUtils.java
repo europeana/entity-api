@@ -1,5 +1,8 @@
 package eu.europeana.entity.solr.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonNode;
@@ -8,6 +11,7 @@ import org.codehaus.jackson.annotate.JsonAutoDetect.Visibility;
 import org.codehaus.jackson.annotate.JsonMethod;
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.node.ArrayNode;
 
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.solr.exception.EntitySuggestionException;
@@ -32,39 +36,38 @@ public class SuggestionUtils {
 	}
 
 	public EntityPreview parsePayload(String payload) throws EntitySuggestionException {
-		
+
 		EntityPreview preview = null;
 		try {
 			JsonParser parser = jsonFactory.createJsonParser(payload);
 			parser.setCodec(objectMapper);
 			JsonNode payloadNode = objectMapper.readTree(payload);
-			
+
 			JsonNode propertyNode = payloadNode.get(SuggestionFields.TYPE);
 			String entityType = propertyNode.getTextValue();
-			preview = createPreviewObjectInstance(entityType); 
+			preview = createPreviewObjectInstance(entityType);
 			preview.setType(propertyNode.getTextValue());
-			
+
 			propertyNode = payloadNode.get(SuggestionFields.ID);
 			preview.setEntityId(propertyNode.getTextValue());
-			
+
 			propertyNode = payloadNode.get(SuggestionFields.TERM);
-			if(propertyNode != null)
+			if (propertyNode != null)
 				preview.setMatchedTerm(propertyNode.getTextValue());
-			
+
 			propertyNode = payloadNode.get(SuggestionFields.PREF_LABEL);
 			preview.setPreferredLabel(propertyNode.getTextValue());
-			
+
 			setEntitySpecificProperties(preview, payloadNode);
-			
-			
+
 		} catch (Exception e) {
 			throw new EntitySuggestionException("Cannot parse suggestion payload: " + payload, e);
-		}		
-   		return preview;
+		}
+		return preview;
 	}
 
 	private void setEntitySpecificProperties(EntityPreview preview, JsonNode payloadNode) {
-		switch (preview.getEntityType()){
+		switch (preview.getEntityType()) {
 		case Agent:
 			putAgentSpecificProperties((AgentPreview) preview, payloadNode);
 			break;
@@ -80,66 +83,66 @@ public class SuggestionUtils {
 		default:
 			break;
 		}
-			
-		
-		
-		
 	}
 
 	private void putConceptSpecificProperties(ConceptPreview preview, JsonNode payloadNode) {
 		JsonNode propertyNode = payloadNode.get(SuggestionFields.IN_SCHEME);
-		if(propertyNode != null)
+		if (propertyNode != null)
 			preview.setInscheme(propertyNode.getTextValue());
-		
-		
+
 	}
 
 	private void putAgentSpecificProperties(AgentPreview preview, JsonNode payloadNode) {
-		
-		JsonNode propertyNode = payloadNode.get(SuggestionFields.BIRTH_DATE);
-		if(propertyNode != null)
+
+		JsonNode propertyNode = payloadNode.get(SuggestionFields.DATE_OF_BIRTH);
+		if (propertyNode != null)
 			preview.setDateOfBirth(propertyNode.getTextValue());
-		
-		propertyNode = payloadNode.get(SuggestionFields.DEATH_DATE);
-		if(propertyNode != null)
+
+		propertyNode = payloadNode.get(SuggestionFields.DATE_OF_DEATH);
+		if (propertyNode != null)
 			preview.setDateOfDeath(propertyNode.getTextValue());
+
+		ArrayNode professionNode = (ArrayNode) payloadNode.get(SuggestionFields.PROFESSION_OR_OCCUPATION);
+		if(professionNode != null){
+			List<String> professions = new ArrayList<String>();
+			for(JsonNode profession : professionNode){
+				professions.add(profession.asText());
+			}
+			
+			preview.setProfessionOrOccuation(professions);
+		}
 		
-		propertyNode = payloadNode.get(SuggestionFields.ROLE);
-		if(propertyNode != null)
-			preview.setProfessionOrOccuation(propertyNode.getTextValue());
-		
+ 
 	}
 
 	private void putPlaceSpecificProperties(PlacePreview preview, JsonNode payloadNode) {
 		JsonNode propertyNode = payloadNode.get(SuggestionFields.COUNTRY);
-		if(propertyNode != null)
+		if (propertyNode != null)
 			preview.setCountry(propertyNode.getTextValue());
-		
+
 		propertyNode = payloadNode.get(SuggestionFields.IS_PART_OF);
-		if(propertyNode != null)
-			preview.setIsPartOf(new String[]{payloadNode.getTextValue()});
-		
+		if (propertyNode != null)
+			preview.setIsPartOf(new String[] { payloadNode.getTextValue() });
+
 	}
-	
+
 	private void putTimespanSpecificProperties(TimeSpanPreview preview, JsonNode payloadNode) {
 		JsonNode propertyNode = payloadNode.get(SuggestionFields.TIME_SPAN_START);
-		
-		if(propertyNode != null)
+
+		if (propertyNode != null)
 			preview.setBegin(propertyNode.getTextValue());
-		
+
 		propertyNode = payloadNode.get(SuggestionFields.TIME_SPAN_END);
-		if(propertyNode != null)
+		if (propertyNode != null)
 			preview.setEnd(propertyNode.getTextValue());
-		
+
 	}
 
 	private EntityPreview createPreviewObjectInstance(String entityTypeStr) {
-		//EntityTypes entityType = EntityTypes.getByHttpUri(entityTypeUri);
-		
+		// EntityTypes entityType = EntityTypes.getByHttpUri(entityTypeUri);
+
 		EntityTypes entityType = EntityTypes.getByInternalType(entityTypeStr);
-		return EntityPreviewObjectFactory.getInstance().createObjectInstance(
-				entityType);		
+		return EntityPreviewObjectFactory.getInstance().createObjectInstance(entityType);
 	}
-	
 
 }

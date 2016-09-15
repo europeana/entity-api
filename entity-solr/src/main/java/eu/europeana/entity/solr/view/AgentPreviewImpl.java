@@ -1,12 +1,14 @@
 package eu.europeana.entity.solr.view;
 
+import java.util.List;
+
 import eu.europeana.entity.web.model.view.AgentPreview;
 
 public class AgentPreviewImpl extends EntityPreviewImpl implements AgentPreview {
 
 	String dateOfBirth;
 	String dateOfDeath;
-	String professionOrOccupation;
+	List<String> professionOrOccupation;
 
 	@Override
 	public void setDateOfDeath(String deathDate) {
@@ -31,12 +33,12 @@ public class AgentPreviewImpl extends EntityPreviewImpl implements AgentPreview 
 	}
 
 	@Override
-	public void setProfessionOrOccuation(String role) {
-		this.professionOrOccupation = role;
+	public void setProfessionOrOccuation(List<String> professionOrOccupation) {
+		this.professionOrOccupation = professionOrOccupation;
 	}
 
 	@Override
-	public String getProfessionOrOccuation() {
+	public List<String> getProfessionOrOccuation() {
 		return professionOrOccupation;
 	}
 

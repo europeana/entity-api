@@ -1,17 +1,19 @@
 package eu.europeana.entity.web.model.view;
 
+import java.util.List;
+
 public interface AgentPreview extends EntityPreview{
 
-	void setDateOfDeath(String deathDate);
+	void setDateOfDeath(String dateOfDeath);
 
 	String getDateOfDeath();
 
-	void setDateOfBirth(String birthDate);
+	void setDateOfBirth(String dateOfBirth);
 
 	String getDateOfBirth();
 
-	void setProfessionOrOccuation(String role);
+	void setProfessionOrOccuation(List<String> professionOrOccupation);
 
-	String getProfessionOrOccuation();
+	List<String> getProfessionOrOccuation();
 
 }

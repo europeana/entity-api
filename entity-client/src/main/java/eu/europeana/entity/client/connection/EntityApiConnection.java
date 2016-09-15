@@ -15,7 +15,7 @@ import eu.europeana.entity.client.model.result.EntitySearchResults;
 import eu.europeana.entity.definitions.model.Concept;
 import eu.europeana.entity.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.impl.BaseEntity;
-import eu.europeana.entity.utils.jsonld.WebEntityFields;
+import eu.europeana.entity.definitions.vocabulary.WebEntityFields;
 
 
 /**

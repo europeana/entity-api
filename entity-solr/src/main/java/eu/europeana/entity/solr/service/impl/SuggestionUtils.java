@@ -13,6 +13,8 @@ import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.ArrayNode;
 
+import eu.europeana.entity.definitions.model.ResourcePreview;
+import eu.europeana.entity.definitions.model.ResourcePreviewImpl;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.solr.exception.EntitySuggestionException;
 import eu.europeana.entity.solr.model.factory.EntityPreviewObjectFactory;
@@ -115,16 +117,19 @@ public class SuggestionUtils {
 	}
 
 	private void putPlaceSpecificProperties(PlacePreview preview, JsonNode payloadNode) {
-		//TODO: remove as not supported anymore
-		// JsonNode propertyNode = payloadNode.get(SuggestionFields.COUNTRY);
-		// if (propertyNode != null)
-		// preview.setCountry(propertyNode.getTextValue());
-
 		JsonNode propertyNode = payloadNode.get(SuggestionFields.IS_PART_OF);
-		if (propertyNode != null) 
-			;//TODO: parse to List<ResourcePreview>
-//			preview.setIsPartOf(new String[] { payloadNode.getTextValue() });
-
+		if (propertyNode != null) {
+			List<ResourcePreview> isPartOf = new ArrayList<ResourcePreview>();
+			for(JsonNode resourcePreviewNode: propertyNode) {
+				ResourcePreview resourcePreview = new ResourcePreviewImpl();
+				String prefLabel = resourcePreviewNode.get(SuggestionFields.PREF_LABEL).getTextValue();
+				resourcePreview.setPrefLabel(prefLabel);
+				String httpUri = resourcePreviewNode.get(SuggestionFields.ID).getTextValue();
+				resourcePreview.setHttpUri(httpUri);
+				isPartOf.add(resourcePreview);	
+			}
+			preview.setIsPartOf(isPartOf);
+		}
 	}
 
 	private void putTimespanSpecificProperties(TimeSpanPreview preview, JsonNode payloadNode) {

@@ -3,7 +3,9 @@ package eu.europeana.entity.web.jsonld;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.stanbol.commons.jsonld.JsonLd;
 import org.apache.stanbol.commons.jsonld.JsonLdProperty;
@@ -157,16 +159,19 @@ public class SuggestionSetSerializer extends JsonLd {
 					.putProperty(new JsonLdProperty(WebEntityConstants.END, entityPreview.getEnd()));
 	}
 
-	//TODO: replace by using the put<Type> methods used in entity serializer
 	private void putPlaceSpecificProperties(PlacePreview entityPreview, JsonLdPropertyValue entityPreviewPropValue) {
-//		if (entityPreview.getCountry() != null)
-//			entityPreviewPropValue
-//					.putProperty(new JsonLdProperty(WebEntityConstants.COUNTRY, entityPreview.getCountry()));
 
-		List<ResourcePreview> propertyValue = entityPreview.getIsPartOf();
-		String propertyName = WebEntityConstants.IS_PART_OF;
-		;//TODO: add proper serialization of List<ResourcePreview>
-//		putArrayProperty(entityPreviewPropValue, propertyName, propertyValue);		 
+		List<ResourcePreview> partOfList = entityPreview.getIsPartOf();
+		JsonLdProperty isPartOfProp = new JsonLdProperty(WebEntityConstants.IS_PART_OF);
+		JsonLdPropertyValue propValue;
+		for (ResourcePreview resourcePreview : partOfList) {
+			propValue = new JsonLdPropertyValue();
+			propValue.getValues().put(WebEntityConstants.ID, resourcePreview.getHttpUri());
+			propValue.getValues().put(WebEntityConstants.PREF_LABEL, resourcePreview.getPrefLabel());
+			isPartOfProp.addValue(propValue);
+		}
+		
+		entityPreviewPropValue.putProperty(isPartOfProp);
 	}
 	
 

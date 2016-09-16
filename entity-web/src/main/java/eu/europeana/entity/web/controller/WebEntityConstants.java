@@ -73,7 +73,7 @@ public interface WebEntityConstants extends WebEntityFields{
 	public static final String GEO_LAT = "lat";
 	public static final String GEO_LONG = "long";
 	
-	public static final String COUNTRY = "country";
+//	public static final String COUNTRY = "country";
 	public static final String IS_PART_OF = "isPartOf";
 	
 	

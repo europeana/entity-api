@@ -1,12 +1,17 @@
 package eu.europeana.entity.web.model.view;
 
+import java.util.List;
+
+import eu.europeana.entity.definitions.model.ResourcePreview;
+
 public interface PlacePreview extends EntityPreview{
 
-	void setCountry(String country);
+// Not supported anymore
+//	void setCountry(String country);
+//
+//	String getCountry();
 
-	String getCountry();
+	void setIsPartOf(List<ResourcePreview> isPartOf);
 
-	void setIsPartOf(String[] isPartOf);
-
-	String[] getIsPartOf();
+	List<ResourcePreview> getIsPartOf();
 }

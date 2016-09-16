@@ -103,26 +103,27 @@ public class SuggestionUtils {
 			preview.setDateOfDeath(propertyNode.getTextValue());
 
 		ArrayNode professionNode = (ArrayNode) payloadNode.get(SuggestionFields.PROFESSION_OR_OCCUPATION);
-		if(professionNode != null){
+		if (professionNode != null) {
 			List<String> professions = new ArrayList<String>();
-			for(JsonNode profession : professionNode){
+			for (JsonNode profession : professionNode) {
 				professions.add(profession.asText());
 			}
-			
+
 			preview.setProfessionOrOccuation(professions);
 		}
-		
- 
+
 	}
 
 	private void putPlaceSpecificProperties(PlacePreview preview, JsonNode payloadNode) {
-		JsonNode propertyNode = payloadNode.get(SuggestionFields.COUNTRY);
-		if (propertyNode != null)
-			preview.setCountry(propertyNode.getTextValue());
+		//TODO: remove as not supported anymore
+		// JsonNode propertyNode = payloadNode.get(SuggestionFields.COUNTRY);
+		// if (propertyNode != null)
+		// preview.setCountry(propertyNode.getTextValue());
 
-		propertyNode = payloadNode.get(SuggestionFields.IS_PART_OF);
-		if (propertyNode != null)
-			preview.setIsPartOf(new String[] { payloadNode.getTextValue() });
+		JsonNode propertyNode = payloadNode.get(SuggestionFields.IS_PART_OF);
+		if (propertyNode != null) 
+			;//TODO: parse to List<ResourcePreview>
+//			preview.setIsPartOf(new String[] { payloadNode.getTextValue() });
 
 	}
 

@@ -1,27 +1,24 @@
 package eu.europeana.entity.solr.view;
 
+import java.util.List;
+
+import eu.europeana.entity.definitions.model.ResourcePreview;
+
 public class PlacePreviewImpl extends EntityPreviewImpl implements eu.europeana.entity.web.model.view.PlacePreview {
 
-	String country;
-	String[] isPartOf;
-	
+	List<ResourcePreview> isPartOf;
+
 	@Override
-	public String getCountry() {
-		return country;
+	public void setIsPartOf(List<ResourcePreview> isPartOf) {
+		this.isPartOf = isPartOf;
+		
 	}
 
 	@Override
-	public void setCountry(String country) {
-		this.country = country;
-	}
-
-	@Override
-	public String[] getIsPartOf() {
+	public List<ResourcePreview> getIsPartOf() {
 		return isPartOf;
 	}
+	
 
-	@Override
-	public void setIsPartOf(String[] isPartOf) {
-		this.isPartOf = isPartOf;
-	}
+	
 }

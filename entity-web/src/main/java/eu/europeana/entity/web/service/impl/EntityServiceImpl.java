@@ -54,14 +54,14 @@ public class EntityServiceImpl implements EntityService {
 	
 	
 	/* (non-Javadoc)
-	 * @see eu.europeana.entity.web.service.EntityService#suggest(java.lang.String, java.lang.String, java.lang.String, java.lang.String, int)
+	 * @see eu.europeana.entity.web.service.EntityService#suggest(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, int)
 	 */
 	@Override	
-	public ResultSet<? extends EntityPreview> suggest(String text, String language, EntityTypes internalEntityType, String namespace, int rows) throws HttpException {
+	public ResultSet<? extends EntityPreview> suggest(String text, String language, EntityTypes internalEntityType, String scope, String namespace, int rows) throws HttpException {
 
 		try {
 			Query query = buildSearchQuery(text, null, rows);
-			return solrEntityService.suggest(query, language, internalEntityType, rows);
+			return solrEntityService.suggest(query, language, internalEntityType, scope, rows);
 		} catch (EntitySuggestionException e) {
 			throw new HttpException("Cannot retrieve entity by URI", HttpStatus.INTERNAL_SERVER_ERROR, e);
 		}

@@ -47,8 +47,8 @@ public interface SolrEntityService {
 	 * @throws EntityRetrievalException 
 	 * @throws EntitySuggestionException 
 	 */
-	public ResultSet<? extends EntityPreview> suggest(Query searchQuery, String language, EntityTypes entityType,  int rows) throws EntitySuggestionException;
+	public ResultSet<? extends EntityPreview> suggest(Query searchQuery, String language, EntityTypes entityType, String scope,  int rows) throws EntitySuggestionException;
 
-	public ResultSet<? extends EntityPreview> suggest(Query searchQuery, String language, String internalEntityType,  int rows) throws EntitySuggestionException;
+	public ResultSet<? extends EntityPreview> suggest(Query searchQuery, String language, String internalEntityType, String scope,  int rows) throws EntitySuggestionException;
 
 }

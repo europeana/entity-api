@@ -12,6 +12,7 @@ public interface WebEntityConstants extends WebEntityFields{
 	String QUERY_PARAM_TEXT = "text";
 	String QUERY_PARAM_LANGUAGE = "language";
 	String QUERY_PARAM_TYPE = "type";
+	String QUERY_PARAM_SCOPE = "scope";
 	String QUERY_PARAM_NAMESPACE = "namespace";
 	String QUERY_PARAM_ROWS = "rows";
 	
@@ -20,6 +21,7 @@ public interface WebEntityConstants extends WebEntityFields{
 	String PARAM_AGENT = "agent";
 	String PARAM_PLACE = "place";
 	String PARAM_CONCEPT = "concept";
+	String PARAM_EUROPEANA = "europeana";
 	String PARAM_TIMESPAN = "timespan";
 	String PARAM_QUERY = "query";
 	String PARAM_DEFAULT_ROWS = "10";

@@ -1,6 +1,7 @@
 package eu.europeana.entity.solr.service.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -139,7 +140,7 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 	}
 
 	@Override
-	public ResultSet<? extends EntityPreview> suggest(Query searchQuery, String language, EntityTypes entityType, int rows)
+	public ResultSet<? extends EntityPreview> suggest(Query searchQuery, String language, EntityTypes entityType, String scope, int rows)
 			throws EntitySuggestionException {
 
 		ResultSet<? extends EntityPreview> res = null;
@@ -150,8 +151,9 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 
 		query.setRequestHandler(handler);
 		
-		if(entityType != null && !EntityTypes.All.equals(entityType))
-			query.add("suggest.cfq", entityType.getInternalType());
+		addQueryFilterParam(query, entityType, scope);
+		
+		
 
 		try {
 			getLogger().debug("invoke suggest handler: " + handler);
@@ -169,6 +171,34 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 
 		return res;
 	}
+
+	private void addQueryFilterParam(SolrQuery query, EntityTypes entityType, String scope) {
+		
+		Boolean isScope = scope != null && !scope.equals("");
+		Boolean isSpecificEntityType = entityType != null && !EntityTypes.All.equals(entityType);
+		String entityTypeVal = entityType.getInternalType();
+		String filter = null;
+		
+		String scopeFilter = null;
+		if(SuggestionFields.PARAM_EUROPEANA.equals(scope)) { 
+			scopeFilter = SuggestionFields.FILTER_IN_EUROPEANA;
+		}
+		
+		if( !isSpecificEntityType && !isScope)
+			return;
+		if(isSpecificEntityType && !isScope)
+			filter = entityTypeVal;
+		else if(!isSpecificEntityType && scopeFilter != null) 
+			filter = scopeFilter;
+		else if(isSpecificEntityType && isScope)
+			filter = entityTypeVal + " AND " + scopeFilter;
+		
+		if(filter != null)
+			query.add("suggest.cfq", filter);
+		
+	}
+
+	
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	protected <T extends EntityPreview> ResultSet<T> buildSuggestionSet(QueryResponse rsp, String language, int rows,
@@ -251,9 +281,9 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 	}
 
 	@Override
-	public ResultSet<? extends EntityPreview> suggest(Query searchQuery, String language, String internalEntityType,
+	public ResultSet<? extends EntityPreview> suggest(Query searchQuery, String language, String internalEntityType, String scope,
 			int rows) throws EntitySuggestionException {
-		return suggest(searchQuery, language, EntityTypes.getByInternalType(internalEntityType), rows);
+		return suggest(searchQuery, language, EntityTypes.getByInternalType(internalEntityType), scope, rows);
 	}
 
 }

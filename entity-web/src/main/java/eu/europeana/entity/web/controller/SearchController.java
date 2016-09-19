@@ -42,6 +42,7 @@ public class SearchController extends BaseRest {
 			@RequestParam(value = WebEntityConstants.PARAM_WSKEY) String wskey,
 			@RequestParam(value = WebEntityConstants.QUERY_PARAM_TEXT) String text,
 			@RequestParam(value = WebEntityConstants.QUERY_PARAM_LANGUAGE, defaultValue = WebEntityConstants.PARAM_LANGUAGE_EN) String language,
+			@RequestParam(value = WebEntityConstants.QUERY_PARAM_SCOPE, required = false) String scope,
 			@RequestParam(value = WebEntityConstants.QUERY_PARAM_TYPE, defaultValue = WebEntityConstants.PARAM_ALL) String type,
 //			@RequestParam(value = WebEntityConstants.QUERY_PARAM_NAMESPACE, required = false) String namespace,
 			@RequestParam(value = WebEntityConstants.QUERY_PARAM_ROWS, defaultValue = WebEntityConstants.PARAM_DEFAULT_ROWS) int rows
@@ -53,15 +54,21 @@ public class SearchController extends BaseRest {
 			// Check client access (a valid “wskey” must be provided)
 			validateApiKey(wskey);
 			
+			//validate service params
 			EntityTypes entityType = EntityTypes.getByInternalType(type);
 			if(StringUtils.isNotBlank(type) && entityType == null)
-				throw new ParamValidationException("Invalid value for the request param! ", WebEntityConstants.QUERY_PARAM_TYPE, type);
+				throw new ParamValidationException("Invalid request parameter value! ", WebEntityConstants.QUERY_PARAM_TYPE, type);
+			if(scope != null && StringUtils.isNotBlank(scope) && !scope.equalsIgnoreCase(WebEntityConstants.PARAM_EUROPEANA))
+				throw new ParamValidationException("Invalid request parameter value! ", WebEntityConstants.QUERY_PARAM_SCOPE, scope);
 			
-			ResultSet<? extends EntityPreview> results = entityService.suggest(text, language, entityType, null, rows);
+			//perform search
+			ResultSet<? extends EntityPreview> results = entityService.suggest(text, language, entityType, scope, null, rows);
 			
+			//serialize results
 	        SuggestionSetSerializer serializer = new SuggestionSetSerializer(results);
 	        String jsonLd = serializer.serialize();
 
+	        //build response
 			MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>(5);
 			headers.add(HttpHeaders.VARY, HttpHeaders.ACCEPT);
 			headers.add(HttpHeaders.LINK, HttpHeaders.VALUE_LDP_CONTAINER);

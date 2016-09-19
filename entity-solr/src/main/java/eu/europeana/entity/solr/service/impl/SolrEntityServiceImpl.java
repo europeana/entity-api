@@ -73,7 +73,7 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 		 * Construct a SolrQuery
 		 */
 		SolrQuery query = new SolrQuery();
-		query.setQuery(ConceptSolrFields.ENTITY_ID + ":\"" + entityId + "\"");
+		query.setQuery(ConceptSolrFields.ID + ":\"" + entityId + "\"");
 
 		getLogger().trace("query: " + query);
 

@@ -124,7 +124,7 @@ public class SolrConceptImpl extends BaseConcept implements Concept{
 	}
 
 	@Override
-	@Field(ConceptSolrFields.ENTITY_ID)
+	@Field(ConceptSolrFields.ID)
 	public void setEntityId(String entityId) {
 		super.setEntityId(entityId);
 	}

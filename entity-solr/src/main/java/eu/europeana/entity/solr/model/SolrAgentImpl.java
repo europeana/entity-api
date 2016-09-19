@@ -40,7 +40,7 @@ public class SolrAgentImpl extends BaseAgent implements Agent {
 	}
 	
 	@Override
-	@Field(ConceptSolrFields.ENTITY_ID)
+	@Field(ConceptSolrFields.ID)
 	public void setEntityId(String entityId) {
 		super.setEntityId(entityId);
 	}

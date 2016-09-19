@@ -27,7 +27,7 @@ public interface ConceptSolrFields {
 	public static final String RDF_ABOUT = "rdf_about";
 	public static final String SAME_AS = "owl_sameAs";
 	
-	public static final String ENTITY_ID = "entity_id";
+	public static final String ID = "id";
 	public static final String INTERNAL_TYPE = "internal_type";
 	public static final String TIMESTAMP = "timestamp";
 		

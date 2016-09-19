@@ -24,7 +24,7 @@ public interface SolrEntityService {
 
 	/**
 	 * This method retrieves available Annotations by searching the given entity URI.
-	 * @param entityUri - See {@link ConceptSolrFields#ENTITY_ID}
+	 * @param entityUri - See {@link ConceptSolrFields#ID}
 	 * @return
 	 * @throws EntityRetrievalException 
 	 */

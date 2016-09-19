@@ -40,7 +40,7 @@ public class SolrPlaceImpl extends BasePlace implements Place {
 	}
 
 	@Override
-	@Field(ConceptSolrFields.ENTITY_ID)
+	@Field(ConceptSolrFields.ID)
 	public void setEntityId(String entityId) {
 		super.setEntityId(entityId);
 	}

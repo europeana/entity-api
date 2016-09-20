@@ -37,7 +37,7 @@ public class SearchController extends BaseRest {
 	@SuppressWarnings("unchecked")
 	@ApiOperation(value = "Suggest entitties for the given text query. Suported values for type: Agent, Place, Concept, Timespan, All", nickname = "getSuggestion", response = java.lang.Void.class)
 	@RequestMapping(value = {"/entity/suggest", "/entity/suggest.jsonld"}, method = RequestMethod.GET, 
-		produces = { MediaType.APPLICATION_JSON_VALUE+";charset=utf-8", "application/ld+json;charset=utf-8"})
+		produces = {HttpHeaders.CONTENT_TYPE_JSON_UTF8, HttpHeaders.CONTENT_TYPE_JSONLD_UTF8})
 	public ResponseEntity<String> getSuggestion(
 			@RequestParam(value = WebEntityConstants.PARAM_WSKEY) String wskey,
 			@RequestParam(value = WebEntityConstants.QUERY_PARAM_TEXT) String text,

@@ -36,7 +36,7 @@ public class ResolveController extends BaseRest {
 
 	@ApiOperation(value = "Retrieve a known entity", nickname = "getEntity", response = java.lang.Void.class)
 	@RequestMapping(value = {"/entity/{type}/{namespace}/{identifier}", "/entity/{type}/{namespace}/{identifier}.jsonld"}, method = RequestMethod.GET, 
-			produces = { MediaType.APPLICATION_JSON_VALUE+";charset=utf-8", "application/ld+json;charset=utf-8"})
+			produces = { HttpHeaders.CONTENT_TYPE_JSON_UTF8, HttpHeaders.CONTENT_TYPE_JSONLD_UTF8})
 	public ResponseEntity<String> getEntity(
 			@RequestParam(value = WebEntityConstants.PARAM_WSKEY) String wskey,
 			@PathVariable(value = WebEntityConstants.PATH_PARAM_TYPE) String type,

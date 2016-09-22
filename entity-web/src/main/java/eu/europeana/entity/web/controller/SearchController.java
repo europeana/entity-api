@@ -1,5 +1,7 @@
 package eu.europeana.entity.web.controller;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringUtils;
@@ -55,14 +57,15 @@ public class SearchController extends BaseRest {
 			validateApiKey(wskey);
 			
 			//validate service params
-			EntityTypes entityType = EntityTypes.getByInternalType(type);
-			if(StringUtils.isNotBlank(type) && entityType == null)
+			EntityTypes[] entityTypes = EntityTypes.getEntityTypesFromString(type);
+			//EntityTypes entityType = EntityTypes.getByInternalType(type);
+			if(entityTypes == null || entityTypes.length == 0)
 				throw new ParamValidationException("Invalid request parameter value! ", WebEntityConstants.QUERY_PARAM_TYPE, type);
 			if(scope != null && StringUtils.isNotBlank(scope) && !scope.equalsIgnoreCase(WebEntityConstants.PARAM_EUROPEANA))
 				throw new ParamValidationException("Invalid request parameter value! ", WebEntityConstants.QUERY_PARAM_SCOPE, scope);
 			
 			//perform search
-			ResultSet<? extends EntityPreview> results = entityService.suggest(text, language, entityType, scope, null, rows);
+			ResultSet<? extends EntityPreview> results = entityService.suggest(text, language, entityTypes, scope, null, rows);
 			
 			//serialize results
 	        SuggestionSetSerializer serializer = new SuggestionSetSerializer(results);

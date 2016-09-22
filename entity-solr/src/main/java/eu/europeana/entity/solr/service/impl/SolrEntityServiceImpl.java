@@ -140,7 +140,7 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 	}
 
 	@Override
-	public ResultSet<? extends EntityPreview> suggest(Query searchQuery, String language, EntityTypes entityType, String scope, int rows)
+	public ResultSet<? extends EntityPreview> suggest(Query searchQuery, String language, EntityTypes[] entityTypes, String scope, int rows)
 			throws EntitySuggestionException {
 
 		ResultSet<? extends EntityPreview> res = null;
@@ -151,7 +151,7 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 
 		query.setRequestHandler(handler);
 		
-		addQueryFilterParam(query, entityType, scope);
+		addQueryFilterParam(query, entityTypes, scope);
 		
 		
 
@@ -171,12 +171,17 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 
 		return res;
 	}
+	
+	private String buildEntityTypeCondition(EntityTypes[] entityTypes) {
+		String disjunction = String.join(" or ", EntityTypes.toStringArray(entityTypes));
+		return "(" + disjunction + ")";
+	}
 
-	private void addQueryFilterParam(SolrQuery query, EntityTypes entityType, String scope) {
+	private void addQueryFilterParam(SolrQuery query, EntityTypes[] entityTypes, String scope) {
 		
 		Boolean isScope = scope != null && !scope.equals("");
-		Boolean isSpecificEntityType = entityType != null && !EntityTypes.All.equals(entityType);
-		String entityTypeVal = entityType.getInternalType();
+		Boolean isSpecificEntityType = entityTypes != null && entityTypes.length > 0 && !EntityTypes.arrayHasValue(entityTypes, EntityTypes.All);
+		String entityTypeCondition = entityTypes.length == 0 ? entityTypes[0].getInternalType() : buildEntityTypeCondition(entityTypes);
 		String filter = null;
 		
 		String scopeFilter = null;
@@ -187,11 +192,11 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 		if( !isSpecificEntityType && !isScope)
 			return;
 		if(isSpecificEntityType && !isScope)
-			filter = entityTypeVal;
+			filter = entityTypeCondition;
 		else if(!isSpecificEntityType && scopeFilter != null) 
 			filter = scopeFilter;
 		else if(isSpecificEntityType && isScope)
-			filter = entityTypeVal + " AND " + scopeFilter;
+			filter = entityTypeCondition + " AND " + scopeFilter;
 		
 		if(filter != null)
 			query.add("suggest.cfq", filter);
@@ -281,9 +286,9 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 	}
 
 	@Override
-	public ResultSet<? extends EntityPreview> suggest(Query searchQuery, String language, String internalEntityType, String scope,
+	public ResultSet<? extends EntityPreview> suggest(Query searchQuery, String language, String commaSepEntityTypes, String scope,
 			int rows) throws EntitySuggestionException {
-		return suggest(searchQuery, language, EntityTypes.getByInternalType(internalEntityType), scope, rows);
+		return suggest(searchQuery, language, EntityTypes.getEntityTypesFromString(commaSepEntityTypes), scope, rows);
 	}
 
 }

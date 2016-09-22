@@ -25,6 +25,6 @@ public interface EntityService {
 	 */
 //	List<? extends Concept> suggest(
 	ResultSet<? extends EntityPreview> suggest(
-			String text, String language, EntityTypes internalEntityType, String scope, String namespace, int rows) throws HttpException;
+			String text, String language, EntityTypes[] internalEntityTypes, String scope, String namespace, int rows) throws HttpException;
 
 }

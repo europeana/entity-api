@@ -1,5 +1,6 @@
 package eu.europeana.entity.web.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -56,11 +57,10 @@ public class SearchController extends BaseRest {
 			// Check client access (a valid “wskey” must be provided)
 			validateApiKey(wskey);
 			
-			//validate service params
-			EntityTypes[] entityTypes = EntityTypes.getEntityTypesFromString(type);
-			//EntityTypes entityType = EntityTypes.getByInternalType(type);
-			if(entityTypes == null || entityTypes.length == 0)
-				throw new ParamValidationException("Invalid request parameter value! ", WebEntityConstants.QUERY_PARAM_TYPE, type);
+			//validate and convert type
+			EntityTypes[] entityTypes = getEntityTypesFromString(type);
+			
+			//validate scope parameter
 			if(scope != null && StringUtils.isNotBlank(scope) && !scope.equalsIgnoreCase(WebEntityConstants.PARAM_EUROPEANA))
 				throw new ParamValidationException("Invalid request parameter value! ", WebEntityConstants.QUERY_PARAM_SCOPE, scope);
 			
@@ -91,6 +91,34 @@ public class SearchController extends BaseRest {
 			throw new InternalServerException(e);
 		}
 			
+	}
+	
+	/**
+	 * Get entity type string list from comma separated entities string.
+	 * @param commaSepEntityTypes Comma separated entities string
+	 * @return Entity types string list
+	 * @throws ParamValidationException 
+	 */
+	public EntityTypes[] getEntityTypesFromString(String commaSepEntityTypes) throws ParamValidationException {
+		
+			String[] splittedEntityTypes = commaSepEntityTypes.split(",");
+			EntityTypes[] entityTypes = new EntityTypes[splittedEntityTypes.length];
+			
+			EntityTypes entityType = null;
+			String typeAsString;
+			
+			for (int i = 0; i < splittedEntityTypes.length; i++) {
+				typeAsString = splittedEntityTypes[i].trim();
+				entityType = EntityTypes.getByInternalType(typeAsString);
+				
+				if(entityType == null)
+					throw new ParamValidationException("Invalid request parameter value! ", WebEntityConstants.QUERY_PARAM_TYPE, typeAsString);
+				
+				entityTypes[i] = entityType;
+				
+			}
+			
+			return entityTypes;
 	}
 		
 }

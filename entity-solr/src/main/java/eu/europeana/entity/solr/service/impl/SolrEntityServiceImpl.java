@@ -285,10 +285,4 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 		return suggestionHelper;
 	}
 
-	@Override
-	public ResultSet<? extends EntityPreview> suggest(Query searchQuery, String language, String commaSepEntityTypes, String scope,
-			int rows) throws EntitySuggestionException {
-		return suggest(searchQuery, language, EntityTypes.getEntityTypesFromString(commaSepEntityTypes), scope, rows);
-	}
-
 }

@@ -1,6 +1,5 @@
 package eu.europeana.entity.solr.service;
 
-import eu.europeana.entity.definitions.model.Concept;
 import eu.europeana.entity.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.search.Query;
 import eu.europeana.entity.definitions.model.search.result.ResultSet;
@@ -49,6 +48,5 @@ public interface SolrEntityService {
 	 */
 	public ResultSet<? extends EntityPreview> suggest(Query searchQuery, String language, EntityTypes[] entityTypes, String scope,  int rows) throws EntitySuggestionException;
 
-	public ResultSet<? extends EntityPreview> suggest(Query searchQuery, String language, String internalEntityType, String scope,  int rows) throws EntitySuggestionException;
 
 }

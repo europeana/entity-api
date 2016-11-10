@@ -103,6 +103,7 @@
 			</exclusions>
 		</dependency>
 
+<!--  TODO: remove spring dependency -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>

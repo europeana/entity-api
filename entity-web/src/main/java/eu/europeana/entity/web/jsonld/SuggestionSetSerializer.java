@@ -57,11 +57,14 @@ public class SuggestionSetSerializer extends JsonLd {
 
 		JsonLdResource jsonLdResource = new JsonLdResource();
 		jsonLdResource.setSubject("");
-//		jsonLdResource.putProperty(WebEntityConstants.AT_CONTEXT, WebEntityConstants.WA_CONTEXT);
 		
-		String[] contextValues = new String[]{WebEntityConstants.LDP_CONTEXT, WebEntityConstants.ENTITY_CONTEXT};
-		JsonLdProperty contextProperty = buildArrayProperty(
-				WebEntityConstants.AT_CONTEXT, contextValues);
+		//String[] contextValues = new String[]{WebEntityConstants.LDP_CONTEXT, WebEntityConstants.ENTITY_CONTEXT};
+//		JsonLdProperty contextProperty = buildArrayProperty(
+//				WebEntityConstants.AT_CONTEXT, contextValues, false);
+		
+		JsonLdProperty contextProperty = new JsonLdProperty(WebEntityConstants.AT_CONTEXT);
+		contextProperty.getValues().add(new JsonLdPropertyValue(WebEntityConstants.LDP_CONTEXT));
+		contextProperty.getValues().add(new JsonLdPropertyValue(WebEntityConstants.ENTITY_CONTEXT));
 		
 		String language = getEntitySet().getLanguage();
 		
@@ -184,9 +187,7 @@ public class SuggestionSetSerializer extends JsonLd {
 
 		if (entityPreview.getProfessionOrOccuation() != null)
 			entityPreviewPropValue.putProperty(
-					buildListProperty(WebEntityConstants.PROFESSION_OR_OCCUPATION, entityPreview.getProfessionOrOccuation()));
-//					new JsonLdProperty(WebEntityConstants.PROFESSION_OR_OCCUPATION,
-//					entityPreview.getProfessionOrOccuation()));
+					buildListProperty(WebEntityConstants.PROFESSION_OR_OCCUPATION, entityPreview.getProfessionOrOccuation(), false));
 	}
 
 	public String convertDateToStr(Date date) {

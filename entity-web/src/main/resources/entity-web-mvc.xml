@@ -34,6 +34,12 @@
 	</mvc:annotation-driven>
 	
 	<mvc:default-servlet-handler />
+	
+	<mvc:cors>
+		<mvc:mapping path="/api-docs" allowed-origins="*" exposed-headers="Access-Control-Allow-Origin"/>
+		<mvc:mapping path="/api-docs/**" allowed-origins="*" exposed-headers="Access-Control-Allow-Origin"/>
+		<mvc:mapping path="/entity/**" allowed-origins="*" exposed-headers="Access-Control-Allow-Origin"/>
+	</mvc:cors>
 
 	<bean class="eu.europeana.api.common.config.swagger.SwaggerConfig">
 	</bean>
@@ -54,12 +60,11 @@
 	</bean>
 
 	<!-- the json view -->
-	<bean id="entity_mvc_views_jaxbBinder" class="org.codehaus.jackson.xc.JaxbAnnotationIntrospector" />
-	<bean id="entity_mvc_views_jsonObjectMapper" class="org.codehaus.jackson.map.ObjectMapper" />
-
-	<bean id="entity_mvc_views_json"
-		class="org.springframework.web.servlet.view.json.MappingJacksonJsonView"
-		p:objectMapper="#{entity_mvc_views_jsonObjectMapper.setAnnotationIntrospector(entity_mvc_views_jaxbBinder)}" />
-
+	<bean id="annotation_mvc_views_jaxbAnnotationBinder" class="com.fasterxml.jackson.module.jaxb.JaxbAnnotationIntrospector" />
+	<bean id="annotation_mvc_views_jsonObjectMapper" class="com.fasterxml.jackson.databind.ObjectMapper" />
+	
+	<bean id="annotation_mvc_views_json"
+		class="org.springframework.web.servlet.view.json.MappingJackson2JsonView"
+		p:objectMapper="#{annotation_mvc_views_jsonObjectMapper.setAnnotationIntrospector(annotation_mvc_views_jaxbAnnotationBinder)}" />
 
 </beans>

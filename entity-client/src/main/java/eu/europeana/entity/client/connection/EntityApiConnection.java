@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 
 import eu.europeana.entity.client.config.ClientConfiguration;
 import eu.europeana.entity.client.model.result.EntitySearchResults;
-import eu.europeana.entity.definitions.model.Concept;
 import eu.europeana.entity.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.impl.BaseEntity;
 import eu.europeana.entity.definitions.vocabulary.WebEntityFields;
@@ -164,4 +163,33 @@ public class EntityApiConnection extends BaseApiConnection {
 	}
 
 
+	/**
+	 * This method performs a lookup for the entity in all 4 datasets using REST interface.
+	 * Example HTTP request for resolution URI: 
+	 *     /entity/resolve?uri=http://dbpedia.org/resource/Charles_Dickens?wskey=apidemo
+	 * @param apiKey
+	 * @param uri
+	 * @return response entity that comprises response body, headers and status code.
+	 * @throws IOException
+	 */
+	public ResponseEntity<String> resolveEntityByUri (
+				String apiKey
+				, String uri
+				)  throws IOException {
+				
+		StringBuilder builder = new StringBuilder();
+		builder.append(getEntityServiceUri());
+		builder.append("/resolve?wskey=").append(apiKey);
+		if (StringUtils.isNotEmpty(uri)) {
+			builder.append("&uri=").append(uri);
+		}				
+		String queryUrl = builder.toString();		
+
+		/**
+		 * Execute API request
+		 */
+		return getURL(queryUrl);		
+	}
+
+	
 }

@@ -1,14 +1,12 @@
 package eu.europeana.entity.solr.service.impl;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
@@ -16,12 +14,12 @@ import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.util.SimpleOrderedMap;
 
-import eu.europeana.entity.definitions.model.Concept;
 import eu.europeana.entity.definitions.model.Entity;
+import eu.europeana.entity.definitions.model.impl.BaseConcept;
 import eu.europeana.entity.definitions.model.search.Query;
 import eu.europeana.entity.definitions.model.search.result.ResultSet;
-import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.definitions.model.vocabulary.ConceptSolrFields;
+import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.solr.exception.EntityRetrievalException;
 import eu.europeana.entity.solr.exception.EntitySuggestionException;
 import eu.europeana.entity.solr.model.factory.EntityObjectFactory;
@@ -30,6 +28,7 @@ import eu.europeana.entity.solr.service.SolrEntityService;
 import eu.europeana.entity.solr.view.EntityPreviewImpl;
 import eu.europeana.entity.web.model.view.ConceptView;
 import eu.europeana.entity.web.model.view.EntityPreview;
+
 
 public class SolrEntityServiceImpl extends BaseEntityService implements SolrEntityService {
 
@@ -285,4 +284,69 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 		return suggestionHelper;
 	}
 
+
+	@Override
+	public Entity searchBySameAsUri(String uri) throws EntityRetrievalException {
+
+		getLogger().debug("search entity by sameAs uri: " + uri);
+
+		/**
+		 * Construct a SolrQuery
+		 */
+		SolrQuery query = new SolrQuery();
+		query.setQuery(ConceptSolrFields.SAME_AS + ":\"" + uri + "\"");
+
+		Entity res = null;
+	    for (EntityTypes field : EntityTypes.values()) {
+	    	if (!field.getInternalType().equals(EntityTypes.All.getInternalType())) {
+		    	Entity tmpEntity = queryServer(query, field.getInternalType());
+		    	if (tmpEntity != null && StringUtils.isNotEmpty(tmpEntity.getEntityId())) {
+		    		res = tmpEntity;
+		    		break;
+		    	}
+	    	}
+	    }
+		
+		return res;
+	}
+
+	
+	/**
+	 * This method queries Solr server
+	 * 
+	 * @param query
+	 * @param type The internal type e.g. agent, place, concept or time span
+	 * @return entity object
+	 * @throws EntityRetrievalException
+	 */
+	private Entity queryServer(SolrQuery query, String type) throws EntityRetrievalException {
+		getLogger().trace("query: " + query);
+
+		List<? extends Entity> beans = null;
+		
+		/**
+		 * Query the server
+		 */
+		try {
+			QueryResponse rsp = solrServer.query(query);
+
+			Class<? extends Entity> concreteClass = null;
+			concreteClass = EntityObjectFactory.getInstance().getClassForType(
+					EntityTypes.getByInternalType(type));
+
+			beans = rsp.getBeans(concreteClass);
+		} catch (SolrServerException e) {
+			throw new EntityRetrievalException(
+					"Unexpected exception occured when searching Solr entities. ", e);
+		}
+
+		if (beans == null || beans.size() == 0)
+			return null;
+		if (beans.size() != 1)
+			throw new EntityRetrievalException("Expected one result but found: " + beans.size());
+
+		return beans.get(0);
+	}
+
+	
 }

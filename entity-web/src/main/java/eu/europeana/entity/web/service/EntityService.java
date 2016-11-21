@@ -27,4 +27,18 @@ public interface EntityService {
 	ResultSet<? extends EntityPreview> suggest(
 			String text, String language, EntityTypes[] internalEntityTypes, String scope, String namespace, int rows) throws HttpException;
 
+	
+	/**
+	 * Performs a lookup for the entity in all 4 datasets:
+	 * 
+	 *    agents, places, concepts and time spans 
+	 * 
+	 * using an alternative uri for an entity (lookup will happen within the owl:sameAs properties).
+	 * 
+	 * @param uri
+	 * @return
+	 * @throws HttpException
+	 */
+	String resolveByUri(String uri) throws HttpException;
+
 }

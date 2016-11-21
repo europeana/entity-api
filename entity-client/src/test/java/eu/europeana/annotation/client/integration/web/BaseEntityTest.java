@@ -56,6 +56,23 @@ public class BaseEntityTest {
 	}
 
 	
+	/**
+	 * This method performs a lookup for the entity in all 4 datasets
+	 * 
+	 * @param apiKey
+	 * @param uri
+	 * @return response entity that contains response body, headers and status code.
+	 */
+	protected ResponseEntity<String> resolveEntity(
+			String apiKey
+			, String uri) {
+
+		ResponseEntity<String> storedResponse = getApiClient().resolveEntityByUri(
+				apiKey, uri);
+		return storedResponse;
+	}
+
+	
 	public String getApiKey() {
 
 		return ClientConfiguration.getInstance().getApiKey();

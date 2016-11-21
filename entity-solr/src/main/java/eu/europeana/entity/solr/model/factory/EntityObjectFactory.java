@@ -1,6 +1,5 @@
 package eu.europeana.entity.solr.model.factory;
 
-import eu.europeana.entity.definitions.model.Concept;
 import eu.europeana.entity.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.solr.model.SolrAgentImpl;
@@ -52,6 +51,9 @@ public class EntityObjectFactory extends AbstractModelObjectFactory<Entity, Enti
 			ret = SolrAgentImpl.class;
 			break;
 		case Place:
+			ret = SolrPlaceImpl.class;
+			break;
+		case Timespan:
 			ret = SolrPlaceImpl.class;
 			break;
 		default:

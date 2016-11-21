@@ -26,6 +26,8 @@ public interface WebEntityConstants extends WebEntityFields{
 	String PARAM_QUERY = "query";
 	String PARAM_DEFAULT_ROWS = "10";
 
+	String PATH_PARAM_URI = "uri";
+	
 	String TYPE_BASIC_CONTAINER = "BasicContainer";
 	
 	/**

@@ -25,6 +25,11 @@
 
 	<repositories>
 		<repository>
+		    <id>artifactory.eanadev.org</id>
+			<name>artifactory.eanadev.org-releases (external libs)</name>
+			<url>http://artifactory.eanadev.org/artifactory/ext-release-local</url>
+		</repository>
+		<repository>
 			<id>libs-release-local</id>
 			<name>europeana-releases</name>
 			<url>http://artifactory.eanadev.org/artifactory/libs-release-local/</url>
@@ -33,12 +38,7 @@
 			<id>libs-snapshots-local</id>
 			<name>europeana-snapshots</name>
 			<url>http://artifactory.eanadev.org/artifactory/libs-snapshot-local/</url>
-		</repository>
-		<repository>
-		    <id>artifactory.eanadev.org</id>
-			<name>artifactory.eanadev.org-releases (external libs)</name>
-			<url>http://artifactory.eanadev.org/artifactory/ext-release-local</url>
-		</repository>
+		</repository>		
 	</repositories>
 
 	<properties>

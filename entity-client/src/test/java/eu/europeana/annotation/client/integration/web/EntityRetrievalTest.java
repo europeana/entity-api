@@ -24,6 +24,8 @@ public class EntityRetrievalTest extends BaseEntityTest {
 	private final String TEST_PLACE_ENTITY_TYPE = EntityTypes.Place.getInternalType();
 	private final String TEST_PLACE_ENTITY_NAMESPACE = "base";
 	private final String TEST_PLACE_ENTITY_ID = "124437";
+	
+	private final String TEST_RESOLVE_URI = "http://dbpedia.org/resource/Charles_Dickens";
 
 	
 //	@Test
@@ -44,7 +46,7 @@ public class EntityRetrievalTest extends BaseEntityTest {
 	}
 	
 	
-	@Test
+//	@Test
 	public void getPlaceEntity() throws JsonParseException, IllegalAccessException, 
 									IllegalArgumentException, InvocationTargetException {
 		
@@ -56,6 +58,22 @@ public class EntityRetrievalTest extends BaseEntityTest {
 				, TEST_PLACE_ENTITY_TYPE
 				, TEST_PLACE_ENTITY_NAMESPACE
 				, TEST_PLACE_ENTITY_ID
+				);
+		
+		validateResponse(response, HttpStatus.OK);
+	}
+	
+	
+	@Test
+	public void resolveEntity() throws JsonParseException, IllegalAccessException, 
+									IllegalArgumentException, InvocationTargetException {
+		
+		/**
+		 * resolve entity by uri
+		 */
+		ResponseEntity<String> response = resolveEntity(
+				getApiKey()
+				, TEST_RESOLVE_URI
 				);
 		
 		validateResponse(response, HttpStatus.OK);

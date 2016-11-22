@@ -83,4 +83,41 @@ public class ResolveController extends BaseRest {
 					
 	}
 
+	
+	@ApiOperation(value = "Performs a lookup for the entity in all 4 datasets", nickname = "resolveEntity", response = java.lang.Void.class)
+	@RequestMapping(value = {"/entity/resolve"}, method = RequestMethod.GET)
+	public ResponseEntity<String> resolveEntity(
+			@RequestParam(value = WebEntityConstants.PARAM_WSKEY) String wskey,
+			@RequestParam(value = WebEntityConstants.PATH_PARAM_URI) String uri
+
+			) throws HttpException  {
+
+		String action = "get:/entity/resolve";
+
+		try {
+			
+			validateApiKey(wskey);
+
+			String datasetUri = entityService.resolveByUri(uri);
+					
+			MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>(5);
+			headers.add(HttpHeaders.LOCATION, "" + datasetUri);
+
+			ResponseEntity<String> response = new ResponseEntity<String>(headers, HttpStatus.MOVED_PERMANENTLY);
+			
+			return response;
+	
+		} catch (RuntimeException e) {
+			//not found .. 
+			throw new InternalServerException(e);
+		} catch (HttpException e) {
+			//avoid wrapping http exception
+			throw e;
+		} catch (Exception e) {
+			throw new InternalServerException(e);
+		}
+					
+	}
+
+	
 }

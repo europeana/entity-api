@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 
-import eu.europeana.entity.definitions.model.Concept;
 import eu.europeana.entity.definitions.model.Entity;
+
 
 public interface WebEntityProtocolApi {
 
@@ -33,4 +33,18 @@ public interface WebEntityProtocolApi {
 	 */
 	public List<Entity> getSuggestions(String apiKey, String text, String language, String rows);
 
+	
+	/**
+	 * Performs a lookup for the entity in all 4 datasets:
+	 * 
+	 *    agents, places, concepts and time spans 
+	 * 
+	 * using an alternative uri for an entity (lookup will happen within the owl:sameAs properties).
+	 * 
+	 * @param uri
+	 * @return
+	 * @throws HttpException
+	 */
+	public ResponseEntity<String> resolveEntityByUri(String apiKey, String uri);
+	
 }

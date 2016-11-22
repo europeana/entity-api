@@ -72,4 +72,22 @@ public class EntityServiceImpl implements EntityService {
 //		return  solrField + ":" + value;
 //	}
 	
+	
+	@Override
+	public String resolveByUri(String uri) throws HttpException{
+		
+		Entity result;
+		try {
+			result = solrEntityService.searchBySameAsUri(uri);
+		} catch (EntityRetrievalException e) {
+			throw new HttpException("Cannot resolve entity by sameAs URI", HttpStatus.INTERNAL_SERVER_ERROR, e);
+		}
+		//if not found send appropriate error message
+		if(result == null)
+			throw new HttpException("No Entitty found for URI: " + uri, HttpStatus.NOT_FOUND);
+		
+ 		return result.getEntityId();
+	}
+
+	
 }

@@ -12,15 +12,16 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.util.SimpleOrderedMap;
 
 import eu.europeana.entity.definitions.model.Entity;
-import eu.europeana.entity.definitions.model.impl.BaseConcept;
 import eu.europeana.entity.definitions.model.search.Query;
 import eu.europeana.entity.definitions.model.search.result.ResultSet;
 import eu.europeana.entity.definitions.model.vocabulary.ConceptSolrFields;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.solr.exception.EntityRetrievalException;
+import eu.europeana.entity.solr.exception.EntityRuntimeException;
 import eu.europeana.entity.solr.exception.EntitySuggestionException;
 import eu.europeana.entity.solr.model.factory.EntityObjectFactory;
 import eu.europeana.entity.solr.model.vocabulary.SuggestionFields;
@@ -286,7 +287,7 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 
 
 	@Override
-	public Entity searchBySameAsUri(String uri) throws EntityRetrievalException {
+	public String searchBySameAsUri(String uri) throws EntityRetrievalException {
 
 		getLogger().debug("search entity by sameAs uri: " + uri);
 
@@ -295,58 +296,69 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 		 */
 		SolrQuery query = new SolrQuery();
 		query.setQuery(ConceptSolrFields.SAME_AS + ":\"" + uri + "\"");
-
-		Entity res = null;
-	    for (EntityTypes field : EntityTypes.values()) {
-	    	if (!field.getInternalType().equals(EntityTypes.All.getInternalType())) {
-		    	Entity tmpEntity = queryServer(query, field.getInternalType());
-		    	if (tmpEntity != null && StringUtils.isNotEmpty(tmpEntity.getEntityId())) {
-		    		res = tmpEntity;
-		    		break;
-		    	}
-	    	}
-	    }
+		query.addField(ConceptSolrFields.ID);
 		
-		return res;
-	}
-
-	
-	/**
-	 * This method queries Solr server
-	 * 
-	 * @param query
-	 * @param type The internal type e.g. agent, place, concept or time span
-	 * @return entity object
-	 * @throws EntityRetrievalException
-	 */
-	private Entity queryServer(SolrQuery query, String type) throws EntityRetrievalException {
-		getLogger().trace("query: " + query);
-
-		List<? extends Entity> beans = null;
-		
-		/**
-		 * Query the server
-		 */
 		try {
 			QueryResponse rsp = solrServer.query(query);
-
-			Class<? extends Entity> concreteClass = null;
-			concreteClass = EntityObjectFactory.getInstance().getClassForType(
-					EntityTypes.getByInternalType(type));
-
-			beans = rsp.getBeans(concreteClass);
+			SolrDocumentList docs = rsp.getResults();
+			
+			if(docs.getNumFound() == 0)
+				return null;
+			
+			if(docs.getNumFound() == 1)
+				return docs.get(0).getFieldValue(ConceptSolrFields.ID).toString();
+			
+			else if(docs.getNumFound() > 1)
+				//TODO: change to runtime exception
+				throw new EntityRetrievalException("Too many solr entries found for sameAs uri: " + uri 
+				 + ". Expected 0..1, but found " + docs.getNumFound());
+			
 		} catch (SolrServerException e) {
+			//TODO: change to runtime exception
 			throw new EntityRetrievalException(
 					"Unexpected exception occured when searching Solr entities. ", e);
 		}
-
-		if (beans == null || beans.size() == 0)
-			return null;
-		if (beans.size() != 1)
-			throw new EntityRetrievalException("Expected one result but found: " + beans.size());
-
-		return beans.get(0);
+		
+		return null;
 	}
+
+	
+//	/**
+//	 * This method queries Solr server
+//	 * 
+//	 * @param query
+//	 * @param type The internal type e.g. agent, place, concept or time span
+//	 * @return entity object
+//	 * @throws EntityRetrievalException
+//	 */
+//	private Entity queryServer(SolrQuery query, String type) throws EntityRetrievalException {
+//		getLogger().trace("query: " + query);
+//
+//		List<? extends Entity> beans = null;
+//		
+//		/**
+//		 * Query the server
+//		 */
+//		try {
+//			QueryResponse rsp = solrServer.query(query);
+//
+//			Class<? extends Entity> concreteClass = null;
+//			concreteClass = EntityObjectFactory.getInstance().getClassForType(
+//					EntityTypes.getByInternalType(type));
+//
+//			beans = rsp.getBeans(concreteClass);
+//		} catch (SolrServerException e) {
+//			throw new EntityRetrievalException(
+//					"Unexpected exception occured when searching Solr entities. ", e);
+//		}
+//
+//		if (beans == null || beans.size() == 0)
+//			return null;
+//		if (beans.size() != 1)
+//			throw new EntityRetrievalException("Expected one result but found: " + beans.size());
+//
+//		return beans.get(0);
+//	}
 
 	
 }

@@ -97,10 +97,10 @@ public class ResolveController extends BaseRest {
 			
 			validateApiKey(wskey);
 
-			String datasetUri = entityService.resolveByUri(uri);
+			String entityUri = entityService.resolveByUri(uri);
 					
 			MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>(5);
-			headers.add(HttpHeaders.LOCATION, "" + datasetUri);
+			headers.add(HttpHeaders.LOCATION, entityUri);
 
 			ResponseEntity<String> response = new ResponseEntity<String>(headers, HttpStatus.MOVED_PERMANENTLY);
 			

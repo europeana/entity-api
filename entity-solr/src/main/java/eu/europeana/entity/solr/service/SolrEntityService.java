@@ -60,7 +60,7 @@ public interface SolrEntityService {
 	 * @return
 	 * @throws EntityRetrievalException
 	 */
-	public Entity searchBySameAsUri(String uri) throws EntityRetrievalException;
+	public String searchBySameAsUri(String uri) throws EntityRetrievalException;
 	
 
 }

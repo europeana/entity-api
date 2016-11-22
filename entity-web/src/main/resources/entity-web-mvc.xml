@@ -38,7 +38,7 @@
 	<mvc:cors>
 		<mvc:mapping path="/api-docs" allowed-origins="*" exposed-headers="Access-Control-Allow-Origin"/>
 		<mvc:mapping path="/api-docs/**" allowed-origins="*" exposed-headers="Access-Control-Allow-Origin"/>
-		<mvc:mapping path="/entity/**" allowed-origins="*" exposed-headers="Access-Control-Allow-Origin"/>
+		<mvc:mapping path="/entity/**" allowed-origins="*" exposed-headers="Access-Control-Allow-Origin,Location"/>
 	</mvc:cors>
 
 	<bean class="eu.europeana.api.common.config.swagger.SwaggerConfig">

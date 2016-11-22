@@ -76,7 +76,7 @@ public class EntityServiceImpl implements EntityService {
 	@Override
 	public String resolveByUri(String uri) throws HttpException{
 		
-		Entity result;
+		String result;
 		try {
 			result = solrEntityService.searchBySameAsUri(uri);
 		} catch (EntityRetrievalException e) {
@@ -86,7 +86,7 @@ public class EntityServiceImpl implements EntityService {
 		if(result == null)
 			throw new HttpException("No Entitty found for URI: " + uri, HttpStatus.NOT_FOUND);
 		
- 		return result.getEntityId();
+ 		return result;
 	}
 
 	

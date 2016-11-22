@@ -22,7 +22,7 @@
 		<groupId>eu.europeana</groupId>
 		<version>2.1</version>
 	</parent>
-	
+
 	<repositories>
 		<repository>
 			<id>libs-release-local</id>
@@ -34,8 +34,13 @@
 			<name>europeana-snapshots</name>
 			<url>http://artifactory.eanadev.org/artifactory/libs-snapshot-local/</url>
 		</repository>
+		<repository>
+		    <id>artifactory.eanadev.org</id>
+			<name>artifactory.eanadev.org-releases (external libs)</name>
+			<url>http://artifactory.eanadev.org/artifactory/ext-release-local</url>
+		</repository>
 	</repositories>
-	
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -57,10 +62,10 @@
 		<module>entity-utils</module>
 		<module>entity-solr</module>
 		<module>entity-web</module>
-		<module>entity-mongo</module>		
+		<module>entity-mongo</module>
 	</modules>
 	<build>
-		<!--  configure source and output locations -->
+		<!-- configure source and output locations -->
 		<directory>target</directory>
 		<outputDirectory>target/classes</outputDirectory>
 		<finalName>${artifactId}-${version}</finalName>
@@ -78,7 +83,7 @@
 			</testResource>
 		</testResources>
 
-		<!--  plugins -->
+		<!-- plugins -->
 		<plugins>
 			<plugin>
 				<inherited>true</inherited>

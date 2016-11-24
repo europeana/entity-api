@@ -3,6 +3,8 @@ package eu.europeana.annotation.client.integration.web;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.apache.stanbol.commons.exception.JsonParseException;
 import org.junit.Before;
@@ -10,8 +12,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import eu.europeana.entity.client.config.ClientConfiguration;
+import eu.europeana.entity.client.exception.ResolveException;
 import eu.europeana.entity.client.web.WebEntityProtocolApi;
 import eu.europeana.entity.client.web.WebEntityProtocolApiImpl;
+import eu.europeana.entity.definitions.model.Entity;
 
 public class BaseEntityTest {
 
@@ -63,12 +67,19 @@ public class BaseEntityTest {
 	 * @param uri
 	 * @return response entity that contains response body, headers and status code.
 	 */
-	protected ResponseEntity<String> resolveEntity(
+	protected List<Entity> resolveEntity(
+//			protected ResponseEntity<String> resolveEntity(
 			String apiKey
 			, String uri) {
 
-		ResponseEntity<String> storedResponse = getApiClient().resolveEntityByUri(
+		
+		List<Entity> storedResponse = getApiClient().resolveEntityByUri(
+//				ResponseEntity<String> storedResponse = getApiClient().resolveEntityByUri(
 				apiKey, uri);
+		if (storedResponse == null)
+			throw new ResolveException(
+					"No Europeana ID found! ");
+			
 		return storedResponse;
 	}
 

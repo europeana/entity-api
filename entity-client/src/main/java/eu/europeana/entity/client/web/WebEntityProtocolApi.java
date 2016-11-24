@@ -45,6 +45,7 @@ public interface WebEntityProtocolApi {
 	 * @return
 	 * @throws HttpException
 	 */
-	public ResponseEntity<String> resolveEntityByUri(String apiKey, String uri);
+	public List<Entity> resolveEntityByUri(String apiKey, String uri);
+//	public ResponseEntity<String> resolveEntityByUri(String apiKey, String uri);
 	
 }

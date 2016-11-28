@@ -4,7 +4,7 @@ public interface WebEntityFields {
 
 	// LD fields
 	public static final String CONTEXT = "@context";
-	public static final String ENTITY_CONTEXT = "http://data.europeana.eu/entity/context.json";
+	public static final String ENTITY_CONTEXT = "http://www.europeana.eu/schemas/context/entity.jsonld";
 
 	// common fields
 	public static final String ID = "id";

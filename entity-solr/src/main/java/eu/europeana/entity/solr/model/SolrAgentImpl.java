@@ -129,13 +129,13 @@ public class SolrAgentImpl extends BaseAgent implements Agent {
 	}
 
 	@Override
-	@Field(AgentSolrFields.DATE_OF_BIRTH)
+	@Field(AgentSolrFields.DATE_OF_BIRTH_ALL)
 	public void setDateOfBirth(String[] dateOfBirth) {
 		super.setDateOfBirth(dateOfBirth);
 	}
 
 	@Override
-	@Field(AgentSolrFields.DATE_OF_DEATH)
+	@Field(AgentSolrFields.DATE_OF_DEATH_ALL)
 	public void setDateOfDeath(String[] dateOfDeath) {
 		super.setDateOfDeath(dateOfDeath);
 	}

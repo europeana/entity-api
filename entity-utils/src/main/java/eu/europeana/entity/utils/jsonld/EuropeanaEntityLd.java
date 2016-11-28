@@ -42,7 +42,7 @@ public class EuropeanaEntityLd extends JsonLd {
 		jsonLdResource.putProperty(WebEntityFields.TYPE, entity.getInternalType());
 		putStringArrayProperty(WebEntityFields.IDENTIFIER, entity.getIdentifier(), jsonLdResource);
 		putStringArrayProperty(WebEntityFields.SAME_AS, entity.getSameAs(), jsonLdResource);
-		jsonLdResource.putProperty(WebEntityFields.RDF_ABOUT, entity.getAbout());
+		//jsonLdResource.putProperty(WebEntityFields.RDF_ABOUT, entity.getAbout());
 		putStringArrayProperty(WebEntityFields.IS_RELATED_TO, entity.getIsRelatedTo(), jsonLdResource);
 		
 		//common SKOS_Properties

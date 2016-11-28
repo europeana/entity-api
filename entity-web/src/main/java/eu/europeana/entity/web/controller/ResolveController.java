@@ -55,7 +55,8 @@ public class ResolveController extends BaseRest {
 			
 			EuropeanaEntityLd entityLd = new EuropeanaEntityLd(entity);
 			
-			String jsonLd = new String(entityLd.toString(4));
+			String jsonLd = entityLd.toString(4);
+//			String jsonLd = new String(entityLd.toString(4));
 
 			Date timestamp = ((RankedEntity)entity).getTimestamp();
 			Date etagDate = (timestamp != null)? timestamp : new Date();

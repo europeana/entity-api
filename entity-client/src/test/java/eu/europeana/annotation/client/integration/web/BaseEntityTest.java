@@ -68,13 +68,11 @@ public class BaseEntityTest {
 	 * @return response entity that contains response body, headers and status code.
 	 */
 	protected List<Entity> resolveEntity(
-//			protected ResponseEntity<String> resolveEntity(
 			String apiKey
 			, String uri) {
 
 		
 		List<Entity> storedResponse = getApiClient().resolveEntityByUri(
-//				ResponseEntity<String> storedResponse = getApiClient().resolveEntityByUri(
 				apiKey, uri);
 		if (storedResponse == null)
 			throw new ResolveException(

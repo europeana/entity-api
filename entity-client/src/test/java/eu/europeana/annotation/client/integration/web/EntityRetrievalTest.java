@@ -1,7 +1,7 @@
 package eu.europeana.annotation.client.integration.web;
 
-import static org.junit.Assert.fail;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,7 +18,6 @@ import org.junit.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import eu.europeana.entity.client.exception.ResolveException;
 import eu.europeana.entity.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 
@@ -43,8 +42,11 @@ public class EntityRetrievalTest extends BaseEntityTest {
 
 	String searchAnalysisFodler = "./src/test/resources/";
 
-	String REPORT_SOUND_AND_VISION = "report-sound-and-vision.csv"; 
+//	String REPORT_SOUND_AND_VISION = "report-sound-and-vision.csv"; 
+	String REPORT_SOUND_AND_VISION = "report-nisv-dataset.csv"; 
+	String REPORT_ONB_DATASET = "report-onb-dataset.csv"; 
 	String RESOLVED_REPORT_SOUND_AND_VISION = "resolved-report-sound-and-vision.csv"; 
+	String RESOLVED_REPORT_ONB = "resolved-report-onb.csv"; 
 	
 	
 //	@Test
@@ -100,7 +102,7 @@ public class EntityRetrievalTest extends BaseEntityTest {
 	}
 	
 	
-	@Test
+//	@Test
 	public void resolveEntitiesForAuthorList() throws IOException {
 		
 		String DBPEDIA_ID_STR = "DBPedia ID";
@@ -169,6 +171,155 @@ public class EntityRetrievalTest extends BaseEntityTest {
 	}
 	
 
+	@Test
+	public void resolveEntitiesForNisvAuthorList() throws IOException {
+		
+		String EUROPEANA_ID_STR = "Europeana ID";
+		
+		Map<String, String> authorMap = new HashMap<String, String>();
+		
+		File datasetFile = FileUtils.getFile(searchAnalysisFodler + REPORT_SOUND_AND_VISION);
+		if(!datasetFile.exists())
+			fail("required dataset file doesn't exist" + datasetFile);
+		
+		LineIterator iterator = FileUtils.lineIterator(datasetFile);
+		String line;
+		int cnt = 0;
+		final String cellSeparator = ";"; 
+		final String lineBreak = "\n"; 
+		
+		File recordFile = FileUtils.getFile(searchAnalysisFodler + RESOLVED_REPORT_SOUND_AND_VISION);
+		
+		while (iterator.hasNext()) {
+			
+			String europeanaId = ""; 
+			
+			int DBPEDIA_ID_COL_POS = 1;
+
+			line = (String) iterator.next();
+			String[] items = line.split(cellSeparator);
+			if (cnt > 0) {
+				log.debug("count: " + cnt);
+				europeanaId = resolveEntityByUrl(authorMap, "DBPedia", DBPEDIA_ID_COL_POS, items, "");
+				
+				String row = new StringBuilder()
+						.append(line).append(cellSeparator)
+						.append(europeanaId).append(lineBreak)
+						.toString();
+					FileUtils.writeStringToFile(recordFile, row, "UTF-8", true);
+			} else {
+				String row = new StringBuilder()
+						.append(line).append(cellSeparator)
+						.append(EUROPEANA_ID_STR).append(lineBreak).toString();
+				FileUtils.writeStringToFile(recordFile, row, "UTF-8", true);
+			}
+			cnt++;
+		}
+	}
+	
+
+//	@Test
+	public void resolveEntitiesForOnbAuthorList() throws IOException {
+		
+		int WIKIDATA_ID_COL_POS = 1;
+		int FREEBASE_ID_COL_POS = 4;
+		int VIAF_ID_COL_POS     = 5;
+		int DBPEDIA_ID_COL_POS  = 10;
+
+		String EUROPEANA_ID_STR = "Europeana ID";
+		
+		Map<String, String> authorMap = new HashMap<String, String>();
+		
+		File datasetFile = FileUtils.getFile(searchAnalysisFodler + REPORT_ONB_DATASET);
+		if(!datasetFile.exists())
+			fail("required dataset file doesn't exist" + datasetFile);
+		
+		LineIterator iterator = FileUtils.lineIterator(datasetFile);
+		String line;
+		int cnt = 0;
+		final String cellSeparator = ";"; 
+		final String lineBreak = "\n"; 
+		
+		File recordFile = FileUtils.getFile(searchAnalysisFodler + RESOLVED_REPORT_ONB);
+		
+		while (iterator.hasNext()) {
+			
+			String europeanaId = ""; 
+			
+			line = (String) iterator.next();
+			String[] items = line.split(cellSeparator);
+			if (cnt > 0) {
+				log.debug("count: " + cnt);
+				europeanaId = resolveEntityByUrl(authorMap, "DBPedia", DBPEDIA_ID_COL_POS, items, "");
+				if (StringUtils.isEmpty(europeanaId)) 
+					europeanaId = resolveEntityByUrl(
+							authorMap, "VIAF", VIAF_ID_COL_POS, items, "https://viaf.org/viaf/");
+				if (StringUtils.isEmpty(europeanaId)) 
+					europeanaId = resolveEntityByUrl(authorMap, "Freebase", FREEBASE_ID_COL_POS, items, "");
+				if (StringUtils.isEmpty(europeanaId)) 
+					europeanaId = resolveEntityByUrl(
+							authorMap, "Wikidata", WIKIDATA_ID_COL_POS, items, "https://www.wikidata.org/wiki/Q");
+				
+				String row = new StringBuilder()
+						.append(line).append(cellSeparator)
+						.append(europeanaId).append(lineBreak)
+						.toString();
+					FileUtils.writeStringToFile(recordFile, row, "UTF-8", true);
+			} else {
+				String row = new StringBuilder()
+						.append(line).append(cellSeparator)
+						.append(EUROPEANA_ID_STR).append(lineBreak).toString();
+				FileUtils.writeStringToFile(recordFile, row, "UTF-8", true);
+			}
+			cnt++;
+		}
+	}
+
+
+	/**
+	 * This method resolves entity by URL e.g. VIAF, Freebase or DBPedia ID.
+	 * @param authorMap
+	 * @param type Type of the open repository
+	 * @param colPos Position of the ID column in input CSV file
+	 * @param items
+	 * @return europeana ID
+	 */
+	private String resolveEntityByUrl(Map<String, String> authorMap, String type, int colPos,
+			String[] items, String prefix) {
+		
+		String europeanaId = "";
+		if (isElementExists(items, colPos)) {
+			String id = items[colPos];
+			id = id.replace("\"", "").replace("\t", "");
+			if (StringUtils.isNotEmpty(id) && !authorMap.containsKey(id)) {
+				log.debug("id: " + id + ", type: " + type);
+				try {
+					List<Entity> response = resolveEntity(
+							getApiKey()
+							, prefix + id
+							);
+					if (response.size() > 0) {
+						europeanaId = response.get(0).getEntityId();
+						log.debug("europeanaId: " + europeanaId);
+						authorMap.put(id, europeanaId);
+					}
+				} catch (Exception re) {
+					log.error("Can not resolve entity for " + type + " URI: " + id + ". " + re.getMessage());
+				}
+			}
+		}
+		return europeanaId;
+	}
+	
+
+	public static boolean isElementExists(String[] data, int index){
+	    try{
+	      String res = data[index];
+	      return true;
+	    } catch(ArrayIndexOutOfBoundsException e){
+	      return false;
+	    }
+	}	
 	
 	
 }

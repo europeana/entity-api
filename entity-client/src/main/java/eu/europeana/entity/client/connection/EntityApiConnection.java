@@ -131,6 +131,42 @@ public class EntityApiConnection extends BaseApiConnection {
 		return asr;
 	}
 
+	
+	/**
+	 * This method converts json response in EntitySearchResults.
+	 * @param json
+	 * @return EntitySearchResults
+	 */
+	public EntitySearchResults getEntityResolveResults(String json) {
+		EntitySearchResults asr = new EntitySearchResults();
+		asr.setSuccess("true");
+		asr.setAction("create:/entity/resolve");
+		try {
+        	JSONObject jsonObj = new JSONObject(json);
+        	if (json.contains("Unauthorized")) {
+        		asr.setError(json);
+        	} else {
+//	        	JSONArray jsonArray = jsonListObj.getJSONArray(("contains"));
+//	        	if(jsonArray!=null && jsonArray.length()>0){
+			        List<Entity> entityList = new ArrayList<Entity>();
+//	                for (int i = 0; i < jsonArray.length(); i++) {
+//	                	JSONObject jsonObj = jsonArray.getJSONObject(i);
+	                	BaseEntity entityObject = new BaseEntity();
+			        	entityObject.setEntityId(jsonObj.getString("about"));
+//			        	entityObject.setEntityId(jsonObj.getString("@id"));
+			        	entityObject.setDefinition(jsonObj.getString("prefLabel"));
+						entityList.add(entityObject);
+//				    }
+				    asr.setItems(entityList);
+//				}
+        	}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return asr;
+	}
+
+
 	/**
 	 * This method constructs url dependent on search parameter.
 	 * @param apiKey
@@ -172,7 +208,8 @@ public class EntityApiConnection extends BaseApiConnection {
 	 * @return response entity that comprises response body, headers and status code.
 	 * @throws IOException
 	 */
-	public ResponseEntity<String> resolveEntityByUri (
+	public EntitySearchResults resolveEntityByUri (
+//			public ResponseEntity<String> resolveEntityByUri (
 				String apiKey
 				, String uri
 				)  throws IOException {
@@ -188,7 +225,10 @@ public class EntityApiConnection extends BaseApiConnection {
 		/**
 		 * Execute API request
 		 */
-		return getURL(queryUrl);		
+//		return getURL(queryUrl);		
+		String json = getJSONResult(queryUrl);
+		
+		return getEntityResolveResults(json);
 	}
 
 	

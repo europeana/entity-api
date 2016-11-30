@@ -56,8 +56,12 @@ public class WebEntityProtocolApiImpl extends BaseEntityApi implements WebEntity
 	}
 
 	@Override
-	public ResponseEntity<String> resolveEntityByUri(String apiKey, String uri) {
-		ResponseEntity<String> res;
+	public List<Entity> resolveEntityByUri(String apiKey, String uri) {
+//		public ResponseEntity<String> resolveEntityByUri(String apiKey, String uri) {
+		
+		EntitySearchResults res;
+
+//		ResponseEntity<String> res;
 		try {
 			res = apiConnection.resolveEntityByUri(apiKey, uri);
 		} catch (IOException e) {
@@ -65,7 +69,7 @@ public class WebEntityProtocolApiImpl extends BaseEntityApi implements WebEntity
 					"Exception occured when invoking the EntityJsonApi retrieveEntity method", e);
 		}
 
-		return res;
+		return res.getItems();
 	}
 
 	

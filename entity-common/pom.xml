@@ -63,7 +63,7 @@
 		<dependency>
 			<groupId>eu.europeana.entity</groupId>
 			<artifactId>entity-definitions</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>${version.entityApi}</version>
 		</dependency>
 	</dependencies>
 </project>

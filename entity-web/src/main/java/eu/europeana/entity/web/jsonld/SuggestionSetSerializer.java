@@ -163,16 +163,18 @@ public class SuggestionSetSerializer extends JsonLd {
 	private void putPlaceSpecificProperties(PlacePreview entityPreview, JsonLdPropertyValue entityPreviewPropValue) {
 
 		List<ResourcePreview> partOfList = entityPreview.getIsPartOf();
-		JsonLdProperty isPartOfProp = new JsonLdProperty(WebEntityConstants.IS_PART_OF);
-		JsonLdPropertyValue propValue;
-		for (ResourcePreview resourcePreview : partOfList) {
-			propValue = new JsonLdPropertyValue();
-			propValue.getValues().put(WebEntityConstants.ID, resourcePreview.getHttpUri());
-			propValue.getValues().put(WebEntityConstants.PREF_LABEL, resourcePreview.getPrefLabel());
-			isPartOfProp.addValue(propValue);
+		if(partOfList != null && !partOfList.isEmpty()){
+			JsonLdProperty isPartOfProp = new JsonLdProperty(WebEntityConstants.IS_PART_OF);
+			JsonLdPropertyValue propValue;
+			for (ResourcePreview resourcePreview : partOfList) {
+				propValue = new JsonLdPropertyValue();
+				propValue.getValues().put(WebEntityConstants.ID, resourcePreview.getHttpUri());
+				propValue.getValues().put(WebEntityConstants.PREF_LABEL, resourcePreview.getPrefLabel());
+				isPartOfProp.addValue(propValue);
+			}
+			
+			entityPreviewPropValue.putProperty(isPartOfProp);
 		}
-		
-		entityPreviewPropValue.putProperty(isPartOfProp);
 	}
 	
 

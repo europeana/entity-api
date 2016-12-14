@@ -38,7 +38,7 @@ public class SearchController extends BaseRest {
 	EntityService entityService;
 	
 	@SuppressWarnings("unchecked")
-	@ApiOperation(value = "Suggest entitties for the given text query. Suported values for type: Agent, Place, Concept, Timespan, All", nickname = "getSuggestion", response = java.lang.Void.class)
+	@ApiOperation(value = "Suggest entitties for the given text query. Suported values for type: Agent, Place, Concept, Timespan, All. Supported values for scope: europeana", nickname = "getSuggestion", response = java.lang.Void.class)
 	@RequestMapping(value = {"/entity/suggest", "/entity/suggest.jsonld"}, method = RequestMethod.GET, 
 		produces = {HttpHeaders.CONTENT_TYPE_JSON_UTF8, HttpHeaders.CONTENT_TYPE_JSONLD_UTF8})
 	public ResponseEntity<String> getSuggestion(
@@ -61,7 +61,7 @@ public class SearchController extends BaseRest {
 			EntityTypes[] entityTypes = getEntityTypesFromString(type);
 			
 			//validate scope parameter
-			if(scope != null && StringUtils.isNotBlank(scope) && !scope.equalsIgnoreCase(WebEntityConstants.PARAM_EUROPEANA))
+			if(StringUtils.isNotBlank(scope) && !WebEntityConstants.PARAM_EUROPEANA.equalsIgnoreCase(scope))
 				throw new ParamValidationException("Invalid request parameter value! ", WebEntityConstants.QUERY_PARAM_SCOPE, scope);
 			
 			//perform search

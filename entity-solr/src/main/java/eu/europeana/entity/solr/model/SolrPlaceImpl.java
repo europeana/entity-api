@@ -9,6 +9,7 @@ import eu.europeana.entity.definitions.model.Place;
 import eu.europeana.entity.definitions.model.impl.BasePlace;
 import eu.europeana.entity.definitions.model.vocabulary.AgentSolrFields;
 import eu.europeana.entity.definitions.model.vocabulary.ConceptSolrFields;
+import eu.europeana.entity.definitions.model.vocabulary.PlaceSolrFields;
 
 public class SolrPlaceImpl extends BasePlace implements Place {
 
@@ -92,13 +93,13 @@ public class SolrPlaceImpl extends BasePlace implements Place {
 	}
 	
 	@Override
-//	@Field(PlaceSolrFields.LATITUDE)
+	@Field(PlaceSolrFields.LATITUDE)
 	public void setLatitude(String latitude) {
 		super.setLatitude(latitude);
 	}
 	
 	@Override
-//	@Field(PlaceSolrFields.LONGITUDE)
+	@Field(PlaceSolrFields.LONGITUDE)
 	public void setLongitude(String longitude) {
 		super.setLongitude(longitude);
 	}

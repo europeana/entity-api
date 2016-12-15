@@ -192,10 +192,10 @@ public class SuggestionSetSerializer extends JsonLd {
 					buildListProperty(WebEntityConstants.PROFESSION_OR_OCCUPATION, entityPreview.getProfessionOrOccuation(), false));
 	}
 
-	public String convertDateToStr(Date date) {
-		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-		return df.format(date);
-	}
+//	public String convertDateToStr(Date date) {
+//		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+//		return df.format(date);
+//	}
 
 	
 }

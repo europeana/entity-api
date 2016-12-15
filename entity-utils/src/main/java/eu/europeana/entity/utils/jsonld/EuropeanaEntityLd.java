@@ -87,7 +87,7 @@ public class EuropeanaEntityLd extends JsonLd {
 			break;
 			
 		case Timespan:
-			putPlaceSpecificProperties((Timespan) entity, jsonLdResource);
+			putTimespanSpecificProperties((Timespan) entity, jsonLdResource);
 			break;
 			
 		default:
@@ -98,7 +98,7 @@ public class EuropeanaEntityLd extends JsonLd {
 
 	
 
-	private void putPlaceSpecificProperties(Timespan entity, JsonLdResource jsonLdResource) {
+	private void putTimespanSpecificProperties(Timespan entity, JsonLdResource jsonLdResource) {
 		//TODO: in corelib these are maps of string list
 		putStringArrayProperty(WebEntityFields.BEGIN, entity.getBegin(), jsonLdResource);
 		putStringArrayProperty(WebEntityFields.END, entity.getEnd(), jsonLdResource);
@@ -108,9 +108,12 @@ public class EuropeanaEntityLd extends JsonLd {
 	private void putPlaceSpecificProperties(Place entity, JsonLdResource jsonLdResource) {
 		putBaseEntityProperties((BaseEntity)entity, jsonLdResource);
 		
-		putStringProperty(WebEntityFields.LATITUDE, entity.getLatitude(), jsonLdResource);
-		putStringProperty(WebEntityFields.LONGITUDE, entity.getLongitude(), jsonLdResource);
-		putStringProperty(WebEntityFields.ALTITUDE, entity.getAltitude(), jsonLdResource);
+		if(entity.getLatitude() != null)
+			putStringProperty(WebEntityFields.LATITUDE, ""+entity.getLatitude(), jsonLdResource);
+		if(entity.getLongitude() != null)
+			putStringProperty(WebEntityFields.LONGITUDE, ""+entity.getLongitude(), jsonLdResource);
+		if(entity.getAltitude() != null)
+			putStringProperty(WebEntityFields.ALTITUDE, ""+entity.getAltitude(), jsonLdResource);
 		
 		putStringArrayProperty(WebEntityFields.IS_NEXT_IN_SEQUENCE, entity.getIsNextInSequence(), jsonLdResource);
 	}

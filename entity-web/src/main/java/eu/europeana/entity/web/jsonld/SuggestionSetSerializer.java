@@ -163,16 +163,18 @@ public class SuggestionSetSerializer extends JsonLd {
 	private void putPlaceSpecificProperties(PlacePreview entityPreview, JsonLdPropertyValue entityPreviewPropValue) {
 
 		List<ResourcePreview> partOfList = entityPreview.getIsPartOf();
-		JsonLdProperty isPartOfProp = new JsonLdProperty(WebEntityConstants.IS_PART_OF);
-		JsonLdPropertyValue propValue;
-		for (ResourcePreview resourcePreview : partOfList) {
-			propValue = new JsonLdPropertyValue();
-			propValue.getValues().put(WebEntityConstants.ID, resourcePreview.getHttpUri());
-			propValue.getValues().put(WebEntityConstants.PREF_LABEL, resourcePreview.getPrefLabel());
-			isPartOfProp.addValue(propValue);
+		if(partOfList != null && !partOfList.isEmpty()){
+			JsonLdProperty isPartOfProp = new JsonLdProperty(WebEntityConstants.IS_PART_OF);
+			JsonLdPropertyValue propValue;
+			for (ResourcePreview resourcePreview : partOfList) {
+				propValue = new JsonLdPropertyValue();
+				propValue.getValues().put(WebEntityConstants.ID, resourcePreview.getHttpUri());
+				propValue.getValues().put(WebEntityConstants.PREF_LABEL, resourcePreview.getPrefLabel());
+				isPartOfProp.addValue(propValue);
+			}
+			
+			entityPreviewPropValue.putProperty(isPartOfProp);
 		}
-		
-		entityPreviewPropValue.putProperty(isPartOfProp);
 	}
 	
 
@@ -190,10 +192,10 @@ public class SuggestionSetSerializer extends JsonLd {
 					buildListProperty(WebEntityConstants.PROFESSION_OR_OCCUPATION, entityPreview.getProfessionOrOccuation(), false));
 	}
 
-	public String convertDateToStr(Date date) {
-		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-		return df.format(date);
-	}
+//	public String convertDateToStr(Date date) {
+//		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+//		return df.format(date);
+//	}
 
 	
 }

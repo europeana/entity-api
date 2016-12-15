@@ -59,7 +59,7 @@
 		<version.junit>4.11</version.junit>
 		<version.corelib>2.1</version.corelib>
 		<version.log4j>1.2.12</version.log4j>
-		<version.entityApi>0.0.1-RELEASE</version.entityApi>
+		<version.entityApi>0.0.2-SNAPSHOT</version.entityApi>
 		<version.annotationLd>1.1.0</version.annotationLd>
 		<version.commonsLang3>3.0</version.commonsLang3>
 		<version.spring>4.2.5.RELEASE</version.spring>

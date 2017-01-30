@@ -1,6 +1,7 @@
 package eu.europeana.entity.solr.view;
 
 import java.util.Date;
+import java.util.List;
 
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.web.model.view.EntityPreview;
@@ -13,6 +14,7 @@ public class EntityPreviewImpl implements EntityPreview{
 	String matchedTerm;
 	String language;
 	String preferredLabel;
+	List<String> hiddenLabel;
 	String timeSpanStart;
 	String timeSpanEnd;
 	EntityTypes entityType;
@@ -113,6 +115,16 @@ public class EntityPreviewImpl implements EntityPreview{
 	@Override
 	public void setEntityType(EntityTypes entityType) {
 		this.entityType = entityType;
+	}
+
+	@Override
+	public List<String> getHiddenLabel() {
+		return hiddenLabel;
+	}
+
+	@Override
+	public void setHiddenLabel(List<String> hiddenLabel) {
+		this.hiddenLabel = hiddenLabel;
 	}
 
 	

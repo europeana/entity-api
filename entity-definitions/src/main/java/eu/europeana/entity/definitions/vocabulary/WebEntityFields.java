@@ -15,6 +15,7 @@ public interface WebEntityFields {
 	public static final String HAS_PART = "hasPart";
 	public static final String IS_PART_OF = "isPartOf";
 	public static final String PREF_LABEL = "prefLabel";
+	public static final String HIDDEN_LABEL = "hiddenLabel";
 	public static final String ALT_LABEL = "altLabel";
 	public static final String NOTE = "note";
 	public static final String RDF_ABOUT = "about";

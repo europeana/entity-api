@@ -1,5 +1,7 @@
 package eu.europeana.entity.web.model.view;
 
+import java.util.List;
+
 import eu.europeana.entity.definitions.model.search.result.IdBean;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 
@@ -31,5 +33,9 @@ public interface EntityPreview extends IdBean {
 	void setEntityType(EntityTypes entityType);
 
 	EntityTypes getEntityType();
+
+	void setHiddenLabel(List<String> hiddenLabel);
+
+	List<String> getHiddenLabel();
 	
 }

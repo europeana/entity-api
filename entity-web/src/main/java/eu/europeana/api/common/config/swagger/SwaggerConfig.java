@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
 
 import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
@@ -63,9 +64,9 @@ public class SwaggerConfig {
 		String appTitle = StringUtils.isNotBlank(title) ? title : "REST API";
 		String appDescription = StringUtils.isNotBlank(description) ? description : "Entity Collection";
 
-		return new ApiInfo(appTitle, appDescription, version, 
-				"Contact Email", "development-core@europeanalabs.eu",
-				"Terms of use", "http://www.europeana.eu/portal/rights/api-terms-of-use.html");
+		return new ApiInfo(appTitle, appDescription, version, "http://www.europeana.eu/portal/en/rights.html",
+				 new Contact("Development support", null, "development-core@europeanalabs.eu"),
+				"Creative Commons CC0 1.0 Universal Public Domain Dedication", "http://creativecommons.org/publicdomain/zero/1.0/");
 	}
 
 	private String getHostAndPort() {

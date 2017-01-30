@@ -1,6 +1,4 @@
-package eu.europeana.entity.web.controller;
-
-import eu.europeana.entity.definitions.vocabulary.WebEntityFields;
+package eu.europeana.entity.definitions.vocabulary;
 
 public interface WebEntityConstants extends WebEntityFields{
 

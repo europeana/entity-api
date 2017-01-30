@@ -49,7 +49,7 @@ public class EntityRetrievalTest extends BaseEntityTest {
 	String RESOLVED_REPORT_ONB = "resolved-report-onb.csv"; 
 	
 	
-//	@Test
+	@Test
 	public void getEntity() throws JsonParseException, IllegalAccessException, 
 									IllegalArgumentException, InvocationTargetException {
 		
@@ -67,7 +67,7 @@ public class EntityRetrievalTest extends BaseEntityTest {
 	}
 	
 	
-//	@Test
+	@Test
 	public void getPlaceEntity() throws JsonParseException, IllegalAccessException, 
 									IllegalArgumentException, InvocationTargetException {
 		
@@ -85,7 +85,7 @@ public class EntityRetrievalTest extends BaseEntityTest {
 	}
 	
 	
-//	@Test
+	@Test
 	public void resolveEntity() throws JsonParseException, IllegalAccessException, 
 									IllegalArgumentException, InvocationTargetException {
 		
@@ -171,7 +171,7 @@ public class EntityRetrievalTest extends BaseEntityTest {
 	}
 	
 
-	@Test
+//	@Test
 	public void resolveEntitiesForNisvAuthorList() throws IOException {
 		
 		String EUROPEANA_ID_STR = "Europeana ID";

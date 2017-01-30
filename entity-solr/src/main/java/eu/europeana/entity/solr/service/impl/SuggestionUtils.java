@@ -13,8 +13,6 @@ import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.ArrayNode;
 
-import com.carrotsearch.ant.tasks.junit4.dependencies.com.google.gson.JsonArray;
-
 import eu.europeana.entity.definitions.model.ResourcePreview;
 import eu.europeana.entity.definitions.model.ResourcePreviewImpl;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;

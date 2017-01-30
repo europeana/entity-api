@@ -1,16 +1,12 @@
 package eu.europeana.api.utils;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
-import org.springframework.web.servlet.ModelAndView;
 
 /**
  * TODO: move to api commons project

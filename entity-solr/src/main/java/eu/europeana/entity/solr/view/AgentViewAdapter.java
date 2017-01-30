@@ -4,7 +4,6 @@ import java.util.Date;
 
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.solr.model.SolrAgentImpl;
-import eu.europeana.entity.solr.model.SolrConceptImpl;
 import eu.europeana.entity.web.model.view.ConceptView;
 
 public class AgentViewAdapter extends SolrAgentImpl implements ConceptView {

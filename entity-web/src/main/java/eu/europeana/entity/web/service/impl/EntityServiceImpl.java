@@ -35,7 +35,7 @@ public class EntityServiceImpl implements EntityService {
 		}
 		//if not found send appropriate error message
 		if(result == null)
-			throw new HttpException("No Entitty found for URI: " + entityUri, HttpStatus.NOT_FOUND);
+			throw new HttpException("No Entity found for URI: " + entityUri, HttpStatus.NOT_FOUND);
 		
 		return result;
 	}
@@ -84,7 +84,7 @@ public class EntityServiceImpl implements EntityService {
 		}
 		//if not found send appropriate error message
 		if(result == null)
-			throw new HttpException("No Entitty found for URI: " + uri, HttpStatus.NOT_FOUND);
+			throw new HttpException("No Entity found for URI: " + uri, HttpStatus.NOT_FOUND);
 		
  		return result;
 	}

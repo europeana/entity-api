@@ -51,7 +51,7 @@ public class ApiResponseBuilder {
 		if (errorMessage != null)
 			message += " " + errorMessage;
 		if (th != null)
-			message += th.toString();
+			message += th.toString(); 
 		if (th != null && th.getCause() != null && th != th.getCause())
 			message += " " + th.getCause().toString();
 

@@ -94,19 +94,19 @@ public class SolrPlaceImpl extends BasePlace implements Place {
 	
 	@Override
 	@Field(PlaceSolrFields.LATITUDE)
-	public void setLatitude(String latitude) {
+	public void setLatitude(Float latitude) {
 		super.setLatitude(latitude);
 	}
 	
 	@Override
 	@Field(PlaceSolrFields.LONGITUDE)
-	public void setLongitude(String longitude) {
+	public void setLongitude(Float longitude) {
 		super.setLongitude(longitude);
 	}
 	
 	@Override
-//	@Field(PlaceSolrFields.ALTITUDE)
-	public void setAltitude(String altitude) {
+	@Field(PlaceSolrFields.ALTITUDE)
+	public void setAltitude(Float altitude) {
 		super.setAltitude(altitude);
 	}
 }

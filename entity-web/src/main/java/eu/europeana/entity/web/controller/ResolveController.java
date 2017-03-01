@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import eu.europeana.api.common.config.swagger.SwaggerSelect;
 import eu.europeana.entity.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.RankedEntity;
+import eu.europeana.entity.definitions.vocabulary.WebEntityConstants;
 import eu.europeana.entity.utils.jsonld.EuropeanaEntityLd;
 import eu.europeana.entity.web.exception.HttpException;
 import eu.europeana.entity.web.exception.InternalServerException;

@@ -43,12 +43,16 @@ public class SuggestionUtils {
 		try {
 			JsonParser parser = jsonFactory.createJsonParser(payload);
 			parser.setCodec(objectMapper);
+			
 			JsonNode payloadNode = objectMapper.readTree(payload);
 
 			JsonNode propertyNode = payloadNode.get(SuggestionFields.TYPE);
 			String entityType = propertyNode.getTextValue();
 			preview = createPreviewObjectInstance(entityType);
 			preview.setType(propertyNode.getTextValue());
+			//TODO: improve implementation to use Jackson Mapping
+			//objectMapper.readValue(payload, preview.class)
+			
 
 			propertyNode = payloadNode.get(SuggestionFields.ID);
 			preview.setEntityId(propertyNode.getTextValue());
@@ -59,6 +63,9 @@ public class SuggestionUtils {
 
 			propertyNode = payloadNode.get(SuggestionFields.PREF_LABEL);
 			preview.setPreferredLabel(propertyNode.getTextValue());
+
+			List<String> values = getValuesAsList(payloadNode, SuggestionFields.HIDDEN_LABEL);
+			preview.setHiddenLabel(values);
 
 			setEntitySpecificProperties(preview, payloadNode);
 
@@ -104,16 +111,21 @@ public class SuggestionUtils {
 		if (propertyNode != null)
 			preview.setDateOfDeath(propertyNode.getTextValue());
 
-		ArrayNode professionNode = (ArrayNode) payloadNode.get(SuggestionFields.PROFESSION_OR_OCCUPATION);
-		if (professionNode != null) {
-			List<String> professions = new ArrayList<String>();
-			for (JsonNode profession : professionNode) {
-				professions.add(profession.asText());
+		List<String> values = getValuesAsList(payloadNode, SuggestionFields.PROFESSION_OR_OCCUPATION);
+		preview.setProfessionOrOccuation(values);
+
+	}
+
+	private List<String> getValuesAsList(JsonNode payloadNode, String key) {
+		ArrayNode arrayNode = (ArrayNode) payloadNode.get(key);
+		List<String> values = null;
+		if (arrayNode != null) {
+			values = new ArrayList<String>(arrayNode.size());
+			for (JsonNode profession : arrayNode) {
+				values.add(profession.asText());
 			}
-
-			preview.setProfessionOrOccuation(professions);
 		}
-
+		return values;
 	}
 
 	private void putPlaceSpecificProperties(PlacePreview preview, JsonNode payloadNode) {

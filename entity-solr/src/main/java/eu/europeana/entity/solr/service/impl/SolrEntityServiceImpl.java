@@ -6,7 +6,6 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
@@ -21,7 +20,6 @@ import eu.europeana.entity.definitions.model.search.result.ResultSet;
 import eu.europeana.entity.definitions.model.vocabulary.ConceptSolrFields;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.solr.exception.EntityRetrievalException;
-import eu.europeana.entity.solr.exception.EntityRuntimeException;
 import eu.europeana.entity.solr.exception.EntitySuggestionException;
 import eu.europeana.entity.solr.model.factory.EntityObjectFactory;
 import eu.europeana.entity.solr.model.vocabulary.SuggestionFields;

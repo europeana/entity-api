@@ -1,8 +1,5 @@
 package eu.europeana.entity.web.jsonld;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.stanbol.commons.jsonld.JsonLd;
@@ -13,7 +10,7 @@ import org.apache.stanbol.commons.jsonld.JsonLdResource;
 import eu.europeana.entity.definitions.model.ResourcePreview;
 import eu.europeana.entity.definitions.model.search.result.ResultSet;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
-import eu.europeana.entity.web.controller.WebEntityConstants;
+import eu.europeana.entity.definitions.vocabulary.WebEntityConstants;
 import eu.europeana.entity.web.model.view.AgentPreview;
 import eu.europeana.entity.web.model.view.EntityPreview;
 import eu.europeana.entity.web.model.view.PlacePreview;
@@ -57,29 +54,29 @@ public class SuggestionSetSerializer extends JsonLd {
 
 		JsonLdResource jsonLdResource = new JsonLdResource();
 		jsonLdResource.setSubject("");
-		
-		//String[] contextValues = new String[]{WebEntityConstants.LDP_CONTEXT, WebEntityConstants.ENTITY_CONTEXT};
-//		JsonLdProperty contextProperty = buildArrayProperty(
-//				WebEntityConstants.AT_CONTEXT, contextValues, false);
-		
+
+		// String[] contextValues = new String[]{WebEntityConstants.LDP_CONTEXT,
+		// WebEntityConstants.ENTITY_CONTEXT};
+		// JsonLdProperty contextProperty = buildArrayProperty(
+		// WebEntityConstants.AT_CONTEXT, contextValues, false);
+
 		JsonLdProperty contextProperty = new JsonLdProperty(WebEntityConstants.AT_CONTEXT);
 		contextProperty.getValues().add(new JsonLdPropertyValue(WebEntityConstants.LDP_CONTEXT));
 		contextProperty.getValues().add(new JsonLdPropertyValue(WebEntityConstants.ENTITY_CONTEXT));
-		
+
 		String language = getEntitySet().getLanguage();
-		
-		if(language != null){
+
+		if (language != null) {
 			JsonLdPropertyValue languageProp = new JsonLdPropertyValue();
 			languageProp.putProperty(new JsonLdProperty(WebEntityConstants.AT_LANGUAGE, language));
 			contextProperty.getValues().add(languageProp);
 		}
-			
-		
+
 		jsonLdResource.putProperty(contextProperty);
-		
-		//TODO: update annotation LD and add the @language:en to context 
-		
-		//String[] type = new String[] { "BasicContainer", "Collection" };
+
+		// TODO: update annotation LD and add the @language:en to context
+
+		// String[] type = new String[] { "BasicContainer", "Collection" };
 		jsonLdResource.putProperty(WebEntityConstants.TYPE, WebEntityConstants.TYPE_BASIC_CONTAINER);
 		jsonLdResource.putProperty(WebEntityConstants.TOTAL_ITEMS, getEntitySet().getResultSize());
 
@@ -114,36 +111,41 @@ public class SuggestionSetSerializer extends JsonLd {
 		entityPreviewPropValue.putProperty(new JsonLdProperty(WebEntityConstants.ID, entityPreview.getEntityId()));
 		entityPreviewPropValue
 				.putProperty(new JsonLdProperty(WebEntityConstants.PREF_LABEL, entityPreview.getPreferredLabel()));
+		if(entityPreview.getHiddenLabel() != null)
+			entityPreviewPropValue
+					.putProperty(buildListProperty(WebEntityConstants.HIDDEN_LABEL, entityPreview.getHiddenLabel(), false));
+		else
+			getLogger().warn("No hidden labels available for entity: " + entityPreview.getEntityId());
 
 		String type = entityPreview.getType();
 		EntityTypes entityType = EntityTypes.getByInternalType(type);
 
 		if (entityType != null) {
-			entityPreviewPropValue.putProperty(new JsonLdProperty(WebEntityConstants.TYPE, entityType.getInternalType()));
+			entityPreviewPropValue
+					.putProperty(new JsonLdProperty(WebEntityConstants.TYPE, entityType.getInternalType()));
 
 			switch (entityType) {
 			case Concept:
 				// add top concept, when available
 				break;
 			case Agent:
-				putAgentSpecificProperties((AgentPreview)entityPreview, entityPreviewPropValue);
+				putAgentSpecificProperties((AgentPreview) entityPreview, entityPreviewPropValue);
 
 				break;
 
 			case Place:
-				putPlaceSpecificProperties((PlacePreview)entityPreview, entityPreviewPropValue);
+				putPlaceSpecificProperties((PlacePreview) entityPreview, entityPreviewPropValue);
 				break;
 
 			case Timespan:
-				putTimespanSpecificProperties((TimeSpanPreview)entityPreview, entityPreviewPropValue);
+				putTimespanSpecificProperties((TimeSpanPreview) entityPreview, entityPreviewPropValue);
 				break;
 
 			default:
 				break;
 			}
 
-			entityPreviewPropValue
-					.putProperty(new JsonLdProperty(WebEntityConstants.ID, entityPreview.getEntityId()));
+			entityPreviewPropValue.putProperty(new JsonLdProperty(WebEntityConstants.ID, entityPreview.getEntityId()));
 		}
 
 		return entityPreviewPropValue;
@@ -152,18 +154,16 @@ public class SuggestionSetSerializer extends JsonLd {
 	private void putTimespanSpecificProperties(TimeSpanPreview entityPreview,
 			JsonLdPropertyValue entityPreviewPropValue) {
 		if (entityPreview.getBegin() != null)
-			entityPreviewPropValue.putProperty(
-					new JsonLdProperty(WebEntityConstants.BEGIN, entityPreview.getBegin()));
+			entityPreviewPropValue.putProperty(new JsonLdProperty(WebEntityConstants.BEGIN, entityPreview.getBegin()));
 
 		if (entityPreview.getEnd() != null)
-			entityPreviewPropValue
-					.putProperty(new JsonLdProperty(WebEntityConstants.END, entityPreview.getEnd()));
+			entityPreviewPropValue.putProperty(new JsonLdProperty(WebEntityConstants.END, entityPreview.getEnd()));
 	}
 
 	private void putPlaceSpecificProperties(PlacePreview entityPreview, JsonLdPropertyValue entityPreviewPropValue) {
 
 		List<ResourcePreview> partOfList = entityPreview.getIsPartOf();
-		if(partOfList != null && !partOfList.isEmpty()){
+		if (partOfList != null && !partOfList.isEmpty()) {
 			JsonLdProperty isPartOfProp = new JsonLdProperty(WebEntityConstants.IS_PART_OF);
 			JsonLdPropertyValue propValue;
 			for (ResourcePreview resourcePreview : partOfList) {
@@ -172,11 +172,10 @@ public class SuggestionSetSerializer extends JsonLd {
 				propValue.getValues().put(WebEntityConstants.PREF_LABEL, resourcePreview.getPrefLabel());
 				isPartOfProp.addValue(propValue);
 			}
-			
+
 			entityPreviewPropValue.putProperty(isPartOfProp);
 		}
 	}
-	
 
 	private void putAgentSpecificProperties(AgentPreview entityPreview, JsonLdPropertyValue entityPreviewPropValue) {
 		if (entityPreview.getDateOfBirth() != null)
@@ -188,14 +187,13 @@ public class SuggestionSetSerializer extends JsonLd {
 					.putProperty(new JsonLdProperty(WebEntityConstants.DATE_OF_DEATH, entityPreview.getDateOfDeath()));
 
 		if (entityPreview.getProfessionOrOccuation() != null)
-			entityPreviewPropValue.putProperty(
-					buildListProperty(WebEntityConstants.PROFESSION_OR_OCCUPATION, entityPreview.getProfessionOrOccuation(), false));
+			entityPreviewPropValue.putProperty(buildListProperty(WebEntityConstants.PROFESSION_OR_OCCUPATION,
+					entityPreview.getProfessionOrOccuation(), false));
 	}
 
-//	public String convertDateToStr(Date date) {
-//		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-//		return df.format(date);
-//	}
+	// public String convertDateToStr(Date date) {
+	// DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+	// return df.format(date);
+	// }
 
-	
 }

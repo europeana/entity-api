@@ -2,9 +2,13 @@ package eu.europeana.entity.client.connection;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.codehaus.jackson.map.ser.ArraySerializers;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
@@ -14,6 +18,7 @@ import eu.europeana.entity.client.config.ClientConfiguration;
 import eu.europeana.entity.client.model.result.EntitySearchResults;
 import eu.europeana.entity.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.impl.BaseEntity;
+import eu.europeana.entity.definitions.vocabulary.WebEntityConstants;
 import eu.europeana.entity.definitions.vocabulary.WebEntityFields;
 
 
@@ -95,7 +100,7 @@ public class EntityApiConnection extends BaseApiConnection {
 		 */
 		String json = getJSONResult(url);
 		
-		return getEntitySearchResults(json);
+		return getEntitySearchResults(language, json);
 	}
 
 	/**
@@ -103,7 +108,8 @@ public class EntityApiConnection extends BaseApiConnection {
 	 * @param json
 	 * @return EntitySearchResults
 	 */
-	public EntitySearchResults getEntitySearchResults(String json) {
+	@Deprecated //- please implement proper response parsing using Jackson
+	public EntitySearchResults getEntitySearchResults(String language, String json) {
 		EntitySearchResults asr = new EntitySearchResults();
 		asr.setSuccess("true");
 		asr.setAction("create:/entity/suggest");
@@ -112,14 +118,17 @@ public class EntityApiConnection extends BaseApiConnection {
         	if (json.contains("Unauthorized")) {
         		asr.setError(json);
         	} else {
-	        	JSONArray jsonArray = jsonListObj.getJSONArray(("contains"));
+	        	JSONArray jsonArray = jsonListObj.getJSONArray(((WebEntityConstants.CONTAINS)));
 	        	if(jsonArray!=null && jsonArray.length()>0){
 			        List<Entity> entityList = new ArrayList<Entity>();
 	                for (int i = 0; i < jsonArray.length(); i++) {
 	                	JSONObject jsonObj = jsonArray.getJSONObject(i);
 	                	BaseEntity entityObject = new BaseEntity();
-			        	entityObject.setEntityId(jsonObj.getString("@id"));
-			        	entityObject.setDefinition(jsonObj.getString("prefLabel"));
+			        	entityObject.setEntityId(jsonObj.getString(WebEntityFields.ID));
+			        	Map<String, List<String>> prefLabelMap = new HashMap<String, List<String>>();
+			        	String label = jsonObj.getString((WebEntityFields.PREF_LABEL));
+						prefLabelMap.put(language, Arrays.asList(label));
+			        	entityObject.setPrefLabel(prefLabelMap);
 						entityList.add(entityObject);
 				    }
 				    asr.setItems(entityList);
@@ -137,6 +146,7 @@ public class EntityApiConnection extends BaseApiConnection {
 	 * @param json
 	 * @return EntitySearchResults
 	 */
+	//TODO: implement reliable response parsing using jackson
 	public EntitySearchResults getEntityResolveResults(String json) {
 		EntitySearchResults asr = new EntitySearchResults();
 		asr.setSuccess("true");
@@ -152,9 +162,9 @@ public class EntityApiConnection extends BaseApiConnection {
 //	                for (int i = 0; i < jsonArray.length(); i++) {
 //	                	JSONObject jsonObj = jsonArray.getJSONObject(i);
 	                	BaseEntity entityObject = new BaseEntity();
-			        	entityObject.setEntityId(jsonObj.getString("about"));
+			        	entityObject.setEntityId(jsonObj.getString(WebEntityFields.ID));
 //			        	entityObject.setEntityId(jsonObj.getString("@id"));
-			        	entityObject.setDefinition(jsonObj.getString("prefLabel"));
+			        	entityObject.setDefinition(""+jsonObj.getJSONObject(WebEntityFields.PREF_LABEL));
 						entityList.add(entityObject);
 //				    }
 				    asr.setItems(entityList);

@@ -34,8 +34,8 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.multiaction.NoSuchRequestHandlingMethodException;
 
 import eu.europeana.api.utils.JsonWebUtils;
+import eu.europeana.entity.definitions.vocabulary.WebEntityConstants;
 import eu.europeana.entity.web.controller.ApiResponseBuilder;
-import eu.europeana.entity.web.controller.WebEntityConstants;
 import eu.europeana.entity.web.exception.HttpException;
 import eu.europeana.entity.web.http.HttpHeaders;
 import eu.europeana.entity.web.model.EntityApiResponse;

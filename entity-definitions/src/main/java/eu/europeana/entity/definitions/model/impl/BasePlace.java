@@ -5,7 +5,7 @@ import eu.europeana.entity.definitions.model.Place;
 public class BasePlace extends BaseEntity implements Place {
 
 	private String[] isNextInSequence;
-	private String latitude, longitude, altitude;
+	private Float latitude, longitude, altitude;
 
 	@Override
 	public String[] getIsNextInSequence() {
@@ -18,32 +18,32 @@ public class BasePlace extends BaseEntity implements Place {
 	}
 
 	@Override
-	public String getLatitude() {
+	public Float getLatitude() {
 		return latitude;
 	}
 
 	@Override
-	public void setLatitude(String latitude) {
+	public void setLatitude(Float latitude) {
 		this.latitude = latitude;
 	}
 
 	@Override
-	public String getLongitude() {
+	public Float getLongitude() {
 		return longitude;
 	}
 
 	@Override
-	public void setLongitude(String longitude) {
+	public void setLongitude(Float longitude) {
 		this.longitude = longitude;
 	}
 
 	@Override
-	public String getAltitude() {
+	public Float getAltitude() {
 		return altitude;
 	}
 
 	@Override
-	public void setAltitude(String altitude) {
+	public void setAltitude(Float altitude) {
 		this.altitude = altitude;
 	}
 }

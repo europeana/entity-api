@@ -1,13 +1,9 @@
 package eu.europeana.entity.web.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.LinkedMultiValueMap;
@@ -19,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import eu.europeana.api.common.config.swagger.SwaggerSelect;
 import eu.europeana.entity.definitions.model.search.result.ResultSet;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
+import eu.europeana.entity.definitions.vocabulary.WebEntityConstants;
 import eu.europeana.entity.web.exception.HttpException;
 import eu.europeana.entity.web.exception.InternalServerException;
 import eu.europeana.entity.web.exception.ParamValidationException;

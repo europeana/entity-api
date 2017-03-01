@@ -2,17 +2,17 @@ package eu.europeana.entity.definitions.model;
 
 public interface Place extends Entity {
 
-	void setAltitude(String altitude);
+	void setAltitude(Float altitude);
 
-	String getAltitude();
+	Float getAltitude();
 
-	void setLongitude(String longitude);
+	void setLongitude(Float longitude);
 
-	String getLongitude();
+	Float getLongitude();
 
-	void setLatitude(String latitude);
+	void setLatitude(Float latitude);
 
-	String getLatitude();
+	Float getLatitude();
 
 	void setIsNextInSequence(String[] isNextInSequence);
 

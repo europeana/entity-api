@@ -46,17 +46,21 @@ public class ApiResponseBuilder {
 
 		EntityApiResponse response = new EntityApiResponse(apiKey, action);
 
-		String message = "";
+		final String blank = " ";
+		StringBuilder messageBuilder = new StringBuilder();
 
 		if (errorMessage != null)
-			message += " " + errorMessage;
-		if (th != null)
-			message += th.toString(); 
-		if (th != null && th.getCause() != null && th != th.getCause())
-			message += " " + th.getCause().toString();
-
-		response = buildErrorResponse(message, response.action, response.apikey);
-
+			messageBuilder.append(blank).append(errorMessage).append(". ");
+		if (th !=null){
+			if(errorMessage!= null)
+				messageBuilder.append("Caused by: ");
+			messageBuilder.append(th.getMessage());
+		}
+		if(th != null && th.getCause() !=null && th != th.getCause())
+			messageBuilder.append(blank).append(th.getCause().getMessage());
+		
+		response = buildErrorResponse(messageBuilder.toString(), response.action, response.apikey);
+		
 		if(includeErrorStack && th != null)
 			response.setStackTrace(getStackTraceAsString(th));
 		

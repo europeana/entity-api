@@ -13,30 +13,19 @@ public class EntityAuthenticationException extends HttpException{
 	private static final long serialVersionUID = -8994054571719881829L;
 	/**
 	 * 
-	 */
-	public static final String MESSAGE_NO_APPLICATION_FOR_APIKEY = "No client application registered for the given apiKey!";
-	public static final String MESSAGE_INVALID_APIKEY = "Invalid apiKey! ";
-	public static final String MESSAGE_EMPTY_APIKEY = "Empty apiKey! ";
-	public static final String MESSAGE_APIKEY_FILE_NOT_FOUND = 
-			"No apiKey file found in /config/authentication_templates folder! ";
-		
-	private String paramValue; 
+	 */		
 	
-	public EntityAuthenticationException(String message, String paramValue){
-		this(message, paramValue, null);
+	public EntityAuthenticationException(String message, String i18nKey, String[] i18nParams){
+		this(message, i18nKey, i18nParams, HttpStatus.UNAUTHORIZED);
+//		this(message, i18nKey, i18nParams, HttpStatus.UNAUTHORIZED, null);
 	}
 	
-	public EntityAuthenticationException(String message, String paramValue, Throwable th){
-		this(message, paramValue, HttpStatus.UNAUTHORIZED, th);
-	}
-
-	public EntityAuthenticationException(String message, String paramValue, HttpStatus status, Throwable th){
-		super(message + " " + paramValue, status, th);
-		this.paramValue = paramValue;
+	//TODO #492 what to do about th?
+//	public EntityAuthenticationException(String message, HttpStatus status, Throwable th){
+//	public EntityAuthenticationException(String message, String i18nKey, String[] i18nParams, HttpStatus status, Throwable th){
+	public EntityAuthenticationException(String message, String i18nKey, String[] i18nParams, HttpStatus status){
+//		super(message, i18nKey, i18nParams, status, th);
+		super(message, i18nKey, i18nParams, status);
 	}
 	
-	public String getParamValue() {
-		return paramValue;
-	}
-
 }

@@ -4,6 +4,7 @@ import javax.annotation.Resource;
 
 import org.springframework.http.HttpStatus;
 
+import eu.europeana.entity.config.i18n.I18nConstants;
 import eu.europeana.entity.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.search.Query;
 import eu.europeana.entity.definitions.model.search.QueryImpl;
@@ -31,15 +32,14 @@ public class EntityServiceImpl implements EntityService {
 		try {
 			result = solrEntityService.searchByUrl(type, entityUri);
 		} catch (EntityRetrievalException e) {
-			throw new HttpException("Cannot retrieve entity by URI", HttpStatus.INTERNAL_SERVER_ERROR, e);
+			throw new HttpException(e.getMessage(), I18nConstants.CANT_RETRIEVE_URI, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		//if not found send appropriate error message
 		if(result == null)
-			throw new HttpException("No Entity found for URI: " + entityUri, HttpStatus.NOT_FOUND);
+			throw new HttpException(null, I18nConstants.URI_NOT_FOUND, new String[]{entityUri}, HttpStatus.NOT_FOUND, null);
 		
 		return result;
 	}
-
 	
 	protected Query buildSearchQuery(String queryString, String[] filters, int rows) {
 		
@@ -63,7 +63,7 @@ public class EntityServiceImpl implements EntityService {
 			Query query = buildSearchQuery(text, null, rows);
 			return solrEntityService.suggest(query, language, internalEntityTypes, scope, rows);
 		} catch (EntitySuggestionException e) {
-			throw new HttpException("Cannot retrieve entity by URI", HttpStatus.INTERNAL_SERVER_ERROR, e);
+			throw new HttpException(e.getMessage(), I18nConstants.CANT_RETRIEVE_URI, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
@@ -80,11 +80,11 @@ public class EntityServiceImpl implements EntityService {
 		try {
 			result = solrEntityService.searchBySameAsUri(uri);
 		} catch (EntityRetrievalException e) {
-			throw new HttpException("Cannot resolve entity by sameAs URI", HttpStatus.INTERNAL_SERVER_ERROR, e);
+			throw new HttpException(e.getMessage(), I18nConstants.CANT_RESOLVE_URI, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		//if not found send appropriate error message
 		if(result == null)
-			throw new HttpException("No Entity found for URI: " + uri, HttpStatus.NOT_FOUND);
+			throw new HttpException(null, I18nConstants.URI_NOT_FOUND, new String[]{uri}, HttpStatus.NOT_FOUND, null);
 		
  		return result;
 	}

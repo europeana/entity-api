@@ -47,7 +47,7 @@
 		<dependency>
 			<groupId>eu.europeana.entity</groupId>
 			<artifactId>entity-solr</artifactId>
-			<version>${version.entityApi}</version>
+			<version>${version.entityApi}</version>		
 		</dependency>
 		
 		<!-- spring -->
@@ -154,7 +154,7 @@
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
-				<filtering>true</filtering>
+				<filtering>false</filtering>
 			</resource>
 		</resources>
 		<testResources>

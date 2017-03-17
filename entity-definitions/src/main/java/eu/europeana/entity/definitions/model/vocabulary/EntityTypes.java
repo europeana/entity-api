@@ -89,6 +89,7 @@ public enum EntityTypes implements EntityKeyword{
 			if(agentType.getJsonValue().equalsIgnoreCase(ignoreNamespace))
 				return agentType;
 		}
+		//TODO #537 throw exception
 		return null;
 	}
 	

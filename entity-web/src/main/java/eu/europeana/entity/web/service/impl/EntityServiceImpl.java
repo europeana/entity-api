@@ -32,7 +32,7 @@ public class EntityServiceImpl implements EntityService {
 		try {
 			result = solrEntityService.searchByUrl(type, entityUri);
 		} catch (EntityRetrievalException e) {
-			throw new HttpException(e.getMessage(), I18nConstants.CANT_RETRIEVE_URI, HttpStatus.INTERNAL_SERVER_ERROR);
+			throw new HttpException(e.getMessage(), I18nConstants.CANT_RETRIEVE_URI, new String[]{entityUri} , HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		//if not found send appropriate error message
 		if(result == null)

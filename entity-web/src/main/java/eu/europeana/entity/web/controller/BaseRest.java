@@ -16,7 +16,7 @@ public abstract class BaseRest{
 	protected void validateApiKey(String wsKey) throws EntityAuthenticationException {
 		// throws exception if the wskey is not found
 		if (StringUtils.isEmpty(wsKey))
-			throw new EntityAuthenticationException(null, I18nConstants.EMPTY_APIKEY, new String[]{wsKey});
+			throw new EntityAuthenticationException(null, I18nConstants.EMPTY_APIKEY, null);
 		if (!wsKey.equals("apidemo"))
 			throw new EntityAuthenticationException(null, I18nConstants.INVALID_APIKEY,  new String[]{wsKey});
 	}

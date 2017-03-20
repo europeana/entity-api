@@ -18,12 +18,8 @@ public class InternalServerException extends HttpException{
 		super(message, null, null, HttpStatus.INTERNAL_SERVER_ERROR, th);
 	}
 
-	//TODO #537 -> this is the error message that gets thrown
-	//TODO #492 double check this
 	public InternalServerException(Throwable th){
 		super(th.getMessage(), I18nConstants.UNEXPECTED, null, HttpStatus.INTERNAL_SERVER_ERROR);
-//		this(MESSAGE_UNEXPECTED_EXCEPTION, th);
-//		this(i18nService.buildMessage("error.entity_unexpected"), th);
 	}
 
 }

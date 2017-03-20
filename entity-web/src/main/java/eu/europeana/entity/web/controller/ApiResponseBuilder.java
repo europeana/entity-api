@@ -54,7 +54,6 @@ public abstract class ApiResponseBuilder {
 		if (!(th instanceof HttpException)) {
 			messageBuilder.append(blank).append(th.getMessage()).append(". ");
 		} else {
-			//TODO #492 -> ??
 			HttpException ex = (HttpException) th;
 			String message = getI18nService().getMessage(ex.getI18nKey(), ex.getI18nParams());
 			messageBuilder.append(message);

@@ -1,5 +1,6 @@
 package eu.europeana.entity.solr.service;
 
+import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException;
 import eu.europeana.entity.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.search.Query;
 import eu.europeana.entity.definitions.model.search.result.ResultSet;
@@ -26,8 +27,9 @@ public interface SolrEntityService {
 	 * @param entityUri - See {@link ConceptSolrFields#ID}
 	 * @return
 	 * @throws EntityRetrievalException 
+	 * @throws UnsupportedEntityTypeException 
 	 */
-	public Entity searchByUrl(String type, String entityUri) throws EntityRetrievalException;
+	public Entity searchByUrl(String type, String entityUri) throws EntityRetrievalException, UnsupportedEntityTypeException;
 	
 	/**
 	 * This method retrieves available Entities that meet the .

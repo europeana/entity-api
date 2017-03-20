@@ -14,6 +14,7 @@ import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.util.SimpleOrderedMap;
 
+import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException;
 import eu.europeana.entity.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.search.Query;
 import eu.europeana.entity.definitions.model.search.result.ResultSet;
@@ -64,10 +65,12 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 	
 	
 	@Override
-	public Entity searchByUrl(String type, String entityId) throws EntityRetrievalException {
+	public Entity searchByUrl(String type, String entityId) throws EntityRetrievalException, UnsupportedEntityTypeException {
 
 		getLogger().debug("search entity (type:" +type+" ) by id: " + entityId);
 
+		EntityTypes entityType = EntityTypes.getByInternalType(type);
+		
 		/**
 		 * Construct a SolrQuery
 		 */
@@ -87,7 +90,7 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 			Class<? extends Entity> concreteClass = null;
 			//String entityType = getTypeFromEntityId(entityId);
 			concreteClass = EntityObjectFactory.getInstance().getClassForType(
-					EntityTypes.getByInternalType(type));
+					entityType);
 
 			beans = rsp.getBeans(concreteClass);
 //			beans = rsp.getBeans(AgentViewAdapter.class);

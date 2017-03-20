@@ -1,7 +1,7 @@
 package eu.europeana.entity.definitions.exceptions;
 
 /**
- * This class is used represent validation errors for the annotation class hierarchy 
+ * This class is used represent validation errors for the entity class hierarchy 
  * @author Sergiu Gordea 
  *
  */

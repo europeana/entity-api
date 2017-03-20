@@ -13,6 +13,7 @@ import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.ArrayNode;
 
+import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException;
 import eu.europeana.entity.definitions.model.ResourcePreview;
 import eu.europeana.entity.definitions.model.ResourcePreviewImpl;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
@@ -156,7 +157,7 @@ public class SuggestionUtils {
 
 	}
 
-	private EntityPreview createPreviewObjectInstance(String entityTypeStr) {
+	private EntityPreview createPreviewObjectInstance(String entityTypeStr) throws UnsupportedEntityTypeException {
 		// EntityTypes entityType = EntityTypes.getByHttpUri(entityTypeUri);
 
 		EntityTypes entityType = EntityTypes.getByInternalType(entityTypeStr);

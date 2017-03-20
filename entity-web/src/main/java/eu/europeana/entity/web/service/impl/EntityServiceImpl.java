@@ -5,6 +5,7 @@ import javax.annotation.Resource;
 import org.springframework.http.HttpStatus;
 
 import eu.europeana.entity.config.i18n.I18nConstants;
+import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException;
 import eu.europeana.entity.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.search.Query;
 import eu.europeana.entity.definitions.model.search.QueryImpl;
@@ -33,6 +34,8 @@ public class EntityServiceImpl implements EntityService {
 			result = solrEntityService.searchByUrl(type, entityUri);
 		} catch (EntityRetrievalException e) {
 			throw new HttpException(e.getMessage(), I18nConstants.CANT_RETRIEVE_URI, new String[]{entityUri} , HttpStatus.INTERNAL_SERVER_ERROR);
+		} catch (UnsupportedEntityTypeException e) {
+			throw new HttpException(null, I18nConstants.UNSUPPORTED_ENTITY_TYPE, new String[]{type}, HttpStatus.NOT_FOUND, null);
 		}
 		//if not found send appropriate error message
 		if(result == null)

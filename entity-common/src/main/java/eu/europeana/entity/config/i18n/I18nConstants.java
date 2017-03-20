@@ -10,5 +10,6 @@ public interface I18nConstants {
 	static final String CANT_RETRIEVE_URI = "error.entity_cannot_retrieve_uri";
 	static final String CANT_RESOLVE_URI = "error.entity_cannot_resolve_uri";
 	static final String UNEXPECTED = "error.entity_unexpected";
+	static final String UNSUPPORTED_ENTITY_TYPE = "erorr.entity_unsupported_type";
 	
 }

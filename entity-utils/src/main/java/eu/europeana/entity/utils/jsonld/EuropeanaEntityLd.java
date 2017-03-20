@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.stanbol.commons.jsonld.JsonLd;
 import org.apache.stanbol.commons.jsonld.JsonLdResource;
 
+import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException;
 import eu.europeana.entity.definitions.model.Agent;
 import eu.europeana.entity.definitions.model.Concept;
 import eu.europeana.entity.definitions.model.Entity;
@@ -20,11 +21,11 @@ import eu.europeana.entity.definitions.vocabulary.WebEntityFields;
 
 public class EuropeanaEntityLd extends JsonLd {
 
-	public EuropeanaEntityLd(Entity entity) {
+	public EuropeanaEntityLd(Entity entity) throws UnsupportedEntityTypeException {
 		setEntity(entity);
 	}
 
-	public void setEntity(Entity entity) {
+	public void setEntity(Entity entity) throws UnsupportedEntityTypeException {
 		setUseTypeCoercion(false);
 		setUseCuries(true);
 		// addNamespacePrefix(WebAnnotationFields.OA_CONTEXT,
@@ -69,7 +70,7 @@ public class EuropeanaEntityLd extends JsonLd {
 		putStringArrayProperty(WebEntityFields.RELATED_MATCH, entity.getRelatedMatch(), jsonLdResource);
 	}
 
-	private void putSpecificProperties(Entity entity, JsonLdResource jsonLdResource) {
+	private void putSpecificProperties(Entity entity, JsonLdResource jsonLdResource) throws UnsupportedEntityTypeException {
 
 		EntityTypes entityType = EntityTypes.getByInternalType(entity.getInternalType());
 

@@ -66,7 +66,7 @@ public class SearchController extends BaseRest {
 			// perform search
 			ResultSet<? extends EntityPreview> results = entityService.suggest(text, language, entityTypes, scope, null,
 					rows);
-
+			
 			// serialize results
 			SuggestionSetSerializer serializer = new SuggestionSetSerializer(results);
 			String jsonLd = serializer.serialize();
@@ -83,6 +83,7 @@ public class SearchController extends BaseRest {
 
 		} catch (RuntimeException e) {
 			// not found ..
+			System.out.println(e);
 			throw new InternalServerException(e);
 		} catch (HttpException e) {
 			// avoid wrapping http exception

@@ -19,7 +19,7 @@ public class InternalServerException extends HttpException{
 	}
 
 	public InternalServerException(Throwable th){
-		super(th.getMessage(), I18nConstants.UNEXPECTED, null, HttpStatus.INTERNAL_SERVER_ERROR);
+		super(th.getMessage(), I18nConstants.SERVER_ERROR_UNEXPECTED, null, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 }

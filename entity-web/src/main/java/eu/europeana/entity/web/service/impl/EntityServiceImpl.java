@@ -33,7 +33,7 @@ public class EntityServiceImpl implements EntityService {
 		try {
 			result = solrEntityService.searchByUrl(type, entityUri);
 		} catch (EntityRetrievalException e) {
-			throw new HttpException(e.getMessage(), I18nConstants.CANT_RETRIEVE_URI, new String[]{entityUri} , HttpStatus.INTERNAL_SERVER_ERROR);
+			throw new HttpException(e.getMessage(), I18nConstants.SERVER_ERROR_CANT_RETRIEVE_URI, new String[]{entityUri} , HttpStatus.INTERNAL_SERVER_ERROR);
 		} catch (UnsupportedEntityTypeException e) {
 			throw new HttpException(null, I18nConstants.UNSUPPORTED_ENTITY_TYPE, new String[]{type}, HttpStatus.NOT_FOUND, null);
 		}
@@ -66,7 +66,8 @@ public class EntityServiceImpl implements EntityService {
 			Query query = buildSearchQuery(text, null, rows);
 			return solrEntityService.suggest(query, language, internalEntityTypes, scope, rows);
 		} catch (EntitySuggestionException e) {
-			throw new HttpException(e.getMessage(), I18nConstants.CANT_RETRIEVE_URI, HttpStatus.INTERNAL_SERVER_ERROR);
+			//TODO #585
+			throw new HttpException(e.getMessage(), I18nConstants.SERVER_ERROR_CANT_RETRIEVE_URI, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
@@ -83,11 +84,11 @@ public class EntityServiceImpl implements EntityService {
 		try {
 			result = solrEntityService.searchBySameAsUri(uri);
 		} catch (EntityRetrievalException e) {
-			throw new HttpException(e.getMessage(), I18nConstants.CANT_RESOLVE_URI, HttpStatus.INTERNAL_SERVER_ERROR);
+			throw new HttpException(e.getMessage(), I18nConstants.SERVER_ERROR_CANT_RESOLVE_SAME_AS_URI, new String[]{uri}, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		//if not found send appropriate error message
 		if(result == null)
-			throw new HttpException(null, I18nConstants.URI_NOT_FOUND, new String[]{uri}, HttpStatus.NOT_FOUND, null);
+			throw new HttpException(null, I18nConstants.CANT_FIND_BY_SAME_AS_URI, new String[]{uri}, HttpStatus.NOT_FOUND);
 		
  		return result;
 	}

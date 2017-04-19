@@ -23,6 +23,8 @@ public class BaseEntity implements Entity, RankedEntity {
 	private String identifier[];
 	private String[] sameAs;
 	private String[] isRelatedTo;
+	//TODO 583
+	private String[] exactMatch;
 
 	// hierarchical structure available only for a part of entities. Add set/get
 	// methods to the appropriate interfaces
@@ -200,6 +202,15 @@ public class BaseEntity implements Entity, RankedEntity {
 
 	public void setIsPartOf(String[] isPartOf) {
 		this.isPartOf = isPartOf;
+	}
+
+	@Override
+	public String[] getExactMatch() {
+		return exactMatch;
+	}
+
+	public void setExactMatch(String[] exactMatch) {
+		this.exactMatch = exactMatch;
 	}
 
 }

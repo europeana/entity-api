@@ -323,6 +323,45 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 		return null;
 	}
 
+
+	//TODO #583
+	@Override
+	public String searchByExactMatch(String uri) throws EntityRetrievalException {
+
+		getLogger().debug("search entity by skos_exactMatch uri: " + uri);
+
+		/**
+		 * Construct a SolrQuery
+		 */
+		SolrQuery query = new SolrQuery();
+		query.setQuery(ConceptSolrFields.EXACT_MATCH + ":\"" + uri + "\"");
+		query.addField(ConceptSolrFields.ID);
+		
+		try {
+			QueryResponse rsp = solrServer.query(query);
+			SolrDocumentList docs = rsp.getResults();
+			
+			if(docs.getNumFound() == 0)
+				return null;
+			
+			if(docs.getNumFound() == 1)
+				return docs.get(0).getFieldValue(ConceptSolrFields.ID).toString();
+			
+			//TODO: can this return >1 result? should it?
+			else if(docs.getNumFound() > 1)
+				//TODO: change to runtime exception
+				throw new EntityRetrievalException("Too many solr entries found for skos_exactMatch uri: " + uri 
+				 + ". Expected 0..1, but found " + docs.getNumFound());
+			
+		} catch (SolrServerException e) {
+			//TODO: change to runtime exception
+			throw new EntityRetrievalException(
+					"Unexpected exception occured when searching Solr entities. ", e);
+		}
+		
+		return null;
+	}
+
 	
 //	/**
 //	 * This method queries Solr server

@@ -50,6 +50,10 @@ public class EuropeanaEntityLd extends JsonLd {
 		putMapOfStringListProperty(WebEntityFields.PREF_LABEL, entity.getPrefLabel(), ConceptSolrFields.PREF_LABEL, jsonLdResource);
 		putMapOfStringListProperty(WebEntityFields.ALT_LABEL, entity.getAltLabel(), ConceptSolrFields.ALT_LABEL, jsonLdResource);
 		putMapOfStringListProperty(WebEntityFields.NOTE, entity.getNote(), ConceptSolrFields.NOTE, jsonLdResource);
+		
+		//TODO 583?
+		//additional SKOS_PROPERTIES
+		putStringArrayProperty(WebEntityFields.EXACT_MATCH, entity.getExactMatch(), jsonLdResource);
 
 		// specific properties (by entity type)
 		putSpecificProperties(entity, jsonLdResource);

@@ -23,5 +23,7 @@ public interface Entity extends ContextualClass {
 	public String getInternalType();
 
 	public String[] getSameAs();
+	
+	public String[] getExactMatch();
 
 }

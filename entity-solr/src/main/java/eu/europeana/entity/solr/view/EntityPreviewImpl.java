@@ -18,6 +18,7 @@ public class EntityPreviewImpl implements EntityPreview{
 	String timeSpanStart;
 	String timeSpanEnd;
 	EntityTypes entityType;
+	String depiction;
 	
 	@Override
 	public Date getTimestampUpdated() {
@@ -125,6 +126,15 @@ public class EntityPreviewImpl implements EntityPreview{
 	@Override
 	public void setHiddenLabel(List<String> hiddenLabel) {
 		this.hiddenLabel = hiddenLabel;
+	}
+
+	@Override
+	public String getDepiction() {
+		return depiction;
+	}
+
+	public void setDepiction(String depiction) {
+		this.depiction = depiction;
 	}
 
 	

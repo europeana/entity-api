@@ -40,4 +40,6 @@ public interface ConceptSolrFields {
 	public static final String HAS_PART                 = "skos_hasPart";
 	public static final String IS_PART_OF               = "skos_isPartOf";
 	
+	public static final String DEPICTION = "foaf_depiction";
+	
 }

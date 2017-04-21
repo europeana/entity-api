@@ -109,4 +109,10 @@ public class SolrPlaceImpl extends BasePlace implements Place {
 	public void setAltitude(Float altitude) {
 		super.setAltitude(altitude);
 	}
+
+	@Override
+	@Field(ConceptSolrFields.DEPICTION)
+	public void setDepiction(String depiction) {
+		super.setDepiction(depiction);
+	}
 }

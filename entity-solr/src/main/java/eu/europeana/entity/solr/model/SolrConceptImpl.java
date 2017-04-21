@@ -152,4 +152,10 @@ public class SolrConceptImpl extends BaseConcept implements Concept{
 	public void setSameAs(String[] sameAs) {
 		super.setSameAs(sameAs);
 	}
+
+	@Override
+	@Field(ConceptSolrFields.DEPICTION)
+	public void setDepiction(String depiction) {
+		super.setDepiction(depiction);
+	}
 }

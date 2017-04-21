@@ -24,4 +24,8 @@ public interface Entity extends ContextualClass {
 
 	public String[] getSameAs();
 
+	public String getDepiction();
+	
+	public void setDepiction(String depiction);
+
 }

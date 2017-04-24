@@ -21,10 +21,9 @@ public class BaseEntity implements Entity, RankedEntity {
 	private Map<String, List<String>> hiddenLabel;
 	private String definition;
 	private String identifier[];
-	private String[] sameAs;
+//	private String[] sameAs;
 	private String[] isRelatedTo;
-	//TODO 583
-	private String[] exactMatch;
+	private String[] coref;
 
 	// hierarchical structure available only for a part of entities. Add set/get
 	// methods to the appropriate interfaces
@@ -88,13 +87,13 @@ public class BaseEntity implements Entity, RankedEntity {
 		this.internalType = internalType;
 	}
 
-	public String[] getSameAs() {
-		return sameAs;
-	}
-
-	public void setSameAs(String[] sameAs) {
-		this.sameAs = sameAs;
-	}
+//	public String[] getSameAs() {
+//		return sameAs;
+//	}
+//
+//	public void setSameAs(String[] sameAs) {
+//		this.sameAs = sameAs;
+//	}
 
 	public String getEntityId() {
 		return entityId;
@@ -205,12 +204,12 @@ public class BaseEntity implements Entity, RankedEntity {
 	}
 
 	@Override
-	public String[] getExactMatch() {
-		return exactMatch;
+	public String[] getCoref() {
+		return coref;
 	}
 
-	public void setExactMatch(String[] exactMatch) {
-		this.exactMatch = exactMatch;
+	public void setCoref(String[] coref) {
+		this.coref = coref;
 	}
 
 }

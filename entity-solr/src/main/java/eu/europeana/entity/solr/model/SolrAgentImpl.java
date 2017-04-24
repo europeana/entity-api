@@ -21,16 +21,16 @@ public class SolrAgentImpl extends BaseAgent implements Agent {
 		super.setAbout(about);
 	}
 	
-	@Override
-	@Field(AgentSolrFields.SAME_AS)
-	public void setSameAs(String[] sameAs) {
-		super.setSameAs(sameAs);
-	}
+//	@Override
+//	@Field(AgentSolrFields.SAME_AS)
+//	public void setSameAs(String[] sameAs) {
+//		super.setSameAs(sameAs);
+//	}
 	
 	@Override
-	@Field(AgentSolrFields.EXACT_MATCH)
-	public void setExactMatch(String[] exactMatch) {
-		super.setExactMatch(exactMatch);
+	@Field(AgentSolrFields.COREF)
+	public void setCoref(String[] coref) {
+		super.setCoref(coref);
 	}
 
 	@Override

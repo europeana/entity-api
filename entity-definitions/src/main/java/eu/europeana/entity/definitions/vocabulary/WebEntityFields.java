@@ -10,7 +10,7 @@ public interface WebEntityFields {
 	public static final String ID = "id";
 	public static final String TYPE = "type";
 	// public static final String IN_SCHEME = "inScheme";
-	public static final String SAME_AS = "sameAs";
+//	public static final String SAME_AS = "sameAs";
 	public static final String IDENTIFIER = "identifier";
 	public static final String HAS_PART = "hasPart";
 	public static final String IS_PART_OF = "isPartOf";
@@ -27,7 +27,8 @@ public interface WebEntityFields {
 	public static final String NARROWER = "narrower";
 
 	// match fields
-	public static final String EXACT_MATCH = "exactMatch";
+//	public static final String EXACT_MATCH = "exactMatch";
+	public static final String COREF = "coref";
 	public static final String CLOSE_MATCH = "closeMatch";
 	public static final String BROAD_MATCH = "broadMatch";
 	public static final String NARROW_MATCH = "narrowMatch";

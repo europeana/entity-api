@@ -79,13 +79,9 @@ public class EntityServiceImpl implements EntityService {
 	
 	@Override
 	public String resolveByUri(String uri) throws HttpException{
-		//TODO 583 ?
 		String result;
 		try {
-			result = solrEntityService.searchBySameAsUri(uri);
-			if (result == null ) {
-				result = solrEntityService.searchByExactMatch(uri);
-			}
+			result = solrEntityService.searchByCoref(uri);
 		} catch (EntityRetrievalException e) {
 			throw new HttpException(e.getMessage(), I18nConstants.SERVER_ERROR_CANT_RESOLVE_SAME_AS_URI, new String[]{uri}, HttpStatus.INTERNAL_SERVER_ERROR);
 		}

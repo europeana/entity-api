@@ -14,6 +14,7 @@ public class BaseConcept extends BaseEntity implements Concept, RankedEntity {
 	private String[] broadMatch;
 	private String[] narrowMatch;
 	private String[] exactMatch;
+	private String[] coref;
 	private String[] relatedMatch;
 	private String[] closeMatch;
 	private String[] inScheme;
@@ -65,6 +66,14 @@ public class BaseConcept extends BaseEntity implements Concept, RankedEntity {
 
 	public void setExactMatch(String[] exactMatch) {
 		this.exactMatch = exactMatch;
+	}
+	
+	public String[] getCoref() {
+		return coref;
+	}
+	
+	public void setCoref(String[] coref) {
+		this.coref = coref;
 	}
 
 	public String[] getRelatedMatch() {

@@ -42,7 +42,7 @@ public class EuropeanaEntityLd extends JsonLd {
 		jsonLdResource.putProperty(WebEntityFields.ID, entity.getEntityId());
 		jsonLdResource.putProperty(WebEntityFields.TYPE, entity.getInternalType());
 		putStringArrayProperty(WebEntityFields.IDENTIFIER, entity.getIdentifier(), jsonLdResource);
-		putStringArrayProperty(WebEntityFields.SAME_AS, entity.getSameAs(), jsonLdResource);
+//		putStringArrayProperty(WebEntityFields.SAME_AS, entity.getSameAs(), jsonLdResource);
 		//jsonLdResource.putProperty(WebEntityFields.RDF_ABOUT, entity.getAbout());
 		putStringArrayProperty(WebEntityFields.IS_RELATED_TO, entity.getIsRelatedTo(), jsonLdResource);
 		
@@ -51,9 +51,8 @@ public class EuropeanaEntityLd extends JsonLd {
 		putMapOfStringListProperty(WebEntityFields.ALT_LABEL, entity.getAltLabel(), ConceptSolrFields.ALT_LABEL, jsonLdResource);
 		putMapOfStringListProperty(WebEntityFields.NOTE, entity.getNote(), ConceptSolrFields.NOTE, jsonLdResource);
 		
-		//TODO 583?
-		//additional SKOS_PROPERTIES
-		putStringArrayProperty(WebEntityFields.EXACT_MATCH, entity.getExactMatch(), jsonLdResource);
+		//additional coref (copy field for owl:sameAs and skos:exactMatch)
+		putStringArrayProperty(WebEntityFields.COREF, entity.getCoref(), jsonLdResource);
 
 		// specific properties (by entity type)
 		putSpecificProperties(entity, jsonLdResource);
@@ -67,7 +66,8 @@ public class EuropeanaEntityLd extends JsonLd {
 		putStringArrayProperty(WebEntityFields.RELATED, entity.getRelated(), jsonLdResource);
 		putStringArrayProperty(WebEntityFields.BROADER, entity.getBroader(), jsonLdResource);
 		putStringArrayProperty(WebEntityFields.NARROWER, entity.getNarrower(), jsonLdResource);
-		putStringArrayProperty(WebEntityFields.EXACT_MATCH, entity.getExactMatch(), jsonLdResource);
+//		putStringArrayProperty(WebEntityFields.EXACT_MATCH, entity.getExactMatch(), jsonLdResource);
+		putStringArrayProperty(WebEntityFields.COREF, entity.getCoref(), jsonLdResource);
 		putStringArrayProperty(WebEntityFields.CLOSE_MATCH, entity.getCloseMatch(), jsonLdResource);
 		putStringArrayProperty(WebEntityFields.BROAD_MATCH, entity.getBroadMatch(), jsonLdResource);
 		putStringArrayProperty(WebEntityFields.NARROW_MATCH, entity.getNarrowMatch(), jsonLdResource);

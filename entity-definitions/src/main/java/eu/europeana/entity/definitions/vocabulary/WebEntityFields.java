@@ -19,6 +19,8 @@ public interface WebEntityFields {
 	public static final String ALT_LABEL = "altLabel";
 	public static final String NOTE = "note";
 	public static final String RDF_ABOUT = "about";
+	public static final String DEPICTION = "depiction";
+	
 
 	// concept fields
 	public static final String NOTATION = "notation";

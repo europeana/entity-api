@@ -37,5 +37,8 @@ public interface EntityPreview extends IdBean {
 	void setHiddenLabel(List<String> hiddenLabel);
 
 	List<String> getHiddenLabel();
+
+	public String getDepiction();
 	
+	public void setDepiction(String depiction);
 }

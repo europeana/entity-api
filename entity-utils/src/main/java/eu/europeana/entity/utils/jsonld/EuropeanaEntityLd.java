@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.apache.stanbol.commons.jsonld.JsonLd;
 import org.apache.stanbol.commons.jsonld.JsonLdResource;
+import org.apache.commons.lang.StringUtils;
 
 import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException;
 import eu.europeana.entity.definitions.model.Agent;
@@ -45,6 +46,9 @@ public class EuropeanaEntityLd extends JsonLd {
 //		putStringArrayProperty(WebEntityFields.SAME_AS, entity.getSameAs(), jsonLdResource);
 		//jsonLdResource.putProperty(WebEntityFields.RDF_ABOUT, entity.getAbout());
 		putStringArrayProperty(WebEntityFields.IS_RELATED_TO, entity.getIsRelatedTo(), jsonLdResource);
+
+		if (!StringUtils.isEmpty(entity.getDepiction()))
+			jsonLdResource.putProperty(WebEntityFields.DEPICTION, entity.getDepiction());
 		
 		//common SKOS_Properties
 		putMapOfStringListProperty(WebEntityFields.PREF_LABEL, entity.getPrefLabel(), ConceptSolrFields.PREF_LABEL, jsonLdResource);

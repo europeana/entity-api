@@ -26,4 +26,8 @@ public interface Entity extends ContextualClass {
 	
 	public String[] getCoref();
 
+	public String getDepiction();
+	
+	public void setDepiction(String depiction);
+
 }

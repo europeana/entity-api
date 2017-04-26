@@ -101,7 +101,12 @@ public class SolrAgentImpl extends BaseAgent implements Agent {
 	public void setNote(Map<String, List<String>> note) {
 		super.setNote(note);
 	}
-
+	
+	@Override
+	@Field(ConceptSolrFields.DEPICTION)
+	public void setDepiction(String depiction) {
+		super.setDepiction(depiction);
+	}
 	
 
 	// Agent Specific Fields

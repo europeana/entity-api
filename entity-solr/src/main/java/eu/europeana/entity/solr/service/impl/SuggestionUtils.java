@@ -17,7 +17,10 @@ import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException
 import eu.europeana.entity.definitions.model.ResourcePreview;
 import eu.europeana.entity.definitions.model.ResourcePreviewImpl;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
+//<<<<<<< HEAD
+//=======
 import eu.europeana.entity.definitions.vocabulary.WebEntityConstants;
+//>>>>>>> refs/heads/develop
 import eu.europeana.entity.definitions.vocabulary.WebEntityFields;
 import eu.europeana.entity.solr.exception.EntitySuggestionException;
 import eu.europeana.entity.solr.model.factory.EntityPreviewObjectFactory;
@@ -85,6 +88,10 @@ public class SuggestionUtils {
 		propertyNode = entityNode.get(SuggestionFields.TERM);
 		if (propertyNode != null)
 			preview.setMatchedTerm(propertyNode.getTextValue());
+
+		propertyNode = entityNode.get(WebEntityFields.DEPICTION);
+		if (propertyNode != null)
+			preview.setDepiction(propertyNode.getTextValue());
 
 		propertyNode = entityNode.get(SuggestionFields.PREF_LABEL);
 		preview.setPreferredLabel(propertyNode.getTextValue());

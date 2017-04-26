@@ -38,6 +38,9 @@ public class BaseEntity implements Entity, RankedEntity {
 
 	// other derived technical fields?
 	private String context;
+	
+	// depiction
+	private String depiction;
 
 	public Map<String, List<String>> getPrefLabel() {
 		return prefLabel;
@@ -203,6 +206,14 @@ public class BaseEntity implements Entity, RankedEntity {
 		this.isPartOf = isPartOf;
 	}
 
+	public String getDepiction() {
+		return depiction;
+	}
+	
+	public void setDepiction(String depiction) {
+		this.depiction = depiction;
+	}
+	
 	@Override
 	public String[] getCoref() {
 		return coref;
@@ -211,5 +222,4 @@ public class BaseEntity implements Entity, RankedEntity {
 	public void setCoref(String[] coref) {
 		this.coref = coref;
 	}
-
 }

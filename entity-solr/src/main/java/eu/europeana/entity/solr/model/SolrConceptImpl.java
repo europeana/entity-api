@@ -146,7 +146,13 @@ public class SolrConceptImpl extends BaseConcept implements Concept{
 	public void setIsRelatedTo(String[] isRelatedTo) {
 		super.setIsRelatedTo(isRelatedTo);
 	}
-	
+
+	@Override
+	@Field(ConceptSolrFields.DEPICTION)
+	public void setDepiction(String depiction) {
+		super.setDepiction(depiction);
+	}
+
 //	@Override
 //	@Field(AgentSolrFields.SAME_AS)
 //	public void setSameAs(String[] sameAs) {

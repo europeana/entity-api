@@ -51,18 +51,31 @@ public interface SolrEntityService {
 	public ResultSet<? extends EntityPreview> suggest(Query searchQuery, String language, EntityTypes[] entityTypes, String scope,  int rows) throws EntitySuggestionException;
 
 	
+//	/**
+//	 * Performs a lookup for the entity in all 4 datasets:
+//	 * 
+//	 *    agents, places, concepts and time spans 
+//	 * 
+//	 * using an alternative uri for an entity (lookup will happen within the owl:sameAs properties).
+//	 * 
+//	 * @param uri
+//	 * @return
+//	 * @throws EntityRetrievalException
+//	 */
+//	public String searchBySameAsUri(String uri) throws EntityRetrievalException;
+	
 	/**
 	 * Performs a lookup for the entity in all 4 datasets:
 	 * 
 	 *    agents, places, concepts and time spans 
 	 * 
-	 * using an alternative uri for an entity (lookup will happen within the owl:sameAs properties).
+	 * using an alternative uri for an entity (lookup will happen within the coref property).
 	 * 
 	 * @param uri
 	 * @return
 	 * @throws EntityRetrievalException
 	 */
-	public String searchBySameAsUri(String uri) throws EntityRetrievalException;
+	public String searchByCoref(String uri) throws EntityRetrievalException;
 	
 
 }

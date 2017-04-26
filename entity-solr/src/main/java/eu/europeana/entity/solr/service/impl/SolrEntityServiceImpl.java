@@ -285,16 +285,52 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 	}
 
 
-	@Override
-	public String searchBySameAsUri(String uri) throws EntityRetrievalException {
+//	@Override
+//	public String searchBySameAsUri(String uri) throws EntityRetrievalException {
+//
+//		getLogger().debug("search entity by sameAs uri: " + uri);
+//
+//		/**
+//		 * Construct a SolrQuery
+//		 */
+//		SolrQuery query = new SolrQuery();
+//		query.setQuery(ConceptSolrFields.SAME_AS + ":\"" + uri + "\"");
+//		query.addField(ConceptSolrFields.ID);
+//		
+//		try {
+//			QueryResponse rsp = solrServer.query(query);
+//			SolrDocumentList docs = rsp.getResults();
+//			
+//			if(docs.getNumFound() == 0)
+//				return null;
+//			
+//			if(docs.getNumFound() == 1)
+//				return docs.get(0).getFieldValue(ConceptSolrFields.ID).toString();
+//			
+//			else if(docs.getNumFound() > 1)
+//				//TODO: change to runtime exception
+//				throw new EntityRetrievalException("Too many solr entries found for sameAs uri: " + uri 
+//				 + ". Expected 0..1, but found " + docs.getNumFound());
+//			
+//		} catch (SolrServerException e) {
+//			//TODO: change to runtime exception
+//			throw new EntityRetrievalException(
+//					"Unexpected exception occured when searching Solr entities. ", e);
+//		}
+//		
+//		return null;
+//	}
 
-		getLogger().debug("search entity by sameAs uri: " + uri);
+	@Override
+	public String searchByCoref(String uri) throws EntityRetrievalException {
+
+		getLogger().debug("search entity by coref uri: " + uri);
 
 		/**
 		 * Construct a SolrQuery
 		 */
 		SolrQuery query = new SolrQuery();
-		query.setQuery(ConceptSolrFields.SAME_AS + ":\"" + uri + "\"");
+		query.setQuery(ConceptSolrFields.COREF + ":\"" + uri + "\"");
 		query.addField(ConceptSolrFields.ID);
 		
 		try {
@@ -307,9 +343,10 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 			if(docs.getNumFound() == 1)
 				return docs.get(0).getFieldValue(ConceptSolrFields.ID).toString();
 			
+			//TODO: can this return >1 result? should it?
 			else if(docs.getNumFound() > 1)
 				//TODO: change to runtime exception
-				throw new EntityRetrievalException("Too many solr entries found for sameAs uri: " + uri 
+				throw new EntityRetrievalException("Too many solr entries found for coref uri: " + uri 
 				 + ". Expected 0..1, but found " + docs.getNumFound());
 			
 		} catch (SolrServerException e) {

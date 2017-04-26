@@ -146,15 +146,11 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 
 		ResultSet<? extends EntityPreview> res = null;
 		SolrQuery query = toSolrQuery(searchQuery);
-		String handler = "/suggestEntity/";
-		if (language != null)
-			handler += language;
+		String handler = "/suggestEntity";
 
 		query.setRequestHandler(handler);
 		
-		addQueryFilterParam(query, entityTypes, scope);
-		
-		
+		addQueryFilterParam(query, entityTypes, scope);	
 
 		try {
 			getLogger().debug("invoke suggest handler: " + handler);
@@ -215,17 +211,17 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 		
 		Map<String, Object> suggest = (Map<String, Object>) rsp.getResponse().get(SuggestionFields.SUGGEST);
 		
-		SimpleOrderedMap<?> exactMatchGroup = (SimpleOrderedMap) suggest
-				.get(SuggestionFields.PREFIX_SUGGEST_ENTITY + language);
+		SimpleOrderedMap<?> suggestionsMap = (SimpleOrderedMap) suggest
+				.get(SuggestionFields.PREFIX_SUGGEST_ENTITY);
 
-		List<SimpleOrderedMap<?>> exactSuggestions = null;
+		List<SimpleOrderedMap<?>> suggestions = null;
 		
-		if((SimpleOrderedMap) exactMatchGroup.getVal(0) != null){
-			exactSuggestions = (List<SimpleOrderedMap<?>>) ((SimpleOrderedMap) exactMatchGroup
+		if((SimpleOrderedMap) suggestionsMap.getVal(0) != null){
+			suggestions = (List<SimpleOrderedMap<?>>) ((SimpleOrderedMap) suggestionsMap
 				.getVal(0)).get(SuggestionFields.SUGGESTIONS);
 		}
 				
-		List<T> beans = extractBeans(exactSuggestions, rows, language);
+		List<T> beans = extractBeans(suggestions, rows, language);
 
 		resultSet.setResults(beans);
 		resultSet.setResultSize(beans.size());
@@ -272,7 +268,9 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 		T preview;
 		
 		payload = (String) entry.get(SuggestionFields.PAYLOAD);
-		preview = (T) getSuggestionHelper().parsePayload(payload);
+		preview = (T) getSuggestionHelper().parsePayload(payload, language);
+
+		//
 		term = (String) entry.get(SuggestionFields.TERM);
 		preview.setSearchedTerm(term);
 

@@ -17,6 +17,8 @@ import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException
 import eu.europeana.entity.definitions.model.ResourcePreview;
 import eu.europeana.entity.definitions.model.ResourcePreviewImpl;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
+import eu.europeana.entity.definitions.vocabulary.WebEntityConstants;
+import eu.europeana.entity.definitions.vocabulary.WebEntityFields;
 import eu.europeana.entity.solr.exception.EntitySuggestionException;
 import eu.europeana.entity.solr.model.factory.EntityPreviewObjectFactory;
 import eu.europeana.entity.solr.model.vocabulary.SuggestionFields;
@@ -38,41 +40,59 @@ public class SuggestionUtils {
 		return log;
 	}
 
-	public EntityPreview parsePayload(String payload) throws EntitySuggestionException {
+	public EntityPreview parsePayload(String payload, String preferredLanguage) throws EntitySuggestionException {
 
 		EntityPreview preview = null;
 		try {
 			JsonParser parser = jsonFactory.createJsonParser(payload);
 			parser.setCodec(objectMapper);
 			
-			JsonNode payloadNode = objectMapper.readTree(payload);
-
-			JsonNode propertyNode = payloadNode.get(SuggestionFields.TYPE);
-			String entityType = propertyNode.getTextValue();
-			preview = createPreviewObjectInstance(entityType);
-			preview.setType(propertyNode.getTextValue());
-			//TODO: improve implementation to use Jackson Mapping
-			//objectMapper.readValue(payload, preview.class)
+			JsonNode languageMapNode = objectMapper.readTree(payload);
 			
+			JsonNode entityNode = getPayload(languageMapNode, preferredLanguage);
 
-			propertyNode = payloadNode.get(SuggestionFields.ID);
-			preview.setEntityId(propertyNode.getTextValue());
-
-			propertyNode = payloadNode.get(SuggestionFields.TERM);
-			if (propertyNode != null)
-				preview.setMatchedTerm(propertyNode.getTextValue());
-
-			propertyNode = payloadNode.get(SuggestionFields.PREF_LABEL);
-			preview.setPreferredLabel(propertyNode.getTextValue());
-
-			List<String> values = getValuesAsList(payloadNode, SuggestionFields.HIDDEN_LABEL);
-			preview.setHiddenLabel(values);
-
-			setEntitySpecificProperties(preview, payloadNode);
+			preview = parseEntity(entityNode);
 
 		} catch (Exception e) {
 			throw new EntitySuggestionException("Cannot parse suggestion payload: " + payload, e);
 		}
+		return preview;
+	}
+
+	private JsonNode getPayload(JsonNode languageMapNode, String preferredLanguage) {
+		if (languageMapNode.get(preferredLanguage) != null) {
+			// first priority: preferredLanguage
+			return languageMapNode.get(preferredLanguage);
+		} else if (languageMapNode.get(WebEntityConstants.PARAM_LANGUAGE_EN) != null) {
+			// default: english
+			return languageMapNode.get(WebEntityConstants.PARAM_LANGUAGE_EN);
+		} else {
+			// fallback: first entry
+			return languageMapNode.get(0);
+		}
+	}
+
+	private EntityPreview parseEntity(JsonNode entityNode) throws UnsupportedEntityTypeException {
+		EntityPreview preview;
+		JsonNode propertyNode = entityNode.get(SuggestionFields.TYPE);
+		String entityType = propertyNode.getTextValue();
+		preview = createPreviewObjectInstance(entityType);
+		preview.setType(propertyNode.getTextValue());
+		
+		propertyNode = entityNode.get(SuggestionFields.ID);
+		preview.setEntityId(propertyNode.getTextValue());
+
+		propertyNode = entityNode.get(SuggestionFields.TERM);
+		if (propertyNode != null)
+			preview.setMatchedTerm(propertyNode.getTextValue());
+
+		propertyNode = entityNode.get(SuggestionFields.PREF_LABEL);
+		preview.setPreferredLabel(propertyNode.getTextValue());
+
+		List<String> values = getValuesAsList(entityNode, SuggestionFields.HIDDEN_LABEL);
+		preview.setHiddenLabel(values);
+
+		setEntitySpecificProperties(preview, entityNode);
 		return preview;
 	}
 

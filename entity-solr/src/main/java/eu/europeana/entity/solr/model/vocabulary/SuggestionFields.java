@@ -8,7 +8,7 @@ public interface SuggestionFields {
 	public static final String SUGGESTIONS = "suggestions";
 	public static final String SUFFIX_EXACT = "_exact";
 	public static final String SUFFIX_FUZZY = "_fuzzy";
-	public static final String PREFIX_SUGGEST_ENTITY = "suggestEntity_";
+	public static final String PREFIX_SUGGEST_ENTITY = "suggestEntity";
 	
 	public static final String FILTER_IN_EUROPEANA = "in_europeana";
 	public static final String PARAM_EUROPEANA = "europeana";

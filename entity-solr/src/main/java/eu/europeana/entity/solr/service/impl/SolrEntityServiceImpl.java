@@ -146,15 +146,11 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 
 		ResultSet<? extends EntityPreview> res = null;
 		SolrQuery query = toSolrQuery(searchQuery);
-		String handler = "/suggestEntity/";
-		if (language != null)
-			handler += language;
+		String handler = "/suggestEntity";
 
 		query.setRequestHandler(handler);
 		
-		addQueryFilterParam(query, entityTypes, scope);
-		
-		
+		addQueryFilterParam(query, entityTypes, scope);	
 
 		try {
 			getLogger().debug("invoke suggest handler: " + handler);
@@ -215,17 +211,17 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 		
 		Map<String, Object> suggest = (Map<String, Object>) rsp.getResponse().get(SuggestionFields.SUGGEST);
 		
-		SimpleOrderedMap<?> exactMatchGroup = (SimpleOrderedMap) suggest
-				.get(SuggestionFields.PREFIX_SUGGEST_ENTITY + language);
+		SimpleOrderedMap<?> suggestionsMap = (SimpleOrderedMap) suggest
+				.get(SuggestionFields.PREFIX_SUGGEST_ENTITY);
 
-		List<SimpleOrderedMap<?>> exactSuggestions = null;
+		List<SimpleOrderedMap<?>> suggestions = null;
 		
-		if((SimpleOrderedMap) exactMatchGroup.getVal(0) != null){
-			exactSuggestions = (List<SimpleOrderedMap<?>>) ((SimpleOrderedMap) exactMatchGroup
+		if((SimpleOrderedMap) suggestionsMap.getVal(0) != null){
+			suggestions = (List<SimpleOrderedMap<?>>) ((SimpleOrderedMap) suggestionsMap
 				.getVal(0)).get(SuggestionFields.SUGGESTIONS);
 		}
 				
-		List<T> beans = extractBeans(exactSuggestions, rows, language);
+		List<T> beans = extractBeans(suggestions, rows, language);
 
 		resultSet.setResults(beans);
 		resultSet.setResultSize(beans.size());
@@ -272,7 +268,9 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 		T preview;
 		
 		payload = (String) entry.get(SuggestionFields.PAYLOAD);
-		preview = (T) getSuggestionHelper().parsePayload(payload);
+		preview = (T) getSuggestionHelper().parsePayload(payload, language);
+
+		//
 		term = (String) entry.get(SuggestionFields.TERM);
 		preview.setSearchedTerm(term);
 
@@ -287,16 +285,52 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 	}
 
 
-	@Override
-	public String searchBySameAsUri(String uri) throws EntityRetrievalException {
+//	@Override
+//	public String searchBySameAsUri(String uri) throws EntityRetrievalException {
+//
+//		getLogger().debug("search entity by sameAs uri: " + uri);
+//
+//		/**
+//		 * Construct a SolrQuery
+//		 */
+//		SolrQuery query = new SolrQuery();
+//		query.setQuery(ConceptSolrFields.SAME_AS + ":\"" + uri + "\"");
+//		query.addField(ConceptSolrFields.ID);
+//		
+//		try {
+//			QueryResponse rsp = solrServer.query(query);
+//			SolrDocumentList docs = rsp.getResults();
+//			
+//			if(docs.getNumFound() == 0)
+//				return null;
+//			
+//			if(docs.getNumFound() == 1)
+//				return docs.get(0).getFieldValue(ConceptSolrFields.ID).toString();
+//			
+//			else if(docs.getNumFound() > 1)
+//				//TODO: change to runtime exception
+//				throw new EntityRetrievalException("Too many solr entries found for sameAs uri: " + uri 
+//				 + ". Expected 0..1, but found " + docs.getNumFound());
+//			
+//		} catch (SolrServerException e) {
+//			//TODO: change to runtime exception
+//			throw new EntityRetrievalException(
+//					"Unexpected exception occured when searching Solr entities. ", e);
+//		}
+//		
+//		return null;
+//	}
 
-		getLogger().debug("search entity by sameAs uri: " + uri);
+	@Override
+	public String searchByCoref(String uri) throws EntityRetrievalException {
+
+		getLogger().debug("search entity by coref uri: " + uri);
 
 		/**
 		 * Construct a SolrQuery
 		 */
 		SolrQuery query = new SolrQuery();
-		query.setQuery(ConceptSolrFields.SAME_AS + ":\"" + uri + "\"");
+		query.setQuery(ConceptSolrFields.COREF + ":\"" + uri + "\"");
 		query.addField(ConceptSolrFields.ID);
 		
 		try {
@@ -309,9 +343,10 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 			if(docs.getNumFound() == 1)
 				return docs.get(0).getFieldValue(ConceptSolrFields.ID).toString();
 			
+			//TODO: can this return >1 result? should it?
 			else if(docs.getNumFound() > 1)
 				//TODO: change to runtime exception
-				throw new EntityRetrievalException("Too many solr entries found for sameAs uri: " + uri 
+				throw new EntityRetrievalException("Too many solr entries found for coref uri: " + uri 
 				 + ". Expected 0..1, but found " + docs.getNumFound());
 			
 		} catch (SolrServerException e) {

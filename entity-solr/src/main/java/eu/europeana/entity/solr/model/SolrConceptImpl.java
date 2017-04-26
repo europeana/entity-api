@@ -58,9 +58,9 @@ public class SolrConceptImpl extends BaseConcept implements Concept{
 	}
 	
 	@Override
-	@Field(ConceptSolrFields.EXACT_MATCH)
-	public void setExactMatch(String[] exactMatch) {
-		super.setExactMatch(exactMatch);
+	@Field(ConceptSolrFields.COREF)
+	public void setCoref(String[] coref) {
+		super.setCoref(coref);
 	}
 	
 	@Override
@@ -146,16 +146,16 @@ public class SolrConceptImpl extends BaseConcept implements Concept{
 	public void setIsRelatedTo(String[] isRelatedTo) {
 		super.setIsRelatedTo(isRelatedTo);
 	}
-	
-	@Override
-	@Field(AgentSolrFields.SAME_AS)
-	public void setSameAs(String[] sameAs) {
-		super.setSameAs(sameAs);
-	}
 
 	@Override
 	@Field(ConceptSolrFields.DEPICTION)
 	public void setDepiction(String depiction) {
 		super.setDepiction(depiction);
 	}
+
+//	@Override
+//	@Field(AgentSolrFields.SAME_AS)
+//	public void setSameAs(String[] sameAs) {
+//		super.setSameAs(sameAs);
+//	}
 }

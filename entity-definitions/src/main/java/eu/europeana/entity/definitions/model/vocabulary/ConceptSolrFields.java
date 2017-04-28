@@ -9,6 +9,7 @@ public interface ConceptSolrFields {
 	public static final String ALT_LABEL_ALL = ALT_LABEL + ".*";
 	public static final String CLOSE_MATCH = "skos_closeMatch";
 	public static final String BROAD_MATCH = "skos_broadMatch";
+	public static final String EXACT_MATCH = "skos_exactMatch";
 	public static final String COREF = "coref";
 	public static final String RELATED_MATCH = "skos_relatedMatch";
 	public static final String IN_SCHEME = "skos_inScheme";
@@ -25,8 +26,9 @@ public interface ConceptSolrFields {
 	public static final String HIDDEN_LABEL = "skos_hiddenLabel";
 	
 	public static final String RDF_ABOUT = "rdf_about";
-//	public static final String SAME_AS = "owl_sameAs";
 	
+	public static final String SAME_AS = "owl_sameAs";
+
 	public static final String ID = "id";
 	public static final String INTERNAL_TYPE = "internal_type";
 	public static final String TIMESTAMP = "timestamp";

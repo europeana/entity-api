@@ -22,18 +22,18 @@ public class SolrPlaceImpl extends BasePlace implements Place {
 		super.setAbout(about);
 	}
 
-//	@Override
-//	@Field(AgentSolrFields.SAME_AS)
-//	public void setSameAs(String[] sameAs) {
-//		super.setSameAs(sameAs);
-//	}
-	
 	@Override
-	@Field(AgentSolrFields.COREF)
-	public void setCoref(String[] coref) {
-		super.setCoref(coref);
+	@Field(AgentSolrFields.SAME_AS)
+	public void setSameAs(String[] sameAs) {
+		super.setSameAs(sameAs);
 	}
 
+	@Override
+	@Field(AgentSolrFields.EXACT_MATCH)
+	public void setExactMatch(String[] exactMatch) {
+		super.setExactMatch(exactMatch);
+	}
+	
 	// @Override
 	// @Field(AgentSolrFields.IDENTIFIER)
 	// public void setIdentifier(String identifier) {

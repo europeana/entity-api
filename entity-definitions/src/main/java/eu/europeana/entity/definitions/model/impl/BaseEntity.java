@@ -21,9 +21,8 @@ public class BaseEntity implements Entity, RankedEntity {
 	private Map<String, List<String>> hiddenLabel;
 	private String definition;
 	private String identifier[];
-//	private String[] sameAs;
+	private String[] sameAs;
 	private String[] isRelatedTo;
-	private String[] coref;
 
 	// hierarchical structure available only for a part of entities. Add set/get
 	// methods to the appropriate interfaces
@@ -213,13 +212,13 @@ public class BaseEntity implements Entity, RankedEntity {
 	public void setDepiction(String depiction) {
 		this.depiction = depiction;
 	}
-	
+
 	@Override
-	public String[] getCoref() {
-		return coref;
+	public String[] getSameAs() {
+		return sameAs;
 	}
 
-	public void setCoref(String[] coref) {
-		this.coref = coref;
+	public void setSameAs(String[] sameAs) {
+		this.sameAs = sameAs;
 	}
 }

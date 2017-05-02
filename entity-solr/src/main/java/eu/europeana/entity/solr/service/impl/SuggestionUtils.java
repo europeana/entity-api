@@ -71,7 +71,7 @@ public class SuggestionUtils {
 			return languageMapNode.get(WebEntityConstants.PARAM_LANGUAGE_EN);
 		} else {
 			// fallback: first entry
-			return languageMapNode.get(0);
+			return languageMapNode.get(languageMapNode.getFieldNames().next());
 		}
 	}
 

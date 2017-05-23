@@ -1,7 +1,9 @@
 package eu.europeana.entity.solr.service.impl;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.JsonFactory;
@@ -12,15 +14,14 @@ import org.codehaus.jackson.annotate.JsonMethod;
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.ArrayNode;
+import org.codehaus.jackson.node.JsonNodeFactory;
+import org.codehaus.jackson.node.ObjectNode;
 
 import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException;
 import eu.europeana.entity.definitions.model.ResourcePreview;
 import eu.europeana.entity.definitions.model.ResourcePreviewImpl;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
-//<<<<<<< HEAD
-//=======
 import eu.europeana.entity.definitions.vocabulary.WebEntityConstants;
-//>>>>>>> refs/heads/develop
 import eu.europeana.entity.definitions.vocabulary.WebEntityFields;
 import eu.europeana.entity.solr.exception.EntitySuggestionException;
 import eu.europeana.entity.solr.model.factory.EntityPreviewObjectFactory;
@@ -63,16 +64,29 @@ public class SuggestionUtils {
 	}
 
 	private JsonNode getPayload(JsonNode languageMapNode, String preferredLanguage) {
-		if (languageMapNode.get(preferredLanguage) != null) {
-			// first priority: preferredLanguage
-			return languageMapNode.get(preferredLanguage);
-		} else if (languageMapNode.get(WebEntityConstants.PARAM_LANGUAGE_EN) != null) {
-			// default: english
-			return languageMapNode.get(WebEntityConstants.PARAM_LANGUAGE_EN);
-		} else {
-			// fallback: first entry
-			return languageMapNode.get(languageMapNode.getFieldNames().next());
+		final JsonNodeFactory nodeFactory = JsonNodeFactory.instance;
+		ObjectNode node = nodeFactory.objectNode();
+		ObjectNode child = nodeFactory.objectNode();
+		
+		Iterator<Entry<String, JsonNode>> itr = languageMapNode.getFields();
+		while (itr.hasNext()) {
+			Entry<String, JsonNode> next = itr.next();
+			if (next.getValue().findValue(preferredLanguage) != null) {
+				// first priority: preferredLanguage
+				child.put(next.getKey(), next.getValue().findValue(preferredLanguage));
+			} else if (next.getValue().findValue(WebEntityConstants.PARAM_LANGUAGE_EN) != null) {
+				// second option: english
+				child.put(next.getKey(), next.getValue().findValue(WebEntityConstants.PARAM_LANGUAGE_EN));
+			} else if (next.getValue().findValue("") != null) {
+				// fallback: default entry ("")
+				child.put(next.getKey(), next.getValue().findValue(""));
+			} else {
+				// if no language options (e.g. place, type, ...)
+				child.put(next.getKey(), next.getValue());
+			}
 		}
+		node.putAll(child);
+		return node;
 	}
 
 	private EntityPreview parseEntity(JsonNode entityNode) throws UnsupportedEntityTypeException {

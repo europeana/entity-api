@@ -1,6 +1,6 @@
 package eu.europeana.entity.solr.model.vocabulary;
 
-import eu.europeana.entity.definitions.vocabulary.WebEntityFields;
+import eu.europeana.api.commons.definitions.vocabulary.WebEntityFields;
 
 public interface SuggestionFields {
 

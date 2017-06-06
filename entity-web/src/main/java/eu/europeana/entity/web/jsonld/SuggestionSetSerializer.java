@@ -8,13 +8,13 @@ import org.apache.stanbol.commons.jsonld.JsonLdPropertyValue;
 import org.apache.stanbol.commons.jsonld.JsonLdResource;
 import org.springframework.http.HttpStatus;
 
-import eu.europeana.entity.config.i18n.I18nConstants;
+import eu.europeana.api.commons.config.i18n.I18nConstants;
+import eu.europeana.api.commons.definitions.vocabulary.WebEntityConstants;
+import eu.europeana.api.commons.web.exception.HttpException;
 import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException;
 import eu.europeana.entity.definitions.model.ResourcePreview;
 import eu.europeana.entity.definitions.model.search.result.ResultSet;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
-import eu.europeana.entity.definitions.vocabulary.WebEntityConstants;
-import eu.europeana.entity.web.exception.HttpException;
 import eu.europeana.entity.web.model.view.AgentPreview;
 import eu.europeana.entity.web.model.view.EntityPreview;
 import eu.europeana.entity.web.model.view.PlacePreview;

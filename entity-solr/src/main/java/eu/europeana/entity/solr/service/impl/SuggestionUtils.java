@@ -13,15 +13,12 @@ import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.ArrayNode;
 
+import eu.europeana.api.commons.definitions.vocabulary.WebEntityConstants;
+import eu.europeana.api.commons.definitions.vocabulary.WebEntityFields;
 import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException;
 import eu.europeana.entity.definitions.model.ResourcePreview;
 import eu.europeana.entity.definitions.model.ResourcePreviewImpl;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
-//<<<<<<< HEAD
-//=======
-import eu.europeana.entity.definitions.vocabulary.WebEntityConstants;
-//>>>>>>> refs/heads/develop
-import eu.europeana.entity.definitions.vocabulary.WebEntityFields;
 import eu.europeana.entity.solr.exception.EntitySuggestionException;
 import eu.europeana.entity.solr.model.factory.EntityPreviewObjectFactory;
 import eu.europeana.entity.solr.model.vocabulary.SuggestionFields;
@@ -71,6 +68,7 @@ public class SuggestionUtils {
 			return languageMapNode.get(WebEntityConstants.PARAM_LANGUAGE_EN);
 		} else {
 			// fallback: first entry
+			//TODO #1 this can possibly returnan identifier?!
 			return languageMapNode.get(languageMapNode.getFieldNames().next());
 		}
 	}

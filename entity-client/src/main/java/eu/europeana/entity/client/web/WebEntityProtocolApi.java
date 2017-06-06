@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 
-import eu.europeana.entity.definitions.model.Entity;
+import eu.europeana.api.commons.definitions.model.Entity;
 
 
 public interface WebEntityProtocolApi {

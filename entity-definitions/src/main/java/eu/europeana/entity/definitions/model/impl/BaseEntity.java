@@ -6,7 +6,7 @@ import java.util.Map;
 
 import org.bson.types.ObjectId;
 
-import eu.europeana.entity.definitions.model.Entity;
+import eu.europeana.api.commons.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.RankedEntity;
 
 public class BaseEntity implements Entity, RankedEntity {

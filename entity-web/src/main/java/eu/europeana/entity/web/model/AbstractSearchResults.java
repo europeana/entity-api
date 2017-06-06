@@ -22,7 +22,7 @@ import java.util.List;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 
-import eu.europeana.entity.web.model.json.abstracts.ApiResponse;
+import eu.europeana.api.commons.web.model.ApiResponse;
 
 /**
  * @author Willem-Jan Boogerd <www.eledge.net/contact>

@@ -1,6 +1,6 @@
 package eu.europeana.entity.client.model.result;
 
-import eu.europeana.entity.definitions.model.Concept;
+import eu.europeana.api.commons.definitions.model.Concept;
 
 public class EntityOperationResponse extends AbstractEntityApiResponse{
 

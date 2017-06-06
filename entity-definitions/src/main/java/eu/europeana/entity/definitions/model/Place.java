@@ -1,5 +1,7 @@
 package eu.europeana.entity.definitions.model;
 
+import eu.europeana.api.commons.definitions.model.Entity;
+
 public interface Place extends Entity {
 
 	void setAltitude(Float altitude);

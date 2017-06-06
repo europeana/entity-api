@@ -1,5 +1,7 @@
 package eu.europeana.entity.definitions.model;
 
+import eu.europeana.api.commons.definitions.model.Entity;
+
 public interface Timespan extends Entity{
 
 	public String[] getBegin();

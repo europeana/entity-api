@@ -8,7 +8,7 @@ import java.util.List;
 import org.apache.stanbol.commons.exception.JsonParseException;
 import org.junit.Test;
 
-import eu.europeana.entity.definitions.model.Entity;
+import eu.europeana.api.commons.definitions.model.Entity;
 
 
 /**

@@ -11,7 +11,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
-import eu.europeana.entity.definitions.model.Concept;
+import eu.europeana.api.commons.definitions.model.Concept;
 import eu.europeana.entity.definitions.model.impl.BaseConcept;
 
 public class EntityDeserializer implements JsonDeserializer<Concept>{

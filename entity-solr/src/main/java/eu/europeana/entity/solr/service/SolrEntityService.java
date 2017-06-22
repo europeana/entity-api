@@ -1,7 +1,7 @@
 package eu.europeana.entity.solr.service;
 
-import eu.europeana.api.commons.definitions.model.Entity;
 import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException;
+import eu.europeana.entity.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.search.Query;
 import eu.europeana.entity.definitions.model.search.result.ResultSet;
 import eu.europeana.entity.definitions.model.vocabulary.ConceptSolrFields;

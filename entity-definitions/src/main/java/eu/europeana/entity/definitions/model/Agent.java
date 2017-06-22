@@ -4,8 +4,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import eu.europeana.api.commons.definitions.model.Entity;
-
 public interface Agent extends Entity {
 
 	public Date getDate();

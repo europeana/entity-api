@@ -11,11 +11,11 @@ import org.junit.Before;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import eu.europeana.api.commons.definitions.model.Entity;
 import eu.europeana.entity.client.config.ClientConfiguration;
 import eu.europeana.entity.client.exception.ResolveException;
 import eu.europeana.entity.client.web.WebEntityProtocolApi;
 import eu.europeana.entity.client.web.WebEntityProtocolApiImpl;
+import eu.europeana.entity.definitions.model.Entity;
 
 public class BaseEntityTest {
 

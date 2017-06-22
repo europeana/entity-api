@@ -1,7 +1,7 @@
 package eu.europeana.entity.web.service;
 
-import eu.europeana.api.commons.definitions.model.Entity;
 import eu.europeana.api.commons.web.exception.HttpException;
+import eu.europeana.entity.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.search.result.ResultSet;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.web.model.view.EntityPreview;

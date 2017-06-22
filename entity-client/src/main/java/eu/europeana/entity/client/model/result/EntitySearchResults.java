@@ -2,8 +2,8 @@ package eu.europeana.entity.client.model.result;
 
 import java.util.List;
 
-import eu.europeana.api.commons.definitions.model.Concept;
-import eu.europeana.api.commons.definitions.model.Entity;
+import eu.europeana.entity.definitions.model.Concept;
+import eu.europeana.entity.definitions.model.Entity;
 
 
 public class EntitySearchResults extends AbstractEntityApiResponse{

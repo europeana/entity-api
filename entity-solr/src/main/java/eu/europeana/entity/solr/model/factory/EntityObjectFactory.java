@@ -1,6 +1,6 @@
 package eu.europeana.entity.solr.model.factory;
 
-import eu.europeana.api.commons.definitions.model.Entity;
+import eu.europeana.entity.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.solr.model.SolrAgentImpl;
 import eu.europeana.entity.solr.model.SolrConceptImpl;

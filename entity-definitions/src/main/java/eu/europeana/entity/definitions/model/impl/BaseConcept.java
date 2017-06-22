@@ -3,7 +3,7 @@ package eu.europeana.entity.definitions.model.impl;
 import java.util.List;
 import java.util.Map;
 
-import eu.europeana.api.commons.definitions.model.Concept;
+import eu.europeana.entity.definitions.model.Concept;
 import eu.europeana.entity.definitions.model.RankedEntity;
 
 public class BaseConcept extends BaseEntity implements Concept, RankedEntity {

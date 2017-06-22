@@ -5,9 +5,9 @@ import javax.annotation.Resource;
 import org.springframework.http.HttpStatus;
 
 import eu.europeana.api.commons.config.i18n.I18nConstants;
-import eu.europeana.api.commons.definitions.model.Entity;
 import eu.europeana.api.commons.web.exception.HttpException;
 import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException;
+import eu.europeana.entity.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.search.Query;
 import eu.europeana.entity.definitions.model.search.QueryImpl;
 import eu.europeana.entity.definitions.model.search.result.ResultSet;

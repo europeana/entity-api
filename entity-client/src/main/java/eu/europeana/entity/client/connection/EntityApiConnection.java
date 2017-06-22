@@ -14,12 +14,12 @@ import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.springframework.http.ResponseEntity;
 
-import eu.europeana.api.commons.definitions.model.Entity;
-import eu.europeana.api.commons.definitions.vocabulary.WebEntityConstants;
-import eu.europeana.api.commons.definitions.vocabulary.WebEntityFields;
 import eu.europeana.entity.client.config.ClientConfiguration;
 import eu.europeana.entity.client.model.result.EntitySearchResults;
+import eu.europeana.entity.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.impl.BaseEntity;
+import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
+import eu.europeana.entity.definitions.model.vocabulary.WebEntityFields;
 
 
 /**

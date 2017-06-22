@@ -3,7 +3,7 @@ package eu.europeana.entity.web.controller;
 import org.apache.commons.lang.StringUtils;
 
 import eu.europeana.api.commons.config.i18n.I18nConstants;
-import eu.europeana.api.commons.definitions.model.Concept;
+import eu.europeana.entity.definitions.model.Concept;
 import eu.europeana.entity.web.exception.authentication.EntityAuthenticationException;
 import eu.europeana.entity.web.model.EntitySearchResults;
 

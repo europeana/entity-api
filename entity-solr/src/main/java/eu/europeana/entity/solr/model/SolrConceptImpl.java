@@ -7,7 +7,7 @@ import java.util.Map;
 import org.apache.solr.client.solrj.beans.Field;
 import org.bson.types.ObjectId;
 
-import eu.europeana.api.commons.definitions.model.Concept;
+import eu.europeana.entity.definitions.model.Concept;
 import eu.europeana.entity.definitions.model.impl.BaseConcept;
 import eu.europeana.entity.definitions.model.vocabulary.AgentSolrFields;
 import eu.europeana.entity.definitions.model.vocabulary.ConceptSolrFields;

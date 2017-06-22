@@ -6,10 +6,10 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.http.ResponseEntity;
 
-import eu.europeana.api.commons.definitions.model.Entity;
 import eu.europeana.entity.client.BaseEntityApi;
 import eu.europeana.entity.client.exception.TechnicalRuntimeException;
 import eu.europeana.entity.client.model.result.EntitySearchResults;
+import eu.europeana.entity.definitions.model.Entity;
 
 
 public class WebEntityProtocolApiImpl extends BaseEntityApi implements WebEntityProtocolApi {

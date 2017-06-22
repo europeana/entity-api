@@ -65,6 +65,7 @@
 		<version.spring>4.2.5.RELEASE</version.spring>
 		<version.jackson>2.6.5</version.jackson>
 		<version.codehausJackson>1.9.9</version.codehausJackson>
+		<version.commonsApi>0.2.2-SNAPSHOT</version.commonsApi>
 	</properties>
 	<modules>
 		<module>entity-client</module>

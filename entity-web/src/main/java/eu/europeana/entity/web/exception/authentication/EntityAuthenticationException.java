@@ -2,7 +2,7 @@ package eu.europeana.entity.web.exception.authentication;
 
 import org.springframework.http.HttpStatus;
 
-import eu.europeana.entity.web.exception.HttpException;
+import eu.europeana.api.commons.web.exception.HttpException;
 
 
 public class EntityAuthenticationException extends HttpException{

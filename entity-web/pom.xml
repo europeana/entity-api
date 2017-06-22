@@ -30,6 +30,14 @@
 
 	<dependencies>
 
+		<!-- europeana api commons -->
+		<!-- TODO -->
+		<dependency>
+			<groupId>eu.europeana.api.commons</groupId>
+			<artifactId>commons-web</artifactId>
+			<version>${version.commonsApi}</version>
+		</dependency>
+
 		<!-- entity projects -->
 		
 		<dependency>

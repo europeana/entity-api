@@ -18,7 +18,7 @@ import eu.europeana.entity.definitions.model.impl.BaseEntity;
 import eu.europeana.entity.definitions.model.vocabulary.AgentSolrFields;
 import eu.europeana.entity.definitions.model.vocabulary.ConceptSolrFields;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
-import eu.europeana.entity.definitions.vocabulary.WebEntityFields;
+import eu.europeana.entity.definitions.model.vocabulary.WebEntityFields;
 
 public class EuropeanaEntityLd extends JsonLd {
 

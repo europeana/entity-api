@@ -1,4 +1,5 @@
-package eu.europeana.entity.definitions.vocabulary;
+package eu.europeana.entity.definitions.model.vocabulary;
+
 
 public interface WebEntityFields {
 

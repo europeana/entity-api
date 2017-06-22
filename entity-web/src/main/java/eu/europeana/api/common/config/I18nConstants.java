@@ -1,9 +1,11 @@
-package eu.europeana.entity.config.i18n;
+package eu.europeana.api.common.config;
 
 public interface I18nConstants {
 	
-	//401
+	// shared error messages
 	static final String INVALID_APIKEY = "error.entity_invalid_apikey";
+
+	//401
 	static final String NO_APPLICATION_FOR_APIKEY = "error.entity_no_application_for_apikey";
 	static final String EMPTY_APIKEY = "error.entity_empty_apikey";
 	static final String APIKEY_FILE_NOT_FOUND = "error.entity_apikey_file_not_found";
@@ -17,6 +19,5 @@ public interface I18nConstants {
 	static final String SERVER_ERROR_CANT_RETRIEVE_URI = "error.entity_server_cannot_retrieve_uri";
 	static final String SERVER_ERROR_CANT_RESOLVE_SAME_AS_URI = "error.entity_server_cannot_resolve_uri";
 	static final String SERVER_ERROR_UNEXPECTED = "error.entity_server_unexpected_error";
-	
 	
 }

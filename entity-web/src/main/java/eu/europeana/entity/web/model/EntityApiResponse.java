@@ -1,15 +1,10 @@
 package eu.europeana.entity.web.model;
 
-import eu.europeana.entity.definitions.model.Concept;
-import eu.europeana.entity.web.model.json.abstracts.ApiResponse;
+import eu.europeana.api.commons.web.model.ApiResponse;
 
 public class EntityApiResponse extends ApiResponse{
 	
-	Concept entity;
-	String status;
-	String stackTrace;
-
-	public static String ERROR_NO_OBJECT_FOUND = "No Object Found!";
+public static String ERROR_NO_OBJECT_FOUND = "No Object Found!";
 	public static String ERROR_VISIBILITY_CHECK = "This annotation object is marked as not visible!";
 	public static String ERROR_RESOURCE_ID_DOES_NOT_MATCH = 
 			"Passed 'collection' or 'object' parameter does not match to the ResourceId given in the JSON string!";	
@@ -32,28 +27,13 @@ public class EntityApiResponse extends ApiResponse{
 		super(apiKey, action);
 	}
 	
-	public String getStatus() {
-		return status;
-	}
+//	public Concept getEntity() {
+//		return entity;
+//	}
 
-	public void setStatus(String status) {
-		this.status = status;
-	}
+//	public void setEntity(Concept entity) {
+//		this.entity = entity;
+//	}
 
-	public Concept getEntity() {
-		return entity;
-	}
-
-	public void setEntity(Concept entity) {
-		this.entity = entity;
-	}
-
-	public String getStackTrace() {
-		return stackTrace;
-	}
-
-	public void setStackTrace(String stackTrace) {
-		this.stackTrace = stackTrace;
-	}
 
 }

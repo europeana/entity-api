@@ -29,6 +29,7 @@
 	<url>http://www.europeanalabs.eu</url>
 
 	<dependencies>
+		
 		<!-- Other -->
 		<dependency>
 			<groupId>commons-lang</groupId>

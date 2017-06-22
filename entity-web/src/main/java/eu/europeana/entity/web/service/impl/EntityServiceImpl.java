@@ -4,7 +4,8 @@ import javax.annotation.Resource;
 
 import org.springframework.http.HttpStatus;
 
-import eu.europeana.entity.config.i18n.I18nConstants;
+import eu.europeana.api.common.config.I18nConstants;
+import eu.europeana.api.commons.web.exception.HttpException;
 import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException;
 import eu.europeana.entity.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.search.Query;
@@ -14,7 +15,6 @@ import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.solr.exception.EntityRetrievalException;
 import eu.europeana.entity.solr.exception.EntitySuggestionException;
 import eu.europeana.entity.solr.service.SolrEntityService;
-import eu.europeana.entity.web.exception.HttpException;
 import eu.europeana.entity.web.model.view.EntityPreview;
 import eu.europeana.entity.web.service.EntityService;
 

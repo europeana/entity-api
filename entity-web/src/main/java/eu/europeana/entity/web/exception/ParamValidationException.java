@@ -2,6 +2,8 @@ package eu.europeana.entity.web.exception;
 
 import org.springframework.http.HttpStatus;
 
+import eu.europeana.api.commons.web.exception.HttpException;
+
 
 public class ParamValidationException extends HttpException{
 

@@ -4,7 +4,7 @@ import javax.annotation.Resource;
 
 import org.springframework.http.HttpStatus;
 
-import eu.europeana.api.commons.config.i18n.I18nConstants;
+import eu.europeana.api.common.config.I18nConstants;
 import eu.europeana.api.commons.web.exception.HttpException;
 import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException;
 import eu.europeana.entity.definitions.model.Entity;

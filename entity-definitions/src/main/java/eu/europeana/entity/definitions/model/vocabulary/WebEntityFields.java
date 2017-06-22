@@ -1,8 +1,7 @@
 package eu.europeana.entity.definitions.model.vocabulary;
 
-import eu.europeana.api.commons.definitions.vocabulary.CommonApiConstants;
 
-public interface WebEntityFields extends CommonApiConstants{
+public interface WebEntityFields {
 
 	// LD fields
 	public static final String CONTEXT = "@context";

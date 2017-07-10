@@ -14,38 +14,10 @@
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
-	<repositories>
-		<!-- jetty repos -->
-		<repository>
-			<id>repo1.maven.org</id>
-			<url>http://repo1.maven.org/maven2/</url>
-		</repository>
-
-		<repository>
-			<id>jcenter-release</id>
-			<name>jcenter</name>
-			<url>http://oss.jfrog.org/artifactory/oss-release-local/</url>
-		</repository>
-	</repositories>
-
 	<dependencies>
 
 		<!-- europeana api commons -->
-		<!-- TODO -->
-		<dependency>
-			<groupId>eu.europeana.api.commons</groupId>
-			<artifactId>commons-web</artifactId>
-			<version>${version.commonsApi}</version>
-		</dependency>
-
 		<!-- entity projects -->
-		
-		<dependency>
-			<groupId>eu.europeana.entity</groupId>
-			<artifactId>entity-common</artifactId>
-			<version>${version.entityApi}</version>
-		</dependency>
-		
 		<dependency>
 			<groupId>eu.europeana.entity</groupId>
 			<artifactId>entity-utils</artifactId>
@@ -57,6 +29,20 @@
 			<artifactId>entity-solr</artifactId>
 			<version>${version.entityApi}</version>		
 		</dependency>
+		
+		<dependency>
+			<groupId>eu.europeana.entity</groupId>
+			<artifactId>entity-common</artifactId>
+			<version>${version.entityApi}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>eu.europeana.api.commons</groupId>
+			<artifactId>commons-web</artifactId>
+			<version>${version.commonsApi}</version>
+		</dependency>
+		
+		
 		
 		<!-- spring -->
 		<dependency>
@@ -145,12 +131,11 @@
 			<version>${version.spring}</version>
 			<scope>test</scope>
 		</dependency>
-
-		
 	</dependencies>
 
 	<!-- configure source and output locations -->
 
+<!-- 
 	<build>
 		<directory>target</directory>
 		<outputDirectory>target/classes</outputDirectory>
@@ -183,6 +168,7 @@
 			</plugin>
 		</plugins>
 	</build>
+	-->
 
 	<properties>
 		<version.slf4j>1.7.5</version.slf4j>

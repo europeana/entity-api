@@ -3,7 +3,6 @@
 	
 	<artifactId>entity-common</artifactId>
 	<name>Europeana Entity Collection - Commons</name>
-	<packaging>jar</packaging>
 	<organization>
 		<name>Europeana Foundation + AIT</name>
 	</organization>
@@ -21,14 +20,11 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
+<!-- 
 	<build>
-		<!--  configure source and output locations -->
 		<directory>target</directory>
 		<outputDirectory>target/classes</outputDirectory>
 		<finalName>${artifactId}-${version}</finalName>
-		<!-- 
-		<testOutputDirectory>target/test-classes</testOutputDirectory>
-		 -->
 		<sourceDirectory>src/main/java</sourceDirectory>
 		<testSourceDirectory>src/test/java</testSourceDirectory>
 		<resources>
@@ -41,13 +37,11 @@
 				</includes>
 			</resource>
 		</resources>
-	<!-- not used yet	
 		<testResources>
 			<testResource>
 				<directory>src/test/resources</directory>
 			</testResource>
 		</testResources>
-	 -->	
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -59,6 +53,7 @@
 			</plugin>
 		</plugins>
 	</build>
+	-->
 	<dependencies>
 		<dependency>
 			<groupId>eu.europeana.entity</groupId>

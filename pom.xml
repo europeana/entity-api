@@ -50,12 +50,27 @@
 				<enabled>false</enabled>
 			</releases>
 		</repository>
+		
+		<!-- jetty repos -->
+		<!-- 
+		<repository>
+			<id>repo1.maven.org</id>
+			<url>http://repo1.maven.org/maven2/</url>
+		</repository>
+
+		<repository>
+			<id>jcenter-release</id>
+			<name>jcenter</name>
+			<url>http://oss.jfrog.org/artifactory/oss-release-local/</url>
+		</repository>
+		 -->
+	
 	</repositories>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<version.java>1.7</version.java>
+		<version.java>1.8</version.java>
 		<version.junit>4.11</version.junit>
 		<version.corelib>2.1</version.corelib>
 		<version.log4j>1.2.12</version.log4j>
@@ -65,7 +80,7 @@
 		<version.spring>4.2.5.RELEASE</version.spring>
 		<version.jackson>2.6.5</version.jackson>
 		<version.codehausJackson>1.9.9</version.codehausJackson>
-		<version.commonsApi>0.2.2-SNAPSHOT</version.commonsApi>
+		<version.commonsApi>0.2.2</version.commonsApi>
 	</properties>
 	<modules>
 		<module>entity-client</module>

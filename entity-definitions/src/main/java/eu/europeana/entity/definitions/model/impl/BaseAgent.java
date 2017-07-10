@@ -23,6 +23,8 @@ public class BaseAgent extends BaseEntity implements Agent {
 	private String dateOfEstablishment; // format "YYYY"
 	private String dateOfTermination; // format "YYYY"
 	private String gender;
+	
+	private String[] exactMatch;
 
 	public Date getDate() {
 		return date;
@@ -134,6 +136,14 @@ public class BaseAgent extends BaseEntity implements Agent {
 
 	public void setProfessionOrOccupation(Map<String, List<String>> professionOrOccupation) {
 		this.professionOrOccupation = professionOrOccupation;
+	}
+
+	public String[] getExactMatch() {
+		return exactMatch;
+	}
+
+	public void setExactMatch(String[] exactMatch) {
+		this.exactMatch = exactMatch;
 	}
 
 }

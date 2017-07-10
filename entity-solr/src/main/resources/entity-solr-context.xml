@@ -29,9 +29,7 @@
         http://www.springframework.org/schema/util/spring-util.xsd
     ">
    
-   <!--  properties -->
-   <util:properties id="entityProperties" location="classpath:config/entity.properties" scope="singleton" />
-   
+   <import resource="entity-common-context.xml"/>
     
    <!-- INTERNAL -->
 	<import resource="internal/entity-solr-server.xml" />

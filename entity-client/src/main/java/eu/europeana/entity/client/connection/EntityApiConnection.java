@@ -18,8 +18,8 @@ import eu.europeana.entity.client.config.ClientConfiguration;
 import eu.europeana.entity.client.model.result.EntitySearchResults;
 import eu.europeana.entity.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.impl.BaseEntity;
-import eu.europeana.entity.definitions.vocabulary.WebEntityConstants;
-import eu.europeana.entity.definitions.vocabulary.WebEntityFields;
+import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
+import eu.europeana.entity.definitions.model.vocabulary.WebEntityFields;
 
 
 /**

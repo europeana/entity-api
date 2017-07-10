@@ -1,8 +1,7 @@
-package eu.europeana.entity.definitions.vocabulary;
+package eu.europeana.entity.definitions.model.vocabulary;
 
 public interface WebEntityConstants extends WebEntityFields{
 
-	String PARAM_WSKEY = "wskey";
 	String PATH_PARAM_TYPE = "type";
 	String PATH_PARAM_NAMESPACE = "namespace";
 	String PATH_PARAM_IDENTIFIER = "identifier";
@@ -94,9 +93,5 @@ public interface WebEntityConstants extends WebEntityFields{
 	public static final String ENTITY_CONTEXT = "http://www.europeana.eu/schemas/context/entity.jsonld";
 	public static final String TOTAL_ITEMS = "totalItems";
 	
-	/**
-	 * PARAMS
-	 */
-	public static final String PARAM_INCLUDE_ERROR_STACK = "includeErrorStack";
 	
 }

@@ -1,7 +1,9 @@
 package eu.europeana.entity.solr.service.impl;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.JsonFactory;
@@ -12,10 +14,15 @@ import org.codehaus.jackson.annotate.JsonMethod;
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.ArrayNode;
+import org.codehaus.jackson.node.JsonNodeFactory;
+import org.codehaus.jackson.node.ObjectNode;
 
+import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException;
 import eu.europeana.entity.definitions.model.ResourcePreview;
 import eu.europeana.entity.definitions.model.ResourcePreviewImpl;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
+import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
+import eu.europeana.entity.definitions.model.vocabulary.WebEntityFields;
 import eu.europeana.entity.solr.exception.EntitySuggestionException;
 import eu.europeana.entity.solr.model.factory.EntityPreviewObjectFactory;
 import eu.europeana.entity.solr.model.vocabulary.SuggestionFields;
@@ -37,41 +44,76 @@ public class SuggestionUtils {
 		return log;
 	}
 
-	public EntityPreview parsePayload(String payload) throws EntitySuggestionException {
+	public EntityPreview parsePayload(String payload, String preferredLanguage) throws EntitySuggestionException {
 
 		EntityPreview preview = null;
 		try {
 			JsonParser parser = jsonFactory.createJsonParser(payload);
 			parser.setCodec(objectMapper);
 			
-			JsonNode payloadNode = objectMapper.readTree(payload);
-
-			JsonNode propertyNode = payloadNode.get(SuggestionFields.TYPE);
-			String entityType = propertyNode.getTextValue();
-			preview = createPreviewObjectInstance(entityType);
-			preview.setType(propertyNode.getTextValue());
-			//TODO: improve implementation to use Jackson Mapping
-			//objectMapper.readValue(payload, preview.class)
+			JsonNode languageMapNode = objectMapper.readTree(payload);
 			
+			JsonNode entityNode = getPayload(languageMapNode, preferredLanguage);
 
-			propertyNode = payloadNode.get(SuggestionFields.ID);
-			preview.setEntityId(propertyNode.getTextValue());
-
-			propertyNode = payloadNode.get(SuggestionFields.TERM);
-			if (propertyNode != null)
-				preview.setMatchedTerm(propertyNode.getTextValue());
-
-			propertyNode = payloadNode.get(SuggestionFields.PREF_LABEL);
-			preview.setPreferredLabel(propertyNode.getTextValue());
-
-			List<String> values = getValuesAsList(payloadNode, SuggestionFields.HIDDEN_LABEL);
-			preview.setHiddenLabel(values);
-
-			setEntitySpecificProperties(preview, payloadNode);
+			preview = parseEntity(entityNode);
 
 		} catch (Exception e) {
 			throw new EntitySuggestionException("Cannot parse suggestion payload: " + payload, e);
 		}
+		return preview;
+	}
+
+	private JsonNode getPayload(JsonNode languageMapNode, String preferredLanguage) {
+		final JsonNodeFactory nodeFactory = JsonNodeFactory.instance;
+		ObjectNode node = nodeFactory.objectNode();
+		ObjectNode child = nodeFactory.objectNode();
+		
+		Iterator<Entry<String, JsonNode>> itr = languageMapNode.getFields();
+		while (itr.hasNext()) {
+			Entry<String, JsonNode> next = itr.next();
+			if (next.getValue().findValue(preferredLanguage) != null) {
+				// first priority: preferredLanguage
+				child.put(next.getKey(), next.getValue().findValue(preferredLanguage));
+			} else if (next.getValue().findValue(WebEntityConstants.PARAM_LANGUAGE_EN) != null) {
+				// second option: english
+				child.put(next.getKey(), next.getValue().findValue(WebEntityConstants.PARAM_LANGUAGE_EN));
+			} else if (next.getValue().findValue("") != null) {
+				// fallback: default entry ("")
+				child.put(next.getKey(), next.getValue().findValue(""));
+			} else {
+				// if no language options (e.g. place, type, ...)
+				child.put(next.getKey(), next.getValue());
+			}
+		}
+		node.putAll(child);
+		return node;
+	}
+
+	private EntityPreview parseEntity(JsonNode entityNode) throws UnsupportedEntityTypeException {
+		EntityPreview preview;
+		JsonNode propertyNode = entityNode.get(SuggestionFields.TYPE);
+		String entityType = propertyNode.getTextValue();
+		preview = createPreviewObjectInstance(entityType);
+		preview.setType(propertyNode.getTextValue());
+		
+		propertyNode = entityNode.get(SuggestionFields.ID);
+		preview.setEntityId(propertyNode.getTextValue());
+
+		propertyNode = entityNode.get(SuggestionFields.TERM);
+		if (propertyNode != null)
+			preview.setMatchedTerm(propertyNode.getTextValue());
+
+		propertyNode = entityNode.get(WebEntityFields.DEPICTION);
+		if (propertyNode != null)
+			preview.setDepiction(propertyNode.getTextValue());
+
+		propertyNode = entityNode.get(SuggestionFields.PREF_LABEL);
+		preview.setPreferredLabel(propertyNode.getTextValue());
+
+		List<String> values = getValuesAsList(entityNode, SuggestionFields.HIDDEN_LABEL);
+		preview.setHiddenLabel(values);
+
+		setEntitySpecificProperties(preview, entityNode);
 		return preview;
 	}
 
@@ -156,7 +198,7 @@ public class SuggestionUtils {
 
 	}
 
-	private EntityPreview createPreviewObjectInstance(String entityTypeStr) {
+	private EntityPreview createPreviewObjectInstance(String entityTypeStr) throws UnsupportedEntityTypeException {
 		// EntityTypes entityType = EntityTypes.getByHttpUri(entityTypeUri);
 
 		EntityTypes entityType = EntityTypes.getByInternalType(entityTypeStr);

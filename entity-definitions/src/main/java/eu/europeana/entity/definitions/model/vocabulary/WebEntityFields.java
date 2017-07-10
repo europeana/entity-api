@@ -1,4 +1,5 @@
-package eu.europeana.entity.definitions.vocabulary;
+package eu.europeana.entity.definitions.model.vocabulary;
+
 
 public interface WebEntityFields {
 
@@ -19,6 +20,8 @@ public interface WebEntityFields {
 	public static final String ALT_LABEL = "altLabel";
 	public static final String NOTE = "note";
 	public static final String RDF_ABOUT = "about";
+	public static final String DEPICTION = "depiction";
+	
 
 	// concept fields
 	public static final String NOTATION = "notation";
@@ -28,6 +31,7 @@ public interface WebEntityFields {
 
 	// match fields
 	public static final String EXACT_MATCH = "exactMatch";
+//	public static final String COREF = "coref";
 	public static final String CLOSE_MATCH = "closeMatch";
 	public static final String BROAD_MATCH = "broadMatch";
 	public static final String NARROW_MATCH = "narrowMatch";

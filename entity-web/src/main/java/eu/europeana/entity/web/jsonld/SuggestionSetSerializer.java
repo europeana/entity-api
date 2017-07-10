@@ -6,11 +6,15 @@ import org.apache.stanbol.commons.jsonld.JsonLd;
 import org.apache.stanbol.commons.jsonld.JsonLdProperty;
 import org.apache.stanbol.commons.jsonld.JsonLdPropertyValue;
 import org.apache.stanbol.commons.jsonld.JsonLdResource;
+import org.springframework.http.HttpStatus;
 
+import eu.europeana.api.common.config.I18nConstants;
+import eu.europeana.api.commons.web.exception.HttpException;
+import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException;
 import eu.europeana.entity.definitions.model.ResourcePreview;
 import eu.europeana.entity.definitions.model.search.result.ResultSet;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
-import eu.europeana.entity.definitions.vocabulary.WebEntityConstants;
+import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
 import eu.europeana.entity.web.model.view.AgentPreview;
 import eu.europeana.entity.web.model.view.EntityPreview;
 import eu.europeana.entity.web.model.view.PlacePreview;
@@ -45,8 +49,9 @@ public class SuggestionSetSerializer extends JsonLd {
 	 * as key.
 	 * 
 	 * @param concept
+	 * @throws HttpException 
 	 */
-	public String serialize() {
+	public String serialize() throws HttpException {
 
 		setUseTypeCoercion(false);
 		setUseCuries(true);
@@ -87,7 +92,7 @@ public class SuggestionSetSerializer extends JsonLd {
 		return toString(4);
 	}
 
-	protected void serializeItems(JsonLdResource jsonLdResource) {
+	protected void serializeItems(JsonLdResource jsonLdResource) throws HttpException {
 
 		// do not serialize if empty
 		if (getEntitySet().isEmpty())
@@ -105,7 +110,7 @@ public class SuggestionSetSerializer extends JsonLd {
 
 	}
 
-	private JsonLdPropertyValue buildEntityPreviewPropertyValue(EntityPreview entityPreview) {
+	private JsonLdPropertyValue buildEntityPreviewPropertyValue(EntityPreview entityPreview) throws HttpException {
 
 		JsonLdPropertyValue entityPreviewPropValue = new JsonLdPropertyValue();
 		entityPreviewPropValue.putProperty(new JsonLdProperty(WebEntityConstants.ID, entityPreview.getEntityId()));
@@ -116,9 +121,18 @@ public class SuggestionSetSerializer extends JsonLd {
 					.putProperty(buildListProperty(WebEntityConstants.HIDDEN_LABEL, entityPreview.getHiddenLabel(), false));
 		else
 			getLogger().warn("No hidden labels available for entity: " + entityPreview.getEntityId());
+		
+		// depiction
+		if (entityPreview.getDepiction() != null)
+			entityPreviewPropValue.putProperty(new JsonLdProperty(WebEntityConstants.DEPICTION, entityPreview.getDepiction()));
 
 		String type = entityPreview.getType();
-		EntityTypes entityType = EntityTypes.getByInternalType(type);
+		EntityTypes entityType = null;
+		try {
+			entityType = EntityTypes.getByInternalType(type);
+		} catch (UnsupportedEntityTypeException e) {
+			throw new HttpException(null, I18nConstants.URI_NOT_FOUND, new String[]{type}, HttpStatus.NOT_FOUND, null);
+		}
 
 		if (entityType != null) {
 			entityPreviewPropValue

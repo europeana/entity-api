@@ -6,7 +6,9 @@ import java.util.List;
 
 import org.apache.stanbol.commons.jsonld.JsonLd;
 import org.apache.stanbol.commons.jsonld.JsonLdResource;
+import org.apache.commons.lang.StringUtils;
 
+import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException;
 import eu.europeana.entity.definitions.model.Agent;
 import eu.europeana.entity.definitions.model.Concept;
 import eu.europeana.entity.definitions.model.Entity;
@@ -16,15 +18,15 @@ import eu.europeana.entity.definitions.model.impl.BaseEntity;
 import eu.europeana.entity.definitions.model.vocabulary.AgentSolrFields;
 import eu.europeana.entity.definitions.model.vocabulary.ConceptSolrFields;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
-import eu.europeana.entity.definitions.vocabulary.WebEntityFields;
+import eu.europeana.entity.definitions.model.vocabulary.WebEntityFields;
 
 public class EuropeanaEntityLd extends JsonLd {
 
-	public EuropeanaEntityLd(Entity entity) {
+	public EuropeanaEntityLd(Entity entity) throws UnsupportedEntityTypeException {
 		setEntity(entity);
 	}
 
-	public void setEntity(Entity entity) {
+	public void setEntity(Entity entity) throws UnsupportedEntityTypeException {
 		setUseTypeCoercion(false);
 		setUseCuries(true);
 		// addNamespacePrefix(WebAnnotationFields.OA_CONTEXT,
@@ -44,6 +46,9 @@ public class EuropeanaEntityLd extends JsonLd {
 		putStringArrayProperty(WebEntityFields.SAME_AS, entity.getSameAs(), jsonLdResource);
 		//jsonLdResource.putProperty(WebEntityFields.RDF_ABOUT, entity.getAbout());
 		putStringArrayProperty(WebEntityFields.IS_RELATED_TO, entity.getIsRelatedTo(), jsonLdResource);
+
+		if (!StringUtils.isEmpty(entity.getDepiction()))
+			jsonLdResource.putProperty(WebEntityFields.DEPICTION, entity.getDepiction());
 		
 		//common SKOS_Properties
 		putMapOfStringListProperty(WebEntityFields.PREF_LABEL, entity.getPrefLabel(), ConceptSolrFields.PREF_LABEL, jsonLdResource);
@@ -69,7 +74,7 @@ public class EuropeanaEntityLd extends JsonLd {
 		putStringArrayProperty(WebEntityFields.RELATED_MATCH, entity.getRelatedMatch(), jsonLdResource);
 	}
 
-	private void putSpecificProperties(Entity entity, JsonLdResource jsonLdResource) {
+	private void putSpecificProperties(Entity entity, JsonLdResource jsonLdResource) throws UnsupportedEntityTypeException {
 
 		EntityTypes entityType = EntityTypes.getByInternalType(entity.getInternalType());
 

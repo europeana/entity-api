@@ -3,6 +3,8 @@ package eu.europeana.entity.web.exception;
 
 import org.springframework.http.HttpStatus;
 
+import eu.europeana.api.commons.web.exception.HttpException;
+
 public class ApplicationAuthenticationException extends HttpException{
 
 	/**
@@ -12,8 +14,8 @@ public class ApplicationAuthenticationException extends HttpException{
 	/**
 	 * 
 	 */
-	public static final String MESSAGE_NO_APPLICATION_FOR_APIKEY = "No client application registered for the given apiKey!";
-	public static final String MESSAGE_INVALID_APIKEY = "Invalid apiKey! ";
+//	public static final String MESSAGE_NO_APPLICATION_FOR_APIKEY = "No client application registered for the given apiKey!";
+//	public static final String MESSAGE_INVALID_APIKEY = "Invalid apiKey! ";
 		
 	private String paramValue; 
 	
@@ -26,7 +28,7 @@ public class ApplicationAuthenticationException extends HttpException{
 	}
 
 	public ApplicationAuthenticationException(String message, String paramValue, HttpStatus status, Throwable th){
-		super(message + " " + paramValue, status, th);
+		super(message + " " + paramValue, null, null, status, th);
 		this.paramValue = paramValue;
 	}
 	

@@ -6,6 +6,7 @@ public class BasePlace extends BaseEntity implements Place {
 
 	private String[] isNextInSequence;
 	private Float latitude, longitude, altitude;
+	private String[] exactMatch;
 
 	@Override
 	public String[] getIsNextInSequence() {
@@ -45,5 +46,13 @@ public class BasePlace extends BaseEntity implements Place {
 	@Override
 	public void setAltitude(Float altitude) {
 		this.altitude = altitude;
+	}
+
+	public String[] getExactMatch() {
+		return exactMatch;
+	}
+
+	public void setExactMatch(String[] exactMatch) {
+		this.exactMatch = exactMatch;
 	}
 }

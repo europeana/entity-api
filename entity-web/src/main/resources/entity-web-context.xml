@@ -63,6 +63,13 @@
     	<beans:property name="authenticationService" ref="annotation_authenticationService"/>
     	 --> 	
     </beans:bean>
+    
+    <!-- configurable error messages -->
+<!--     <beans:bean id="errorMessageController" class="eu.europeana.entity.web.controller.ErrorMessageController"> -->
+<!--     </beans:bean> -->
+    <beans:bean id="i18nService" class="eu.europeana.api.commons.config.i18n.I18nServiceImpl">
+    	<beans:property name="messageSource" ref="entity_i18n_messageSource"/>
+    </beans:bean>
     	
    
 </beans:beans>

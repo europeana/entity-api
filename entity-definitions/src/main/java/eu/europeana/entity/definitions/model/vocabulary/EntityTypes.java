@@ -1,5 +1,7 @@
 package eu.europeana.entity.definitions.model.vocabulary;
 
+import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException;
+
 public enum EntityTypes implements EntityKeyword{
 
 	Concept("skos", "Concept", "https://www.w3.org/2009/08/skos-reference/skos.html#Concept"), 
@@ -78,8 +80,9 @@ public enum EntityTypes implements EntityKeyword{
 	 * For user friendliness the the comparison is case insensitive  
 	 * @param jsonValue
 	 * @return
+	 * @throws UnsupportedEntityTypeException 
 	 */
-	public static EntityTypes getByJsonValue(String jsonValue){
+	static EntityTypes getByJsonValue(String jsonValue) throws UnsupportedEntityTypeException{
 		
 		String[] values = jsonValue.split(":", 2);
 		//last token
@@ -89,45 +92,16 @@ public enum EntityTypes implements EntityKeyword{
 			if(agentType.getJsonValue().equalsIgnoreCase(ignoreNamespace))
 				return agentType;
 		}
-		return null;
+		throw new UnsupportedEntityTypeException(jsonValue);
 	}
-	
-	/**
-	 * Identifying agent type by the HTTP URI value.
-	 * For user friendliness the the comparison is case insensitive  
-	 * @param jsonValue
-	 * @return
-	 */
-	public static EntityTypes getByHttpUri(String uri){
-		
-		
-		for(EntityTypes agentType : EntityTypes.values()){
-			if(agentType.getHttpUri().equalsIgnoreCase(uri))
-				return agentType;
-		}
-		return null;
-	}
-	
-	public static String getInternalTypeByModel(String jsonValue){
-
-		String[] values = jsonValue.split(":", 2);
-		//last token
-		String ignoreNamespace  = values[values.length -1];
-		
-		for(EntityTypes agentType : EntityTypes.values()){
-			if(agentType.getJsonValue().equalsIgnoreCase(ignoreNamespace))
-				return agentType.getInternalType();
-		}
-		return null;
-	}	
-		
-	public static EntityTypes getByInternalType(String internalType){
+			
+	public static EntityTypes getByInternalType(String internalType) throws UnsupportedEntityTypeException{
 
 		for(EntityTypes agentType : EntityTypes.values()){
 			if(agentType.getInternalType().equalsIgnoreCase(internalType))
 				return agentType;
 		}
-		return null;
+		throw new UnsupportedEntityTypeException(internalType);
 	}	
 	
 	@Override

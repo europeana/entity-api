@@ -12,6 +12,7 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException;
 import eu.europeana.entity.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.search.Query;
 import eu.europeana.entity.definitions.model.search.QueryImpl;
@@ -38,7 +39,7 @@ public class SolrEntityServiceTest {
 	}
 
 	@Test
-	public void testSearchByUrl() throws EntityRetrievalException {
+	public void testSearchByUrl() throws EntityRetrievalException, UnsupportedEntityTypeException {
 
 		//Concept entity = solrEntityService.searchByUrl("\"http://d-nb.info/gnd/4019862-5\"");
 		Entity entity = solrEntityService.searchByUrl("agent", "\"http://data.europeana.eu/agent/base/33286\"");

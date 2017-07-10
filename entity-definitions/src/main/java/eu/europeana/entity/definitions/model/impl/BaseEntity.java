@@ -37,6 +37,9 @@ public class BaseEntity implements Entity, RankedEntity {
 
 	// other derived technical fields?
 	private String context;
+	
+	// depiction
+	private String depiction;
 
 	public Map<String, List<String>> getPrefLabel() {
 		return prefLabel;
@@ -86,13 +89,13 @@ public class BaseEntity implements Entity, RankedEntity {
 		this.internalType = internalType;
 	}
 
-	public String[] getSameAs() {
-		return sameAs;
-	}
-
-	public void setSameAs(String[] sameAs) {
-		this.sameAs = sameAs;
-	}
+//	public String[] getSameAs() {
+//		return sameAs;
+//	}
+//
+//	public void setSameAs(String[] sameAs) {
+//		this.sameAs = sameAs;
+//	}
 
 	public String getEntityId() {
 		return entityId;
@@ -202,4 +205,20 @@ public class BaseEntity implements Entity, RankedEntity {
 		this.isPartOf = isPartOf;
 	}
 
+	public String getDepiction() {
+		return depiction;
+	}
+	
+	public void setDepiction(String depiction) {
+		this.depiction = depiction;
+	}
+
+	@Override
+	public String[] getSameAs() {
+		return sameAs;
+	}
+
+	public void setSameAs(String[] sameAs) {
+		this.sameAs = sameAs;
+	}
 }

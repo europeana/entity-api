@@ -2,6 +2,8 @@ package eu.europeana.entity.web.exception;
 
 import org.springframework.http.HttpStatus;
 
+import eu.europeana.api.commons.web.exception.HttpException;
+
 
 public class ParamValidationException extends HttpException{
 
@@ -22,7 +24,7 @@ public class ParamValidationException extends HttpException{
 		this(message, parameterName, parameterValue, HttpStatus.BAD_REQUEST, th);
 	}
 	public ParamValidationException(String message, String parameterName, String parameterValue, HttpStatus status, Throwable th){
-		super(message + " " + parameterName + ":" + parameterValue, status, th);
+		super(message + " " + parameterName + ":" + parameterValue, null, null, status, th);
 		this.parameterName = parameterName;
 		this.parameterValue = parameterValue;
 	}

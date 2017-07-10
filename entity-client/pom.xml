@@ -111,8 +111,9 @@
 		</dependency>
 
 	</dependencies>
+	
+	<!-- 
 	<build>
-		<!-- configure source and output locations -->
 		<directory>target</directory>
 		<outputDirectory>target/classes</outputDirectory>
 		<finalName>${artifactId}-${version}</finalName>
@@ -146,5 +147,6 @@
 			</plugin>
 		</plugins>
 	</build>
+	-->
 </project>
 

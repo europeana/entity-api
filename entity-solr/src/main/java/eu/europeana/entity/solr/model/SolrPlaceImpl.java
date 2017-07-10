@@ -28,6 +28,12 @@ public class SolrPlaceImpl extends BasePlace implements Place {
 		super.setSameAs(sameAs);
 	}
 
+	@Override
+	@Field(AgentSolrFields.EXACT_MATCH)
+	public void setExactMatch(String[] exactMatch) {
+		super.setExactMatch(exactMatch);
+	}
+	
 	// @Override
 	// @Field(AgentSolrFields.IDENTIFIER)
 	// public void setIdentifier(String identifier) {
@@ -108,5 +114,11 @@ public class SolrPlaceImpl extends BasePlace implements Place {
 	@Field(PlaceSolrFields.ALTITUDE)
 	public void setAltitude(Float altitude) {
 		super.setAltitude(altitude);
+	}
+
+	@Override
+	@Field(ConceptSolrFields.DEPICTION)
+	public void setDepiction(String depiction) {
+		super.setDepiction(depiction);
 	}
 }

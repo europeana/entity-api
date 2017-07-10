@@ -26,7 +26,13 @@ public class SolrAgentImpl extends BaseAgent implements Agent {
 	public void setSameAs(String[] sameAs) {
 		super.setSameAs(sameAs);
 	}
-
+	
+	@Override
+	@Field(AgentSolrFields.EXACT_MATCH)
+	public void setExactMatch(String[] exactMatch) {
+		super.setExactMatch(exactMatch);
+	}
+	
 	@Override
 	@Field(AgentSolrFields.INTERNAL_TYPE)
 	public void setInternalType(String internalType) {
@@ -95,7 +101,12 @@ public class SolrAgentImpl extends BaseAgent implements Agent {
 	public void setNote(Map<String, List<String>> note) {
 		super.setNote(note);
 	}
-
+	
+	@Override
+	@Field(ConceptSolrFields.DEPICTION)
+	public void setDepiction(String depiction) {
+		super.setDepiction(depiction);
+	}
 	
 
 	// Agent Specific Fields

@@ -4,6 +4,9 @@ import javax.annotation.Resource;
 
 import org.springframework.http.HttpStatus;
 
+import eu.europeana.api.common.config.I18nConstants;
+import eu.europeana.api.commons.web.exception.HttpException;
+import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException;
 import eu.europeana.entity.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.search.Query;
 import eu.europeana.entity.definitions.model.search.QueryImpl;
@@ -12,7 +15,6 @@ import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.solr.exception.EntityRetrievalException;
 import eu.europeana.entity.solr.exception.EntitySuggestionException;
 import eu.europeana.entity.solr.service.SolrEntityService;
-import eu.europeana.entity.web.exception.HttpException;
 import eu.europeana.entity.web.model.view.EntityPreview;
 import eu.europeana.entity.web.service.EntityService;
 
@@ -31,15 +33,16 @@ public class EntityServiceImpl implements EntityService {
 		try {
 			result = solrEntityService.searchByUrl(type, entityUri);
 		} catch (EntityRetrievalException e) {
-			throw new HttpException("Cannot retrieve entity by URI", HttpStatus.INTERNAL_SERVER_ERROR, e);
+			throw new HttpException(e.getMessage(), I18nConstants.SERVER_ERROR_CANT_RETRIEVE_URI, new String[]{entityUri} , HttpStatus.INTERNAL_SERVER_ERROR);
+		} catch (UnsupportedEntityTypeException e) {
+			throw new HttpException(null, I18nConstants.UNSUPPORTED_ENTITY_TYPE, new String[]{type}, HttpStatus.NOT_FOUND, null);
 		}
 		//if not found send appropriate error message
 		if(result == null)
-			throw new HttpException("No Entity found for URI: " + entityUri, HttpStatus.NOT_FOUND);
+			throw new HttpException(null, I18nConstants.URI_NOT_FOUND, new String[]{entityUri}, HttpStatus.NOT_FOUND, null);
 		
 		return result;
 	}
-
 	
 	protected Query buildSearchQuery(String queryString, String[] filters, int rows) {
 		
@@ -63,7 +66,8 @@ public class EntityServiceImpl implements EntityService {
 			Query query = buildSearchQuery(text, null, rows);
 			return solrEntityService.suggest(query, language, internalEntityTypes, scope, rows);
 		} catch (EntitySuggestionException e) {
-			throw new HttpException("Cannot retrieve entity by URI", HttpStatus.INTERNAL_SERVER_ERROR, e);
+			//TODO #585
+			throw new HttpException(e.getMessage(), I18nConstants.SERVER_ERROR_CANT_RETRIEVE_URI, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
@@ -75,16 +79,15 @@ public class EntityServiceImpl implements EntityService {
 	
 	@Override
 	public String resolveByUri(String uri) throws HttpException{
-		
 		String result;
 		try {
-			result = solrEntityService.searchBySameAsUri(uri);
+			result = solrEntityService.searchByCoref(uri);
 		} catch (EntityRetrievalException e) {
-			throw new HttpException("Cannot resolve entity by sameAs URI", HttpStatus.INTERNAL_SERVER_ERROR, e);
+			throw new HttpException(e.getMessage(), I18nConstants.SERVER_ERROR_CANT_RESOLVE_SAME_AS_URI, new String[]{uri}, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		//if not found send appropriate error message
 		if(result == null)
-			throw new HttpException("No Entity found for URI: " + uri, HttpStatus.NOT_FOUND);
+			throw new HttpException(null, I18nConstants.CANT_FIND_BY_SAME_AS_URI, new String[]{uri}, HttpStatus.NOT_FOUND);
 		
  		return result;
 	}

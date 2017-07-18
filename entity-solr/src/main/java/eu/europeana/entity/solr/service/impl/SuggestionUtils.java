@@ -1,8 +1,10 @@
 package eu.europeana.entity.solr.service.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
@@ -44,7 +46,7 @@ public class SuggestionUtils {
 		return log;
 	}
 
-	public EntityPreview parsePayload(String payload, String preferredLanguage) throws EntitySuggestionException {
+	public EntityPreview parsePayload(String payload, String preferredLanguage, String highlightTerm) throws EntitySuggestionException {
 
 		EntityPreview preview = null;
 		try {
@@ -53,7 +55,7 @@ public class SuggestionUtils {
 			
 			JsonNode languageMapNode = objectMapper.readTree(payload);
 			
-			JsonNode entityNode = getPayload(languageMapNode, preferredLanguage);
+			JsonNode entityNode = getPayload(languageMapNode, preferredLanguage, highlightTerm);
 
 			preview = parseEntity(entityNode);
 
@@ -63,23 +65,52 @@ public class SuggestionUtils {
 		return preview;
 	}
 
-	private JsonNode getPayload(JsonNode languageMapNode, String preferredLanguage) {
+	private JsonNode getPayload(JsonNode languageMapNode, String preferredLanguage, String highlightTerm) {
 		final JsonNodeFactory nodeFactory = JsonNodeFactory.instance;
 		ObjectNode node = nodeFactory.objectNode();
 		ObjectNode child = nodeFactory.objectNode();
+		ObjectNode languageNodeLabel = nodeFactory.objectNode();
+		ObjectNode languageNodeProfession = nodeFactory.objectNode();
 		
 		Iterator<Entry<String, JsonNode>> itr = languageMapNode.getFields();
+		
 		while (itr.hasNext()) {
 			Entry<String, JsonNode> next = itr.next();
-			if (next.getValue().findValue(preferredLanguage) != null) {
-				// first priority: preferredLanguage
-				child.put(next.getKey(), next.getValue().findValue(preferredLanguage));
-			} else if (next.getValue().findValue(WebEntityConstants.PARAM_LANGUAGE_EN) != null) {
-				// second option: english
-				child.put(next.getKey(), next.getValue().findValue(WebEntityConstants.PARAM_LANGUAGE_EN));
-			} else if (next.getValue().findValue("") != null) {
-				// fallback: default entry ("")
-				child.put(next.getKey(), next.getValue().findValue(""));
+			if (next.getKey() == "prefLabel") {
+				Iterator<Entry<String, JsonNode>> nodeItr = next.getValue().getFields();
+				while (nodeItr.hasNext()) {
+					Entry<String, JsonNode> current = nodeItr.next();
+					if (current.getValue().asText().contains(highlightTerm) && current.getKey() == preferredLanguage) {
+						// keyword match with selected language
+						languageNodeLabel.put(current.getKey(), current.getValue());
+					} else if (current.getValue().asText().contains(highlightTerm)) {
+						// only keyword match
+						languageNodeLabel.put(current.getKey(), current.getValue());
+					} else if (current.getKey() == preferredLanguage) {
+						// only language label matches
+						languageNodeLabel.put(current.getKey(), current.getValue());
+					}
+				}
+				child.put("prefLabel", languageNodeLabel);
+			} else if (next.getKey() == "professionOrOccupation") {
+				Iterator<Entry<String, JsonNode>> nodeItr = next.getValue().getFields();
+				while (nodeItr.hasNext()) {
+					Entry<String, JsonNode> current = nodeItr.next();
+					if (current.getValue().asText().contains(highlightTerm) && current.getKey() == preferredLanguage) {
+						// keyword match with selected language
+						languageNodeProfession.put(current.getKey(), current.getValue());
+					} else if (current.getValue().asText().contains(highlightTerm)) {
+						// only keyword match
+						languageNodeProfession.put(current.getKey(), current.getValue());
+					} else if (current.getKey() == preferredLanguage) {
+						// only language label matches
+						languageNodeProfession.put(current.getKey(), current.getValue());
+					} else {
+						// if nothing matches
+						languageNodeProfession.put(current.getKey(), current.getValue());
+					}
+				}
+				child.put("professionOrOccupation", languageNodeProfession);
 			} else {
 				// if no language options (e.g. place, type, ...)
 				child.put(next.getKey(), next.getValue());
@@ -106,9 +137,9 @@ public class SuggestionUtils {
 		propertyNode = entityNode.get(WebEntityFields.DEPICTION);
 		if (propertyNode != null)
 			preview.setDepiction(propertyNode.getTextValue());
-
-		propertyNode = entityNode.get(SuggestionFields.PREF_LABEL);
-		preview.setPreferredLabel(propertyNode.getTextValue());
+		
+		Map<String, String> prefLabel = getValuesAsLanguageMap(entityNode, SuggestionFields.PREF_LABEL);
+		preview.setPreferredLabel(prefLabel);
 
 		List<String> values = getValuesAsList(entityNode, SuggestionFields.HIDDEN_LABEL);
 		preview.setHiddenLabel(values);
@@ -117,6 +148,25 @@ public class SuggestionUtils {
 		return preview;
 	}
 
+	private Map<String, String> getValuesAsLanguageMap (JsonNode payloadNode, String key) {
+
+		JsonNode jsonNode = payloadNode.get(key);
+		Map<String, String> languageMap = new HashMap<>();
+
+		if (jsonNode != null) {
+			Iterator<Entry<String, JsonNode>> itr = jsonNode.getFields();
+			while (itr.hasNext()) {
+				Entry<String, JsonNode> currentEntry = itr.next();
+				if (currentEntry.getValue().getClass().getName() == "org.codehaus.jackson.node.ArrayNode") {
+					languageMap.put(currentEntry.getKey(), currentEntry.getValue().toString());			
+				} else if (currentEntry.getValue().asText() != null) {
+					languageMap.put(currentEntry.getKey(), currentEntry.getValue().asText());				
+				}
+			}
+		}
+		return languageMap;
+	}
+	
 	private void setEntitySpecificProperties(EntityPreview preview, JsonNode payloadNode) {
 		switch (preview.getEntityType()) {
 		case Agent:
@@ -153,18 +203,20 @@ public class SuggestionUtils {
 		if (propertyNode != null)
 			preview.setDateOfDeath(propertyNode.getTextValue());
 
-		List<String> values = getValuesAsList(payloadNode, SuggestionFields.PROFESSION_OR_OCCUPATION);
+		Map<String, String> values = getValuesAsLanguageMap(payloadNode, SuggestionFields.PROFESSION_OR_OCCUPATION);
 		preview.setProfessionOrOccuation(values);
 
 	}
 
 	private List<String> getValuesAsList(JsonNode payloadNode, String key) {
-		ArrayNode arrayNode = (ArrayNode) payloadNode.get(key);
+		
+		JsonNode arrayNode = payloadNode.get(key);
+		
 		List<String> values = null;
 		if (arrayNode != null) {
 			values = new ArrayList<String>(arrayNode.size());
 			for (JsonNode profession : arrayNode) {
-				values.add(profession.asText());
+				values.add(profession.toString());
 			}
 		}
 		return values;

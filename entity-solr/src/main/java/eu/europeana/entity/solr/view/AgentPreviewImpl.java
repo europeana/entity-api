@@ -1,6 +1,7 @@
 package eu.europeana.entity.solr.view;
 
 import java.util.List;
+import java.util.Map;
 
 import eu.europeana.entity.web.model.view.AgentPreview;
 
@@ -8,7 +9,7 @@ public class AgentPreviewImpl extends EntityPreviewImpl implements AgentPreview 
 
 	String dateOfBirth;
 	String dateOfDeath;
-	List<String> professionOrOccupation;
+	Map<String, String> professionOrOccupation;
 
 	@Override
 	public void setDateOfDeath(String deathDate) {
@@ -33,12 +34,12 @@ public class AgentPreviewImpl extends EntityPreviewImpl implements AgentPreview 
 	}
 
 	@Override
-	public void setProfessionOrOccuation(List<String> professionOrOccupation) {
+	public void setProfessionOrOccuation(Map<String, String> professionOrOccupation) {
 		this.professionOrOccupation = professionOrOccupation;
 	}
 
 	@Override
-	public List<String> getProfessionOrOccuation() {
+	public Map<String, String> getProfessionOrOccuation() {
 		return professionOrOccupation;
 	}
 

@@ -1,6 +1,7 @@
 package eu.europeana.entity.web.model.view;
 
 import java.util.List;
+import java.util.Map;
 
 import eu.europeana.entity.definitions.model.search.result.IdBean;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
@@ -9,10 +10,8 @@ public interface EntityPreview extends IdBean {
 
 	//functional fields
 	public void setEntityId(String entityId);
-	
-	public void setPreferredLabel(String prefferedLabel);
-	
-	public String getPreferredLabel();
+	public void setPreferredLabel(Map<String, String> prefLabel);
+	public Map<String, String> getPreferredLabel();
 	
 	void setLanguage(String language);
 

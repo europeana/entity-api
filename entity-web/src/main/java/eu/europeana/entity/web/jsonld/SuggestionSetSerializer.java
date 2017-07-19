@@ -114,8 +114,10 @@ public class SuggestionSetSerializer extends JsonLd {
 
 		JsonLdPropertyValue entityPreviewPropValue = new JsonLdPropertyValue();
 		entityPreviewPropValue.putProperty(new JsonLdProperty(WebEntityConstants.ID, entityPreview.getEntityId()));
-		entityPreviewPropValue
-				.putProperty(new JsonLdProperty(WebEntityConstants.PREF_LABEL, entityPreview.getPreferredLabel()));
+		JsonLdProperty prefLabelProp = buildMapOfStringsProperty(WebEntityConstants.PREF_LABEL, entityPreview.getPreferredLabel(), 
+				"");
+		entityPreviewPropValue.putProperty(prefLabelProp);
+		
 		if(entityPreview.getHiddenLabel() != null)
 			entityPreviewPropValue
 					.putProperty(buildListProperty(WebEntityConstants.HIDDEN_LABEL, entityPreview.getHiddenLabel(), false));
@@ -201,8 +203,8 @@ public class SuggestionSetSerializer extends JsonLd {
 					.putProperty(new JsonLdProperty(WebEntityConstants.DATE_OF_DEATH, entityPreview.getDateOfDeath()));
 
 		if (entityPreview.getProfessionOrOccuation() != null)
-			entityPreviewPropValue.putProperty(buildListProperty(WebEntityConstants.PROFESSION_OR_OCCUPATION,
-					entityPreview.getProfessionOrOccuation(), false));
+			entityPreviewPropValue.putProperty(buildMapProperty(WebEntityConstants.PROFESSION_OR_OCCUPATION, entityPreview.getProfessionOrOccuation(), 
+					""));
 	}
 
 	// public String convertDateToStr(Date date) {

@@ -2,6 +2,7 @@ package eu.europeana.entity.solr.view;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.web.model.view.EntityPreview;
@@ -13,7 +14,7 @@ public class EntityPreviewImpl implements EntityPreview{
 	String searchedTerm;
 	String matchedTerm;
 	String language;
-	String preferredLabel;
+	Map<String, String> preferredLabel;
 	List<String> hiddenLabel;
 	String timeSpanStart;
 	String timeSpanEnd;
@@ -42,18 +43,18 @@ public class EntityPreviewImpl implements EntityPreview{
 	public void setLanguage(String language) {
 		this.language = language;
 	}
-
-	public String getPreferredLabel() {
+	
+	public Map<String, String> getPreferredLabel() {
 		return preferredLabel;
 	}
 
-	public void setPreferredLabel(String preferredLabel) {
+	public void setPreferredLabel(Map<String, String> preferredLabel) {
 		this.preferredLabel = preferredLabel;
 	}
 
 	@Override
 	public String toString() {
-		return "entityId: " + getEntityId() + "\nprefferedLabel: " + getPreferredLabel();
+		return "entityId: " + getEntityId() + "\npreferredLabel: " + getPreferredLabel();
 	}
 	
 	@Override
@@ -136,6 +137,5 @@ public class EntityPreviewImpl implements EntityPreview{
 	public void setDepiction(String depiction) {
 		this.depiction = depiction;
 	}
-
 	
 }

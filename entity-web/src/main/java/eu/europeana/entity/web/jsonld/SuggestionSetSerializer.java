@@ -203,7 +203,7 @@ public class SuggestionSetSerializer extends JsonLd {
 					.putProperty(new JsonLdProperty(WebEntityConstants.DATE_OF_DEATH, entityPreview.getDateOfDeath()));
 
 		if (entityPreview.getProfessionOrOccuation() != null)
-			entityPreviewPropValue.putProperty(buildMapOfStringsProperty(WebEntityConstants.PROFESSION_OR_OCCUPATION, entityPreview.getProfessionOrOccuation(), 
+			entityPreviewPropValue.putProperty(buildMapProperty(WebEntityConstants.PROFESSION_OR_OCCUPATION, entityPreview.getProfessionOrOccuation(), 
 					""));
 	}
 

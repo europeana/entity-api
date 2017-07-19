@@ -147,8 +147,27 @@ public class SuggestionUtils {
 		setEntitySpecificProperties(preview, entityNode);
 		return preview;
 	}
+	
+	private Map<String, List<String>> getValuesAsLanguageMapList(JsonNode payloadNode, String key) {
 
-	private Map<String, String> getValuesAsLanguageMap (JsonNode payloadNode, String key) {
+		JsonNode jsonNode = payloadNode.get(key);
+		Map<String, List<String>> languageMap = new HashMap<>();
+
+		if (jsonNode != null) {
+			Iterator<Entry<String, JsonNode>> itr = jsonNode.getFields();
+			while (itr.hasNext()) {
+				Entry<String, JsonNode> currentEntry = itr.next();
+				ArrayList<String> valueList = new ArrayList<String>();
+				for (Object value : currentEntry.getValue()) {
+					valueList.add(value.toString());
+				}
+				languageMap.put(currentEntry.getKey(), valueList);
+			}
+		}
+		return languageMap;
+	}
+
+	private Map<String, String> getValuesAsLanguageMap(JsonNode payloadNode, String key) {
 
 		JsonNode jsonNode = payloadNode.get(key);
 		Map<String, String> languageMap = new HashMap<>();
@@ -203,8 +222,11 @@ public class SuggestionUtils {
 		if (propertyNode != null)
 			preview.setDateOfDeath(propertyNode.getTextValue());
 
-		Map<String, String> values = getValuesAsLanguageMap(payloadNode, SuggestionFields.PROFESSION_OR_OCCUPATION);
-		preview.setProfessionOrOccuation(values);
+		propertyNode = payloadNode.get(SuggestionFields.PROFESSION_OR_OCCUPATION);
+		if (propertyNode != null){
+			Map<String, List<String>> values = getValuesAsLanguageMapList(payloadNode, SuggestionFields.PROFESSION_OR_OCCUPATION);
+			preview.setProfessionOrOccuation(values);
+		}
 
 	}
 

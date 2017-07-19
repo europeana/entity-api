@@ -9,7 +9,7 @@ public class AgentPreviewImpl extends EntityPreviewImpl implements AgentPreview 
 
 	String dateOfBirth;
 	String dateOfDeath;
-	Map<String, String> professionOrOccupation;
+	Map<String, List<String>> professionOrOccupation;
 
 	@Override
 	public void setDateOfDeath(String deathDate) {
@@ -34,12 +34,12 @@ public class AgentPreviewImpl extends EntityPreviewImpl implements AgentPreview 
 	}
 
 	@Override
-	public void setProfessionOrOccuation(Map<String, String> professionOrOccupation) {
+	public void setProfessionOrOccuation(Map<String, List<String>> professionOrOccupation) {
 		this.professionOrOccupation = professionOrOccupation;
 	}
 
 	@Override
-	public Map<String, String> getProfessionOrOccuation() {
+	public Map<String, List<String>> getProfessionOrOccuation() {
 		return professionOrOccupation;
 	}
 

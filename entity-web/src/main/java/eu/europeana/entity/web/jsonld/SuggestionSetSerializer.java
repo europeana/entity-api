@@ -118,9 +118,14 @@ public class SuggestionSetSerializer extends JsonLd {
 				"");
 		entityPreviewPropValue.putProperty(prefLabelProp);
 		
-		if(entityPreview.getHiddenLabel() != null)
-			entityPreviewPropValue
-					.putProperty(buildListProperty(WebEntityConstants.HIDDEN_LABEL, entityPreview.getHiddenLabel(), false));
+		if(entityPreview.getHiddenLabel() != null){
+			JsonLdProperty hiddenLabelProp = buildMapProperty(WebEntityConstants.HIDDEN_LABEL, entityPreview.getHiddenLabel(), 
+					"");
+			entityPreviewPropValue.putProperty(hiddenLabelProp);
+//TODO: #661 remove			
+//			entityPreviewPropValue
+//					.putProperty(buildListProperty(WebEntityConstants.HIDDEN_LABEL, entityPreview.getHiddenLabel(), false));
+		}
 		else
 			getLogger().warn("No hidden labels available for entity: " + entityPreview.getEntityId());
 		
@@ -179,13 +184,19 @@ public class SuggestionSetSerializer extends JsonLd {
 	private void putPlaceSpecificProperties(PlacePreview entityPreview, JsonLdPropertyValue entityPreviewPropValue) {
 
 		List<ResourcePreview> partOfList = entityPreview.getIsPartOf();
+		JsonLdProperty prefLabelProp;
+		
 		if (partOfList != null && !partOfList.isEmpty()) {
 			JsonLdProperty isPartOfProp = new JsonLdProperty(WebEntityConstants.IS_PART_OF);
 			JsonLdPropertyValue propValue;
 			for (ResourcePreview resourcePreview : partOfList) {
 				propValue = new JsonLdPropertyValue();
 				propValue.getValues().put(WebEntityConstants.ID, resourcePreview.getHttpUri());
-				propValue.getValues().put(WebEntityConstants.PREF_LABEL, resourcePreview.getPrefLabel());
+//				propValue.getValues().put(WebEntityConstants.PREF_LABEL, resourcePreview.getPrefLabel());
+				prefLabelProp = buildMapOfStringsProperty(WebEntityConstants.PREF_LABEL, resourcePreview.getPrefLabel(), 
+						"");
+				propValue.getPropertyMap().put(WebEntityConstants.PREF_LABEL, prefLabelProp);
+				
 				isPartOfProp.addValue(propValue);
 			}
 

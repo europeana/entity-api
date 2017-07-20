@@ -18,6 +18,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.ArrayNode;
 import org.codehaus.jackson.node.JsonNodeFactory;
 import org.codehaus.jackson.node.ObjectNode;
+import org.codehaus.jackson.node.TextNode;
 
 import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException;
 import eu.europeana.entity.definitions.model.ResourcePreview;
@@ -130,6 +131,7 @@ public class SuggestionUtils {
 		propertyNode = entityNode.get(SuggestionFields.ID);
 		preview.setEntityId(propertyNode.getTextValue());
 
+		//TODO: remove term as no longer used
 		propertyNode = entityNode.get(SuggestionFields.TERM);
 		if (propertyNode != null)
 			preview.setMatchedTerm(propertyNode.getTextValue());
@@ -141,8 +143,12 @@ public class SuggestionUtils {
 		Map<String, String> prefLabel = getValuesAsLanguageMap(entityNode, SuggestionFields.PREF_LABEL);
 		preview.setPreferredLabel(prefLabel);
 
-		List<String> values = getValuesAsList(entityNode, SuggestionFields.HIDDEN_LABEL);
-		preview.setHiddenLabel(values);
+		Map<String, List<String>> hiddenLabel = getValuesAsLanguageMapList(entityNode, SuggestionFields.HIDDEN_LABEL);
+		preview.setHiddenLabel(hiddenLabel);
+		
+//TODO: #661 remove		
+//		List<String> values = getValuesAsList(entityNode, SuggestionFields.HIDDEN_LABEL);
+//		preview.setHiddenLabel(values);
 
 		setEntitySpecificProperties(preview, entityNode);
 		return preview;
@@ -158,8 +164,9 @@ public class SuggestionUtils {
 			while (itr.hasNext()) {
 				Entry<String, JsonNode> currentEntry = itr.next();
 				ArrayList<String> valueList = new ArrayList<String>();
-				for (Object value : currentEntry.getValue()) {
-					valueList.add(value.toString());
+				for (JsonNode value : currentEntry.getValue()) {
+						//need to extract text value, otherwise 
+						valueList.add( value.getTextValue());
 				}
 				languageMap.put(currentEntry.getKey(), valueList);
 			}
@@ -170,6 +177,10 @@ public class SuggestionUtils {
 	private Map<String, String> getValuesAsLanguageMap(JsonNode payloadNode, String key) {
 
 		JsonNode jsonNode = payloadNode.get(key);
+		return extractLanguageMap(jsonNode);
+	}
+
+	private Map<String, String> extractLanguageMap(JsonNode jsonNode) {
 		Map<String, String> languageMap = new HashMap<>();
 
 		if (jsonNode != null) {
@@ -248,14 +259,33 @@ public class SuggestionUtils {
 		JsonNode propertyNode = payloadNode.get(SuggestionFields.IS_PART_OF);
 		if (propertyNode != null) {
 			List<ResourcePreview> isPartOf = new ArrayList<ResourcePreview>();
-			for(JsonNode resourcePreviewNode: propertyNode) {
-				ResourcePreview resourcePreview = new ResourcePreviewImpl();
-				String prefLabel = resourcePreviewNode.get(SuggestionFields.PREF_LABEL).getTextValue();
-				resourcePreview.setPrefLabel(prefLabel);
-				String httpUri = resourcePreviewNode.get(SuggestionFields.ID).getTextValue();
-				resourcePreview.setHttpUri(httpUri);
-				isPartOf.add(resourcePreview);	
+			
+			Entry<String, JsonNode> entry;
+			ResourcePreview resourcePreview;
+			Map<String, String> languageMap;
+			for (Iterator<Entry<String, JsonNode>> iterator = propertyNode.getFields(); iterator.hasNext();) {
+				entry = (Entry<String, JsonNode>) iterator.next();
+				resourcePreview = new ResourcePreviewImpl(); 
+				
+				resourcePreview.setHttpUri(entry.getKey());
+				languageMap = extractLanguageMap(entry.getValue());
+				resourcePreview.setPrefLabel(languageMap);
+				isPartOf.add(resourcePreview);
 			}
+			
+//TODO: #661 remove					
+//			for(JsonNode resourcePreviewNode: propertyNode) {
+//				ResourcePreview resourcePreview = new ResourcePreviewImpl();
+////				String prefLabel = resourcePreviewNode.get(SuggestionFields.PREF_LABEL).getTextValue();
+////				resourcePreview.setPrefLabel(prefLabel);
+//				String httpUri = resourcePreviewNode.get(SuggestionFields.ID).getTextValue();
+//				resourcePreview.setHttpUri(httpUri);
+//				
+//				Map<String, String> prefLabel = getValuesAsLanguageMap(resourcePreviewNode, SuggestionFields.PREF_LABEL);
+//				resourcePreview.setPrefLabel(prefLabel);
+//				System.out.println();
+//				isPartOf.add(resourcePreview);	
+//			}
 			preview.setIsPartOf(isPartOf);
 		}
 	}

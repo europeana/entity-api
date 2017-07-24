@@ -40,4 +40,5 @@ public interface EntityPreview extends IdBean {
 	public String getDepiction();
 	
 	public void setDepiction(String depiction);
+	
 }

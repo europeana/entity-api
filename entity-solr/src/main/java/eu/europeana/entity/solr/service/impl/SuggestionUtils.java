@@ -1,12 +1,15 @@
 package eu.europeana.entity.solr.service.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonNode;
@@ -15,16 +18,13 @@ import org.codehaus.jackson.annotate.JsonAutoDetect.Visibility;
 import org.codehaus.jackson.annotate.JsonMethod;
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.node.ArrayNode;
 import org.codehaus.jackson.node.JsonNodeFactory;
 import org.codehaus.jackson.node.ObjectNode;
-import org.codehaus.jackson.node.TextNode;
 
 import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException;
 import eu.europeana.entity.definitions.model.ResourcePreview;
 import eu.europeana.entity.definitions.model.ResourcePreviewImpl;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
-import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityFields;
 import eu.europeana.entity.solr.exception.EntitySuggestionException;
 import eu.europeana.entity.solr.model.factory.EntityPreviewObjectFactory;
@@ -47,18 +47,25 @@ public class SuggestionUtils {
 		return log;
 	}
 
-	public EntityPreview parsePayload(String payload, String preferredLanguage, String highlightTerm) throws EntitySuggestionException {
-
+	public EntityPreview parsePayload(String payload, String preferredLanguage, String highlightTerm) throws EntitySuggestionException {	
 		EntityPreview preview = null;
 		try {
 			JsonParser parser = jsonFactory.createJsonParser(payload);
 			parser.setCodec(objectMapper);
 			
-			JsonNode languageMapNode = objectMapper.readTree(payload);
+			JsonNode payloadNode = objectMapper.readTree(payload);
 			
-			JsonNode entityNode = getPayload(languageMapNode, preferredLanguage, highlightTerm);
+//			JsonNode entityNode = getPayload(languageMapNode, preferredLanguage, highlightTerm);
 
-			preview = parseEntity(entityNode);
+//			JsonNode entityNode = getPayload(languageMapNode, preferredLanguage, highlightTerm);
+			
+//			preview = parseEntity(entityNode);
+			
+			String[] languageArray = StringUtils.splitByWholeSeparator(preferredLanguage, ",");
+			languageArray = StringUtils.stripAll(languageArray);
+			List<String> languageList = Arrays.asList(languageArray);
+			
+			preview = parseEntity(payloadNode, languageList, highlightTerm);
 
 		} catch (Exception e) {
 			throw new EntitySuggestionException("Cannot parse suggestion payload: " + payload, e);
@@ -67,61 +74,126 @@ public class SuggestionUtils {
 	}
 
 	private JsonNode getPayload(JsonNode languageMapNode, String preferredLanguage, String highlightTerm) {
+
+		String[] languageArray = StringUtils.splitByWholeSeparator(preferredLanguage, ",");
+		List<String> languageList = Arrays.asList(languageArray);
+		languageList.replaceAll(String::trim);
+		
 		final JsonNodeFactory nodeFactory = JsonNodeFactory.instance;
 		ObjectNode node = nodeFactory.objectNode();
 		ObjectNode child = nodeFactory.objectNode();
 		ObjectNode languageNodeLabel = nodeFactory.objectNode();
 		ObjectNode languageNodeProfession = nodeFactory.objectNode();
+		ObjectNode languageNodeHiddenLabel = nodeFactory.objectNode();
+		ObjectNode languageNodePartOf = nodeFactory.objectNode();
 		
 		Iterator<Entry<String, JsonNode>> itr = languageMapNode.getFields();
 		
+		
 		while (itr.hasNext()) {
 			Entry<String, JsonNode> next = itr.next();
-			if (next.getKey() == "prefLabel") {
+			String highlightLanguage = null;
+			if (next.getKey() == WebEntityFields.PREF_LABEL) {
 				Iterator<Entry<String, JsonNode>> nodeItr = next.getValue().getFields();
 				while (nodeItr.hasNext()) {
 					Entry<String, JsonNode> current = nodeItr.next();
-					if (current.getValue().asText().contains(highlightTerm) && current.getKey() == preferredLanguage) {
-						// keyword match with selected language
-						languageNodeLabel.put(current.getKey(), current.getValue());
-					} else if (current.getValue().asText().contains(highlightTerm)) {
+//					if (current.getValue().asText().contains(highlightTerm) && languageList.contains(current.getKey())) {// == preferredLanguage) {
+//						// keyword match with selected language
+//						languageNodeLabel.put(current.getKey(), current.getValue());
+//					} else if (current.getValue().asText().contains(highlightTerm)) {
+					 if (languageList.contains(current.getKey())) {
+							// only language label matches
+							languageNodeLabel.put(current.getKey(), current.getValue());
+							
+							if(highlightLanguage==null && current.getValue().asText().contains(highlightTerm))
+								highlightLanguage = current.getKey();
+					} 
+					 
+					if (current.getValue().asText().contains(highlightTerm)) {
 						// only keyword match
-						languageNodeLabel.put(current.getKey(), current.getValue());
-					} else if (current.getKey() == preferredLanguage) {
-						// only language label matches
+						//TODO #661: only take first one
 						languageNodeLabel.put(current.getKey(), current.getValue());
 					}
 				}
-				child.put("prefLabel", languageNodeLabel);
-			} else if (next.getKey() == "professionOrOccupation") {
+				if (languageNodeLabel.size() == 0) {
+					// if nothing matched, take first entry
+					languageNodeLabel.put(next.getValue().getFields().next().getKey(), next.getValue().getFields().next().getValue());
+				}
+				child.put(WebEntityFields.PREF_LABEL, languageNodeLabel);
+			} else if (next.getKey() == WebEntityFields.PROFESSION_OR_OCCUPATION) {
 				Iterator<Entry<String, JsonNode>> nodeItr = next.getValue().getFields();
 				while (nodeItr.hasNext()) {
 					Entry<String, JsonNode> current = nodeItr.next();
-					if (current.getValue().asText().contains(highlightTerm) && current.getKey() == preferredLanguage) {
-						// keyword match with selected language
-						languageNodeProfession.put(current.getKey(), current.getValue());
-					} else if (current.getValue().asText().contains(highlightTerm)) {
+//					if (current.getValue().asText().contains(highlightTerm) && languageList.contains(current.getKey())) {
+//						// keyword match with selected language
+//						languageNodeProfession.put(current.getKey(), current.getValue());
+//					} else if (current.getValue().asText().contains(highlightTerm)) {
+					if (current.getValue().asText().contains(highlightTerm)) {
 						// only keyword match
 						languageNodeProfession.put(current.getKey(), current.getValue());
-					} else if (current.getKey() == preferredLanguage) {
+					} else if (languageList.contains(current.getKey())) {
 						// only language label matches
-						languageNodeProfession.put(current.getKey(), current.getValue());
-					} else {
-						// if nothing matches
 						languageNodeProfession.put(current.getKey(), current.getValue());
 					}
 				}
-				child.put("professionOrOccupation", languageNodeProfession);
+				if (languageNodeProfession.size() == 0) {
+					// if nothing matched, take first entry
+					languageNodeProfession.put(next.getValue().getFields().next().getKey(), next.getValue().getFields().next().getValue());
+				}
+				child.put(WebEntityFields.PROFESSION_OR_OCCUPATION, languageNodeProfession);
+			} else if (next.getKey() == WebEntityFields.HIDDEN_LABEL) {
+				Iterator<Entry<String, JsonNode>> nodeItr = next.getValue().getFields();
+				while (nodeItr.hasNext()) {
+					Entry<String, JsonNode> current = nodeItr.next();
+					if (current.getKey() == "") {
+						// default
+						languageNodeHiddenLabel.put(current.getKey(), current.getValue());						
+					} else if (languageList.contains(current.getKey())) {
+						// language label matches
+						languageNodeHiddenLabel.put(current.getKey(), current.getValue());
+					}					
+				}
+				if (languageNodeHiddenLabel.size() == 0) {
+					// if nothing matched, take first entry
+					languageNodeHiddenLabel.put(next.getValue().getFields().next().getKey(), next.getValue().getFields().next().getValue());
+				}
+				child.put(WebEntityFields.HIDDEN_LABEL, languageNodeHiddenLabel);
+			} else if (next.getKey() == WebEntityFields.IS_PART_OF) {
+				Iterator<Entry<String, JsonNode>> nodeItr = next.getValue().getFields();
+				
+				while (nodeItr.hasNext()) {
+					Entry<String, JsonNode> current = nodeItr.next();
+					ObjectNode partOfLabels = nodeFactory.objectNode();
+					Iterator<String> labelItr = current.getValue().getFieldNames();
+					while (labelItr.hasNext()) {
+						String languageCode = labelItr.next();
+						if (languageList.contains(languageCode)) {
+							partOfLabels.put(languageCode, current.getValue().findValue(languageCode));
+						} else if (languageCode == "" && labelItr.hasNext() == false) {
+							// edge case when there are multiple isPartOf locations and one only has the "" languageCode
+							partOfLabels.put(languageCode, current.getValue().findValue(languageCode));							
+						}
+						//TODO #661: edge case when any isPartOf does not match a label but has more than the "" label?
+					}
+					languageNodePartOf.put(current.getKey(), partOfLabels);
+				}
+				if (languageNodePartOf.size() == 0) {
+					// if nothing matched, take first entry
+					languageNodePartOf.put(next.getValue().getFields().next().getKey(), next.getValue().getFields().next().getValue());
+				}
+				child.put(WebEntityFields.IS_PART_OF, languageNodePartOf);
 			} else {
 				// if no language options (e.g. place, type, ...)
 				child.put(next.getKey(), next.getValue());
 			}
 		}
+		child.put("requestedLanguages", languageList.toString());
+		child.put("solrHighlightedTerm", highlightTerm);
 		node.putAll(child);
 		return node;
 	}
 
-	private EntityPreview parseEntity(JsonNode entityNode) throws UnsupportedEntityTypeException {
+	private EntityPreview parseEntity(JsonNode entityNode,  List<String> preferredLanguages, String highlightTerm) throws UnsupportedEntityTypeException {
 		EntityPreview preview;
 		JsonNode propertyNode = entityNode.get(SuggestionFields.TYPE);
 		String entityType = propertyNode.getTextValue();
@@ -132,29 +204,65 @@ public class SuggestionUtils {
 		preview.setEntityId(propertyNode.getTextValue());
 
 		//TODO: remove term as no longer used
-		propertyNode = entityNode.get(SuggestionFields.TERM);
-		if (propertyNode != null)
-			preview.setMatchedTerm(propertyNode.getTextValue());
+//		propertyNode = entityNode.get(SuggestionFields.TERM);
+//		if (propertyNode != null)
+//			preview.setMatchedTerm(propertyNode.getTextValue());
 
 		propertyNode = entityNode.get(WebEntityFields.DEPICTION);
 		if (propertyNode != null)
 			preview.setDepiction(propertyNode.getTextValue());
 		
-		Map<String, String> prefLabel = getValuesAsLanguageMap(entityNode, SuggestionFields.PREF_LABEL);
+		Map<String, String> prefLabel = getValuesAsLanguageMap(entityNode, SuggestionFields.PREF_LABEL, preferredLanguages);
+		if(!containsHighlightTerm(prefLabel, highlightTerm)){
+			String[] highlightLabel = getHighlightLabel(entityNode, SuggestionFields.PREF_LABEL, highlightTerm);
+			prefLabel.put(highlightLabel[0], highlightLabel[1]);
+		}
+		
+		//		prefLabel = applyLanguageFilter(prefLabel, preferredLanguages, highlightTerm);
 		preview.setPreferredLabel(prefLabel);
 
-		Map<String, List<String>> hiddenLabel = getValuesAsLanguageMapList(entityNode, SuggestionFields.HIDDEN_LABEL);
+		Map<String, List<String>> hiddenLabel = getValuesAsLanguageMapList(entityNode, SuggestionFields.HIDDEN_LABEL, preferredLanguages);
 		preview.setHiddenLabel(hiddenLabel);
 		
 //TODO: #661 remove		
 //		List<String> values = getValuesAsList(entityNode, SuggestionFields.HIDDEN_LABEL);
 //		preview.setHiddenLabel(values);
 
-		setEntitySpecificProperties(preview, entityNode);
+		setEntitySpecificProperties(preview, entityNode, preferredLanguages);
 		return preview;
 	}
 	
-	private Map<String, List<String>> getValuesAsLanguageMapList(JsonNode payloadNode, String key) {
+	private boolean containsHighlightTerm(Map<String, String> prefLabels, String highlightTerm) {
+		if(prefLabels == null || prefLabels.isEmpty())
+			return false;
+		
+		Collection<String> entrySet = prefLabels.values();
+		for (Iterator<String> iterator = entrySet.iterator(); iterator.hasNext();) {
+			if(iterator.next().contains(highlightTerm))
+				return true;
+		}
+		return false;
+	}
+
+	private String[] getHighlightLabel(JsonNode entityNode, String key, String highlightTerm) {
+		JsonNode jsonNode = entityNode.get(key);
+		if (jsonNode != null) {
+			Iterator<Entry<String, JsonNode>> itr = jsonNode.getFields();
+			Entry<String, JsonNode> currentEntry;
+			String value;
+			
+			while (itr.hasNext()) {
+				currentEntry = itr.next();
+				value = currentEntry.getValue().asText();
+				if(value.contains(highlightTerm))
+					return new String[]{currentEntry.getKey(), value};
+			}
+		}
+		return null;
+	}
+	
+	
+	private Map<String, List<String>> getValuesAsLanguageMapList(JsonNode payloadNode, String key, List<String> preferredLanguages) {
 
 		JsonNode jsonNode = payloadNode.get(key);
 		Map<String, List<String>> languageMap = new HashMap<>();
@@ -163,50 +271,69 @@ public class SuggestionUtils {
 			Iterator<Entry<String, JsonNode>> itr = jsonNode.getFields();
 			while (itr.hasNext()) {
 				Entry<String, JsonNode> currentEntry = itr.next();
-				ArrayList<String> valueList = new ArrayList<String>();
-				for (JsonNode value : currentEntry.getValue()) {
-						//need to extract text value, otherwise 
-						valueList.add( value.getTextValue());
+				if(preferredLanguages.contains(currentEntry.getKey())){
+					ArrayList<String> valueList = new ArrayList<String>();
+					for (JsonNode value : currentEntry.getValue()) {
+							//need to extract text value, otherwise 
+							valueList.add( value.getTextValue());
+					}
+					languageMap.put(currentEntry.getKey(), valueList);
 				}
-				languageMap.put(currentEntry.getKey(), valueList);
 			}
 		}
 		return languageMap;
 	}
 
-	private Map<String, String> getValuesAsLanguageMap(JsonNode payloadNode, String key) {
+	private Map<String, String> getValuesAsLanguageMap(JsonNode payloadNode, String key, List<String> preferredLanguages) {
 
 		JsonNode jsonNode = payloadNode.get(key);
-		return extractLanguageMap(jsonNode);
+		return extractLanguageMap(jsonNode, preferredLanguages);
 	}
 
-	private Map<String, String> extractLanguageMap(JsonNode jsonNode) {
+	private Map<String, String> extractLanguageMap(JsonNode jsonNode, List<String> preferredLanguages) {
 		Map<String, String> languageMap = new HashMap<>();
 
+		//TODO hack for places
+		String defaultLabel = null;
+		final String defaultKey = "";
+		
 		if (jsonNode != null) {
 			Iterator<Entry<String, JsonNode>> itr = jsonNode.getFields();
 			while (itr.hasNext()) {
 				Entry<String, JsonNode> currentEntry = itr.next();
-				if (currentEntry.getValue().getClass().getName() == "org.codehaus.jackson.node.ArrayNode") {
-					languageMap.put(currentEntry.getKey(), currentEntry.getValue().toString());			
-				} else if (currentEntry.getValue().asText() != null) {
-					languageMap.put(currentEntry.getKey(), currentEntry.getValue().asText());				
+				//include only prefferedLanguages
+				if(preferredLanguages.contains(currentEntry.getKey())){
+//					if (currentEntry.getValue().getClass().getName() == "org.codehaus.jackson.node.ArrayNode") {
+//						languageMap.put(currentEntry.getKey(), currentEntry.getValue().toString());			
+//					} else 
+					if (currentEntry.getValue().asText() != null) {
+						languageMap.put(currentEntry.getKey(), currentEntry.getValue().asText());				
+					}
+				}
+				
+				if(defaultKey.equals(currentEntry.getKey())){
+					defaultLabel = currentEntry.getValue().asText();
 				}
 			}
 		}
+		
+		//TODO hack for places
+		//add default label if needed
+		if(languageMap.isEmpty() && defaultLabel != null)
+			languageMap.put(defaultKey, defaultLabel);
 		return languageMap;
 	}
 	
-	private void setEntitySpecificProperties(EntityPreview preview, JsonNode payloadNode) {
+	private void setEntitySpecificProperties(EntityPreview preview, JsonNode payloadNode, List<String> preferredLanguages) {
 		switch (preview.getEntityType()) {
 		case Agent:
-			putAgentSpecificProperties((AgentPreview) preview, payloadNode);
+			putAgentSpecificProperties((AgentPreview) preview, payloadNode, preferredLanguages);
 			break;
 		case Concept:
 			putConceptSpecificProperties((ConceptPreview) preview, payloadNode);
 			break;
 		case Place:
-			putPlaceSpecificProperties((PlacePreview) preview, payloadNode);
+			putPlaceSpecificProperties((PlacePreview) preview, payloadNode, preferredLanguages);
 			break;
 		case Timespan:
 			putTimespanSpecificProperties((TimeSpanPreview) preview, payloadNode);
@@ -223,7 +350,7 @@ public class SuggestionUtils {
 
 	}
 
-	private void putAgentSpecificProperties(AgentPreview preview, JsonNode payloadNode) {
+	private void putAgentSpecificProperties(AgentPreview preview, JsonNode payloadNode, List<String> preferredLanguages) {
 
 		JsonNode propertyNode = payloadNode.get(SuggestionFields.DATE_OF_BIRTH);
 		if (propertyNode != null)
@@ -235,7 +362,7 @@ public class SuggestionUtils {
 
 		propertyNode = payloadNode.get(SuggestionFields.PROFESSION_OR_OCCUPATION);
 		if (propertyNode != null){
-			Map<String, List<String>> values = getValuesAsLanguageMapList(payloadNode, SuggestionFields.PROFESSION_OR_OCCUPATION);
+			Map<String, List<String>> values = getValuesAsLanguageMapList(payloadNode, SuggestionFields.PROFESSION_OR_OCCUPATION, preferredLanguages);
 			preview.setProfessionOrOccuation(values);
 		}
 
@@ -255,7 +382,7 @@ public class SuggestionUtils {
 		return values;
 	}
 
-	private void putPlaceSpecificProperties(PlacePreview preview, JsonNode payloadNode) {
+	private void putPlaceSpecificProperties(PlacePreview preview, JsonNode payloadNode, List<String> preferredLanguages) {
 		JsonNode propertyNode = payloadNode.get(SuggestionFields.IS_PART_OF);
 		if (propertyNode != null) {
 			List<ResourcePreview> isPartOf = new ArrayList<ResourcePreview>();
@@ -268,7 +395,7 @@ public class SuggestionUtils {
 				resourcePreview = new ResourcePreviewImpl(); 
 				
 				resourcePreview.setHttpUri(entry.getKey());
-				languageMap = extractLanguageMap(entry.getValue());
+				languageMap = extractLanguageMap(entry.getValue(), preferredLanguages);
 				resourcePreview.setPrefLabel(languageMap);
 				isPartOf.add(resourcePreview);
 			}

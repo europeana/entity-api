@@ -59,23 +59,10 @@ public class SuggestionSetSerializer extends JsonLd {
 
 		JsonLdResource jsonLdResource = new JsonLdResource();
 		jsonLdResource.setSubject("");
-
-		// String[] contextValues = new String[]{WebEntityConstants.LDP_CONTEXT,
-		// WebEntityConstants.ENTITY_CONTEXT};
-		// JsonLdProperty contextProperty = buildArrayProperty(
-		// WebEntityConstants.AT_CONTEXT, contextValues, false);
-
+		
 		JsonLdProperty contextProperty = new JsonLdProperty(WebEntityConstants.AT_CONTEXT);
 		contextProperty.getValues().add(new JsonLdPropertyValue(WebEntityConstants.LDP_CONTEXT));
 		contextProperty.getValues().add(new JsonLdPropertyValue(WebEntityConstants.ENTITY_CONTEXT));
-
-//TODO: #661 removed as doesn't match the content anymore
-//		String language = getEntitySet().getLanguage();
-//		if (language != null) {
-//			JsonLdPropertyValue languageProp = new JsonLdPropertyValue();
-//			languageProp.putProperty(new JsonLdProperty(WebEntityConstants.AT_LANGUAGE, language));
-//			contextProperty.getValues().add(languageProp);
-//		}
 
 		jsonLdResource.putProperty(contextProperty);
 
@@ -122,9 +109,6 @@ public class SuggestionSetSerializer extends JsonLd {
 			JsonLdProperty hiddenLabelProp = buildMapProperty(WebEntityConstants.HIDDEN_LABEL, entityPreview.getHiddenLabel(), 
 					"");
 			entityPreviewPropValue.putProperty(hiddenLabelProp);
-//TODO: #661 remove			
-//			entityPreviewPropValue
-//					.putProperty(buildListProperty(WebEntityConstants.HIDDEN_LABEL, entityPreview.getHiddenLabel(), false));
 		}
 		else
 			getLogger().warn("No hidden labels available for entity: " + entityPreview.getEntityId());

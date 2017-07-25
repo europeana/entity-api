@@ -273,9 +273,7 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 		String highlightTerm = term.substring(beginHighlight, endHighlight);
 		payload = (String) entry.get(SuggestionFields.PAYLOAD);
 		preview = (T) getSuggestionHelper().parsePayload(payload, language, highlightTerm);
-
-		//
-//		term = (String) entry.get(SuggestionFields.TERM);
+		
 		preview.setSearchedTerm(term);
 
 		return preview;

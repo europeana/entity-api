@@ -85,8 +85,10 @@ public class ConceptSetSerializer extends JsonLd {
 		entityPreviewPropValue.putProperty(new JsonLdProperty(WebEntityConstants.TYPE, entityPreview.getEntityType()));
 		
 		String solrFieldPrefix = WebEntityConstants.PREF_LABEL+".";
-		entityPreviewPropValue.putProperty(
-				buildMapProperty(WebEntityConstants.PREF_LABEL, entityPreview.getPrefLabel(), solrFieldPrefix));
+//		entityPreviewPropValue.putProperty(
+//				buildMapProperty(WebEntityConstants.PREF_LABEL, entityPreview.getPrefLabel(), solrFieldPrefix));
+//		entityPreviewPropValue.putProperty(
+				buildMapOfStringsProperty(WebEntityConstants.PREF_LABEL, entityPreview.getPrefLabel(), solrFieldPrefix);
 //		putMapOfStringListProperty(WebEntityConstants.PREF_LABEL, entityPreview.getPrefLabel(), solrFieldPrefix, jsonLdResource); 
 		
 		return entityPreviewPropValue;

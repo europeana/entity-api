@@ -2,7 +2,9 @@ package eu.europeana.entity.definitions.model;
 
 import java.util.Date;
 
-public interface Concept extends eu.europeana.corelib.definitions.edm.entity.Concept, Entity {
+import eu.europeana.entity.definitions.core.CoreConcept;
+
+public interface Concept extends CoreConcept, Entity {
 
 	public void setDefinition(String definition);
 

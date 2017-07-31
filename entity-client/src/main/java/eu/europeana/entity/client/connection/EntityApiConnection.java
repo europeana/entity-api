@@ -125,9 +125,11 @@ public class EntityApiConnection extends BaseApiConnection {
 	                	JSONObject jsonObj = jsonArray.getJSONObject(i);
 	                	BaseEntity entityObject = new BaseEntity();
 			        	entityObject.setEntityId(jsonObj.getString(WebEntityFields.ID));
-			        	Map<String, List<String>> prefLabelMap = new HashMap<String, List<String>>();
+//			        	Map<String, List<String>> prefLabelMap = new HashMap<String, List<String>>();
+			        	Map<String, String> prefLabelMap = new HashMap<String, String>();
 			        	String label = jsonObj.getString((WebEntityFields.PREF_LABEL));
-						prefLabelMap.put(language, Arrays.asList(label));
+//						prefLabelMap.put(language, Arrays.asList(label));
+						prefLabelMap.put(language, label);
 			        	entityObject.setPrefLabel(prefLabelMap);
 						entityList.add(entityObject);
 				    }

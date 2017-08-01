@@ -39,6 +39,8 @@ public class SuggestionSetSerializer extends JsonLd {
 	 * @param conceptSet
 	 */
 	public SuggestionSetSerializer(ResultSet<? extends EntityPreview> entitySet) {
+		registerContainerProperty(WebEntityConstants.IS_PART_OF);
+		registerContainerProperty(WebEntityConstants.CONTAINS);
 		setConceptSet(entitySet);
 	}
 

@@ -67,6 +67,7 @@ public class EntityServiceImpl implements EntityService {
 			return solrEntityService.suggest(query, language, internalEntityTypes, scope, rows);
 		} catch (EntitySuggestionException e) {
 			//TODO #585
+			//TODO #661 - wrong error code? see slack
 			throw new HttpException(e.getMessage(), I18nConstants.SERVER_ERROR_CANT_RETRIEVE_URI, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}

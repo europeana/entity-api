@@ -80,7 +80,7 @@ public class SolrAgentImpl extends BaseAgent implements Agent {
 
 	@Override
 	@Field(ConceptSolrFields.PREF_LABEL_ALL)
-	public void setPrefLabel(Map<String, List<String>> prefLabel) {
+	public void setPrefLabel(Map<String, String> prefLabel) {
 		super.setPrefLabel(prefLabel);
 	}
 

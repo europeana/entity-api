@@ -15,5 +15,6 @@ public interface ConceptView extends IdBean {
 
 	String getEntityType();
 	
-	Map<String, List<String>> getPrefLabel();
+//	Map<String, List<String>> getPrefLabel();
+	Map<String, String> getPrefLabel();
 }

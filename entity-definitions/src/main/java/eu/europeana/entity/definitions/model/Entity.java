@@ -1,8 +1,10 @@
 package eu.europeana.entity.definitions.model;
 
+import eu.europeana.entity.definitions.core.CoreContextualClass;
+
 //import eu.europeana.corelib.definitions.edm.entity.ContextualClass;
 
-public interface Entity extends eu.europeana.corelib.definitions.edm.entity.ContextualClass {
+public interface Entity extends CoreContextualClass {
 
 	public String getContext();
 

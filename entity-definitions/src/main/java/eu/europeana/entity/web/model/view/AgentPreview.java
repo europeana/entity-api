@@ -1,6 +1,7 @@
 package eu.europeana.entity.web.model.view;
 
 import java.util.List;
+import java.util.Map;
 
 public interface AgentPreview extends EntityPreview{
 
@@ -12,8 +13,8 @@ public interface AgentPreview extends EntityPreview{
 
 	String getDateOfBirth();
 
-	void setProfessionOrOccuation(List<String> professionOrOccupation);
+	void setProfessionOrOccuation(Map<String, List<String>> values);
 
-	List<String> getProfessionOrOccuation();
+	Map<String, List<String>> getProfessionOrOccuation();
 
 }

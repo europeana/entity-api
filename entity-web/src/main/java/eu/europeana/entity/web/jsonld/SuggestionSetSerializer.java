@@ -39,6 +39,8 @@ public class SuggestionSetSerializer extends JsonLd {
 	 * @param conceptSet
 	 */
 	public SuggestionSetSerializer(ResultSet<? extends EntityPreview> entitySet) {
+		registerContainerProperty(WebEntityConstants.IS_PART_OF);
+		registerContainerProperty(WebEntityConstants.CONTAINS);
 		setConceptSet(entitySet);
 	}
 
@@ -59,23 +61,10 @@ public class SuggestionSetSerializer extends JsonLd {
 
 		JsonLdResource jsonLdResource = new JsonLdResource();
 		jsonLdResource.setSubject("");
-
-		// String[] contextValues = new String[]{WebEntityConstants.LDP_CONTEXT,
-		// WebEntityConstants.ENTITY_CONTEXT};
-		// JsonLdProperty contextProperty = buildArrayProperty(
-		// WebEntityConstants.AT_CONTEXT, contextValues, false);
-
+		
 		JsonLdProperty contextProperty = new JsonLdProperty(WebEntityConstants.AT_CONTEXT);
 		contextProperty.getValues().add(new JsonLdPropertyValue(WebEntityConstants.LDP_CONTEXT));
 		contextProperty.getValues().add(new JsonLdPropertyValue(WebEntityConstants.ENTITY_CONTEXT));
-
-		String language = getEntitySet().getLanguage();
-
-		if (language != null) {
-			JsonLdPropertyValue languageProp = new JsonLdPropertyValue();
-			languageProp.putProperty(new JsonLdProperty(WebEntityConstants.AT_LANGUAGE, language));
-			contextProperty.getValues().add(languageProp);
-		}
 
 		jsonLdResource.putProperty(contextProperty);
 
@@ -114,11 +103,15 @@ public class SuggestionSetSerializer extends JsonLd {
 
 		JsonLdPropertyValue entityPreviewPropValue = new JsonLdPropertyValue();
 		entityPreviewPropValue.putProperty(new JsonLdProperty(WebEntityConstants.ID, entityPreview.getEntityId()));
-		entityPreviewPropValue
-				.putProperty(new JsonLdProperty(WebEntityConstants.PREF_LABEL, entityPreview.getPreferredLabel()));
-		if(entityPreview.getHiddenLabel() != null)
-			entityPreviewPropValue
-					.putProperty(buildListProperty(WebEntityConstants.HIDDEN_LABEL, entityPreview.getHiddenLabel(), false));
+		JsonLdProperty prefLabelProp = buildMapOfStringsProperty(WebEntityConstants.PREF_LABEL, entityPreview.getPreferredLabel(), 
+				"");
+		entityPreviewPropValue.putProperty(prefLabelProp);
+		
+		if(entityPreview.getHiddenLabel() != null && !entityPreview.getHiddenLabel().isEmpty()){
+			JsonLdProperty hiddenLabelProp = buildMapProperty(WebEntityConstants.HIDDEN_LABEL, entityPreview.getHiddenLabel(), 
+					"");
+			entityPreviewPropValue.putProperty(hiddenLabelProp);
+		}
 		else
 			getLogger().warn("No hidden labels available for entity: " + entityPreview.getEntityId());
 		
@@ -177,13 +170,19 @@ public class SuggestionSetSerializer extends JsonLd {
 	private void putPlaceSpecificProperties(PlacePreview entityPreview, JsonLdPropertyValue entityPreviewPropValue) {
 
 		List<ResourcePreview> partOfList = entityPreview.getIsPartOf();
+		JsonLdProperty prefLabelProp;
+		
 		if (partOfList != null && !partOfList.isEmpty()) {
 			JsonLdProperty isPartOfProp = new JsonLdProperty(WebEntityConstants.IS_PART_OF);
 			JsonLdPropertyValue propValue;
 			for (ResourcePreview resourcePreview : partOfList) {
 				propValue = new JsonLdPropertyValue();
 				propValue.getValues().put(WebEntityConstants.ID, resourcePreview.getHttpUri());
-				propValue.getValues().put(WebEntityConstants.PREF_LABEL, resourcePreview.getPrefLabel());
+//				propValue.getValues().put(WebEntityConstants.PREF_LABEL, resourcePreview.getPrefLabel());
+				prefLabelProp = buildMapOfStringsProperty(WebEntityConstants.PREF_LABEL, resourcePreview.getPrefLabel(), 
+						"");
+				propValue.getPropertyMap().put(WebEntityConstants.PREF_LABEL, prefLabelProp);
+				
 				isPartOfProp.addValue(propValue);
 			}
 
@@ -200,9 +199,9 @@ public class SuggestionSetSerializer extends JsonLd {
 			entityPreviewPropValue
 					.putProperty(new JsonLdProperty(WebEntityConstants.DATE_OF_DEATH, entityPreview.getDateOfDeath()));
 
-		if (entityPreview.getProfessionOrOccuation() != null)
-			entityPreviewPropValue.putProperty(buildListProperty(WebEntityConstants.PROFESSION_OR_OCCUPATION,
-					entityPreview.getProfessionOrOccuation(), false));
+		if (entityPreview.getProfessionOrOccuation() != null && !entityPreview.getProfessionOrOccuation().isEmpty())
+			entityPreviewPropValue.putProperty(buildMapProperty(WebEntityConstants.PROFESSION_OR_OCCUPATION, entityPreview.getProfessionOrOccuation(), 
+					""));
 	}
 
 	// public String convertDateToStr(Date date) {

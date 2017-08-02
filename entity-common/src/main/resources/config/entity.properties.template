@@ -22,34 +22,11 @@
 #string value indicating if the application runs in "production", "test", "development" environment 
 entity.environment=development
 
-#used only in production environment
-#annotation.environment.production.baseUrl=http://data.europeana.eu/annotation
-
-#used only in production environment
-#annotation.environment.test.baseUrl=http://test-annotations.europeana.eu/annotation
-
-#used only in production environment
-#annotation.environment.development.baseUrl=http://localhost:8080/annotation
-
-
-# mongoDB settings
-### annotation database ###
-#mongodb.annotation.dbname=annotation_test
-#mongodb.annotation.host=127.0.0.1
-#mongodb.annotation.port=27017
-#mongodb.annotation.username=
-#mongodb.annotation.password=
-#mongodb.annotation.username=europeana
-#mongodb.annotation.password=culture
-
 # solr connection settings
 # core search (default) 
 solr.entity.url = http://localhost:8282/solr/entity
 
-#solr.annotation.url = http://148.251.139.77/solr/annotation
-#solr.tag.url = http://148.251.139.77/solr/tag
 solr.entity.timeout = 60000
-
 solr.facetLimit=750
 #solr.username=europeana
 #solr.rowLimit=12

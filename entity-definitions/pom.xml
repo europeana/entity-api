@@ -41,6 +41,7 @@
 			<artifactId>commons-lang3</artifactId>
 			<version>${version.commonsLang3}</version>
 		</dependency>
+		<!-- 
 		<dependency>
 			<groupId>eu.europeana.corelib</groupId>
 			<artifactId>corelib-definitions</artifactId>
@@ -104,6 +105,7 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		-->
 	</dependencies>
 
 <!-- 

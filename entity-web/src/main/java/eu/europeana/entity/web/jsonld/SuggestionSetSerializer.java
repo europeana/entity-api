@@ -24,6 +24,11 @@ public class SuggestionSetSerializer extends JsonLd {
 
 	// private static final Logger logger =
 	// LoggerFactory.getLogger(ConceptLd.class);
+	
+	public SuggestionSetSerializer(){
+		super();
+		setPropOrderComparator(new EntityJsonComparator());
+	}
 
 	ResultSet<? extends EntityPreview> entitySet;
 

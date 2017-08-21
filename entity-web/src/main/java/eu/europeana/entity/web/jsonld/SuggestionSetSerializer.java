@@ -40,7 +40,7 @@ public class SuggestionSetSerializer extends JsonLd {
 	 */
 	public SuggestionSetSerializer(ResultSet<? extends EntityPreview> entitySet) {
 		registerContainerProperty(WebEntityConstants.IS_PART_OF);
-		registerContainerProperty(WebEntityConstants.CONTAINS);
+		registerContainerProperty(WebEntityConstants.ITEMS);
 		setConceptSet(entitySet);
 	}
 
@@ -72,7 +72,7 @@ public class SuggestionSetSerializer extends JsonLd {
 
 		// String[] type = new String[] { "BasicContainer", "Collection" };
 		jsonLdResource.putProperty(WebEntityConstants.TYPE, WebEntityConstants.TYPE_BASIC_CONTAINER);
-		jsonLdResource.putProperty(WebEntityConstants.TOTAL_ITEMS, getEntitySet().getResultSize());
+		jsonLdResource.putProperty(WebEntityConstants.TOTAL, getEntitySet().getResultSize());
 
 		serializeItems(jsonLdResource);
 
@@ -87,7 +87,7 @@ public class SuggestionSetSerializer extends JsonLd {
 		if (getEntitySet().isEmpty())
 			return;
 
-		JsonLdProperty containsProperty = new JsonLdProperty(WebEntityConstants.CONTAINS);
+		JsonLdProperty containsProperty = new JsonLdProperty(WebEntityConstants.ITEMS);
 		JsonLdPropertyValue propertyValue;
 
 		for (EntityPreview entityPreview : getEntitySet().getResults()) {

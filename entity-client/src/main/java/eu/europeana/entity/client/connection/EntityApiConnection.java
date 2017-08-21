@@ -2,13 +2,11 @@ package eu.europeana.entity.client.connection;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.codehaus.jackson.map.ser.ArraySerializers;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
@@ -118,7 +116,7 @@ public class EntityApiConnection extends BaseApiConnection {
         	if (json.contains("Unauthorized")) {
         		asr.setError(json);
         	} else {
-	        	JSONArray jsonArray = jsonListObj.getJSONArray(((WebEntityConstants.CONTAINS)));
+	        	JSONArray jsonArray = jsonListObj.getJSONArray(WebEntityConstants.ITEMS);
 	        	if(jsonArray!=null && jsonArray.length()>0){
 			        List<Entity> entityList = new ArrayList<Entity>();
 	                for (int i = 0; i < jsonArray.length(); i++) {

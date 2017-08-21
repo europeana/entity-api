@@ -74,7 +74,6 @@ public class SearchController extends BaseRest {
 			// build response
 			MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>(5);
 			headers.add(HttpHeaders.VARY, HttpHeaders.ACCEPT);
-			headers.add(HttpHeaders.LINK, HttpHeaders.VALUE_LDP_CONTAINER);
 			headers.add(HttpHeaders.ALLOW, HttpHeaders.ALLOW_GET);
 
 			ResponseEntity<String> response = new ResponseEntity<String>(jsonLd, headers, HttpStatus.OK);
@@ -83,7 +82,7 @@ public class SearchController extends BaseRest {
 
 		} catch (RuntimeException e) {
 			// not found ..
-			System.out.println(e);
+			//System.out.println(e);
 			throw new InternalServerException(e);
 		} catch (HttpException e) {
 			// avoid wrapping http exception

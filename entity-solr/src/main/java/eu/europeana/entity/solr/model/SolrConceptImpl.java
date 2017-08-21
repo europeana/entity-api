@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.solr.client.solrj.beans.Field;
-import org.bson.types.ObjectId;
 
 import eu.europeana.entity.definitions.model.Concept;
 import eu.europeana.entity.definitions.model.impl.BaseConcept;
@@ -14,18 +13,6 @@ import eu.europeana.entity.definitions.model.vocabulary.ConceptSolrFields;
 
 
 public class SolrConceptImpl extends BaseConcept implements Concept{
-
-	@Override
-	public ObjectId getId() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setId(ObjectId arg0) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	@Field(ConceptSolrFields.BROADER)

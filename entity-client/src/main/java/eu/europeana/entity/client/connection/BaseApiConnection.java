@@ -10,9 +10,9 @@ import org.springframework.http.ResponseEntity;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import eu.europeana.corelib.definitions.edm.entity.Concept;
 import eu.europeana.entity.client.http.HttpConnection;
 import eu.europeana.entity.client.model.json.EntityDeserializer;
+import eu.europeana.entity.definitions.model.Concept;
 
 
 public class BaseApiConnection {

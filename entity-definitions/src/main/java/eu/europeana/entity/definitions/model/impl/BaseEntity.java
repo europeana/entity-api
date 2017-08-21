@@ -4,8 +4,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.bson.types.ObjectId;
-
 import eu.europeana.entity.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.RankedEntity;
 
@@ -177,17 +175,17 @@ public class BaseEntity implements Entity, RankedEntity {
 		this.isRelatedTo = isRelatedTo;
 	}
 
-	@Override
-	public ObjectId getId() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setId(ObjectId id) {
-		// TODO Auto-generated method stub
-
-	}
+//	@Override
+//	public ObjectId getId() {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+//
+//	@Override
+//	public void setId(ObjectId id) {
+//		// TODO Auto-generated method stub
+//
+//	}
 
 	public String[] getHasPart() {
 		return hasPart;

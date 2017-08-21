@@ -53,7 +53,7 @@ public class ConceptSetSerializer extends JsonLd {
 		String[] oaType = new String[] { "BasicContainer", "Collection" };
 //		jsonLdResource.putProperty(buildArrayProperty(WebEntityConstants.TYPE, oaType));
 		putStringArrayProperty(WebEntityConstants.TYPE, oaType, jsonLdResource);
-		jsonLdResource.putProperty(WebEntityConstants.TOTAL_ITEMS, getConceptSet().getResultSize());
+		jsonLdResource.putProperty(WebEntityConstants.TOTAL, getConceptSet().getResultSize());
 
 		serializeItems(jsonLdResource);
 		
@@ -66,7 +66,7 @@ public class ConceptSetSerializer extends JsonLd {
 	
 	protected void serializeItems(JsonLdResource jsonLdResource) {
 
-		JsonLdProperty containsProperty = new JsonLdProperty(WebEntityConstants.CONTAINS);
+		JsonLdProperty containsProperty = new JsonLdProperty(WebEntityConstants.ITEMS);
 		JsonLdPropertyValue propertyValue;
 		
 		for (ConceptView entityPreview : getConceptSet().getResults()) {

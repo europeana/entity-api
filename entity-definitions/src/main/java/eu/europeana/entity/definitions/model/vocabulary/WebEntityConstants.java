@@ -63,7 +63,7 @@ public interface WebEntityConstants extends WebEntityFields{
 //	public static final String TARGET = "target";
 	public static final String ID = "id";
 //	public static final String TYPE = "type";
-	public static final String CONTAINS = "contains";
+	public static final String ITEMS = "items";
 //	public static final String PURPOSE = "purpose";
 
 	public static final String PREF_LABEL = "prefLabel";
@@ -91,7 +91,7 @@ public interface WebEntityConstants extends WebEntityFields{
 	public static final String LDP_CONTEXT = "https://www.w3.org/ns/ldp.jsonld";
 //	public static final String LDP_CONTEXT = "https://www.w3.org/ns/ldp.jsonld";
 	public static final String ENTITY_CONTEXT = "http://www.europeana.eu/schemas/context/entity.jsonld";
-	public static final String TOTAL_ITEMS = "totalItems";
+	public static final String TOTAL = "total";
 	
 	
 }

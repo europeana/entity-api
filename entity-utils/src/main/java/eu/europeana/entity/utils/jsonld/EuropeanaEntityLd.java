@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.stanbol.commons.jsonld.JsonLd;
+import org.apache.stanbol.commons.jsonld.JsonLdProperty;
+import org.apache.stanbol.commons.jsonld.JsonLdPropertyValue;
 import org.apache.stanbol.commons.jsonld.JsonLdResource;
 import org.apache.commons.lang.StringUtils;
 
@@ -47,8 +49,10 @@ public class EuropeanaEntityLd extends JsonLd {
 		//jsonLdResource.putProperty(WebEntityFields.RDF_ABOUT, entity.getAbout());
 		putStringArrayProperty(WebEntityFields.IS_RELATED_TO, entity.getIsRelatedTo(), jsonLdResource);
 
-		if (!StringUtils.isEmpty(entity.getDepiction()))
-			jsonLdResource.putProperty(WebEntityFields.DEPICTION, entity.getDepiction());
+		if (!StringUtils.isEmpty(entity.getDepiction())) {	
+			jsonLdResource.putProperty(createDepiction(entity));			
+		}
+		
 		
 		//common SKOS_Properties
 //		putMapOfStringListProperty(WebEntityFields.PREF_LABEL, entity.getPrefLabel(), ConceptSolrFields.PREF_LABEL, jsonLdResource);
@@ -61,6 +65,19 @@ public class EuropeanaEntityLd extends JsonLd {
 
 		put(jsonLdResource);
 
+	}
+
+	private JsonLdProperty createDepiction(Entity entity) {
+		JsonLdProperty depictionProperty = new JsonLdProperty(WebEntityFields.DEPICTION);
+		JsonLdPropertyValue depictionValue = new JsonLdPropertyValue();
+		
+		depictionValue.putProperty(new JsonLdProperty(WebEntityFields.ID, entity.getDepiction()));
+		assert entity.getDepiction().contains("Special:FilePath/");
+		String sourceValue = entity.getDepiction().replace("Special:FilePath/", "File:");
+		depictionValue.putProperty(new JsonLdProperty(WebEntityFields.DEPICTION_SOURCE, sourceValue));
+		
+		depictionProperty.addValue(depictionValue);		
+		return depictionProperty;
 	}
 
 	private void putConceptSpecificProperties(Concept entity, JsonLdResource jsonLdResource) {

@@ -46,7 +46,11 @@
 			<artifactId>commons-web</artifactId>
 			<version>${version.commonsApi}</version>
 		</dependency>
-		
+		<dependency>
+			<groupId>eu.europeana.api.commons</groupId>
+			<artifactId>commons-net</artifactId>
+			<version>${version.commonsApi}</version>
+		</dependency>
 		
 		
 		<!-- spring -->
@@ -127,6 +131,18 @@
 			<artifactId>spring-oxm</artifactId>
 			<version>${version.spring}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot</artifactId>
+			<version>${version.springBoot}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+	
 	
 		<dependency>
 			<groupId>org.codehaus.jettison</groupId>

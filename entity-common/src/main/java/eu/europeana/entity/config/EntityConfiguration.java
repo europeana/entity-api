@@ -8,6 +8,7 @@ public interface EntityConfiguration {
 	public static final String VALUE_ENVIRONMENT_PRODUCTION = "production";
 	public static final String VALUE_ENVIRONMENT_TEST = "test";
 	public static final String VALUE_ENVIRONMENT_DEVELOPMENT = "development";
+	public static final String SOCKS_PROXY_URL = "socks.proxy.url";
 	
 	public String getComponentName();
 	

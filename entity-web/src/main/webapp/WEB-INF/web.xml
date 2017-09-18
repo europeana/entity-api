@@ -16,6 +16,9 @@
 
 
     <listener>
+        <listener-class>eu.europeana.entity.web.context.ApplicationLoaderListener</listener-class>
+    </listener>
+    <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
 		

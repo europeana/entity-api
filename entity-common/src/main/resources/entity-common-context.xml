@@ -34,7 +34,7 @@
     <!--  configuration bean -->
 	<!-- 
 	<beans:bean id="configuration" class="eu.europeana.entity.config.EntityConfigurationImpl">
-		<beans:property name="entityProperties" ref="entityProperties"/>		 	
+		<beans:property name="entityPropertiesConfig" ref="entityProperties"/>		 	
     </beans:bean>
      -->
    

@@ -1,6 +1,6 @@
 package eu.europeana.entity.web.controller;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import eu.europeana.api.common.config.I18nConstants;
 import eu.europeana.entity.definitions.model.Concept;

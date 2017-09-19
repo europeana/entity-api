@@ -3,7 +3,7 @@ package eu.europeana.entity.client.web;
 import java.io.IOException;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.ResponseEntity;
 
 import eu.europeana.entity.client.BaseEntityApi;

@@ -79,10 +79,14 @@ public class SuggestionUtils {
 		if (propertyNode != null)
 			preview.setDepiction(propertyNode.getTextValue());
 		
+			
 		Map<String, String> prefLabel = getValuesAsLanguageMap(entityNode, SuggestionFields.PREF_LABEL, preferredLanguages);
 		if(!containsHighlightTerm(prefLabel, highlightTerm)){
 			String[] highlightLabel = getHighlightLabel(entityNode, SuggestionFields.PREF_LABEL, highlightTerm);
-			prefLabel.put(highlightLabel[0], highlightLabel[1]);
+			String matchedLanguage = highlightLabel[0];
+			prefLabel.put(matchedLanguage, highlightLabel[1]);
+			//#56 add the matched label to language list
+			preferredLanguages = updateLanguageList(preferredLanguages, matchedLanguage);
 		}
 		preview.setPreferredLabel(prefLabel);
 
@@ -91,6 +95,14 @@ public class SuggestionUtils {
 
 		setEntitySpecificProperties(preview, entityNode, preferredLanguages);
 		return preview;
+	}
+
+	private List<String> updateLanguageList(List<String> preferredLanguages, String matchedLanguage) {
+		List<String> updatedLanguageList = new ArrayList<String>(preferredLanguages.size() +1);
+		updatedLanguageList.addAll(preferredLanguages);
+		updatedLanguageList.add(matchedLanguage);
+		preferredLanguages = updatedLanguageList;
+		return preferredLanguages;
 	}
 	
 	private boolean containsHighlightTerm(Map<String, String> prefLabels, String highlightTerm) {

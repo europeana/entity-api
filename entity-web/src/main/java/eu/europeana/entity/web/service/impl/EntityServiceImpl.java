@@ -39,7 +39,7 @@ public class EntityServiceImpl implements EntityService {
 		}
 		//if not found send appropriate error message
 		if(result == null)
-			throw new HttpException(null, I18nConstants.URI_NOT_FOUND, new String[]{entityUri}, HttpStatus.NOT_FOUND, null);
+			throw new HttpException(null, I18nConstants.RESOURCE_NOT_FOUND, new String[]{entityUri}, HttpStatus.NOT_FOUND, null);
 		
 		return result;
 	}

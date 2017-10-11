@@ -21,6 +21,7 @@ import eu.europeana.entity.definitions.model.search.result.ResultSet;
 import eu.europeana.entity.definitions.model.vocabulary.ConceptSolrFields;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.solr.exception.EntityRetrievalException;
+import eu.europeana.entity.solr.exception.EntityRuntimeException;
 import eu.europeana.entity.solr.exception.EntitySuggestionException;
 import eu.europeana.entity.solr.model.factory.EntityObjectFactory;
 import eu.europeana.entity.solr.model.vocabulary.SuggestionFields;
@@ -266,11 +267,17 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 		String term;
 		String payload;
 		T preview;
-
+		String hightlightStartMarker = "<b>";
+		String hightlightEndMarker = "</b>";
+		
 		term = (String) entry.get(SuggestionFields.TERM);
-		int beginHighlight = term.indexOf("<b>") + 3;
-		int endHighlight = term.indexOf("</b>");
+		if(term == null || !term.contains(hightlightStartMarker))
+			throw new EntitySuggestionException("The hightlighting is not present in retrieved term: " + term);
+		
+		int beginHighlight = term.indexOf(hightlightStartMarker) + 3;
+		int endHighlight = term.indexOf(hightlightEndMarker);
 		String highlightTerm = term.substring(beginHighlight, endHighlight);
+		
 		payload = (String) entry.get(SuggestionFields.PAYLOAD);
 		preview = (T) getSuggestionHelper().parsePayload(payload, language, highlightTerm);
 		
@@ -347,13 +354,11 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 			
 			//TODO: can this return >1 result? should it?
 			else if(docs.getNumFound() > 1)
-				//TODO: change to runtime exception
 				throw new EntityRetrievalException("Too many solr entries found for coref uri: " + uri 
 				 + ". Expected 0..1, but found " + docs.getNumFound());
 			
 		} catch (SolrServerException e) {
-			//TODO: change to runtime exception
-			throw new EntityRetrievalException(
+			throw new EntityRuntimeException(
 					"Unexpected exception occured when searching Solr entities. ", e);
 		}
 		

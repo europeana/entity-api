@@ -33,40 +33,20 @@
         http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
         ">
     
-    <!-- USING OTHER MODULES -->
-   <!--  
-	<beans:import resource="entity-definitions-context.xml"/>
-	 -->
-<!-- 
-	<beans:import resource="entity-mongo-context.xml"/>
--->
-	<beans:import resource="entity-solr-context.xml"/>
-	
+    <!-- CONFIGURATION BEANS FIRST -->
+    <!-- imported through solr context
+    <beans:import resource="entity-common-context.xml"/>
+     -->
     
-   	<!--  ApiKeyService -->
-   	<!-- 
-   	<beans:bean name="annotation_apiKeyService" class="eu.europeana.corelib.db.service.mock.impl.MockApiKeyServiceImpl"/>
-	 -->
-	 		
-    <!--  AuthenticationService -->
-	<!--     
-   	<beans:bean name="annotation_authenticationService" class="eu.europeana.annotation.web.service.authentication.mock.MockAuthenticationServiceImpl"/>
-   	 -->
+    <!-- USING OTHER MODULES -->
+	<beans:import resource="entity-solr-context.xml"/>
 	
     
     <!--  java api bean -->
 	<beans:bean id="entityService" class="eu.europeana.entity.web.service.impl.EntityServiceImpl">
-    	<!--  
-    	<beans:property name="configuration" ref="configuration"/>
-    	-->
-    	<!-- 
-    	<beans:property name="authenticationService" ref="annotation_authenticationService"/>
-    	 --> 	
     </beans:bean>
     
     <!-- configurable error messages -->
-<!--     <beans:bean id="errorMessageController" class="eu.europeana.entity.web.controller.ErrorMessageController"> -->
-<!--     </beans:bean> -->
     <beans:bean id="i18nService" class="eu.europeana.api.commons.config.i18n.I18nServiceImpl">
     	<beans:property name="messageSource" ref="entity_i18n_messageSource"/>
     </beans:bean>

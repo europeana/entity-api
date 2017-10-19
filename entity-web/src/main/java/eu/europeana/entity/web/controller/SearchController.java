@@ -80,13 +80,13 @@ public class SearchController extends BaseRest {
 
 			return response;
 
+		} catch (HttpException e) {
+			// avoid wrapping http exception
+			throw e;
 		} catch (RuntimeException e) {
 			// not found ..
 			//System.out.println(e);
 			throw new InternalServerException(e);
-		} catch (HttpException e) {
-			// avoid wrapping http exception
-			throw e;
 		} catch (Exception e) {
 			throw new InternalServerException(e);
 		}

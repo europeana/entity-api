@@ -1,7 +1,7 @@
 package eu.europeana.entity.solr.exception;
 
 
-public class EntityRuntimeException extends Exception {
+public class EntityRuntimeException extends RuntimeException {
 
 	/**
 	 * 

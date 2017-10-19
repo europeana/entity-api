@@ -124,7 +124,7 @@ public class SuggestionSetSerializer extends JsonLd {
 		try {
 			entityType = EntityTypes.getByInternalType(type);
 		} catch (UnsupportedEntityTypeException e) {
-			throw new HttpException(null, I18nConstants.URI_NOT_FOUND, new String[]{type}, HttpStatus.NOT_FOUND, null);
+			throw new HttpException(null, I18nConstants.UNSUPPORTED_ENTITY_TYPE, new String[]{type}, HttpStatus.NOT_FOUND, null);
 		}
 
 		if (entityType != null) {

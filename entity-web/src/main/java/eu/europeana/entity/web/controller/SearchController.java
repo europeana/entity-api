@@ -73,7 +73,7 @@ public class SearchController extends BaseRest {
 
 			// build response
 			MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>(5);
-			headers.add(HttpHeaders.VARY, HttpHeaders.ACCEPT);
+//			removed in #EA-763 and specifications //headers.add(HttpHeaders.VARY, HttpHeaders.ACCEPT);
 			headers.add(HttpHeaders.ALLOW, HttpHeaders.ALLOW_GET);
 
 			ResponseEntity<String> response = new ResponseEntity<String>(jsonLd, headers, HttpStatus.OK);

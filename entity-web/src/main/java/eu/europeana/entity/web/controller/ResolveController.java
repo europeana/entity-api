@@ -91,7 +91,6 @@ public class ResolveController extends BaseRest {
 	public ResponseEntity<String> resolveEntity(
 			@RequestParam(value = WebEntityConstants.PARAM_WSKEY) String wskey,
 			@RequestParam(value = WebEntityConstants.PATH_PARAM_URI) String uri
-
 			) throws HttpException  {
 
 		try {
@@ -102,6 +101,7 @@ public class ResolveController extends BaseRest {
 					
 			MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>(5);
 			headers.add(HttpHeaders.LOCATION, entityUri);
+			headers.add(HttpHeaders.ALLOW, HttpHeaders.ALLOW_GET);
 
 			ResponseEntity<String> response = new ResponseEntity<String>(headers, HttpStatus.MOVED_PERMANENTLY);
 			

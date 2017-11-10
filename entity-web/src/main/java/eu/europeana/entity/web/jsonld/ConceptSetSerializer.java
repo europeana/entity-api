@@ -7,6 +7,7 @@ import org.apache.stanbol.commons.jsonld.JsonLdResource;
 
 import eu.europeana.entity.definitions.model.search.result.ResultSet;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
+import eu.europeana.entity.utils.jsonld.EntityJsonComparator;
 import eu.europeana.entity.web.model.view.ConceptView;
 
 
@@ -23,6 +24,7 @@ public class ConceptSetSerializer extends JsonLd {
 
 	public void setConceptSet(ResultSet<? extends ConceptView> conceptSet) {
 		this.conceptSet = conceptSet;
+		setPropOrderComparator(new EntityJsonComparator());
 	}
 
 

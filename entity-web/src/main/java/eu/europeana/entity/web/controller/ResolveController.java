@@ -50,14 +50,12 @@ public class ResolveController extends BaseRest {
 			
 			validateApiKey(wskey);
 
-			//return getAnnotationById(wskey, provider, identifier, action);
 			Entity entity = entityService.retrieveByUrl(type, namespace, identifier);
 			
 			EuropeanaEntityLd entityLd = new EuropeanaEntityLd(entity);
 			
 			String jsonLd = entityLd.toString(4);
-//			String jsonLd = new String(entityLd.toString(4));
-
+			
 			Date timestamp = ((RankedEntity)entity).getTimestamp();
 			Date etagDate = (timestamp != null)? timestamp : new Date();
 			int etag = etagDate.hashCode(); 

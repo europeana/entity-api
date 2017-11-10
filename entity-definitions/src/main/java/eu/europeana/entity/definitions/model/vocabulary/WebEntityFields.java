@@ -22,7 +22,7 @@ public interface WebEntityFields {
 	public static final String RDF_ABOUT = "about";
 	public static final String DEPICTION = "depiction";
 	public static final String DEPICTION_SOURCE = "source";
-	
+//	public static final String CONCEPT="Concept";
 
 	// concept fields
 	public static final String NOTATION = "notation";
@@ -58,6 +58,7 @@ public interface WebEntityFields {
 	public static final String PLACE_OF_BIRTH = "placeOfBirth";
 	public static final String PLACE_OF_DEATH = "placeOfDeath";
 	public static final String DATE_OF_ESTABLISHMENT = "dateOfEstablishment";
+	public static final String DATE_OF_TERMINATION = "dateOfTermination";
 	public static final String GENDER = "gender";
 	public static final String PROFESSION_OR_OCCUPATION = "professionOrOccupation";
 	

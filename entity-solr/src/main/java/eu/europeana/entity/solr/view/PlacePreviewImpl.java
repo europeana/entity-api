@@ -7,7 +7,7 @@ import eu.europeana.entity.definitions.model.ResourcePreview;
 public class PlacePreviewImpl extends EntityPreviewImpl implements eu.europeana.entity.web.model.view.PlacePreview {
 
 	List<ResourcePreview> isPartOf;
-
+	
 	@Override
 	public void setIsPartOf(List<ResourcePreview> isPartOf) {
 		this.isPartOf = isPartOf;
@@ -18,7 +18,5 @@ public class PlacePreviewImpl extends EntityPreviewImpl implements eu.europeana.
 	public List<ResourcePreview> getIsPartOf() {
 		return isPartOf;
 	}
-	
-
 	
 }

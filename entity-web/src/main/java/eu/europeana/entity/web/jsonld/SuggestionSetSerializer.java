@@ -15,6 +15,7 @@ import eu.europeana.entity.definitions.model.ResourcePreview;
 import eu.europeana.entity.definitions.model.search.result.ResultSet;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
+import eu.europeana.entity.utils.jsonld.EntityJsonComparator;
 import eu.europeana.entity.web.model.view.AgentPreview;
 import eu.europeana.entity.web.model.view.EntityPreview;
 import eu.europeana.entity.web.model.view.PlacePreview;
@@ -22,6 +23,12 @@ import eu.europeana.entity.web.model.view.TimeSpanPreview;
 
 public class SuggestionSetSerializer extends JsonLd {
 
+<<<<<<< HEAD
+=======
+	// private static final Logger logger =
+	// LoggerFactory.getLogger(ConceptLd.class);
+	
+>>>>>>> branch 'develop' of https://github.com/europeana/entity-api.git
 	public SuggestionSetSerializer(){
 		super();
 		setPropOrderComparator(new EntityJsonComparator());
@@ -41,6 +48,8 @@ public class SuggestionSetSerializer extends JsonLd {
 	 * @param conceptSet
 	 */
 	public SuggestionSetSerializer(ResultSet<? extends EntityPreview> entitySet) {
+		super();
+		setPropOrderComparator(new EntityJsonComparator());		
 		registerContainerProperty(WebEntityConstants.IS_PART_OF);
 		registerContainerProperty(WebEntityConstants.ITEMS);
 		setConceptSet(entitySet);
@@ -104,11 +113,14 @@ public class SuggestionSetSerializer extends JsonLd {
 	private JsonLdPropertyValue buildEntityPreviewPropertyValue(EntityPreview entityPreview) throws HttpException {
 
 		JsonLdPropertyValue entityPreviewPropValue = new JsonLdPropertyValue();
+
+		// id
 		entityPreviewPropValue.putProperty(new JsonLdProperty(WebEntityConstants.ID, entityPreview.getEntityId()));
 		JsonLdProperty prefLabelProp = buildMapOfStringsProperty(WebEntityConstants.PREF_LABEL, entityPreview.getPreferredLabel(), 
 				"");
 		entityPreviewPropValue.putProperty(prefLabelProp);
 		
+		// hiddenLabel
 		if(entityPreview.getHiddenLabel() != null && !entityPreview.getHiddenLabel().isEmpty()){
 			JsonLdProperty hiddenLabelProp = buildMapProperty(WebEntityConstants.HIDDEN_LABEL, entityPreview.getHiddenLabel(), 
 					"");
@@ -137,9 +149,9 @@ public class SuggestionSetSerializer extends JsonLd {
 			case Concept:
 				// add top concept, when available
 				break;
+				
 			case Agent:
 				putAgentSpecificProperties((AgentPreview) entityPreview, entityPreviewPropValue);
-
 				break;
 
 			case Place:

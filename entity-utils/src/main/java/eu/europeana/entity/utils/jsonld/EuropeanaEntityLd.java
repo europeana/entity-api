@@ -22,6 +22,7 @@ import eu.europeana.entity.definitions.model.vocabulary.ConceptSolrFields;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityFields;
 
+
 public class EuropeanaEntityLd extends JsonLd {
 
 	public EuropeanaEntityLd(Entity entity) throws UnsupportedEntityTypeException {

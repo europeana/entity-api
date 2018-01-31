@@ -55,7 +55,11 @@ public class ResolveController extends BaseRest {
 			EuropeanaEntityLd entityLd = new EuropeanaEntityLd(entity);
 			
 			String jsonLd = entityLd.toString(4);
+<<<<<<< HEAD
 
+=======
+			
+>>>>>>> branch 'develop' of https://github.com/europeana/entity-api.git
 			Date timestamp = ((RankedEntity)entity).getTimestamp();
 			Date etagDate = (timestamp != null)? timestamp : new Date();
 			int etag = etagDate.hashCode(); 

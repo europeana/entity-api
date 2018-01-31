@@ -33,7 +33,7 @@ public class SolrEntityServiceTest {
 	@Before
 	public void cleanAllSolr() throws EntityRetrievalException {
 		/**
-		 * clean up all SOLR Annotations
+		 * clean up all SOLR entries
 		 */
 		((SolrEntityServiceImpl) solrEntityService).cleanUpAll();
 	}

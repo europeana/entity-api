@@ -22,8 +22,10 @@ import eu.europeana.entity.web.model.view.TimeSpanPreview;
 
 public class SuggestionSetSerializer extends JsonLd {
 
-	// private static final Logger logger =
-	// LoggerFactory.getLogger(ConceptLd.class);
+	public SuggestionSetSerializer(){
+		super();
+		setPropOrderComparator(new EntityJsonComparator());
+	}
 
 	ResultSet<? extends EntityPreview> entitySet;
 
@@ -68,7 +70,7 @@ public class SuggestionSetSerializer extends JsonLd {
 
 		jsonLdResource.putProperty(contextProperty);
 
-		// TODO: update annotation LD and add the @language:en to context
+		// TODO: update JSONLD output and add the @language:en to context
 
 		// String[] type = new String[] { "BasicContainer", "Collection" };
 		jsonLdResource.putProperty(WebEntityConstants.TYPE, WebEntityConstants.TYPE_BASIC_CONTAINER);

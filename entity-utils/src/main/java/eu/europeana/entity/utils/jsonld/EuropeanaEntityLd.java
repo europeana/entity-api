@@ -25,16 +25,14 @@ import eu.europeana.entity.definitions.model.vocabulary.WebEntityFields;
 public class EuropeanaEntityLd extends JsonLd {
 
 	public EuropeanaEntityLd(Entity entity) throws UnsupportedEntityTypeException {
+		super();
+		setPropOrderComparator(new EntityJsonComparator());
 		setEntity(entity);
 	}
 
 	public void setEntity(Entity entity) throws UnsupportedEntityTypeException {
 		setUseTypeCoercion(false);
 		setUseCuries(true);
-		// addNamespacePrefix(WebAnnotationFields.OA_CONTEXT,
-		// WebAnnotationFields.OA);
-		// TODO: verify if the following check is needed
-		// if(isApplyNamespaces())
 		setUsedNamespaces(namespacePrefixMap);
 
 		JsonLdResource jsonLdResource = new JsonLdResource();

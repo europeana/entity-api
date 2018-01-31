@@ -23,7 +23,7 @@ public interface SolrEntityService {
 	public Entity searchById(String entityId) throws EntityRetrievalException;
 
 	/**
-	 * This method retrieves available Annotations by searching the given entity URI.
+	 * This method retrieves available Entities by searching the given entity URI.
 	 * @param entityUri - See {@link ConceptSolrFields#ID}
 	 * @return
 	 * @throws EntityRetrievalException 

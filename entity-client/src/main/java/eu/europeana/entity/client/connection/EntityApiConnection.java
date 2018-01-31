@@ -32,8 +32,8 @@ public class EntityApiConnection extends BaseApiConnection {
 	 * @param apiKey
 	 *            API Key required to access the API
 	 */
-	public EntityApiConnection(String annotationServiceUri, String apiKey) {
-		super(annotationServiceUri, apiKey);
+	public EntityApiConnection(String entityServiceUri, String apiKey) {
+		super(entityServiceUri, apiKey);
 	}
 
 	public EntityApiConnection() {

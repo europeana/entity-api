@@ -123,7 +123,7 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 			getLogger().debug("search obj res size: " + res.getResultSize());
 		} catch (SolrServerException e) {
 			throw new EntityRetrievalException(
-					"Unexpected exception occured when searching annotations for solrAnnotation: "
+					"Unexpected exception occured when searching entities: "
 							+ searchQuery.toString(),
 					e);
 		}
@@ -162,7 +162,7 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 			getLogger().debug("search obj res size: " + res.getResultSize());
 		} catch (SolrServerException e) {
 			throw new EntitySuggestionException(
-					"Unexpected exception occured when searching annotations for solrAnnotation: "
+					"Unexpected exception occured when searching entities: "
 							+ searchQuery.toString(),
 					e);
 		}

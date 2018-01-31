@@ -23,12 +23,6 @@ import eu.europeana.entity.web.model.view.TimeSpanPreview;
 
 public class SuggestionSetSerializer extends JsonLd {
 
-<<<<<<< HEAD
-=======
-	// private static final Logger logger =
-	// LoggerFactory.getLogger(ConceptLd.class);
-	
->>>>>>> branch 'develop' of https://github.com/europeana/entity-api.git
 	public SuggestionSetSerializer(){
 		super();
 		setPropOrderComparator(new EntityJsonComparator());

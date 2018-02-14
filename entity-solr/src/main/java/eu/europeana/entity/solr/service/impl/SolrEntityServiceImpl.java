@@ -7,17 +7,17 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.apache.log4j.Logger;
+import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrQuery;
-import org.apache.solr.client.solrj.SolrServer;
-import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.util.SimpleOrderedMap;
 
+import eu.europeana.api.commons.definitions.search.Query;
+import eu.europeana.api.commons.definitions.search.ResultSet;
+import eu.europeana.api.commons.search.util.QueryBuilder;
 import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException;
 import eu.europeana.entity.definitions.model.Entity;
-import eu.europeana.entity.definitions.model.search.Query;
-import eu.europeana.entity.definitions.model.search.result.ResultSet;
 import eu.europeana.entity.definitions.model.vocabulary.ConceptSolrFields;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.solr.exception.EntityRetrievalException;
@@ -26,20 +26,18 @@ import eu.europeana.entity.solr.exception.EntitySuggestionException;
 import eu.europeana.entity.solr.model.factory.EntityObjectFactory;
 import eu.europeana.entity.solr.model.vocabulary.SuggestionFields;
 import eu.europeana.entity.solr.service.SolrEntityService;
-import eu.europeana.entity.solr.view.EntityPreviewImpl;
-import eu.europeana.entity.web.model.view.ConceptView;
 import eu.europeana.entity.web.model.view.EntityPreview;
 
 
 public class SolrEntityServiceImpl extends BaseEntityService implements SolrEntityService {
 
 	@Resource
-	SolrServer solrServer;
+	SolrClient solrServer;
 	SuggestionUtils suggestionHelper = null;
 
 	private final Logger log = Logger.getLogger(getClass());
 
-	public void setSolrServer(SolrServer solrServer) {
+	public void setSolrServer(SolrClient solrServer) {
 		this.solrServer = solrServer;
 	}
 
@@ -98,7 +96,7 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 //			beans = rsp.getBeans(SolrAgentImpl.class);
 //			beans = rsp.getBeans(SolrConceptImpl.class);
 			// rs = buildResultSet(rsp);
-		} catch (SolrServerException e) {
+		} catch (Exception e) {
 			throw new EntityRetrievalException(
 					"Unexpected exception occured when searching entities for id: " + entityId, e);
 		}
@@ -112,21 +110,28 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 	}
 
 	@Override
-	public ResultSet<? extends ConceptView> search(Query searchQuery) throws EntityRetrievalException {
-		ResultSet<? extends ConceptView> res = null;
-		SolrQuery query = toSolrQuery(searchQuery);
+	public ResultSet<? extends Entity> search(Query searchQuery, String[] outLanguage,
+			EntityTypes[] entityTypes, String scope) throws EntityRetrievalException {
+		
+		ResultSet<? extends Entity> res = null;
+		
+		SolrQuery query = (new QueryBuilder()).toSolrQuery(searchQuery);
+		addQueryFilterParam(query, entityTypes, scope);	
+
+		String handler = "/select";
+		query.setRequestHandler(handler);
 
 		try {
 			getLogger().info("search obj: " + searchQuery);
 			QueryResponse rsp = solrServer.query(query);
 			res = buildResultSet(rsp);
 			getLogger().debug("search obj res size: " + res.getResultSize());
-		} catch (SolrServerException e) {
+		} catch (Exception e) {
 			throw new EntityRetrievalException(
 					"Unexpected exception occured when searching entities: "
 							+ searchQuery.toString(),
 					e);
-		}
+		} 
 
 		return res;
 	}
@@ -146,9 +151,8 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 			throws EntitySuggestionException {
 
 		ResultSet<? extends EntityPreview> res = null;
-		SolrQuery query = toSolrQuery(searchQuery);
+		SolrQuery query = new QueryBuilder().toSolrQuery(searchQuery);
 		String handler = "/suggestEntity";
-
 		query.setRequestHandler(handler);
 		
 		addQueryFilterParam(query, entityTypes, scope);	
@@ -158,15 +162,14 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 			getLogger().debug("suggest query: " + query);
 			QueryResponse rsp = solrServer.query(query);
 
-			res = buildSuggestionSet(rsp, language, rows, EntityPreviewImpl.class);
+			res = buildSuggestionSet(rsp, language, rows);
 			getLogger().debug("search obj res size: " + res.getResultSize());
-		} catch (SolrServerException e) {
+		} catch (Exception e) {
 			throw new EntitySuggestionException(
 					"Unexpected exception occured when searching entities: "
 							+ searchQuery.toString(),
 					e);
 		}
-
 		return res;
 	}
 	
@@ -179,19 +182,24 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 		
 		Boolean isScope = scope != null && !scope.equals("");
 		Boolean isSpecificEntityType = entityTypes != null && entityTypes.length > 0 && !EntityTypes.arrayHasValue(entityTypes, EntityTypes.All);
-		String entityTypeCondition = entityTypes.length == 0 ? entityTypes[0].getInternalType() : buildEntityTypeCondition(entityTypes);
-		String filter = null;
+		//build entityType filter
+		String entityTypeCondition = null;
+		if(isSpecificEntityType)
+			entityTypeCondition = buildEntityTypeCondition(entityTypes);
 		
+		//build scopeFilter
 		String scopeFilter = null;
 		if(SuggestionFields.PARAM_EUROPEANA.equals(scope)) { 
 			scopeFilter = SuggestionFields.FILTER_IN_EUROPEANA;
 		}
 		
+		//add filters to query
+		String filter = null;
 		if( !isSpecificEntityType && !isScope)
 			return;
-		if(isSpecificEntityType && !isScope)
+		if(isSpecificEntityType && !isScope){
 			filter = entityTypeCondition;
-		else if(!isSpecificEntityType && scopeFilter != null) 
+		}else if(!isSpecificEntityType && scopeFilter != null) 
 			filter = scopeFilter;
 		else if(isSpecificEntityType && isScope)
 			filter = entityTypeCondition + " AND " + scopeFilter;
@@ -204,11 +212,10 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 	
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	protected <T extends EntityPreview> ResultSet<T> buildSuggestionSet(QueryResponse rsp, String language, int rows,
-			Class<T> entityPreviewClass) throws EntitySuggestionException {
+	protected <T extends EntityPreview> ResultSet<T> buildSuggestionSet(QueryResponse rsp, String language, int rows) throws EntitySuggestionException {
 
 		ResultSet<T> resultSet = new ResultSet<>();
-		resultSet.setLanguage(language);
+//		resultSet.setLanguage(language);
 		
 		Map<String, Object> suggest = (Map<String, Object>) rsp.getResponse().get(SuggestionFields.SUGGEST);
 		
@@ -357,7 +364,7 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 				throw new EntityRetrievalException("Too many solr entries found for coref uri: " + uri 
 				 + ". Expected 0..1, but found " + docs.getNumFound());
 			
-		} catch (SolrServerException e) {
+		} catch (Exception e) {
 			throw new EntityRuntimeException(
 					"Unexpected exception occured when searching Solr entities. ", e);
 		}

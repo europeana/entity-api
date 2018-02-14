@@ -12,17 +12,16 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import eu.europeana.api.commons.definitions.search.Query;
+import eu.europeana.api.commons.definitions.search.ResultSet;
+import eu.europeana.api.commons.definitions.search.impl.QueryImpl;
 import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException;
 import eu.europeana.entity.definitions.model.Entity;
-import eu.europeana.entity.definitions.model.search.Query;
-import eu.europeana.entity.definitions.model.search.QueryImpl;
-import eu.europeana.entity.definitions.model.search.result.ResultSet;
 import eu.europeana.entity.solr.exception.EntityRetrievalException;
 import eu.europeana.entity.solr.service.impl.SolrEntityServiceImpl;
-import eu.europeana.entity.web.model.view.ConceptView;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration({ "/entity-solr-test.xml" })
+@ContextConfiguration({ "/entity-solr-context.xml"})
 public class SolrEntityServiceTest {
 
 	@Resource
@@ -50,8 +49,8 @@ public class SolrEntityServiceTest {
 	@Test
 	public void testSearch() throws EntityRetrievalException{
 		
-		Query searchQuery = new QueryImpl("\"Geistliches Drama\"", 10);
-		ResultSet<? extends ConceptView> rs = solrEntityService.search(searchQuery);
+		Query searchQuery = new QueryImpl("\"Dokumentarfilm\"", 10);
+		ResultSet<? extends Entity> rs = solrEntityService.search(searchQuery, new String[]{"en", "de", "fr"}, null, null);
 		
 		assertNotNull(rs.getResults());
 		assertTrue(rs.getResultSize() >= 1 );

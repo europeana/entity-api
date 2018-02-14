@@ -60,12 +60,12 @@ public class EntityApiConnection extends BaseApiConnection {
 				, String identifier
 				)  throws IOException {
 				
-		String url = getEntityServiceUri() + WebEntityFields.SLASH;
-		url += type + WebEntityFields.SLASH;
-		url += namespace + WebEntityFields.SLASH;
+		String url = getEntityServiceUri() + WebEntityConstants.SLASH;
+		url += type + WebEntityConstants.SLASH;
+		url += namespace + WebEntityConstants.SLASH;
     	url += identifier;
-		url += WebEntityFields.PAR_CHAR;
-		url += WebEntityFields.PARAM_WSKEY + WebEntityFields.EQUALS + apiKey;
+		url += WebEntityConstants.PAR_CHAR;
+		url += "wskey" + WebEntityConstants.EQUALS + apiKey;
 		
 		/**
 		 * Execute Europeana API request

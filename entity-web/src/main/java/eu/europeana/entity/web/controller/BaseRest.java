@@ -4,9 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 
 import eu.europeana.api.common.config.I18nConstants;
-import eu.europeana.entity.definitions.model.Concept;
 import eu.europeana.entity.web.exception.authentication.EntityAuthenticationException;
-import eu.europeana.entity.web.model.EntitySearchResults;
 
 public abstract class BaseRest{
 
@@ -24,17 +22,6 @@ public abstract class BaseRest{
 			throw new EntityAuthenticationException(null, I18nConstants.INVALID_APIKEY,  new String[]{wsKey});
 	}
 
-	public EntitySearchResults<Concept> buildSearchErrorResponse(String apiKey, String action,
-			Throwable th) {
-
-		EntitySearchResults<Concept> response = new EntitySearchResults<Concept>(apiKey,
-				action);
-		response.success = false;
-		response.error = th.getMessage();
-		// response.requestNumber = 0L;
-
-		return response;
-	}
 
 	
 }

@@ -46,8 +46,8 @@ public class EntityJsonComparator implements Comparator<Object> {
 		propOrderMap.put(WebEntityConstants.PREF_LABEL, 60);
 		propOrderMap.put(WebEntityConstants.ALT_LABEL, 70);
 		propOrderMap.put(WebEntityConstants.HIDDEN_LABEL, 75);
-		propOrderMap.put(WebEntityConstants.GEO_LAT, 80);
-		propOrderMap.put(WebEntityConstants.GEO_LONG, 90);
+		propOrderMap.put(WebEntityConstants.LATITUDE, 80);
+		propOrderMap.put(WebEntityConstants.LONGITUDE, 90);
 		propOrderMap.put(WebEntityConstants.ALTITUDE, 100);
 		propOrderMap.put(WebEntityConstants.NAME, 110);
 		propOrderMap.put(WebEntityConstants.BEGIN, 120);

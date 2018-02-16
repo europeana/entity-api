@@ -36,7 +36,6 @@ public interface CoreContextualClass extends CoreAbstractEdmEntity {
 	 * @return A Map<String,List<List<String>>> for the Preferable Labels of a contextual
 	 *         class (one per language)
 	 */
-//	Map<String, List<String>> getPrefLabel();
 	Map<String, String> getPrefLabel();
 
 	/**
@@ -79,7 +78,6 @@ public interface CoreContextualClass extends CoreAbstractEdmEntity {
 	 *            A Map<String,List<List<String>>> for the Preferable Labels of a contextual
 	 *            class (one per language)
 	 */
-//	void setPrefLabel(Map<String, List<String>> prefLabel);
 	void setPrefLabel(Map<String, String> prefLabel);
 
 	/**

@@ -6,12 +6,15 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
+import eu.europeana.api.commons.definitions.search.Query;
+import eu.europeana.api.commons.definitions.search.impl.QueryImpl;
+
 /**
  * TODO: implement a common query definition and implementation in corelib
  * @author GordeaS
- *
+ * @deprecated use base class instead
  */
-public class QueryImpl implements Cloneable, Query{
+public class EntityQueryImpl extends QueryImpl implements Cloneable, Query{
 
 	
 
@@ -31,35 +34,35 @@ public class QueryImpl implements Cloneable, Query{
 	private String[] facetFields;
 	private String[] viewFields;
 
-	public QueryImpl() {
-		super();
-	}
+//	public QueryImpl() {
+//		super();
+//	}
+//	
+//	public QueryImpl(String query, int rows) {
+//		super();
+//		this.setQuery(query);
+//		this.setRows(rows);
+//	}
 	
-	public QueryImpl(String query, int rows) {
-		super();
-		this.setQuery(query);
-		this.setRows(rows);
-	}
-	
-	@Override
-	public int getStart() {
-		return start;
-	}
-
-	@Override
-	public void setStart(int start) {
-		this.start = start;
-	}
-
-	@Override
-	public int getRows() {
-		return rows;
-	}
-
-	@Override
-	public void setRows(int rows) {
-		this.rows = rows;
-	}
+//	@Override
+//	public int getStart() {
+//		return start;
+//	}
+//
+//	@Override
+//	public void setStart(int start) {
+//		this.start = start;
+//	}
+//
+//	@Override
+//	public int getRows() {
+//		return rows;
+//	}
+//
+//	@Override
+//	public void setRows(int rows) {
+//		this.rows = rows;
+//	}
 
 	@Override
 	public String getQuery() {

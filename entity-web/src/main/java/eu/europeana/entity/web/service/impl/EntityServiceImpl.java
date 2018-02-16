@@ -5,12 +5,12 @@ import javax.annotation.Resource;
 import org.springframework.http.HttpStatus;
 
 import eu.europeana.api.common.config.I18nConstants;
+import eu.europeana.api.commons.definitions.search.Query;
+import eu.europeana.api.commons.definitions.search.ResultSet;
+import eu.europeana.api.commons.definitions.search.impl.QueryImpl;
 import eu.europeana.api.commons.web.exception.HttpException;
 import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException;
 import eu.europeana.entity.definitions.model.Entity;
-import eu.europeana.entity.definitions.model.search.Query;
-import eu.europeana.entity.definitions.model.search.QueryImpl;
-import eu.europeana.entity.definitions.model.search.result.ResultSet;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.solr.exception.EntityRetrievalException;
 import eu.europeana.entity.solr.exception.EntitySuggestionException;
@@ -44,11 +44,18 @@ public class EntityServiceImpl implements EntityService {
 		return result;
 	}
 	
-	protected Query buildSearchQuery(String queryString, String[] filters, int rows) {
+	/**
+	 * @deprecated use QueryBuilder
+	 * @param queryString
+	 * @param filters
+	 * @param rows
+	 * @return
+	 */
+	protected Query buildSearchQuery(String queryString, String[] filters, int pageSize) {
 		
 		Query searchQuery = new QueryImpl();
 		searchQuery.setQuery(queryString);
-		searchQuery.setRows(Math.min(rows, Query.MAX_PAGE_SIZE));	
+		searchQuery.setPageSize(Math.min(pageSize, Query.DEFAULT_MAX_PAGE_SIZE));	
 		searchQuery.setFilters(filters);
 		
 		return searchQuery;
@@ -57,10 +64,10 @@ public class EntityServiceImpl implements EntityService {
 	
 	
 	/* (non-Javadoc)
-	 * @see eu.europeana.entity.web.service.EntityService#suggest(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, int)
+	 * @see eu.europeana.entity.web.service.EntityService#
 	 */
 	@Override	
-	public ResultSet<? extends EntityPreview> suggest(String text, String language, EntityTypes[] internalEntityTypes, String scope, String namespace, int rows) throws HttpException {
+	public ResultSet<? extends EntityPreview> suggest(String text, String[] language, EntityTypes[] internalEntityTypes, String scope, String namespace, int rows) throws HttpException {
 
 		try {
 			Query query = buildSearchQuery(text, null, rows);
@@ -69,12 +76,6 @@ public class EntityServiceImpl implements EntityService {
 			throw new HttpException(e.getMessage(), I18nConstants.SERVER_ERROR_CANT_RETRIEVE_URI, null, HttpStatus.INTERNAL_SERVER_ERROR, e);
 		}
 	}
-
-
-//	private String buildQueryFilter(String solrField, String value) {
-//		return  solrField + ":" + value;
-//	}
-	
 	
 	@Override
 	public String resolveByUri(String uri) throws HttpException{
@@ -89,6 +90,14 @@ public class EntityServiceImpl implements EntityService {
 			throw new HttpException(null, I18nConstants.CANT_FIND_BY_SAME_AS_URI, new String[]{uri}, HttpStatus.NOT_FOUND);
 		
  		return result;
+	}
+
+	@Override
+	public ResultSet<? extends Entity> search(Query query, String[] outLanguage,
+			EntityTypes[] internalEntityTypes, String scope) throws HttpException {
+		
+		return solrEntityService.search(query, outLanguage,
+				internalEntityTypes, scope);
 	}
 
 	

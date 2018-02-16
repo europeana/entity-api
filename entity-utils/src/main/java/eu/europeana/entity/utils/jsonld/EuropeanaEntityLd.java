@@ -1,9 +1,5 @@
 package eu.europeana.entity.utils.jsonld;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.stanbol.commons.jsonld.JsonLd;
 import org.apache.stanbol.commons.jsonld.JsonLdProperty;
@@ -25,45 +21,47 @@ import eu.europeana.entity.definitions.model.vocabulary.WebEntityFields;
 
 public class EuropeanaEntityLd extends JsonLd {
 
+	JsonLdResource ldResource = new JsonLdResource();
+	
 	public EuropeanaEntityLd(Entity entity) throws UnsupportedEntityTypeException {
 		super();
 		setPropOrderComparator(new EntityJsonComparator());
 		setEntity(entity);
 	}
 
-	public void setEntity(Entity entity) throws UnsupportedEntityTypeException {
+	public JsonLdResource setEntity(Entity entity) throws UnsupportedEntityTypeException {
 		setUseTypeCoercion(false);
 		setUseCuries(true);
 		setUsedNamespaces(namespacePrefixMap);
 
-		JsonLdResource jsonLdResource = new JsonLdResource();
-		jsonLdResource.setSubject("");
-		jsonLdResource.putProperty(WebEntityFields.CONTEXT, WebEntityFields.ENTITY_CONTEXT);
+		ldResource.setSubject("");
+		ldResource.putProperty(WebEntityFields.CONTEXT, WebEntityFields.ENTITY_CONTEXT);
 
 		//common EntityProperties
-		jsonLdResource.putProperty(WebEntityFields.ID, entity.getEntityId());
-		jsonLdResource.putProperty(WebEntityFields.TYPE, entity.getInternalType());
-		putStringArrayProperty(WebEntityFields.IDENTIFIER, entity.getIdentifier(), jsonLdResource);
-		putStringArrayProperty(WebEntityFields.SAME_AS, entity.getSameAs(), jsonLdResource);
+		ldResource.putProperty(WebEntityFields.ID, entity.getEntityId());
+		ldResource.putProperty(WebEntityFields.TYPE, entity.getInternalType());
+		putStringArrayProperty(WebEntityFields.IDENTIFIER, entity.getIdentifier(), ldResource);
+		putStringArrayProperty(WebEntityFields.SAME_AS, entity.getSameAs(), ldResource);
 		//jsonLdResource.putProperty(WebEntityFields.RDF_ABOUT, entity.getAbout());
-		putStringArrayProperty(WebEntityFields.IS_RELATED_TO, entity.getIsRelatedTo(), jsonLdResource);
+		putStringArrayProperty(WebEntityFields.IS_RELATED_TO, entity.getIsRelatedTo(), ldResource);
 
 		if (!StringUtils.isEmpty(entity.getDepiction())) {	
-			jsonLdResource.putProperty(createDepiction(entity));			
+			ldResource.putProperty(createDepiction(entity));			
 		}
 		
 		
 		//common SKOS_Properties
 //		putMapOfStringListProperty(WebEntityFields.PREF_LABEL, entity.getPrefLabel(), ConceptSolrFields.PREF_LABEL, jsonLdResource);
-		putMapOfStringProperty(WebEntityFields.PREF_LABEL, entity.getPrefLabel(), ConceptSolrFields.PREF_LABEL, jsonLdResource);
-		putMapOfStringListProperty(WebEntityFields.ALT_LABEL, entity.getAltLabel(), ConceptSolrFields.ALT_LABEL, jsonLdResource);
-		putMapOfStringListProperty(WebEntityFields.NOTE, entity.getNote(), ConceptSolrFields.NOTE, jsonLdResource);
+		putMapOfStringProperty(WebEntityFields.PREF_LABEL, entity.getPrefLabel(), ConceptSolrFields.PREF_LABEL, ldResource);
+		putMapOfStringListProperty(WebEntityFields.ALT_LABEL, entity.getAltLabel(), ConceptSolrFields.ALT_LABEL, ldResource);
+		putMapOfStringListProperty(WebEntityFields.NOTE, entity.getNote(), ConceptSolrFields.NOTE, ldResource);
 
 		// specific properties (by entity type)
-		putSpecificProperties(entity, jsonLdResource);
+		putSpecificProperties(entity, ldResource);
 
-		put(jsonLdResource);
-
+		put(ldResource);
+		
+		return ldResource;
 	}
 
 	private JsonLdProperty createDepiction(Entity entity) {
@@ -169,33 +167,37 @@ public class EuropeanaEntityLd extends JsonLd {
 		putStringArrayProperty(WebEntityFields.IS_PART_OF, entity.getIsPartOf(), jsonLdResource);
 		putStringArrayProperty(WebEntityFields.HAS_PART, entity.getHasPart(), jsonLdResource);
 	}
-	
 
-	/**
-	 * TODO: move to json ld
-	 * @param fieldName
-	 * @param list
-	 * @param jsonLdResource
-	 */
-	private void putDateList(String fieldName, List<Date> list, JsonLdResource jsonLdResource) {
-		if (list != null) {
-			List<String> stringList = convertDateListToStringList(list);
-			putListProperty(fieldName, stringList, jsonLdResource);
-		}
-	}
-
-	private List<String> convertDateListToStringList(List<Date> dateList) {
-
-		List<String> stringList = new ArrayList<String>();
-
-		// DateFormat simpleDateFormat = new SimpleDateFormat("yyyy");
-		for (Object date : dateList) {
-			stringList.add(date.toString());
-			// for (Date date : dateList) {
-			// stringList.add(simpleDateFormat.format(date));
-		}
-
-		return stringList;
+	public JsonLdResource getLdResource() {
+		return ldResource;
 	}
 	
+
+//	/**
+//	 * TODO: move to json ld
+//	 * @param fieldName
+//	 * @param list
+//	 * @param jsonLdResource
+//	 */
+//	private void putDateList(String fieldName, List<Date> list, JsonLdResource jsonLdResource) {
+//		if (list != null) {
+//			List<String> stringList = convertDateListToStringList(list);
+//			putListProperty(fieldName, stringList, jsonLdResource);
+//		}
+//	}
+
+//	private List<String> convertDateListToStringList(List<Date> dateList) {
+//
+//		List<String> stringList = new ArrayList<String>();
+//
+//		// DateFormat simpleDateFormat = new SimpleDateFormat("yyyy");
+//		for (Object date : dateList) {
+//			stringList.add(date.toString());
+//			// for (Date date : dateList) {
+//			// stringList.add(simpleDateFormat.format(date));
+//		}
+//
+//		return stringList;
+//	}
+//	
 }

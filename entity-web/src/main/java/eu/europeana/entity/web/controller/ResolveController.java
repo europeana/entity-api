@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import eu.europeana.api.common.config.swagger.SwaggerSelect;
+import eu.europeana.api.commons.definitions.vocabulary.CommonApiConstants;
 import eu.europeana.api.commons.web.exception.HttpException;
 import eu.europeana.api.commons.web.http.HttpHeaders;
 import eu.europeana.entity.definitions.model.Entity;
@@ -38,7 +39,7 @@ public class ResolveController extends BaseRest {
 	@RequestMapping(value = {"/entity/{type}/{namespace}/{identifier}", "/entity/{type}/{namespace}/{identifier}.jsonld"}, method = RequestMethod.GET, 
 			produces = { HttpHeaders.CONTENT_TYPE_JSON_UTF8, HttpHeaders.CONTENT_TYPE_JSONLD_UTF8})
 	public ResponseEntity<String> getEntity(
-			@RequestParam(value = WebEntityConstants.PARAM_WSKEY, required=false) String wskey,
+			@RequestParam(value = CommonApiConstants.PARAM_WSKEY, required=false) String wskey,
 			@PathVariable(value = WebEntityConstants.PATH_PARAM_TYPE) String type,
 			@PathVariable(value = WebEntityConstants.PATH_PARAM_NAMESPACE) String namespace,
 			@PathVariable(value = WebEntityConstants.PATH_PARAM_IDENTIFIER) String identifier
@@ -86,8 +87,8 @@ public class ResolveController extends BaseRest {
 	@RequestMapping(value = {"/entity/resolve"}, method = RequestMethod.GET,
 			produces = { HttpHeaders.CONTENT_TYPE_JSON_UTF8})
 	public ResponseEntity<String> resolveEntity(
-			@RequestParam(value = WebEntityConstants.PARAM_WSKEY, required=false) String wskey,
-			@RequestParam(value = WebEntityConstants.PATH_PARAM_URI) String uri
+			@RequestParam(value = CommonApiConstants.PARAM_WSKEY, required=false) String wskey,
+			@RequestParam(value = WebEntityConstants.QUERY_PARAM_URI) String uri
 			) throws HttpException  {
 
 		try {

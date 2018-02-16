@@ -48,6 +48,11 @@
 		</dependency>
 		<dependency>
 			<groupId>eu.europeana.api.commons</groupId>
+			<artifactId>commons-oauth</artifactId>
+			<version>${version.commonsApi}</version>
+		</dependency>
+		<dependency>
+			<groupId>eu.europeana.api.commons</groupId>
 			<artifactId>commons-net</artifactId>
 			<version>${version.commonsApi}</version>
 		</dependency>
@@ -72,11 +77,13 @@
 			<version>2.0-m01</version>
 		</dependency>
 
+<!-- 
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-xc</artifactId>
 			<version>${version.codehausJackson}</version>
 		</dependency>
+-->
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>

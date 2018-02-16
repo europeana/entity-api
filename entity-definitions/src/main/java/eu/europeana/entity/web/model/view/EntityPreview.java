@@ -6,6 +6,10 @@ import java.util.Map;
 import eu.europeana.entity.definitions.model.search.result.IdBean;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 
+/**
+ * @author Sergiu Gordea
+ *
+ */
 public interface EntityPreview extends IdBean {
 
 	//functional fields

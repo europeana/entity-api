@@ -13,20 +13,14 @@ public interface EntityConfiguration {
 	
 	
 	/**
-	 * checks annotation.environment=production property
+	 * checks entity.environment=production property
 	 */
 	public boolean isProductionEnvironment();
 	
 	/**
-	 * uses annotation.environment property
+	 * uses entity.environment property
 	 */
 	public String getEnvironment();
-	
-	
-//	/**
-//	 * uses annotation.environment.{$environment}.baseUrl property
-//	 */
-//	public String getAnnotationBaseUrl();
 	
 	
 }

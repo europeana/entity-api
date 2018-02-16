@@ -11,18 +11,13 @@ public class EntityConfigurationImpl implements EntityConfiguration{
 		return "entity";
 	}
 
-//	@Override
-//	public boolean isIndexingEnabled() {
-//		String value = getAnnotationProperties().getProperty(ENTITY_INDEXING_ENABLED);
-//		return Boolean.valueOf(value);
-//	}
 
-	public Properties getAnnotationProperties() {
+	public Properties getEntityProperties() {
 		return entityProperties;
 	}
 
-	public void setAnnotationProperties(Properties annotationProperties) {
-		this.entityProperties = annotationProperties;
+	public void setAnnotationProperties(Properties entityProperties) {
+		this.entityProperties = entityProperties;
 	}
 
 	@Override
@@ -32,7 +27,7 @@ public class EntityConfigurationImpl implements EntityConfiguration{
 
 	@Override
 	public String getEnvironment() {
-		return getAnnotationProperties().getProperty(ENTITY_ENVIRONMENT);
+		return getEntityProperties().getProperty(ENTITY_ENVIRONMENT);
 	}
 
 }

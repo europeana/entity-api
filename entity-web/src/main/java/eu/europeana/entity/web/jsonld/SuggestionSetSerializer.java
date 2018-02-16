@@ -9,12 +9,13 @@ import org.apache.stanbol.commons.jsonld.JsonLdResource;
 import org.springframework.http.HttpStatus;
 
 import eu.europeana.api.common.config.I18nConstants;
+import eu.europeana.api.commons.definitions.search.ResultSet;
 import eu.europeana.api.commons.web.exception.HttpException;
 import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException;
 import eu.europeana.entity.definitions.model.ResourcePreview;
-import eu.europeana.entity.definitions.model.search.result.ResultSet;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
+import eu.europeana.entity.utils.jsonld.EntityJsonComparator;
 import eu.europeana.entity.web.model.view.AgentPreview;
 import eu.europeana.entity.web.model.view.EntityPreview;
 import eu.europeana.entity.web.model.view.PlacePreview;
@@ -22,8 +23,10 @@ import eu.europeana.entity.web.model.view.TimeSpanPreview;
 
 public class SuggestionSetSerializer extends JsonLd {
 
-	// private static final Logger logger =
-	// LoggerFactory.getLogger(ConceptLd.class);
+	public SuggestionSetSerializer(){
+		super();
+		setPropOrderComparator(new EntityJsonComparator());
+	}
 
 	ResultSet<? extends EntityPreview> entitySet;
 
@@ -39,6 +42,8 @@ public class SuggestionSetSerializer extends JsonLd {
 	 * @param conceptSet
 	 */
 	public SuggestionSetSerializer(ResultSet<? extends EntityPreview> entitySet) {
+		super();
+		setPropOrderComparator(new EntityJsonComparator());		
 		registerContainerProperty(WebEntityConstants.IS_PART_OF);
 		registerContainerProperty(WebEntityConstants.ITEMS);
 		setConceptSet(entitySet);
@@ -68,7 +73,7 @@ public class SuggestionSetSerializer extends JsonLd {
 
 		jsonLdResource.putProperty(contextProperty);
 
-		// TODO: update annotation LD and add the @language:en to context
+		// TODO: update JSONLD output and add the @language:en to context
 
 		// String[] type = new String[] { "BasicContainer", "Collection" };
 		jsonLdResource.putProperty(WebEntityConstants.TYPE, WebEntityConstants.TYPE_BASIC_CONTAINER);
@@ -102,11 +107,14 @@ public class SuggestionSetSerializer extends JsonLd {
 	private JsonLdPropertyValue buildEntityPreviewPropertyValue(EntityPreview entityPreview) throws HttpException {
 
 		JsonLdPropertyValue entityPreviewPropValue = new JsonLdPropertyValue();
+
+		// id
 		entityPreviewPropValue.putProperty(new JsonLdProperty(WebEntityConstants.ID, entityPreview.getEntityId()));
 		JsonLdProperty prefLabelProp = buildMapOfStringsProperty(WebEntityConstants.PREF_LABEL, entityPreview.getPreferredLabel(), 
 				"");
 		entityPreviewPropValue.putProperty(prefLabelProp);
 		
+		// hiddenLabel
 		if(entityPreview.getHiddenLabel() != null && !entityPreview.getHiddenLabel().isEmpty()){
 			JsonLdProperty hiddenLabelProp = buildMapProperty(WebEntityConstants.HIDDEN_LABEL, entityPreview.getHiddenLabel(), 
 					"");
@@ -135,9 +143,9 @@ public class SuggestionSetSerializer extends JsonLd {
 			case Concept:
 				// add top concept, when available
 				break;
+				
 			case Agent:
 				putAgentSpecificProperties((AgentPreview) entityPreview, entityPreviewPropValue);
-
 				break;
 
 			case Place:

@@ -1,8 +1,9 @@
 package eu.europeana.entity.web.service;
 
+import eu.europeana.api.commons.definitions.search.Query;
+import eu.europeana.api.commons.definitions.search.ResultSet;
 import eu.europeana.api.commons.web.exception.HttpException;
 import eu.europeana.entity.definitions.model.Entity;
-import eu.europeana.entity.definitions.model.search.result.ResultSet;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.web.model.view.EntityPreview;
 
@@ -23,10 +24,21 @@ public interface EntityService {
 	 * 
 	 * e.g. GET /entity/suggest?text=leonard&language=en
 	 */
-//	List<? extends Concept> suggest(
 	ResultSet<? extends EntityPreview> suggest(
-			String text, String language, EntityTypes[] internalEntityTypes, String scope, String namespace, int rows) throws HttpException;
+			String text, String[] language, EntityTypes[] internalEntityTypes, String scope, String namespace, int rows) throws HttpException;
 
+
+	/**
+	 * This method searches the entities using the provided search query and specific filters
+	 * @param query
+	 * @param preferredLanguages
+	 * @param internalEntityTypes
+	 * @param scope
+	 * @return
+	 * @throws HttpException
+	 */
+	public ResultSet<? extends Entity> search(Query query, String[] preferredLanguages, EntityTypes[] internalEntityTypes, String scope) throws HttpException;
+	
 	
 	/**
 	 * Performs a lookup for the entity in all 4 datasets:

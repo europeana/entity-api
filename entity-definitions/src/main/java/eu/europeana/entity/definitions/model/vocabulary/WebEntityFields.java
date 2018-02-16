@@ -22,7 +22,7 @@ public interface WebEntityFields {
 	public static final String RDF_ABOUT = "about";
 	public static final String DEPICTION = "depiction";
 	public static final String DEPICTION_SOURCE = "source";
-	
+//	public static final String CONCEPT="Concept";
 
 	// concept fields
 	public static final String NOTATION = "notation";
@@ -38,13 +38,6 @@ public interface WebEntityFields {
 	public static final String NARROW_MATCH = "narrowMatch";
 	public static final String RELATED_MATCH = "relatedMatch";
 
-	// REST API query
-	public static final String SLASH = "/";
-	public static final String PAR_CHAR = "?";
-	public static final String AND = "&";
-	public static final String EQUALS = "=";
-	public static final String PARAM_WSKEY = "wskey";
-
 	// Agent fields
 	public static final String DATE = "date";
 	public static final String BEGIN = "begin";
@@ -58,6 +51,7 @@ public interface WebEntityFields {
 	public static final String PLACE_OF_BIRTH = "placeOfBirth";
 	public static final String PLACE_OF_DEATH = "placeOfDeath";
 	public static final String DATE_OF_ESTABLISHMENT = "dateOfEstablishment";
+	public static final String DATE_OF_TERMINATION = "dateOfTermination";
 	public static final String GENDER = "gender";
 	public static final String PROFESSION_OR_OCCUPATION = "professionOrOccupation";
 	
@@ -66,12 +60,10 @@ public interface WebEntityFields {
 	public static final String LONGITUDE = "long";
 	public static final String ALTITUDE = "alt";
 	public static final String IS_NEXT_IN_SEQUENCE = "isNextInSequence";
-	public static final String COUNTRY = "country";
+//	public static final String COUNTRY = "country";
 	
 	//Technical fields
-	 public static final String DERIVED_SCORE = "derived_score";
-	// public static final String WIKIPEDIA_CLICKS = "wikipedia_clicks";
-	// public static final String EUROPEANA_DOC_COUNT = "europeana_doc_count";
-	//public static final String TEXT = "text";
+	public static final String DERIVED_SCORE = "derived_score";
+	public static final String TEXT = "text";
 
 }

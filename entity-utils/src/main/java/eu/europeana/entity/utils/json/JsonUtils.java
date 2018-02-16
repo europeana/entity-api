@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * @Deprecated the provided methods must be replaced by proper usage of the json to annotation parser 
+ * @Deprecated the provided methods must be replaced by proper usage of the json to entity parser 
  *
  */
 public class JsonUtils {

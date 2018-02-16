@@ -38,48 +38,20 @@
 			<groupId>eu.europeana.entity</groupId>
 			<artifactId>entity-definitions</artifactId>
 			<version>${version.entityApi}</version>
-<!-- 			
-			<classifier>test</classifier>
-			<scope>test</scope>
--->			
+		</dependency>
+		
+		<dependency>
+			<groupId>eu.europeana.entity</groupId>
+			<artifactId>entity-utils</artifactId>
+			<version>${version.entityApi}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>slf4j-jdk14</artifactId>
+					<groupId>org.slf4j</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
-		<dependency>
-			<groupId>eu.europeana.entity</groupId>
-			<artifactId>entity-utils</artifactId>
-			<version>${version.entityApi}</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>slf4j-jdk14</artifactId>
-					<groupId>org.slf4j</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-<!-- 
-		<dependency>
-			<groupId>eu.europeana.entity</groupId>
-			<artifactId>entity-utils</artifactId>
-			<version>${version.entityApi}</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>slf4j-jdk14</artifactId>
-					<groupId>org.slf4j</groupId>
-				</exclusion>
-			</exclusions>
-			<classifier>test</classifier>
-			<scope>test</scope>
-			
-		</dependency>
- -->
-<!-- 
-		<dependency>
-			<groupId>eu.europeana.entity</groupId>
-			<artifactId>entity-definitions</artifactId>
-			<version>${version.entityApi}</version>
-			<scope>test</scope>
-			<classifier>test</classifier>
-		</dependency>
- -->		
 		<dependency>
 			<groupId>commons-httpclient</groupId>
 			<artifactId>commons-httpclient</artifactId>

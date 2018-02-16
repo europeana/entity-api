@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonNode;
@@ -45,7 +44,7 @@ public class SuggestionUtils {
 		return log;
 	}
 
-	public EntityPreview parsePayload(String payload, String preferredLanguage, String highlightTerm) throws EntitySuggestionException {	
+	public EntityPreview parsePayload(String payload, String[] preferredLanguages, String highlightTerm) throws EntitySuggestionException {	
 		EntityPreview preview = null;
 		try {
 			JsonParser parser = jsonFactory.createJsonParser(payload);
@@ -53,11 +52,7 @@ public class SuggestionUtils {
 			
 			JsonNode payloadNode = objectMapper.readTree(payload);
 			
-			String[] languageArray = StringUtils.splitByWholeSeparator(preferredLanguage, ",");
-			languageArray = StringUtils.stripAll(languageArray);
-			List<String> languageList = Arrays.asList(languageArray);
-			
-			preview = parseEntity(payloadNode, languageList, highlightTerm);
+			preview = parseEntity(payloadNode, Arrays.asList(preferredLanguages), highlightTerm);
 
 		} catch (Exception e) {
 			throw new EntitySuggestionException("Cannot parse suggestion payload: " + payload, e);

@@ -1,18 +1,20 @@
 package eu.europeana.entity.solr.service;
 
+import eu.europeana.api.commons.definitions.search.Query;
+import eu.europeana.api.commons.definitions.search.ResultSet;
 import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException;
 import eu.europeana.entity.definitions.model.Entity;
-import eu.europeana.entity.definitions.model.search.Query;
-import eu.europeana.entity.definitions.model.search.result.ResultSet;
 import eu.europeana.entity.definitions.model.vocabulary.ConceptSolrFields;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.solr.exception.EntityRetrievalException;
 import eu.europeana.entity.solr.exception.EntitySuggestionException;
-import eu.europeana.entity.web.model.view.ConceptView;
 import eu.europeana.entity.web.model.view.EntityPreview;
 
 public interface SolrEntityService {
 
+	public static final String HANDLER_SELECT = "/select";
+	public static final String HANDLER_SUGGEST = "/suggestEntity";
+	
 	/**
 	 * This method retrieves available Entities by searching the given id.
 	 * 
@@ -23,7 +25,7 @@ public interface SolrEntityService {
 	public Entity searchById(String entityId) throws EntityRetrievalException;
 
 	/**
-	 * This method retrieves available Annotations by searching the given entity URI.
+	 * This method retrieves available Entities by searching the given entity URI.
 	 * @param entityUri - See {@link ConceptSolrFields#ID}
 	 * @return
 	 * @throws EntityRetrievalException 
@@ -37,18 +39,19 @@ public interface SolrEntityService {
 	 * @return
 	 * @throws EntityRetrievalException 
 	 */
-	public ResultSet<? extends ConceptView> search(Query searchQuery) throws EntityRetrievalException;
+	public ResultSet<? extends Entity> search(Query searchQuery, String[] outLanguage,
+			EntityTypes[] internalEntityTypes, String scope) throws EntityRetrievalException;
 	
 	/**
 	 * This method retrieves available Entities that meet the .
 	 * @param searchQuery The search query
-	 * @param language
+	 * @param requestedLanguages
 	 * @param rows
 	 * @return
 	 * @throws EntityRetrievalException 
 	 * @throws EntitySuggestionException 
 	 */
-	public ResultSet<? extends EntityPreview> suggest(Query searchQuery, String language, EntityTypes[] entityTypes, String scope,  int rows) throws EntitySuggestionException;
+	public ResultSet<? extends EntityPreview> suggest(Query searchQuery, String[] requestedLanguages, EntityTypes[] entityTypes, String scope,  int rows) throws EntitySuggestionException;
 
 	
 //	/**

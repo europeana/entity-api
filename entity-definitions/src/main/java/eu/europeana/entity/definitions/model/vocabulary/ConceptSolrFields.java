@@ -39,8 +39,8 @@ public interface ConceptSolrFields {
 	
 	public static final String IDENTIFIER               = "dc_identifier";
 	//Fields common to some entities
-	public static final String HAS_PART                 = "skos_hasPart";
-	public static final String IS_PART_OF               = "skos_isPartOf";
+	public static final String HAS_PART                 = "dcterms_hasPart";
+	public static final String IS_PART_OF               = "dcterms_isPartOf";
 	
 	public static final String DEPICTION = "foaf_depiction";
 	

@@ -12,6 +12,9 @@ import eu.europeana.entity.web.model.view.EntityPreview;
 
 public interface SolrEntityService {
 
+	public static final String HANDLER_SELECT = "/select";
+	public static final String HANDLER_SUGGEST = "/suggestEntity";
+	
 	/**
 	 * This method retrieves available Entities by searching the given id.
 	 * 
@@ -42,13 +45,13 @@ public interface SolrEntityService {
 	/**
 	 * This method retrieves available Entities that meet the .
 	 * @param searchQuery The search query
-	 * @param language
+	 * @param requestedLanguages
 	 * @param rows
 	 * @return
 	 * @throws EntityRetrievalException 
 	 * @throws EntitySuggestionException 
 	 */
-	public ResultSet<? extends EntityPreview> suggest(Query searchQuery, String language, EntityTypes[] entityTypes, String scope,  int rows) throws EntitySuggestionException;
+	public ResultSet<? extends EntityPreview> suggest(Query searchQuery, String[] requestedLanguages, EntityTypes[] entityTypes, String scope,  int rows) throws EntitySuggestionException;
 
 	
 //	/**

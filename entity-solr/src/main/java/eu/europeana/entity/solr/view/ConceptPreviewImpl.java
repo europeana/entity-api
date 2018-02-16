@@ -1,6 +1,8 @@
 package eu.europeana.entity.solr.view;
 
-public class ConceptPreviewImpl extends EntityPreviewImpl implements eu.europeana.entity.web.model.view.ConceptPreview {
+import eu.europeana.entity.web.model.view.ConceptPreview;
+
+public class ConceptPreviewImpl extends EntityPreviewImpl implements ConceptPreview {
 
 	@Override
 	public String getInscheme() {

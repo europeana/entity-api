@@ -64,10 +64,10 @@ public class EntityServiceImpl implements EntityService {
 	
 	
 	/* (non-Javadoc)
-	 * @see eu.europeana.entity.web.service.EntityService#suggest(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, int)
+	 * @see eu.europeana.entity.web.service.EntityService#
 	 */
 	@Override	
-	public ResultSet<? extends EntityPreview> suggest(String text, String language, EntityTypes[] internalEntityTypes, String scope, String namespace, int rows) throws HttpException {
+	public ResultSet<? extends EntityPreview> suggest(String text, String[] language, EntityTypes[] internalEntityTypes, String scope, String namespace, int rows) throws HttpException {
 
 		try {
 			Query query = buildSearchQuery(text, null, rows);
@@ -76,11 +76,6 @@ public class EntityServiceImpl implements EntityService {
 			throw new HttpException(e.getMessage(), I18nConstants.SERVER_ERROR_CANT_RETRIEVE_URI, null, HttpStatus.INTERNAL_SERVER_ERROR, e);
 		}
 	}
-
-//	private String buildQueryFilter(String solrField, String value) {
-//		return  solrField + ":" + value;
-//	}
-	
 	
 	@Override
 	public String resolveByUri(String uri) throws HttpException{

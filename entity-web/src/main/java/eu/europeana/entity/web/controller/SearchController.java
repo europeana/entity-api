@@ -74,8 +74,13 @@ public class SearchController extends BaseRest {
 				throw new ParamValidationException("Invalid request parameter value! ",
 						WebEntityConstants.QUERY_PARAM_SCOPE, scope);
 
+			//past parguage list
+			String[] requestedLanguages = getLanguageList(language);
+			
+			//TODO:use buildSearchQuery method to build the query object at this stage already
+			
 			// perform search
-			ResultSet<? extends EntityPreview> results = entityService.suggest(text, language, entityTypes, scope, null,
+			ResultSet<? extends EntityPreview> results = entityService.suggest(text, requestedLanguages, entityTypes, scope, null,
 					rows);
 
 			// serialize results
@@ -112,7 +117,7 @@ public class SearchController extends BaseRest {
 			@RequestParam(value = CommonApiConstants.QUERY_PARAM_QUERY) String queryString,
 			@RequestParam(value = CommonApiConstants.QUERY_PARAM_QF, required = false) String[] qf,
 			@RequestParam(value = CommonApiConstants.QUERY_PARAM_FACET, required = false) String[] facets,
-			@RequestParam(value = CommonApiConstants.QUERY_PARAM_LANG, required = false) String[] outLanguage,
+			@RequestParam(value = CommonApiConstants.QUERY_PARAM_LANG, required = false) String outLanguage,
 			@RequestParam(value = WebEntityConstants.QUERY_PARAM_TYPE, required = false, defaultValue = WebEntityConstants.PARAM_TYPE_ALL) String type,
 			@RequestParam(value = WebEntityConstants.QUERY_PARAM_SCOPE, required = false) String scope,
 			@RequestParam(value = CommonApiConstants.QUERY_PARAM_SORT, required = false) String sort,
@@ -139,9 +144,12 @@ public class SearchController extends BaseRest {
 			// validate and convert type
 			EntityTypes[] entityTypes = getEntityTypesFromString(type);
 
+			//get language list
+			String[] preferredLanguages = getLanguageList(outLanguage);
+			
 			// perform search
 			Query searchQuery = buildSearchQuery(queryString, qf, facets, sort, page, pageSize, profile);
-			ResultSet<? extends Entity> results = entityService.search(searchQuery, outLanguage, entityTypes, scope);
+			ResultSet<? extends Entity> results = entityService.search(searchQuery, preferredLanguages, entityTypes, scope);
 			ResultsPage<? extends Entity> resPage = buildResultsPage(searchQuery, results, request.getRequestURL(),
 					request.getQueryString());
 			String jsonLd = searializeResultsPage(resPage, profile);
@@ -315,4 +323,9 @@ public class SearchController extends BaseRest {
 		return entityTypes;
 	}
 
+	String[] getLanguageList(String requestedLanguages){
+		String[] languageArray = StringUtils.splitByWholeSeparator(requestedLanguages, ",");
+		return StringUtils.stripAll(languageArray);	
+	}
+	
 }

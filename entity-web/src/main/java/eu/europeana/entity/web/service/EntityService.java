@@ -25,18 +25,19 @@ public interface EntityService {
 	 * e.g. GET /entity/suggest?text=leonard&language=en
 	 */
 	ResultSet<? extends EntityPreview> suggest(
-			String text, String language, EntityTypes[] internalEntityTypes, String scope, String namespace, int rows) throws HttpException;
+			String text, String[] language, EntityTypes[] internalEntityTypes, String scope, String namespace, int rows) throws HttpException;
 
 
 	/**
 	 * This method searches the entities using the provided search query and specific filters
 	 * @param query
+	 * @param preferredLanguages
 	 * @param internalEntityTypes
 	 * @param scope
 	 * @return
 	 * @throws HttpException
 	 */
-	public ResultSet<? extends Entity> search(Query query, String[] outLanguage, EntityTypes[] internalEntityTypes, String scope) throws HttpException;
+	public ResultSet<? extends Entity> search(Query query, String[] preferredLanguages, EntityTypes[] internalEntityTypes, String scope) throws HttpException;
 	
 	
 	/**

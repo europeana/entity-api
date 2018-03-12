@@ -4,6 +4,7 @@ import java.util.Date;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -51,6 +52,9 @@ public class ResolveController extends BaseRest {
 			
 			validateApiKey(wskey);
 
+			if (StringUtils.isNotEmpty(namespace) && "\"\"".equals(namespace))
+				namespace = null;
+			
 			Entity entity = entityService.retrieveByUrl(type, namespace, identifier);
 			
 			EuropeanaEntityLd entityLd = new EuropeanaEntityLd(entity);
@@ -116,6 +120,5 @@ public class ResolveController extends BaseRest {
 		}
 					
 	}
-
 	
 }

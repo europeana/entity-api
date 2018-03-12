@@ -10,6 +10,7 @@ import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException
 import eu.europeana.entity.definitions.model.Agent;
 import eu.europeana.entity.definitions.model.Concept;
 import eu.europeana.entity.definitions.model.Entity;
+import eu.europeana.entity.definitions.model.Organization;
 import eu.europeana.entity.definitions.model.Place;
 import eu.europeana.entity.definitions.model.Timespan;
 import eu.europeana.entity.definitions.model.impl.BaseEntity;
@@ -48,8 +49,7 @@ public class EuropeanaEntityLd extends JsonLd {
 		if (!StringUtils.isEmpty(entity.getDepiction())) {	
 			ldResource.putProperty(createDepiction(entity));			
 		}
-		
-		
+
 		//common SKOS_Properties
 //		putMapOfStringListProperty(WebEntityFields.PREF_LABEL, entity.getPrefLabel(), ConceptSolrFields.PREF_LABEL, jsonLdResource);
 		putMapOfStringProperty(WebEntityFields.PREF_LABEL, entity.getPrefLabel(), ConceptSolrFields.PREF_LABEL, ldResource);
@@ -94,6 +94,10 @@ public class EuropeanaEntityLd extends JsonLd {
 		EntityTypes entityType = EntityTypes.getByInternalType(entity.getInternalType());
 
 		switch (entityType) {
+		case Organization:
+			putOrganizationSpecificProperties((Organization) entity, jsonLdResource);
+			break;
+
 		case Concept:
 			putConceptSpecificProperties((Concept) entity, jsonLdResource);
 			break;
@@ -160,6 +164,47 @@ public class EuropeanaEntityLd extends JsonLd {
 		putMapOfReferencesProperty(WebEntityFields.PLACE_OF_DEATH,
 					entity.getPlaceOfDeath(), AgentSolrFields.PLACE_OF_DEATH, jsonLdResource);
 
+	}
+
+	private void putOrganizationSpecificProperties(Organization entity, JsonLdResource jsonLdResource) {
+		
+		putBaseEntityProperties((BaseEntity)entity, jsonLdResource);
+		
+		// Organization properties
+//		putStringArrayProperty(WebEntityFields.ACRONYM, entity.getAcronym(), ldResource);
+		putStringArrayProperty(WebEntityFields.EDM_ACRONYM, entity.getAcronym(), ldResource);
+//		ldResource.putProperty(WebEntityFields.ACRONYM_EN, entity.getAcronymEn());
+		putStringArrayProperty(WebEntityFields.LABEL, entity.getLabel(), ldResource);
+		putStringArrayProperty(WebEntityFields.DC_IDENTIFIER, entity.getDcIdentifier(), ldResource);
+		putStringArrayProperty(WebEntityFields.FOAF_LOGO, entity.getLogo(), ldResource);
+		putStringArrayProperty(WebEntityFields.FOAF_HOMEPAGE, entity.getHomepage(), ldResource);
+		putStringArrayProperty(WebEntityFields.EDM_EUROPEANA_ROLE, entity.getRole(), ldResource);
+		putStringArrayProperty(WebEntityFields.PAYLOAD, entity.getPayload(), ldResource);
+		if (!StringUtils.isEmpty(entity.getDomain())) 			
+			ldResource.putProperty(WebEntityFields.EDM_ORGANIZATION_DOMAIN, entity.getDomain());
+		if (!StringUtils.isEmpty(entity.getSector())) 			
+			ldResource.putProperty(WebEntityFields.EDM_ORGANIZATION_SECTOR, entity.getSector());
+		if (!StringUtils.isEmpty(entity.getScope())) 			
+			ldResource.putProperty(WebEntityFields.EDM_ORGANIZATION_SCOPE, entity.getScope());
+		if (!StringUtils.isEmpty(entity.getLevel())) 			
+			ldResource.putProperty(WebEntityFields.EDM_GEOGRAPHIC_LEVEL, entity.getLevel());
+		if (!StringUtils.isEmpty(entity.getStreet())) 			
+			ldResource.putProperty(WebEntityFields.VCARD_STREET, entity.getStreet());
+		if (!StringUtils.isEmpty(entity.getCity())) 			
+			ldResource.putProperty(WebEntityFields.VCARD_CITY, entity.getCity());
+		if (!StringUtils.isEmpty(entity.getPostalCode())) 			
+			ldResource.putProperty(WebEntityFields.VCARD_POSTAL_CODE, entity.getPostalCode());
+		if (!StringUtils.isEmpty(entity.getCountry())) 			
+			ldResource.putProperty(WebEntityFields.VCARD_COUNTRY, entity.getCountry());
+		if (!StringUtils.isEmpty(entity.getPostBox())) 			
+			ldResource.putProperty(WebEntityFields.VCARD_POST_OFFICE_BOX, entity.getPostBox());
+		if (!StringUtils.isEmpty(entity.getHasAddress())) 			
+			ldResource.putProperty(WebEntityFields.VCARD_HAS_ADDRESS, entity.getHasAddress());
+		if (entity.getTimestamp() != null) { 
+			String ts = entity.getTimestamp().toString();
+			if (!StringUtils.isEmpty(ts)) 			
+				ldResource.putProperty(WebEntityFields.TIMESTAMP, ts);
+		}
 	}
 
 	private void putBaseEntityProperties(BaseEntity entity, JsonLdResource jsonLdResource) {

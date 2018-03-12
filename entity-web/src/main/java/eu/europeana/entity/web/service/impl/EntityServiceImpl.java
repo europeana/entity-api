@@ -2,6 +2,7 @@ package eu.europeana.entity.web.service.impl;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 
 import eu.europeana.api.common.config.I18nConstants;
@@ -28,7 +29,18 @@ public class EntityServiceImpl implements EntityService {
 	@Override
 	public Entity retrieveByUrl(String type, String namespace, String identifier) throws HttpException{
 		
-		String entityUri = BASE_URL_DATA + type.toLowerCase() + "/" + namespace + "/" + identifier;
+		StringBuilder stringBuilder = new StringBuilder();
+
+		stringBuilder.append(BASE_URL_DATA);
+		if (StringUtils.isNotEmpty(type))
+			stringBuilder.append(type.toLowerCase() + "/");
+		if (StringUtils.isNotEmpty(namespace))
+			stringBuilder.append(namespace + "/");
+		if (StringUtils.isNotEmpty(identifier))
+			stringBuilder.append(identifier);
+
+		String entityUri = stringBuilder.toString();
+//		String entityUri = BASE_URL_DATA + type.toLowerCase() + "/" + namespace + "/" + identifier;
 		Entity result;
 		try {
 			result = solrEntityService.searchByUrl(type, entityUri);

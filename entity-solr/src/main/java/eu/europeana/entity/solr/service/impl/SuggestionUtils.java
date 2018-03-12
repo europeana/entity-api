@@ -29,6 +29,7 @@ import eu.europeana.entity.solr.model.vocabulary.SuggestionFields;
 import eu.europeana.entity.web.model.view.AgentPreview;
 import eu.europeana.entity.web.model.view.ConceptPreview;
 import eu.europeana.entity.web.model.view.EntityPreview;
+import eu.europeana.entity.web.model.view.OrganizationPreview;
 import eu.europeana.entity.web.model.view.PlacePreview;
 import eu.europeana.entity.web.model.view.TimeSpanPreview;
 
@@ -191,6 +192,9 @@ public class SuggestionUtils {
 	
 	private void setEntitySpecificProperties(EntityPreview preview, JsonNode payloadNode, List<String> preferredLanguages) {
 		switch (preview.getEntityType()) {
+		case Organization:
+			putOrganizationSpecificProperties((OrganizationPreview) preview, payloadNode, preferredLanguages);
+			break;
 		case Agent:
 			putAgentSpecificProperties((AgentPreview) preview, payloadNode, preferredLanguages);
 			break;
@@ -231,6 +235,13 @@ public class SuggestionUtils {
 			preview.setProfessionOrOccuation(values);
 		}
 
+	}
+
+	private void putOrganizationSpecificProperties(OrganizationPreview preview, JsonNode payloadNode, List<String> preferredLanguages) {
+
+		JsonNode propertyNode = payloadNode.get(SuggestionFields.ACRONYM);
+		if (propertyNode != null)
+			preview.setSimpleAcronym(propertyNode.getTextValue());
 	}
 
 //	private List<String> getValuesAsList(JsonNode payloadNode, String key) {

@@ -18,6 +18,7 @@ import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
 import eu.europeana.entity.utils.jsonld.EntityJsonComparator;
 import eu.europeana.entity.web.model.view.AgentPreview;
 import eu.europeana.entity.web.model.view.EntityPreview;
+import eu.europeana.entity.web.model.view.OrganizationPreview;
 import eu.europeana.entity.web.model.view.PlacePreview;
 import eu.europeana.entity.web.model.view.TimeSpanPreview;
 
@@ -140,6 +141,10 @@ public class SuggestionSetSerializer extends JsonLd {
 					.putProperty(new JsonLdProperty(WebEntityConstants.TYPE, entityType.getInternalType()));
 
 			switch (entityType) {
+			case Organization:
+				putOrganizationSpecificProperties((OrganizationPreview) entityPreview, entityPreviewPropValue);
+				break;
+
 			case Concept:
 				// add top concept, when available
 				break;
@@ -210,6 +215,12 @@ public class SuggestionSetSerializer extends JsonLd {
 		if (entityPreview.getProfessionOrOccuation() != null && !entityPreview.getProfessionOrOccuation().isEmpty())
 			entityPreviewPropValue.putProperty(buildMapProperty(WebEntityConstants.PROFESSION_OR_OCCUPATION, entityPreview.getProfessionOrOccuation(), 
 					""));
+	}
+
+	private void putOrganizationSpecificProperties(OrganizationPreview entityPreview, JsonLdPropertyValue entityPreviewPropValue) {
+		if (entityPreview.getSimpleAcronym() != null)
+			entityPreviewPropValue
+					.putProperty(new JsonLdProperty(WebEntityConstants.ACRONYM, entityPreview.getSimpleAcronym()));
 	}
 
 	// public String convertDateToStr(Date date) {

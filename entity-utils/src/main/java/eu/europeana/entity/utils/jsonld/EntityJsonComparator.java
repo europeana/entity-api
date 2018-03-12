@@ -79,6 +79,7 @@ public class EntityJsonComparator implements Comparator<Object> {
 		propOrderMap.put(WebEntityConstants.CLOSE_MATCH, 380);
 		propOrderMap.put(WebEntityConstants.EXACT_MATCH, 390);
 		propOrderMap.put(WebEntityConstants.SAME_AS, 400);
+		propOrderMap.put(WebEntityConstants.ACRONYM, 410);
 	}
 
 	@Override

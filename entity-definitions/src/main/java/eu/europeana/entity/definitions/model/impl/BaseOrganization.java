@@ -1,6 +1,7 @@
 package eu.europeana.entity.definitions.model.impl;
 
-import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 import eu.europeana.entity.definitions.model.Organization;
 
@@ -11,66 +12,36 @@ import eu.europeana.entity.definitions.model.Organization;
  */
 public class BaseOrganization extends BaseAgent implements Organization {
 
-	private String[] acronym;
-	private String simpleAcronym;
-	private String[] label;
-	private String[] role;
-	private String[] homepage;
-	private String[] logo;
-	private String[] dcIdentifier;
-	private String[] payload;
-	private String hasAddress;
+	private Map<String, List<String>> acronym;	
+	private Map<String, List<String>> europeanaRole;	
+	private String homepage;
+	private String logo;
 	private String postalCode;
 	private String postBox;
 	private String country;
 	private String city;
-	private String street;
-	private String level;
-	private String scope;
-	private String sector;
-	private String domain;
-	private Date timestamp;
+	private String streetAddress;
+	private Map<String, String> geographicLevel;
+	private Map<String, String> organizationScope;
+	private Map<String, String> organizationSector;
+	private Map<String, String> organizationDomain;
 
-	public Date getTimestamp() {
-		return timestamp;
-	}
-
-	public void setTimestamp(Date timestamp) {
-		this.timestamp = timestamp;
-	}
-
-	public String[] getAcronym() {
+	public Map<String, List<String>> getAcronym() {
 		return acronym;
 	}
 
-	public void setAcronym(String[] acronym) {
+	public void setAcronym(Map<String, List<String>> acronym) {
 		this.acronym = acronym;
 	}
-
-	public void setSimpleAcronym(String simpleAcronym) {
-		this.simpleAcronym = simpleAcronym;
+	
+	public Map<String, List<String>> getEuropeanaRole() {
+		return europeanaRole;
 	}
 
-	public String getSimpleAcronym() {
-		return simpleAcronym;
+	public void setEuropeanaRole(Map<String, List<String>> europeanaRole) {
+		this.europeanaRole = europeanaRole;
 	}
 	
-	public String[] getLabel() {
-		return label;
-	}
-
-	public void setLabel(String[] label) {
-		this.label = label;
-	}
-
-	public String getHasAddress() {
-		return hasAddress;
-	}
-
-	public void setHasAddress(String hasAddress) {
-		this.hasAddress = hasAddress;
-	}
-
 	public String getPostalCode() {
 		return postalCode;
 	}
@@ -103,84 +74,60 @@ public class BaseOrganization extends BaseAgent implements Organization {
 		this.city = city;
 	}
 
-	public String getStreet() {
-		return street;
+	public String getStreetAddress() {
+		return streetAddress;
 	}
 
-	public void setStreet(String street) {
-		this.street = street;
+	public void setStreetAddress(String streetAddress) {
+		this.streetAddress = streetAddress;
 	}
 
-	public String getLevel() {
-		return level;
+	public Map<String, String> getGeographicLevel() {
+		return geographicLevel;
 	}
 
-	public void setLevel(String level) {
-		this.level = level;
+	public void setGeographicLevel(Map<String, String> geographicLevel) {
+		this.geographicLevel = geographicLevel;
 	}
 
-	public String getScope() {
-		return scope;
+	public Map<String, String> getOrganizationScope() {
+		return organizationScope;
 	}
 
-	public void setScope(String scope) {
-		this.scope = scope;
+	public void setOrganizationScope(Map<String, String> organizationScope) {
+		this.organizationScope = organizationScope;
 	}
 
-	public String getSector() {
-		return sector;
+	public Map<String, String> getOrganizationSector() {
+		return organizationSector;
 	}
 
-	public void setSector(String sector) {
-		this.sector = sector;
+	public void setOrganizationSector(Map<String, String> organizationSector) {
+		this.organizationSector = organizationSector;
 	}
 
-	public String getDomain() {
-		return domain;
+	public Map<String, String> getOrganizationDomain() {
+		return organizationDomain;
 	}
 
-	public void setDomain(String domain) {
-		this.domain = domain;
+	public void setOrganizationDomain(Map<String, String> organizationDomain) {
+		this.organizationDomain = organizationDomain;
 	}
 
-	public String[] getRole() {
-		return role;
-	}
-
-	public void setRole(String[] role) {
-		this.role = role;
-	}
-
-	public String[] getHomepage() {
+	public String getHomepage() {
 		return homepage;
 	}
 
-	public void setHomepage(String[] homepage) {
+	public void setHomepage(String homepage) {
 		this.homepage = homepage;
 	}
 
-	public String[] getLogo() {
+	public String getLogo() {
 		return logo;
 	}
 
-	public void setLogo(String[] logo) {
+	public void setLogo(String logo) {
 		this.logo = logo;
-	}
-
-	public String[] getDcIdentifier() {
-		return dcIdentifier;
-	}
-
-	public void setDcIdentifier(String[] dcIdentifier) {
-		this.dcIdentifier = dcIdentifier;
-	}
-	
-	public void setPayload(String[] payload) {
-		this.payload = payload;
-	}
-
-	public String[] getPayload() {
-		return payload;
 	}
 
 }

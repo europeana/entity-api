@@ -218,9 +218,16 @@ public class SuggestionSetSerializer extends JsonLd {
 	}
 
 	private void putOrganizationSpecificProperties(OrganizationPreview entityPreview, JsonLdPropertyValue entityPreviewPropValue) {
-		if (entityPreview.getSimpleAcronym() != null)
+		if (entityPreview.getAcronym() != null && !entityPreview.getAcronym().isEmpty())
+			entityPreviewPropValue.putProperty(buildMapProperty(WebEntityConstants.ACRONYM, entityPreview.getAcronym(), ""));
+
+		if (entityPreview.getCountry() != null)
 			entityPreviewPropValue
-					.putProperty(new JsonLdProperty(WebEntityConstants.ACRONYM, entityPreview.getSimpleAcronym()));
+					.putProperty(new JsonLdProperty(WebEntityConstants.VCARD_COUNTRY, entityPreview.getCountry()));
+
+		JsonLdProperty organizationDomainProp = buildMapOfStringsProperty(
+				WebEntityConstants.EDM_ORGANIZATION_DOMAIN, entityPreview.getOrganizationDomain(), "");
+		entityPreviewPropValue.putProperty(organizationDomainProp);		
 	}
 
 	// public String convertDateToStr(Date date) {

@@ -1,6 +1,5 @@
 package eu.europeana.entity.solr.model;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -20,17 +19,11 @@ import eu.europeana.entity.definitions.model.vocabulary.OrganizationSolrFields;
 public class SolrOrganizationImpl extends BaseOrganization implements Organization {
 
 	@Override
-	@Field(OrganizationSolrFields.EDM_ACRONYM)
-	public void setAcronym(String[] acronym) {
+	@Field(OrganizationSolrFields.EDM_ACRONYM_ALL)
+	public void setAcronym(Map<String, List<String>>  acronym) {
 		super.setAcronym(acronym);		
 	}
 
-	@Override
-	@Field(OrganizationSolrFields.ACRONYM)
-	public void setSimpleAcronym(String simpleAcronym) {
-		super.setSimpleAcronym(simpleAcronym);		
-	}
-	
 	@Override
 	@Field(ConceptSolrFields.PREF_LABEL_ALL)
 	public void setPrefLabel(Map<String, String> prefLabel) {
@@ -62,25 +55,6 @@ public class SolrOrganizationImpl extends BaseOrganization implements Organizati
 	}	
 	
 	@Override
-	@Field(OrganizationSolrFields.LABEL)
-	public void setLabel(String[] label) {
-		super.setLabel(label);
-	}
-
-	
-	@Override
-	@Field(OrganizationSolrFields.TIMESTAMP)
-	public void setTimestamp(Date timestamp) {
-		super.setTimestamp(timestamp);
-	}
-
-	@Override
-	@Field(OrganizationSolrFields.VCARD_HAS_ADDRESS)
-	public void setHasAddress(String hasAddress) {
-		super.setHasAddress(hasAddress);
-	}
-		
-	@Override
 	@Field(OrganizationSolrFields.VCARD_POSTAL_CODE)
 	public void setPostalCode(String postalCode) {
 		super.setPostalCode(postalCode);
@@ -106,62 +80,50 @@ public class SolrOrganizationImpl extends BaseOrganization implements Organizati
 
 	@Override
 	@Field(OrganizationSolrFields.VCARD_STREET)
-	public void setStreet(String street) {
-		super.setStreet(street);
+	public void setStreetAddress(String streetAddress) {
+		super.setStreetAddress(streetAddress);
 	}
 
 	@Override
 	@Field(OrganizationSolrFields.EDM_GEOGRAPHIC_LEVEL)
-	public void setLevel(String level) {
-		super.setLevel(level);
+	public void setGeographicLevel(Map<String, String> geographicLevel) {
+		super.setGeographicLevel(geographicLevel);
 	}
 
 	@Override
 	@Field(OrganizationSolrFields.EDM_ORGANIZATION_SCOPE)
-	public void setScope(String scope) {
-		super.setScope(scope);
+	public void setOrganizationScope(Map<String, String> organizationScope) {
+		super.setOrganizationScope(organizationScope);
 	}
 
 	@Override
 	@Field(OrganizationSolrFields.EDM_ORGANIZATION_SECTOR)
-	public void setSector(String sector) {
-		super.setSector(sector);
+	public void setOrganizationSector(Map<String, String> organizationSector) {
+		super.setOrganizationSector(organizationSector);
 	}
 
 	@Override
 	@Field(OrganizationSolrFields.EDM_ORGANIZATION_DOMAIN)
-	public void setDomain(String domain) {
-		super.setDomain(domain);
+	public void setOrganizationDomain(Map<String, String> organizationDomain) {
+		super.setOrganizationDomain(organizationDomain);
 	}
 
 	@Override
 	@Field(OrganizationSolrFields.EDM_EUROPEANA_ROLE)
-	public void setRole(String[] role) {
-		super.setRole(role);
+	public void setEuropeanaRole(Map<String, List<String>> europeanaRole) {
+		super.setEuropeanaRole(europeanaRole);
 	}
 
 	@Override
 	@Field(OrganizationSolrFields.FOAF_HOMEPAGE)
-	public void setHomepage(String[] homepage) {
+	public void setHomepage(String homepage) {
 		super.setHomepage(homepage);
 	}
 
 	@Override
 	@Field(OrganizationSolrFields.FOAF_LOGO)
-	public void setLogo(String[] logo) {
+	public void setLogo(String logo) {
 		super.setLogo(logo);
-	}
-
-	@Override
-	@Field(OrganizationSolrFields.DC_IDENTIFIER)
-	public void setDcIdentifier(String[] dcIdentifier) {
-		super.setDcIdentifier(dcIdentifier);
-	}
-		
-	@Override
-	@Field(OrganizationSolrFields.PAYLOAD)
-	public void setPayload(String[] payload) {
-		super.setPayload(payload);
 	}
 
 }

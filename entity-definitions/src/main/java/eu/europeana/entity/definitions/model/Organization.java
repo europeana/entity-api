@@ -1,33 +1,46 @@
 package eu.europeana.entity.definitions.model;
 
-import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 public interface Organization extends Agent {
     
-	public String[] getAcronym();
+	/**
+	 * Retrieves the acronym for an Organization Class (language,value)
+	 * format
+	 * 
+	 * @return A Map<String,List<List<String>>> for the acronyms of an organization
+	 *         class (one per language)
+	 */
+	Map<String, List<String>> getAcronym();
 
-	public String getSimpleAcronym();
+	/**
+	 * Set the acronym for an Organization Class
+	 * 
+	 * @param acronym
+	 *            A Map<String,List<List<String>>> for the acronym of an
+	 *            organization class (one per language)
+	 */
+	void setAcronym(Map<String, List<String>> acronym);
 	
-	public void setAcronym(String[] acronym);
+	/**
+	 * Retrieves the europeanaRole for an Organization Class (language,value)
+	 * format
+	 * 
+	 * @return A Map<String,List<List<String>>> for the europeanaRoles of an organization
+	 *         class (one per language)
+	 */
+	Map<String, List<String>> getEuropeanaRole();
 
-	public void setSimpleAcronym(String simpleAcronym);
+	/**
+	 * Set the europeanaRole for an Organization Class
+	 * 
+	 * @param acronym
+	 *            A Map<String,List<List<String>>> for the europeanaRole of an
+	 *            organization class (one per language)
+	 */
+	void setEuropeanaRole(Map<String, List<String>> europeanaRole);
 	
-	public String[] getLabel();
-
-	public void setLabel(String[] label);
-
-	public Date getTimestamp();
-
-	public void setTimestamp(Date timestamp);
-
-	public String getHasAddress();
-
-	public void setHasAddress(String hasAddress);
-
-	public String[] getPayload();
-
-	public void setPayload(String[] payload);
-
 	public String getPostalCode();
 
 	public void setPostalCode(String postalCode);
@@ -44,40 +57,32 @@ public interface Organization extends Agent {
 
 	public void setCity(String city);
 
-	public String getStreet();
+	public String getStreetAddress();
 
-	public void setStreet(String street);
+	public void setStreetAddress(String streetAddress);
 
-	public String getLevel();
+	public Map<String, String> getGeographicLevel();
 
-	public void setLevel(String level);
+	public void setGeographicLevel(Map<String, String> geographicLevel);
 
-	public String getScope();
+	public Map<String, String> getOrganizationScope();
 
-	public void setScope(String scope);
+	public void setOrganizationScope(Map<String, String> organizationScope);
 
-	public String getSector();
+	public Map<String, String> getOrganizationSector();
 
-	public void setSector(String sector);
+	public void setOrganizationSector(Map<String, String> organizationSector);
 
-	public String getDomain();
+	public Map<String, String> getOrganizationDomain();
 
-	public void setDomain(String domain);
+	public void setOrganizationDomain(Map<String, String> organizationDomain);
 
-	public String[] getRole();
+	public String getHomepage();
 
-	public void setRole(String[] role);
+	public void setHomepage(String homepage);
 
-	public String[] getHomepage();
+	public String getLogo();
 
-	public void setHomepage(String[] homepage);
-
-	public String[] getLogo();
-
-	public void setLogo(String[] logo);
-
-	public String[] getDcIdentifier();
-
-	public void setDcIdentifier(String[] dcIdentifier);
+	public void setLogo(String logo);
 
 }

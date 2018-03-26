@@ -34,13 +34,12 @@ public class EntityServiceImpl implements EntityService {
 		stringBuilder.append(BASE_URL_DATA);
 		if (StringUtils.isNotEmpty(type))
 			stringBuilder.append(type.toLowerCase() + "/");
-		if (StringUtils.isNotEmpty(namespace))
+		if (StringUtils.isNotEmpty(namespace) && !EntityTypes.Organization.getInternalType().equalsIgnoreCase(type))
 			stringBuilder.append(namespace + "/");
 		if (StringUtils.isNotEmpty(identifier))
 			stringBuilder.append(identifier);
 
 		String entityUri = stringBuilder.toString();
-//		String entityUri = BASE_URL_DATA + type.toLowerCase() + "/" + namespace + "/" + identifier;
 		Entity result;
 		try {
 			result = solrEntityService.searchByUrl(type, entityUri);

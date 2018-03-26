@@ -22,6 +22,7 @@ import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException
 import eu.europeana.entity.definitions.model.ResourcePreview;
 import eu.europeana.entity.definitions.model.ResourcePreviewImpl;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
+import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityFields;
 import eu.europeana.entity.solr.exception.EntitySuggestionException;
 import eu.europeana.entity.solr.model.factory.EntityPreviewObjectFactory;
@@ -153,10 +154,60 @@ public class SuggestionUtils {
 		return languageMap;
 	}
 
+	/**
+	 * This method addresses use case, when content of payload field
+	 * is a JsonArray
+	 * @param payloadNode The payload data
+	 * @param key The name of the field
+	 * @param preferredLanguages The list of possible languages
+	 * @return
+	 */
+	private Map<String, List<String>> getValuesAsLanguageMapListFromJsonArray(
+			JsonNode payloadNode, String key, List<String> preferredLanguages) {
+
+		Map<String, List<String>> languageMap = new HashMap<>();
+
+		for(String language : preferredLanguages) {
+			JsonNode jsonNode = payloadNode.get(key + "." + language);
+	
+			if (jsonNode != null) {
+				Iterator<JsonNode> itr = jsonNode.getElements();
+				while (itr.hasNext()) {
+					JsonNode currentEntry = itr.next();
+					ArrayList<String> valueList = new ArrayList<String>();
+					valueList.add(currentEntry.getTextValue());
+					languageMap.put(language, valueList);
+				}
+			}
+		}
+		return languageMap;
+	}
+
 	private Map<String, String> getValuesAsLanguageMap(JsonNode payloadNode, String key, List<String> preferredLanguages) {
 
 		JsonNode jsonNode = payloadNode.get(key);
 		return extractLanguageMap(jsonNode, preferredLanguages);
+	}
+
+	/**
+	 * This method addresses use case, when content of payload field
+	 * is a text node
+	 * @param payloadNode The payload data
+	 * @param key The name of the field
+	 * @param preferredLanguages The list of possible languages
+	 * @return
+	 */
+	private Map<String, String> getValuesAsLanguageMapFromTextNode(
+			JsonNode payloadNode, String key, List<String> preferredLanguages) {
+
+		Map<String, String> languageMap = new HashMap<>();
+
+		for(String language : preferredLanguages) {
+			JsonNode jsonNode = payloadNode.get(key + "." + language);
+			if (jsonNode != null)
+				languageMap.put(language, jsonNode.getTextValue());
+		}		
+		return languageMap;
 	}
 
 	private Map<String, String> extractLanguageMap(JsonNode jsonNode, List<String> preferredLanguages) {
@@ -237,11 +288,20 @@ public class SuggestionUtils {
 
 	}
 
-	private void putOrganizationSpecificProperties(OrganizationPreview preview, JsonNode payloadNode, List<String> preferredLanguages) {
+	private void putOrganizationSpecificProperties(
+			OrganizationPreview preview, JsonNode payloadNode, List<String> preferredLanguages) {
 
-		JsonNode propertyNode = payloadNode.get(SuggestionFields.ACRONYM);
+		Map<String, List<String>> acronym = getValuesAsLanguageMapListFromJsonArray(
+				payloadNode, WebEntityConstants.ACRONYM, preferredLanguages);
+		preview.setAcronym(acronym);
+		
+		JsonNode propertyNode = payloadNode.get(WebEntityFields.PAYLOAD_COUNTRY);
 		if (propertyNode != null)
-			preview.setSimpleAcronym(propertyNode.getTextValue());
+			preview.setCountry(propertyNode.getTextValue());
+		
+		Map<String, String> organizationDomain = getValuesAsLanguageMapFromTextNode(
+				payloadNode, WebEntityConstants.PAYLOAD_ORGANIZATION_DOMAIN, preferredLanguages);
+		preview.setOrganizationDomain(organizationDomain);
 	}
 
 //	private List<String> getValuesAsList(JsonNode payloadNode, String key) {

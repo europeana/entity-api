@@ -171,25 +171,24 @@ public class EuropeanaEntityLd extends JsonLd {
 		putBaseEntityProperties((BaseEntity)entity, jsonLdResource);
 		
 		// Organization properties
-//		putStringArrayProperty(WebEntityFields.ACRONYM, entity.getAcronym(), ldResource);
-		putStringArrayProperty(WebEntityFields.EDM_ACRONYM, entity.getAcronym(), ldResource);
-//		ldResource.putProperty(WebEntityFields.ACRONYM_EN, entity.getAcronymEn());
-		putStringArrayProperty(WebEntityFields.LABEL, entity.getLabel(), ldResource);
-		putStringArrayProperty(WebEntityFields.DC_IDENTIFIER, entity.getDcIdentifier(), ldResource);
-		putStringArrayProperty(WebEntityFields.FOAF_LOGO, entity.getLogo(), ldResource);
-		putStringArrayProperty(WebEntityFields.FOAF_HOMEPAGE, entity.getHomepage(), ldResource);
-		putStringArrayProperty(WebEntityFields.EDM_EUROPEANA_ROLE, entity.getRole(), ldResource);
-		putStringArrayProperty(WebEntityFields.PAYLOAD, entity.getPayload(), ldResource);
-		if (!StringUtils.isEmpty(entity.getDomain())) 			
-			ldResource.putProperty(WebEntityFields.EDM_ORGANIZATION_DOMAIN, entity.getDomain());
-		if (!StringUtils.isEmpty(entity.getSector())) 			
-			ldResource.putProperty(WebEntityFields.EDM_ORGANIZATION_SECTOR, entity.getSector());
-		if (!StringUtils.isEmpty(entity.getScope())) 			
-			ldResource.putProperty(WebEntityFields.EDM_ORGANIZATION_SCOPE, entity.getScope());
-		if (!StringUtils.isEmpty(entity.getLevel())) 			
-			ldResource.putProperty(WebEntityFields.EDM_GEOGRAPHIC_LEVEL, entity.getLevel());
-		if (!StringUtils.isEmpty(entity.getStreet())) 			
-			ldResource.putProperty(WebEntityFields.VCARD_STREET, entity.getStreet());
+		putMapOfReferencesProperty(WebEntityFields.EDM_ACRONYM, entity.getAcronym(), 
+				WebEntityFields.EDM_ACRONYM, ldResource);		
+		if (!StringUtils.isEmpty(entity.getLogo())) 			
+			ldResource.putProperty(WebEntityFields.FOAF_LOGO, entity.getLogo());
+		if (!StringUtils.isEmpty(entity.getHomepage())) 			
+			ldResource.putProperty(WebEntityFields.FOAF_HOMEPAGE, entity.getHomepage());
+		putMapOfReferencesProperty(WebEntityFields.EDM_EUROPEANA_ROLE, entity.getEuropeanaRole(), 
+				WebEntityFields.EDM_EUROPEANA_ROLE, ldResource);
+		putMapOfStringProperty(WebEntityFields.EDM_ORGANIZATION_DOMAIN, 
+				entity.getOrganizationDomain(), WebEntityFields.EDM_ORGANIZATION_DOMAIN, ldResource);
+		putMapOfStringProperty(WebEntityFields.EDM_ORGANIZATION_SECTOR, 
+				entity.getOrganizationSector(), WebEntityFields.EDM_ORGANIZATION_SECTOR, ldResource);
+		putMapOfStringProperty(WebEntityFields.EDM_ORGANIZATION_SCOPE, 
+				entity.getOrganizationScope(), WebEntityFields.EDM_ORGANIZATION_SCOPE, ldResource);
+		putMapOfStringProperty(WebEntityFields.EDM_GEOGRAPHIC_LEVEL, 
+				entity.getGeographicLevel(), WebEntityFields.EDM_GEOGRAPHIC_LEVEL, ldResource);
+		if (!StringUtils.isEmpty(entity.getStreetAddress())) 			
+			ldResource.putProperty(WebEntityFields.VCARD_STREET, entity.getStreetAddress());
 		if (!StringUtils.isEmpty(entity.getCity())) 			
 			ldResource.putProperty(WebEntityFields.VCARD_CITY, entity.getCity());
 		if (!StringUtils.isEmpty(entity.getPostalCode())) 			
@@ -198,13 +197,6 @@ public class EuropeanaEntityLd extends JsonLd {
 			ldResource.putProperty(WebEntityFields.VCARD_COUNTRY, entity.getCountry());
 		if (!StringUtils.isEmpty(entity.getPostBox())) 			
 			ldResource.putProperty(WebEntityFields.VCARD_POST_OFFICE_BOX, entity.getPostBox());
-		if (!StringUtils.isEmpty(entity.getHasAddress())) 			
-			ldResource.putProperty(WebEntityFields.VCARD_HAS_ADDRESS, entity.getHasAddress());
-		if (entity.getTimestamp() != null) { 
-			String ts = entity.getTimestamp().toString();
-			if (!StringUtils.isEmpty(ts)) 			
-				ldResource.putProperty(WebEntityFields.TIMESTAMP, ts);
-		}
 	}
 
 	private void putBaseEntityProperties(BaseEntity entity, JsonLdResource jsonLdResource) {

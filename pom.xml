@@ -17,14 +17,6 @@
 	<packaging>pom</packaging>
 	<name>Entity API parent</name>
 
-<!-- 
-	<parent>
-		<artifactId>corelib</artifactId>
-		<groupId>eu.europeana</groupId>
-		<version>2.1</version>
-	</parent>
- -->	
-
 	<repositories>
 		<repository>
 		    <id>artifactory.eanadev.org</id>
@@ -49,9 +41,6 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
-		
-		
-	
 	</repositories>
 
 	<properties>
@@ -70,7 +59,8 @@
 		<version.codehausJackson>1.9.9</version.codehausJackson>
 		<version.commonsApi>0.2.5-SNAPSHOT</version.commonsApi>
 		<version.apacheSolr>6.5.1</version.apacheSolr>
-		<version.servletJstl>1.2</version.servletJstl>	
+		<version.servletJstl>1.2</version.servletJstl>
+		<version.mapstruct>1.2.0.Final</version.mapstruct>	
 	</properties>
 	<modules>
 		<module>entity-client</module>

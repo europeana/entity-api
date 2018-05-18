@@ -9,7 +9,15 @@ public class OrganizationPreviewImpl extends AgentPreviewImpl implements Organiz
 
 	private Map<String, List<String>> acronym;
 	private String country;
-	private Map<String, String> organizationDomain;
+	private String organizationDomain;
+
+	public String getOrganizationDomain() {
+		return organizationDomain;
+	}
+
+	public void setOrganizationDomain(String organizationDomain) {
+		this.organizationDomain = organizationDomain;
+	}
 
 	public Map<String, List<String>> getAcronym() {
 		return acronym;
@@ -29,14 +37,6 @@ public class OrganizationPreviewImpl extends AgentPreviewImpl implements Organiz
 		this.country = country;
 	}
 
-	@Override
-	public Map<String, String> getOrganizationDomain() {
-		return organizationDomain;
-	}
-
-	@Override
-	public void setOrganizationDomain(Map<String, String> organizationDomain) {
-		this.organizationDomain = organizationDomain;
-	}
+	
 	
 }

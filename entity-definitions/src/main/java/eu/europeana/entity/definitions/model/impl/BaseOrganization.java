@@ -22,8 +22,8 @@ public class BaseOrganization extends BaseAgent implements Organization {
 	private String city;
 	private String streetAddress;
 	private Map<String, String> geographicLevel;
-	private Map<String, String> organizationScope;
-	private Map<String, String> organizationSector;
+//	private Map<String, String> organizationScope;
+//	private Map<String, String> organizationSector;
 	private Map<String, String> organizationDomain;
 
 	public Map<String, List<String>> getAcronym() {
@@ -90,21 +90,21 @@ public class BaseOrganization extends BaseAgent implements Organization {
 		this.geographicLevel = geographicLevel;
 	}
 
-	public Map<String, String> getOrganizationScope() {
-		return organizationScope;
-	}
+//	public Map<String, String> getOrganizationScope() {
+//		return organizationScope;
+//	}
+//
+//	public void setOrganizationScope(Map<String, String> organizationScope) {
+//		this.organizationScope = organizationScope;
+//	}
 
-	public void setOrganizationScope(Map<String, String> organizationScope) {
-		this.organizationScope = organizationScope;
-	}
-
-	public Map<String, String> getOrganizationSector() {
-		return organizationSector;
-	}
-
-	public void setOrganizationSector(Map<String, String> organizationSector) {
-		this.organizationSector = organizationSector;
-	}
+//	public Map<String, String> getOrganizationSector() {
+//		return organizationSector;
+//	}
+//
+//	public void setOrganizationSector(Map<String, String> organizationSector) {
+//		this.organizationSector = organizationSector;
+//	}
 
 	public Map<String, String> getOrganizationDomain() {
 		return organizationDomain;

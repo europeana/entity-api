@@ -80,10 +80,13 @@ public class SuggestionUtils {
 		Map<String, String> prefLabel = getValuesAsLanguageMap(entityNode, SuggestionFields.PREF_LABEL, preferredLanguages);
 		if(!containsHighlightTerm(prefLabel, highlightTerm)){
 			String[] highlightLabel = getHighlightLabel(entityNode, SuggestionFields.PREF_LABEL, highlightTerm);
-			String matchedLanguage = highlightLabel[0];
-			prefLabel.put(matchedLanguage, highlightLabel[1]);
-			//#56 add the matched label to language list
-			preferredLanguages = updateLanguageList(preferredLanguages, matchedLanguage);
+			//currently missmatch between the pref label and alt label, edmAcronym
+			if(highlightLabel != null){
+				String matchedLanguage = highlightLabel[0];
+				prefLabel.put(matchedLanguage, highlightLabel[1]);
+				//#56 add the matched label to language list
+				preferredLanguages = updateLanguageList(preferredLanguages, matchedLanguage);
+			}
 		}
 		preview.setPreferredLabel(prefLabel);
 
@@ -154,34 +157,34 @@ public class SuggestionUtils {
 		return languageMap;
 	}
 
-	/**
-	 * This method addresses use case, when content of payload field
-	 * is a JsonArray
-	 * @param payloadNode The payload data
-	 * @param key The name of the field
-	 * @param preferredLanguages The list of possible languages
-	 * @return
-	 */
-	private Map<String, List<String>> getValuesAsLanguageMapListFromJsonArray(
-			JsonNode payloadNode, String key, List<String> preferredLanguages) {
-
-		Map<String, List<String>> languageMap = new HashMap<>();
-
-		for(String language : preferredLanguages) {
-			JsonNode jsonNode = payloadNode.get(key + "." + language);
-	
-			if (jsonNode != null) {
-				Iterator<JsonNode> itr = jsonNode.getElements();
-				while (itr.hasNext()) {
-					JsonNode currentEntry = itr.next();
-					ArrayList<String> valueList = new ArrayList<String>();
-					valueList.add(currentEntry.getTextValue());
-					languageMap.put(language, valueList);
-				}
-			}
-		}
-		return languageMap;
-	}
+//	/**
+//	 * This method addresses use case, when content of payload field
+//	 * is a JsonArray
+//	 * @param payloadNode The payload data
+//	 * @param key The name of the field
+//	 * @param preferredLanguages The list of possible languages
+//	 * @return
+//	 */
+//	private Map<String, List<String>> getValuesAsLanguageMapListFromJsonArray(
+//			JsonNode payloadNode, String key, List<String> preferredLanguages) {
+//
+//		Map<String, List<String>> languageMap = new HashMap<>();
+//
+//		for(String language : preferredLanguages) {
+//			JsonNode jsonNode = payloadNode.get(key + "." + language);
+//	
+//			if (jsonNode != null) {
+//				Iterator<JsonNode> itr = jsonNode.getElements();
+//				while (itr.hasNext()) {
+//					JsonNode currentEntry = itr.next();
+//					ArrayList<String> valueList = new ArrayList<String>();
+//					valueList.add(currentEntry.getTextValue());
+//					languageMap.put(language, valueList);
+//				}
+//			}
+//		}
+//		return languageMap;
+//	}
 
 	private Map<String, String> getValuesAsLanguageMap(JsonNode payloadNode, String key, List<String> preferredLanguages) {
 
@@ -197,18 +200,18 @@ public class SuggestionUtils {
 	 * @param preferredLanguages The list of possible languages
 	 * @return
 	 */
-	private Map<String, String> getValuesAsLanguageMapFromTextNode(
-			JsonNode payloadNode, String key, List<String> preferredLanguages) {
-
-		Map<String, String> languageMap = new HashMap<>();
-
-		for(String language : preferredLanguages) {
-			JsonNode jsonNode = payloadNode.get(key + "." + language);
-			if (jsonNode != null)
-				languageMap.put(language, jsonNode.getTextValue());
-		}		
-		return languageMap;
-	}
+//	private Map<String, String> getValuesAsLanguageMapFromTextNode(
+//			JsonNode payloadNode, String key, List<String> preferredLanguages) {
+//
+//		Map<String, String> languageMap = new HashMap<>();
+//
+//		for(String language : preferredLanguages) {
+//			JsonNode jsonNode = payloadNode.get(key + "." + language);
+//			if (jsonNode != null)
+//				languageMap.put(language, jsonNode.getTextValue());
+//		}		
+//		return languageMap;
+//	}
 
 	private Map<String, String> extractLanguageMap(JsonNode jsonNode, List<String> preferredLanguages) {
 		Map<String, String> languageMap = new HashMap<>();
@@ -291,32 +294,20 @@ public class SuggestionUtils {
 	private void putOrganizationSpecificProperties(
 			OrganizationPreview preview, JsonNode payloadNode, List<String> preferredLanguages) {
 
-		Map<String, List<String>> acronym = getValuesAsLanguageMapListFromJsonArray(
+		Map<String, List<String>> acronym = getValuesAsLanguageMapList(
 				payloadNode, WebEntityConstants.ACRONYM, preferredLanguages);
 		preview.setAcronym(acronym);
 		
-		JsonNode propertyNode = payloadNode.get(WebEntityFields.PAYLOAD_COUNTRY);
+		//only english versions are available for now, and the structure is not a language map
+		JsonNode propertyNode = payloadNode.get(WebEntityFields.PAYLOAD_EDM_COUNTRY_EN);
 		if (propertyNode != null)
 			preview.setCountry(propertyNode.getTextValue());
 		
-		Map<String, String> organizationDomain = getValuesAsLanguageMapFromTextNode(
-				payloadNode, WebEntityConstants.PAYLOAD_ORGANIZATION_DOMAIN, preferredLanguages);
-		preview.setOrganizationDomain(organizationDomain);
+		//only english versions are available for now, and the structure is not a language map
+		propertyNode = payloadNode.get(WebEntityFields.PAYLOAD_ORGANIZATION_DOMAIN_EN);
+		if (propertyNode != null)
+			preview.setOrganizationDomain(propertyNode.getTextValue());
 	}
-
-//	private List<String> getValuesAsList(JsonNode payloadNode, String key) {
-//		
-//		JsonNode arrayNode = payloadNode.get(key);
-//		
-//		List<String> values = null;
-//		if (arrayNode != null) {
-//			values = new ArrayList<String>(arrayNode.size());
-//			for (JsonNode profession : arrayNode) {
-//				values.add(profession.toString());
-//			}
-//		}
-//		return values;
-//	}
 
 	private void putPlaceSpecificProperties(PlacePreview preview, JsonNode payloadNode, List<String> preferredLanguages) {
 		JsonNode propertyNode = payloadNode.get(SuggestionFields.IS_PART_OF);

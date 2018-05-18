@@ -13,8 +13,8 @@ public interface OrganizationPreview extends AgentPreview{
 
 	public void setCountry(String country);
 
-	public Map<String, String> getOrganizationDomain();
+	public String getOrganizationDomain();
 
-	public void setOrganizationDomain(Map<String, String> organizationDomain);
+	public void setOrganizationDomain(String organizationDomain);
 	
 }

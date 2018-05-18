@@ -85,31 +85,31 @@ public class SolrOrganizationImpl extends BaseOrganization implements Organizati
 	}
 
 	@Override
-	@Field(OrganizationSolrFields.EDM_GEOGRAPHIC_LEVEL)
+	@Field(OrganizationSolrFields.EDM_GEOGRAPHIC_LEVEL_ALL)
 	public void setGeographicLevel(Map<String, String> geographicLevel) {
 		super.setGeographicLevel(geographicLevel);
 	}
 
-	@Override
-	@Field(OrganizationSolrFields.EDM_ORGANIZATION_SCOPE)
-	public void setOrganizationScope(Map<String, String> organizationScope) {
-		super.setOrganizationScope(organizationScope);
-	}
+//	@Override
+//	@Field(OrganizationSolrFields.EDM_ORGANIZATION_SCOPE_ALL)
+//	public void setOrganizationScope(Map<String, String> organizationScope) {
+//		super.setOrganizationScope(organizationScope);
+//	}
+
+//	@Override
+//	@Field(OrganizationSolrFields.EDM_ORGANIZATION_SECTOR_ALL)
+//	public void setOrganizationSector(Map<String, String> organizationSector) {
+//		super.setOrganizationSector(organizationSector);
+//	}
 
 	@Override
-	@Field(OrganizationSolrFields.EDM_ORGANIZATION_SECTOR)
-	public void setOrganizationSector(Map<String, String> organizationSector) {
-		super.setOrganizationSector(organizationSector);
-	}
-
-	@Override
-	@Field(OrganizationSolrFields.EDM_ORGANIZATION_DOMAIN)
+	@Field(OrganizationSolrFields.EDM_ORGANIZATION_DOMAIN_ALL)
 	public void setOrganizationDomain(Map<String, String> organizationDomain) {
 		super.setOrganizationDomain(organizationDomain);
 	}
 
 	@Override
-	@Field(OrganizationSolrFields.EDM_EUROPEANA_ROLE)
+	@Field(OrganizationSolrFields.EDM_EUROPEANA_ROLE_ALL)
 	public void setEuropeanaRole(Map<String, List<String>> europeanaRole) {
 		super.setEuropeanaRole(europeanaRole);
 	}

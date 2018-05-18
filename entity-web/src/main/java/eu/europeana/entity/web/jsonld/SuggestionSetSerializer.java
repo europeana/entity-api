@@ -223,16 +223,11 @@ public class SuggestionSetSerializer extends JsonLd {
 
 		if (entityPreview.getCountry() != null)
 			entityPreviewPropValue
-					.putProperty(new JsonLdProperty(WebEntityConstants.VCARD_COUNTRY, entityPreview.getCountry()));
+					.putProperty(new JsonLdProperty(WebEntityConstants.COUNTRY, entityPreview.getCountry()));
 
-		JsonLdProperty organizationDomainProp = buildMapOfStringsProperty(
-				WebEntityConstants.EDM_ORGANIZATION_DOMAIN, entityPreview.getOrganizationDomain(), "");
-		entityPreviewPropValue.putProperty(organizationDomainProp);		
+		if (entityPreview.getOrganizationDomain() != null)
+			entityPreviewPropValue
+					.putProperty(new JsonLdProperty(WebEntityConstants.ORGANIZATION_DOMAIN, entityPreview.getOrganizationDomain()));
+			
 	}
-
-	// public String convertDateToStr(Date date) {
-	// DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-	// return df.format(date);
-	// }
-
 }

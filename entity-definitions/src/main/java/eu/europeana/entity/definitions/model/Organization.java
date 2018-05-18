@@ -65,13 +65,13 @@ public interface Organization extends Agent {
 
 	public void setGeographicLevel(Map<String, String> geographicLevel);
 
-	public Map<String, String> getOrganizationScope();
+//	public Map<String, String> getOrganizationScope();
+//
+//	public void setOrganizationScope(Map<String, String> organizationScope);
 
-	public void setOrganizationScope(Map<String, String> organizationScope);
-
-	public Map<String, String> getOrganizationSector();
-
-	public void setOrganizationSector(Map<String, String> organizationSector);
+//	public Map<String, String> getOrganizationSector();
+//
+//	public void setOrganizationSector(Map<String, String> organizationSector);
 
 	public Map<String, String> getOrganizationDomain();
 

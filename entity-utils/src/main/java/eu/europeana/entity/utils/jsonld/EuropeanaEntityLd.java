@@ -17,6 +17,7 @@ import eu.europeana.entity.definitions.model.impl.BaseEntity;
 import eu.europeana.entity.definitions.model.vocabulary.AgentSolrFields;
 import eu.europeana.entity.definitions.model.vocabulary.ConceptSolrFields;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
+import eu.europeana.entity.definitions.model.vocabulary.OrganizationSolrFields;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityFields;
 
 
@@ -171,22 +172,22 @@ public class EuropeanaEntityLd extends JsonLd {
 		putBaseEntityProperties((BaseEntity)entity, jsonLdResource);
 		
 		// Organization properties
-		putMapOfReferencesProperty(WebEntityFields.EDM_ACRONYM, entity.getAcronym(), 
-				WebEntityFields.EDM_ACRONYM, ldResource);		
+		putMapOfReferencesProperty(WebEntityFields.ACRONYM, entity.getAcronym(), 
+				OrganizationSolrFields.EDM_ACRONYM, ldResource);		
 		if (!StringUtils.isEmpty(entity.getLogo())) 			
 			ldResource.putProperty(WebEntityFields.FOAF_LOGO, entity.getLogo());
 		if (!StringUtils.isEmpty(entity.getHomepage())) 			
 			ldResource.putProperty(WebEntityFields.FOAF_HOMEPAGE, entity.getHomepage());
-		putMapOfReferencesProperty(WebEntityFields.EDM_EUROPEANA_ROLE, entity.getEuropeanaRole(), 
-				WebEntityFields.EDM_EUROPEANA_ROLE, ldResource);
-		putMapOfStringProperty(WebEntityFields.EDM_ORGANIZATION_DOMAIN, 
-				entity.getOrganizationDomain(), WebEntityFields.EDM_ORGANIZATION_DOMAIN, ldResource);
-		putMapOfStringProperty(WebEntityFields.EDM_ORGANIZATION_SECTOR, 
-				entity.getOrganizationSector(), WebEntityFields.EDM_ORGANIZATION_SECTOR, ldResource);
-		putMapOfStringProperty(WebEntityFields.EDM_ORGANIZATION_SCOPE, 
-				entity.getOrganizationScope(), WebEntityFields.EDM_ORGANIZATION_SCOPE, ldResource);
-		putMapOfStringProperty(WebEntityFields.EDM_GEOGRAPHIC_LEVEL, 
-				entity.getGeographicLevel(), WebEntityFields.EDM_GEOGRAPHIC_LEVEL, ldResource);
+		putMapOfReferencesProperty(WebEntityFields.EUROPEANA_ROLE, entity.getEuropeanaRole(), 
+				OrganizationSolrFields.EDM_EUROPEANA_ROLE, ldResource);
+		putMapOfStringProperty(WebEntityFields.ORGANIZATION_DOMAIN, 
+				entity.getOrganizationDomain(), OrganizationSolrFields.EDM_ORGANIZATION_DOMAIN, ldResource);
+//		putMapOfStringProperty(WebEntityFields.EDM_ORGANIZATION_SECTOR, 
+//				entity.getOrganizationSector(), WebEntityFields.EDM_ORGANIZATION_SECTOR, ldResource);
+//		putMapOfStringProperty(WebEntityFields.EDM_ORGANIZATION_SCOPE, 
+//				entity.getOrganizationScope(), WebEntityFields.EDM_ORGANIZATION_SCOPE, ldResource);
+		putMapOfStringProperty(WebEntityFields.GEO_LEVEL, 
+				entity.getGeographicLevel(), OrganizationSolrFields.EDM_GEOGRAPHIC_LEVEL, ldResource);
 		if (!StringUtils.isEmpty(entity.getStreetAddress())) 			
 			ldResource.putProperty(WebEntityFields.VCARD_STREET, entity.getStreetAddress());
 		if (!StringUtils.isEmpty(entity.getCity())) 			

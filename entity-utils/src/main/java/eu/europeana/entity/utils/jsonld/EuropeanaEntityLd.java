@@ -10,12 +10,14 @@ import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException
 import eu.europeana.entity.definitions.model.Agent;
 import eu.europeana.entity.definitions.model.Concept;
 import eu.europeana.entity.definitions.model.Entity;
+import eu.europeana.entity.definitions.model.Organization;
 import eu.europeana.entity.definitions.model.Place;
 import eu.europeana.entity.definitions.model.Timespan;
 import eu.europeana.entity.definitions.model.impl.BaseEntity;
 import eu.europeana.entity.definitions.model.vocabulary.AgentSolrFields;
 import eu.europeana.entity.definitions.model.vocabulary.ConceptSolrFields;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
+import eu.europeana.entity.definitions.model.vocabulary.OrganizationSolrFields;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityFields;
 
 
@@ -48,8 +50,7 @@ public class EuropeanaEntityLd extends JsonLd {
 		if (!StringUtils.isEmpty(entity.getDepiction())) {	
 			ldResource.putProperty(createDepiction(entity));			
 		}
-		
-		
+
 		//common SKOS_Properties
 //		putMapOfStringListProperty(WebEntityFields.PREF_LABEL, entity.getPrefLabel(), ConceptSolrFields.PREF_LABEL, jsonLdResource);
 		putMapOfStringProperty(WebEntityFields.PREF_LABEL, entity.getPrefLabel(), ConceptSolrFields.PREF_LABEL, ldResource);
@@ -94,6 +95,10 @@ public class EuropeanaEntityLd extends JsonLd {
 		EntityTypes entityType = EntityTypes.getByInternalType(entity.getInternalType());
 
 		switch (entityType) {
+		case Organization:
+			putOrganizationSpecificProperties((Organization) entity, jsonLdResource);
+			break;
+
 		case Concept:
 			putConceptSpecificProperties((Concept) entity, jsonLdResource);
 			break;
@@ -160,6 +165,39 @@ public class EuropeanaEntityLd extends JsonLd {
 		putMapOfReferencesProperty(WebEntityFields.PLACE_OF_DEATH,
 					entity.getPlaceOfDeath(), AgentSolrFields.PLACE_OF_DEATH, jsonLdResource);
 
+	}
+
+	private void putOrganizationSpecificProperties(Organization entity, JsonLdResource jsonLdResource) {
+		
+		putBaseEntityProperties((BaseEntity)entity, jsonLdResource);
+		
+		// Organization properties
+		putMapOfReferencesProperty(WebEntityFields.ACRONYM, entity.getAcronym(), 
+				OrganizationSolrFields.EDM_ACRONYM, ldResource);		
+		if (!StringUtils.isEmpty(entity.getLogo())) 			
+			ldResource.putProperty(WebEntityFields.FOAF_LOGO, entity.getLogo());
+		if (!StringUtils.isEmpty(entity.getHomepage())) 			
+			ldResource.putProperty(WebEntityFields.FOAF_HOMEPAGE, entity.getHomepage());
+		putMapOfReferencesProperty(WebEntityFields.EUROPEANA_ROLE, entity.getEuropeanaRole(), 
+				OrganizationSolrFields.EDM_EUROPEANA_ROLE, ldResource);
+		putMapOfStringProperty(WebEntityFields.ORGANIZATION_DOMAIN, 
+				entity.getOrganizationDomain(), OrganizationSolrFields.EDM_ORGANIZATION_DOMAIN, ldResource);
+//		putMapOfStringProperty(WebEntityFields.EDM_ORGANIZATION_SECTOR, 
+//				entity.getOrganizationSector(), WebEntityFields.EDM_ORGANIZATION_SECTOR, ldResource);
+//		putMapOfStringProperty(WebEntityFields.EDM_ORGANIZATION_SCOPE, 
+//				entity.getOrganizationScope(), WebEntityFields.EDM_ORGANIZATION_SCOPE, ldResource);
+		putMapOfStringProperty(WebEntityFields.GEO_LEVEL, 
+				entity.getGeographicLevel(), OrganizationSolrFields.EDM_GEOGRAPHIC_LEVEL, ldResource);
+		if (!StringUtils.isEmpty(entity.getStreetAddress())) 			
+			ldResource.putProperty(WebEntityFields.VCARD_STREET, entity.getStreetAddress());
+		if (!StringUtils.isEmpty(entity.getCity())) 			
+			ldResource.putProperty(WebEntityFields.VCARD_CITY, entity.getCity());
+		if (!StringUtils.isEmpty(entity.getPostalCode())) 			
+			ldResource.putProperty(WebEntityFields.VCARD_POSTAL_CODE, entity.getPostalCode());
+		if (!StringUtils.isEmpty(entity.getCountry())) 			
+			ldResource.putProperty(WebEntityFields.VCARD_COUNTRY, entity.getCountry());
+		if (!StringUtils.isEmpty(entity.getPostBox())) 			
+			ldResource.putProperty(WebEntityFields.VCARD_POST_OFFICE_BOX, entity.getPostBox());
 	}
 
 	private void putBaseEntityProperties(BaseEntity entity, JsonLdResource jsonLdResource) {

@@ -195,14 +195,19 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 		T preview;
 		String hightlightStartMarker = "<b>";
 		String hightlightEndMarker = "</b>";
-
+		String highlightTerm;
+		
 		term = (String) entry.get(SuggestionFields.TERM);
-		if (term == null || !term.contains(hightlightStartMarker))
-			throw new EntitySuggestionException("The hightlighting is not present in retrieved term: " + term);
-
-		int beginHighlight = term.indexOf(hightlightStartMarker) + 3;
-		int endHighlight = term.indexOf(hightlightEndMarker);
-		String highlightTerm = term.substring(beginHighlight, endHighlight);
+		if (term == null){
+			throw new EntitySuggestionException("The hightlighting is not present in retrieved term: " + term);		 
+		} else if (!term.contains(hightlightStartMarker)){
+			//TODO: enable highlighter
+			highlightTerm = term;
+		} else{
+			int beginHighlight = term.indexOf(hightlightStartMarker) + 3;
+			int endHighlight = term.indexOf(hightlightEndMarker);
+			highlightTerm = term.substring(beginHighlight, endHighlight);
+		}
 
 		payload = (String) entry.get(SuggestionFields.PAYLOAD);
 		preview = (T) getSuggestionHelper().parsePayload(payload, preferredLanguages, highlightTerm);

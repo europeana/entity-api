@@ -60,10 +60,28 @@ public interface WebEntityFields {
 	public static final String LONGITUDE = "long";
 	public static final String ALTITUDE = "alt";
 	public static final String IS_NEXT_IN_SEQUENCE = "isNextInSequence";
-//	public static final String COUNTRY = "country";
+
+	// Organization fields
+	public static final String ACRONYM = "acronym";
+	public static final String COUNTRY = "country";
+	public static final String ORGANIZATION_DOMAIN = "organizationDomain";
+	public static final String EUROPEANA_ROLE = "europeanaRole";
+	public static final String GEO_LEVEL = "geoLevel";
+	public static final String FOAF_LOGO = "logo";
+	public static final String FOAF_HOMEPAGE = "homepage";
+	public static final String VCARD_STREET = "streetAddress";
+	public static final String VCARD_CITY = "locality";
+	public static final String VCARD_POSTAL_CODE = "postalCode";
+	public static final String VCARD_COUNTRY = "countryName";
+	public static final String VCARD_POST_OFFICE_BOX = "postOfficeBox";
+	public static final String VCARD_HAS_ADDRESS = "hasAddress";
 	
-	//Technical fields
-	public static final String DERIVED_SCORE = "derived_score";
-	public static final String TEXT = "text";
+	//payload fields
+	public static final String LANGUAGE_EN="en";
+	public static final String PAYLOAD_EDM_COUNTRY_EN = "edmCountry."+LANGUAGE_EN;
+	public static final String PAYLOAD_ORGANIZATION_DOMAIN_EN = "edmOrganizationDomain." + LANGUAGE_EN;
+	
+//	public static final String EDM_ORGANIZATION_SECTOR = "edm_organizationSector.*";
+//	public static final String EDM_ORGANIZATION_SCOPE = "edm_organizationScope.*";
 
 }

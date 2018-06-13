@@ -24,6 +24,21 @@ public interface Organization extends Agent {
 	void setAcronym(Map<String, List<String>> acronym);
 	
 	/**
+	 * Retrieves the (dc) descriptions of current organization 
+	 * 
+	 * @return A language map containing the dcDescription information 
+	 */
+	Map<String, String> getDcDescription();
+	
+	/**
+	 * Sets the (dc) descriptions for current organization
+	 * 
+	 * @param prefLabel
+	 *            A Map<String,String> of dc descriptions (one per language)
+	 */
+	void setDcDescription(Map<String, String> prefLabel);
+	
+	/**
 	 * Retrieves the europeanaRole for an Organization Class (language,value)
 	 * format
 	 * 
@@ -53,10 +68,6 @@ public interface Organization extends Agent {
 
 	public void setCountry(String country);
 
-	public String getCity();
-
-	public void setCity(String city);
-
 	public String getStreetAddress();
 
 	public void setStreetAddress(String streetAddress);
@@ -84,5 +95,29 @@ public interface Organization extends Agent {
 	public String getLogo();
 
 	public void setLogo(String logo);
+
+	void setCountryName(String countryName);
+
+	String getCountryName();
+
+	void setRegion(String region);
+
+	String getRegion();
+
+	void setLocality(String locality);
+
+	String getLocality();
+
+	void setHasAddress(String hasAddress);
+
+	String getHasAddress();
+
+	void setPhone(List<String> phone);
+
+	List<String> getPhone();
+
+	void setMbox(List<String> mbox);
+
+	List<String> getMbox();
 
 }

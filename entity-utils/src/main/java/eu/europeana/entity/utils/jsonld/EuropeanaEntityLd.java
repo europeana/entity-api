@@ -121,8 +121,6 @@ public class EuropeanaEntityLd extends JsonLd {
 
 	}
 
-	
-
 	private void putTimespanSpecificProperties(Timespan entity, JsonLdResource jsonLdResource) {
 		//TODO: in corelib these are maps of string list
 		putStringArrayProperty(WebEntityFields.BEGIN, entity.getBegin(), jsonLdResource);
@@ -172,13 +170,22 @@ public class EuropeanaEntityLd extends JsonLd {
 		putBaseEntityProperties((BaseEntity)entity, jsonLdResource);
 		
 		// Organization properties
-		putMapOfReferencesProperty(WebEntityFields.ACRONYM, entity.getAcronym(), 
+		putMapOfStringProperty(WebEntityFields.DC_DESCRIPTION, entity.getDcDescription(), OrganizationSolrFields.DC_DESCRIPTION, ldResource);
+		
+		putMapOfStringListProperty(WebEntityFields.ACRONYM, entity.getAcronym(), 
 				OrganizationSolrFields.EDM_ACRONYM, ldResource);		
+		
 		if (!StringUtils.isEmpty(entity.getLogo())) 			
 			ldResource.putProperty(WebEntityFields.FOAF_LOGO, entity.getLogo());
 		if (!StringUtils.isEmpty(entity.getHomepage())) 			
 			ldResource.putProperty(WebEntityFields.FOAF_HOMEPAGE, entity.getHomepage());
-		putMapOfReferencesProperty(WebEntityFields.EUROPEANA_ROLE, entity.getEuropeanaRole(), 
+		
+		if(entity.getPhone() != null)
+			putListProperty(WebEntityFields.FOAF_PHONE, entity.getPhone(), jsonLdResource);
+		if(entity.getMbox() != null)
+			putListProperty(WebEntityFields.FOAF_MBOX, entity.getMbox(), jsonLdResource);
+				
+		putMapOfStringListProperty(WebEntityFields.EUROPEANA_ROLE, entity.getEuropeanaRole(), 
 				OrganizationSolrFields.EDM_EUROPEANA_ROLE, ldResource);
 		putMapOfStringProperty(WebEntityFields.ORGANIZATION_DOMAIN, 
 				entity.getOrganizationDomain(), OrganizationSolrFields.EDM_ORGANIZATION_DOMAIN, ldResource);
@@ -188,16 +195,43 @@ public class EuropeanaEntityLd extends JsonLd {
 //				entity.getOrganizationScope(), WebEntityFields.EDM_ORGANIZATION_SCOPE, ldResource);
 		putMapOfStringProperty(WebEntityFields.GEO_LEVEL, 
 				entity.getGeographicLevel(), OrganizationSolrFields.EDM_GEOGRAPHIC_LEVEL, ldResource);
-		if (!StringUtils.isEmpty(entity.getStreetAddress())) 			
-			ldResource.putProperty(WebEntityFields.VCARD_STREET, entity.getStreetAddress());
-		if (!StringUtils.isEmpty(entity.getCity())) 			
-			ldResource.putProperty(WebEntityFields.VCARD_CITY, entity.getCity());
-		if (!StringUtils.isEmpty(entity.getPostalCode())) 			
-			ldResource.putProperty(WebEntityFields.VCARD_POSTAL_CODE, entity.getPostalCode());
+		
 		if (!StringUtils.isEmpty(entity.getCountry())) 			
-			ldResource.putProperty(WebEntityFields.VCARD_COUNTRY, entity.getCountry());
+			ldResource.putProperty(WebEntityFields.COUNTRY, entity.getCountry());
+		
+		putAddressProperty(entity, ldResource);
+				
+	}
+
+	private void putAddressProperty(Organization entity, JsonLdResource ldResource) {
+		
+		if(StringUtils.isEmpty(entity.getHasAddress()))
+			return;
+		
+		//build address object (the (json) value of the hasAddress property)
+		JsonLdPropertyValue vcardAddress = new JsonLdPropertyValue(); 
+		//id is mapped to rdf:about
+		vcardAddress.putProperty(new JsonLdProperty(WebEntityFields.ID, entity.getHasAddress()));
+		
+		if (!StringUtils.isEmpty(entity.getStreetAddress())) 			
+			vcardAddress.putProperty(
+					new JsonLdProperty(WebEntityFields.VCARD_STREET_ADDRESS, entity.getStreetAddress()));
+		if (!StringUtils.isEmpty(entity.getLocality())) 			
+			vcardAddress.putProperty(
+					new JsonLdProperty(WebEntityFields.VCARD_LOCALITY, entity.getLocality()));
+		if (!StringUtils.isEmpty(entity.getPostalCode())) 			
+			vcardAddress.putProperty(
+					new JsonLdProperty(WebEntityFields.VCARD_POSTAL_CODE, entity.getPostalCode()));
+		if (!StringUtils.isEmpty(entity.getCountryName())) 			
+			vcardAddress.putProperty(
+					new JsonLdProperty(WebEntityFields.VCARD_COUNTRY_NAME, entity.getCountryName()));
 		if (!StringUtils.isEmpty(entity.getPostBox())) 			
-			ldResource.putProperty(WebEntityFields.VCARD_POST_OFFICE_BOX, entity.getPostBox());
+			vcardAddress.putProperty(
+					new JsonLdProperty(WebEntityFields.VCARD_POST_OFFICE_BOX, entity.getPostBox()));
+		
+		JsonLdProperty hasAddress = new JsonLdProperty(WebEntityFields.VCARD_HAS_ADDRESS);
+		hasAddress.addValue(vcardAddress);
+		ldResource.putProperty(hasAddress);
 	}
 
 	private void putBaseEntityProperties(BaseEntity entity, JsonLdResource jsonLdResource) {
@@ -209,33 +243,4 @@ public class EuropeanaEntityLd extends JsonLd {
 	public JsonLdResource getLdResource() {
 		return ldResource;
 	}
-	
-
-//	/**
-//	 * TODO: move to json ld
-//	 * @param fieldName
-//	 * @param list
-//	 * @param jsonLdResource
-//	 */
-//	private void putDateList(String fieldName, List<Date> list, JsonLdResource jsonLdResource) {
-//		if (list != null) {
-//			List<String> stringList = convertDateListToStringList(list);
-//			putListProperty(fieldName, stringList, jsonLdResource);
-//		}
-//	}
-
-//	private List<String> convertDateListToStringList(List<Date> dateList) {
-//
-//		List<String> stringList = new ArrayList<String>();
-//
-//		// DateFormat simpleDateFormat = new SimpleDateFormat("yyyy");
-//		for (Object date : dateList) {
-//			stringList.add(date.toString());
-//			// for (Date date : dateList) {
-//			// stringList.add(simpleDateFormat.format(date));
-//		}
-//
-//		return stringList;
-//	}
-//	
 }

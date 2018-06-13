@@ -62,6 +62,7 @@ public interface WebEntityFields {
 	public static final String IS_NEXT_IN_SEQUENCE = "isNextInSequence";
 
 	// Organization fields
+	public static final String DC_DESCRIPTION = "dcDescription";
 	public static final String ACRONYM = "acronym";
 	public static final String COUNTRY = "country";
 	public static final String ORGANIZATION_DOMAIN = "organizationDomain";
@@ -69,10 +70,12 @@ public interface WebEntityFields {
 	public static final String GEO_LEVEL = "geoLevel";
 	public static final String FOAF_LOGO = "logo";
 	public static final String FOAF_HOMEPAGE = "homepage";
-	public static final String VCARD_STREET = "streetAddress";
-	public static final String VCARD_CITY = "locality";
+	public static final String FOAF_PHONE = "phone";
+	public static final String FOAF_MBOX = "mbox";
+	public static final String VCARD_STREET_ADDRESS = "streetAddress";
+	public static final String VCARD_LOCALITY = "locality";
 	public static final String VCARD_POSTAL_CODE = "postalCode";
-	public static final String VCARD_COUNTRY = "countryName";
+	public static final String VCARD_COUNTRY_NAME = "countryName";
 	public static final String VCARD_POST_OFFICE_BOX = "postOfficeBox";
 	public static final String VCARD_HAS_ADDRESS = "hasAddress";
 	

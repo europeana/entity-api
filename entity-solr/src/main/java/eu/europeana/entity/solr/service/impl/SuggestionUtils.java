@@ -299,12 +299,12 @@ public class SuggestionUtils {
 		preview.setAcronym(acronym);
 		
 		//only english versions are available for now, and the structure is not a language map
-		JsonNode propertyNode = payloadNode.get(WebEntityFields.PAYLOAD_EDM_COUNTRY_EN);
+		JsonNode propertyNode = payloadNode.get(WebEntityFields.COUNTRY);
 		if (propertyNode != null)
 			preview.setCountry(propertyNode.getTextValue());
 		
 		//only english versions are available for now, and the structure is not a language map
-		propertyNode = payloadNode.get(WebEntityFields.PAYLOAD_ORGANIZATION_DOMAIN_EN);
+		propertyNode = payloadNode.get(WebEntityFields.ORGANIZATION_DOMAIN);
 		if (propertyNode != null)
 			preview.setOrganizationDomain(propertyNode.getTextValue());
 	}

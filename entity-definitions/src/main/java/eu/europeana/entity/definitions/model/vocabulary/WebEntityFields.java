@@ -79,11 +79,6 @@ public interface WebEntityFields {
 	public static final String VCARD_POST_OFFICE_BOX = "postOfficeBox";
 	public static final String VCARD_HAS_ADDRESS = "hasAddress";
 	
-	//payload fields
-	public static final String LANGUAGE_EN="en";
-	public static final String PAYLOAD_EDM_COUNTRY_EN = "edmCountry."+LANGUAGE_EN;
-	public static final String PAYLOAD_ORGANIZATION_DOMAIN_EN = "edmOrganizationDomain." + LANGUAGE_EN;
-	
 //	public static final String EDM_ORGANIZATION_SECTOR = "edm_organizationSector.*";
 //	public static final String EDM_ORGANIZATION_SCOPE = "edm_organizationScope.*";
 

@@ -11,6 +11,7 @@ import eu.europeana.api.commons.definitions.vocabulary.CommonLdConstants;
 import eu.europeana.api.commons.utils.ResultsPageSerializer;
 import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException;
 import eu.europeana.entity.definitions.model.Entity;
+import eu.europeana.entity.utils.jsonld.EntityJsonComparator;
 import eu.europeana.entity.utils.jsonld.EuropeanaEntityLd;
 import eu.europeana.entity.web.exception.FunctionalRuntimeException;
 
@@ -18,6 +19,7 @@ public class EntityResultsPageSerializer<T extends Entity> extends ResultsPageSe
 
 	public EntityResultsPageSerializer(ResultsPage<T> resPage, String context, String type) {
 		super(resPage, context, type);
+		setPropOrderComparator(new EntityJsonComparator());	
 	}
 
 	@Override

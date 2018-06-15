@@ -7,10 +7,11 @@ public interface WebEntityFields {
 	public static final String CONTEXT = "@context";
 	public static final String ENTITY_CONTEXT = "http://www.europeana.eu/schemas/context/entity.jsonld";
 
+	public static final String LANGUAGE_EN="en";
+	
 	// common fields
 	public static final String ID = "id";
 	public static final String TYPE = "type";
-	// public static final String IN_SCHEME = "inScheme";
 	public static final String SAME_AS = "sameAs";
 	public static final String IDENTIFIER = "identifier";
 	public static final String HAS_PART = "hasPart";

@@ -84,9 +84,9 @@ public interface Organization extends Agent {
 //
 //	public void setOrganizationSector(Map<String, String> organizationSector);
 
-	public Map<String, String> getOrganizationDomain();
+	public Map<String, List<String>> getOrganizationDomain();
 
-	public void setOrganizationDomain(Map<String, String> organizationDomain);
+	public void setOrganizationDomain(Map<String, List<String>> organizationDomain);
 
 	public String getHomepage();
 

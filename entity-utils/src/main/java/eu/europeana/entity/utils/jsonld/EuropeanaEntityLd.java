@@ -1,5 +1,7 @@
 package eu.europeana.entity.utils.jsonld;
 
+import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.stanbol.commons.jsonld.JsonLd;
 import org.apache.stanbol.commons.jsonld.JsonLdProperty;
@@ -185,16 +187,24 @@ public class EuropeanaEntityLd extends JsonLd {
 		if(entity.getMbox() != null)
 			putListProperty(WebEntityFields.FOAF_MBOX, entity.getMbox(), jsonLdResource);
 				
-		putMapOfStringListProperty(WebEntityFields.EUROPEANA_ROLE, entity.getEuropeanaRole(), 
-				OrganizationSolrFields.EDM_EUROPEANA_ROLE, ldResource);
-		putMapOfStringProperty(WebEntityFields.ORGANIZATION_DOMAIN, 
-				entity.getOrganizationDomain(), OrganizationSolrFields.EDM_ORGANIZATION_DOMAIN, ldResource);
-//		putMapOfStringProperty(WebEntityFields.EDM_ORGANIZATION_SECTOR, 
-//				entity.getOrganizationSector(), WebEntityFields.EDM_ORGANIZATION_SECTOR, ldResource);
-//		putMapOfStringProperty(WebEntityFields.EDM_ORGANIZATION_SCOPE, 
-//				entity.getOrganizationScope(), WebEntityFields.EDM_ORGANIZATION_SCOPE, ldResource);
-		putMapOfStringProperty(WebEntityFields.GEO_LEVEL, 
-				entity.getGeographicLevel(), OrganizationSolrFields.EDM_GEOGRAPHIC_LEVEL, ldResource);
+		if(entity.getEuropeanaRole() != null){
+			//"en" is mandatory
+			List<String> europeanaRole = entity.getEuropeanaRole().get(OrganizationSolrFields.EDM_EUROPEANA_ROLE_EN);
+			putListProperty(WebEntityFields.EUROPEANA_ROLE, europeanaRole, ldResource);
+		}			
+		
+		if(entity.getOrganizationDomain() != null){
+			//"en" is mandatory
+			List<String> europeanaDomain = entity.getOrganizationDomain().get(OrganizationSolrFields.EDM_ORGANIZATION_DOMAIN_EN);
+			putListProperty(WebEntityFields.ORGANIZATION_DOMAIN, 
+					europeanaDomain, ldResource);	
+		}
+		
+		if(entity.getGeographicLevel() != null){
+			//"en" is mandatory
+			String geoLevel = entity.getGeographicLevel().get(OrganizationSolrFields.EDM_GEOGRAPHIC_LEVEL_EN);
+			ldResource.putProperty(WebEntityFields.GEO_LEVEL, geoLevel);
+		}
 		
 		if (!StringUtils.isEmpty(entity.getCountry())) 			
 			ldResource.putProperty(WebEntityFields.COUNTRY, entity.getCountry());

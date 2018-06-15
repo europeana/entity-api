@@ -19,7 +19,7 @@ public class BaseOrganization extends BaseAgent implements Organization {
 	private List<String> phone;
 	private List<String> mbox;
 	private Map<String, List<String>> europeanaRole;	
-	private Map<String, String> organizationDomain;
+	private Map<String, List<String>> organizationDomain;
 	private Map<String, String> geographicLevel;
 	private String country;
 	
@@ -192,12 +192,12 @@ public class BaseOrganization extends BaseAgent implements Organization {
 //	}
 
 	@Override
-	public Map<String, String> getOrganizationDomain() {
+	public Map<String, List<String>> getOrganizationDomain() {
 		return organizationDomain;
 	}
 
 	@Override
-	public void setOrganizationDomain(Map<String, String> organizationDomain) {
+	public void setOrganizationDomain(Map<String, List<String>> organizationDomain) {
 		this.organizationDomain = organizationDomain;
 	}
 

@@ -86,7 +86,7 @@ public class SolrOrganizationImpl extends BaseOrganization implements Organizati
 
 	@Override
 	@Field(OrganizationSolrFields.EDM_ORGANIZATION_DOMAIN_ALL)
-	public void setOrganizationDomain(Map<String, String> organizationDomain) {
+	public void setOrganizationDomain(Map<String, List<String>> organizationDomain) {
 		super.setOrganizationDomain(organizationDomain);
 	}
 

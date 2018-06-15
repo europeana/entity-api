@@ -13,15 +13,14 @@ public interface OrganizationSolrFields extends AgentSolrFields{
 	public static final String FOAF_MBOX = "foaf_mbox";
 	public static final String EDM_EUROPEANA_ROLE = "edm_europeanaRole";
 	public static final String EDM_EUROPEANA_ROLE_ALL = EDM_EUROPEANA_ROLE + ".*";
+	public static final String EDM_EUROPEANA_ROLE_EN = EDM_EUROPEANA_ROLE + ".en";
 	public static final String EDM_ORGANIZATION_DOMAIN = "edm_organizationDomain";
 	public static final String EDM_ORGANIZATION_DOMAIN_ALL = EDM_ORGANIZATION_DOMAIN +".*";
-	public static final String EDM_ORGANIZATION_SECTOR = "edm_organizationSector";
-	public static final String EDM_ORGANIZATION_SECTOR_ALL = EDM_ORGANIZATION_SECTOR + "*";
-	public static final String EDM_ORGANIZATION_SCOPE = "edm_organizationScope";
-	public static final String EDM_ORGANIZATION_SCOPE_ALL = EDM_ORGANIZATION_SCOPE + ".*";
+	public static final String EDM_ORGANIZATION_DOMAIN_EN = EDM_ORGANIZATION_DOMAIN +".en";
 	public static final String EDM_GEOGRAPHIC_LEVEL = "edm_geographicLevel";
-	public static final String EDM_COUNTRY = "edm_country";
 	public static final String EDM_GEOGRAPHIC_LEVEL_ALL = EDM_GEOGRAPHIC_LEVEL + ".*";
+	public static final String EDM_GEOGRAPHIC_LEVEL_EN = EDM_GEOGRAPHIC_LEVEL + ".en";
+	public static final String EDM_COUNTRY = "edm_country";
 	
 	public static final String VCARD_STREET_ADDRESS = "vcard_streetAddress.1";
 	public static final String VCARD_LOCALITY = "vcard_locality.1";

@@ -208,7 +208,7 @@ public class EuropeanaEntityLd extends JsonLd {
 		if(entity.getGeographicLevel() != null){
 			//"en" is mandatory
 			String geoLevel = entity.getGeographicLevel().get(OrganizationSolrFields.EDM_GEOGRAPHIC_LEVEL_EN);
-			ldResource.putProperty(WebEntityFields.GEO_LEVEL, geoLevel);
+			ldResource.putProperty(WebEntityFields.GEOGRAPHIC_LEVEL, geoLevel);
 		}
 		
 		if (!StringUtils.isEmpty(entity.getCountry())) 			

@@ -38,6 +38,7 @@ public interface WebEntityFields {
 	public static final String BROAD_MATCH = "broadMatch";
 	public static final String NARROW_MATCH = "narrowMatch";
 	public static final String RELATED_MATCH = "relatedMatch";
+	public static final String IN_SCHEME = "inScheme";
 
 	// Agent fields
 	public static final String DATE = "date";
@@ -55,6 +56,8 @@ public interface WebEntityFields {
 	public static final String DATE_OF_TERMINATION = "dateOfTermination";
 	public static final String GENDER = "gender";
 	public static final String PROFESSION_OR_OCCUPATION = "professionOrOccupation";
+	public static final String WAS_PRESENT_AT = "wasPresentAt";
+	
 	
 	//Place fields
 	public static final String LATITUDE = "lat";
@@ -68,7 +71,7 @@ public interface WebEntityFields {
 	public static final String COUNTRY = "country";
 	public static final String ORGANIZATION_DOMAIN = "organizationDomain";
 	public static final String EUROPEANA_ROLE = "europeanaRole";
-	public static final String GEO_LEVEL = "geoLevel";
+	public static final String GEOGRAPHIC_LEVEL = "geographicLevel";
 	public static final String FOAF_LOGO = "logo";
 	public static final String FOAF_HOMEPAGE = "homepage";
 	public static final String FOAF_PHONE = "phone";

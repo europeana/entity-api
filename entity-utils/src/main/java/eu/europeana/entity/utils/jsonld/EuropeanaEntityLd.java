@@ -50,7 +50,8 @@ public class EuropeanaEntityLd extends JsonLd {
 		putStringArrayProperty(WebEntityFields.IS_RELATED_TO, entity.getIsRelatedTo(), ldResource);
 
 		if (!StringUtils.isEmpty(entity.getDepiction())) {	
-			ldResource.putProperty(createDepiction(entity));			
+			ldResource.putProperty(createWikimediaResource(
+					entity.getDepiction(), WebEntityFields.DEPICTION));	
 		}
 
 		//common SKOS_Properties
@@ -67,14 +68,15 @@ public class EuropeanaEntityLd extends JsonLd {
 		return ldResource;
 	}
 
-	private JsonLdProperty createDepiction(Entity entity) {
-		JsonLdProperty depictionProperty = new JsonLdProperty(WebEntityFields.DEPICTION);
+	private JsonLdProperty createWikimediaResource(String wikimediaCommonsId, String field) {
+		
+		JsonLdProperty depictionProperty = new JsonLdProperty(field);
 		JsonLdPropertyValue depictionValue = new JsonLdPropertyValue();
 		
-		depictionValue.putProperty(new JsonLdProperty(WebEntityFields.ID, entity.getDepiction()));
-		assert entity.getDepiction().contains("Special:FilePath/");
-		String sourceValue = entity.getDepiction().replace("Special:FilePath/", "File:");
-		depictionValue.putProperty(new JsonLdProperty(WebEntityFields.DEPICTION_SOURCE, sourceValue));
+		depictionValue.putProperty(new JsonLdProperty(WebEntityFields.ID, wikimediaCommonsId));
+		assert wikimediaCommonsId.contains("Special:FilePath/");
+		String sourceValue = wikimediaCommonsId.replace("Special:FilePath/", "File:");
+		depictionValue.putProperty(new JsonLdProperty(WebEntityFields.SOURCE, sourceValue));
 		
 		depictionProperty.addValue(depictionValue);		
 		return depictionProperty;
@@ -172,13 +174,16 @@ public class EuropeanaEntityLd extends JsonLd {
 		putBaseEntityProperties((BaseEntity)entity, jsonLdResource);
 		
 		// Organization properties
-		putMapOfStringProperty(WebEntityFields.DC_DESCRIPTION, entity.getDcDescription(), OrganizationSolrFields.DC_DESCRIPTION, ldResource);
+		putMapOfStringProperty(WebEntityFields.DESCRIPTION, entity.getDcDescription(), OrganizationSolrFields.DC_DESCRIPTION, ldResource);
 		
 		putMapOfStringListProperty(WebEntityFields.ACRONYM, entity.getAcronym(), 
 				OrganizationSolrFields.EDM_ACRONYM, ldResource);		
 		
-		if (!StringUtils.isEmpty(entity.getLogo())) 			
-			ldResource.putProperty(WebEntityFields.FOAF_LOGO, entity.getLogo());
+		if (!StringUtils.isEmpty(entity.getLogo())){ 			
+			ldResource.putProperty(createWikimediaResource(
+					entity.getLogo(), WebEntityFields.FOAF_LOGO));	
+		}
+	
 		if (!StringUtils.isEmpty(entity.getHomepage())) 			
 			ldResource.putProperty(WebEntityFields.FOAF_HOMEPAGE, entity.getHomepage());
 		
@@ -229,6 +234,9 @@ public class EuropeanaEntityLd extends JsonLd {
 		if (!StringUtils.isEmpty(entity.getLocality())) 			
 			vcardAddress.putProperty(
 					new JsonLdProperty(WebEntityFields.VCARD_LOCALITY, entity.getLocality()));
+		if (!StringUtils.isEmpty(entity.getRegion())) 			
+			vcardAddress.putProperty(
+					new JsonLdProperty(WebEntityFields.VCARD_REGION, entity.getRegion()));
 		if (!StringUtils.isEmpty(entity.getPostalCode())) 			
 			vcardAddress.putProperty(
 					new JsonLdProperty(WebEntityFields.VCARD_POSTAL_CODE, entity.getPostalCode()));

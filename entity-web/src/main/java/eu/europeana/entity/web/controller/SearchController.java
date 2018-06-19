@@ -276,7 +276,7 @@ public class SearchController extends BaseRest {
 		String sortField = null;
 		String sortOrder = null;
 		if (StringUtils.isNotBlank(sort)) {
-			String[] sorting = sort.split("+");
+			String[] sorting = StringUtils.split(sort, '+');
 			sortField = sorting[0];
 			if (sorting.length > 1)
 				sortOrder = sorting[1];

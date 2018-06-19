@@ -78,8 +78,29 @@ public class EntityJsonComparator implements Comparator<Object> {
 		propOrderMap.put(WebEntityConstants.RELATED_MATCH, 370);
 		propOrderMap.put(WebEntityConstants.CLOSE_MATCH, 380);
 		propOrderMap.put(WebEntityConstants.EXACT_MATCH, 390);
-		propOrderMap.put(WebEntityConstants.SAME_AS, 400);
-		propOrderMap.put(WebEntityConstants.ACRONYM, 410);
+		propOrderMap.put(WebEntityConstants.DESCRIPTION, 410);
+		propOrderMap.put(WebEntityConstants.ACRONYM, 420);
+		propOrderMap.put(WebEntityConstants.FOAF_LOGO, 430);
+		propOrderMap.put(WebEntityConstants.FOAF_HOMEPAGE, 440);
+		propOrderMap.put(WebEntityConstants.FOAF_PHONE, 450);
+		propOrderMap.put(WebEntityConstants.FOAF_MBOX, 460);
+		propOrderMap.put(WebEntityConstants.EUROPEANA_ROLE, 470);
+		propOrderMap.put(WebEntityConstants.ORGANIZATION_DOMAIN, 480);
+		propOrderMap.put(WebEntityConstants.GEO_LEVEL, 490);
+		propOrderMap.put(WebEntityConstants.COUNTRY, 500);
+		propOrderMap.put(WebEntityConstants.VCARD_HAS_ADDRESS, 510);
+		propOrderMap.put(WebEntityConstants.SAME_AS, 900);
+		//address
+		propOrderMap.put(WebEntityConstants.VCARD_STREET_ADDRESS, 1010);
+		propOrderMap.put(WebEntityConstants.VCARD_LOCALITY, 1020);
+		propOrderMap.put(WebEntityConstants.VCARD_REGION, 1030);
+		propOrderMap.put(WebEntityConstants.VCARD_POSTAL_CODE, 1040);
+		propOrderMap.put(WebEntityConstants.VCARD_COUNTRY_NAME, 1050);
+		propOrderMap.put(WebEntityConstants.VCARD_POST_OFFICE_BOX, 1060);
+		
+		
+		
+		
 	}
 
 	@Override

@@ -230,24 +230,24 @@ public class EuropeanaEntityLd extends JsonLd {
 		
 		if (!StringUtils.isEmpty(entity.getStreetAddress())) 			
 			vcardAddress.putProperty(
-					new JsonLdProperty(WebEntityFields.VCARD_STREET_ADDRESS, entity.getStreetAddress()));
+					new JsonLdProperty(WebEntityFields.STREET_ADDRESS, entity.getStreetAddress()));
 		if (!StringUtils.isEmpty(entity.getLocality())) 			
 			vcardAddress.putProperty(
-					new JsonLdProperty(WebEntityFields.VCARD_LOCALITY, entity.getLocality()));
+					new JsonLdProperty(WebEntityFields.LOCALITY, entity.getLocality()));
 		if (!StringUtils.isEmpty(entity.getRegion())) 			
 			vcardAddress.putProperty(
-					new JsonLdProperty(WebEntityFields.VCARD_REGION, entity.getRegion()));
+					new JsonLdProperty(WebEntityFields.REGION, entity.getRegion()));
 		if (!StringUtils.isEmpty(entity.getPostalCode())) 			
 			vcardAddress.putProperty(
-					new JsonLdProperty(WebEntityFields.VCARD_POSTAL_CODE, entity.getPostalCode()));
+					new JsonLdProperty(WebEntityFields.POSTAL_CODE, entity.getPostalCode()));
 		if (!StringUtils.isEmpty(entity.getCountryName())) 			
 			vcardAddress.putProperty(
-					new JsonLdProperty(WebEntityFields.VCARD_COUNTRY_NAME, entity.getCountryName()));
+					new JsonLdProperty(WebEntityFields.COUNTRY_NAME, entity.getCountryName()));
 		if (!StringUtils.isEmpty(entity.getPostBox())) 			
 			vcardAddress.putProperty(
-					new JsonLdProperty(WebEntityFields.VCARD_POST_OFFICE_BOX, entity.getPostBox()));
+					new JsonLdProperty(WebEntityFields.POST_OFFICE_BOX, entity.getPostBox()));
 		
-		JsonLdProperty hasAddress = new JsonLdProperty(WebEntityFields.VCARD_HAS_ADDRESS);
+		JsonLdProperty hasAddress = new JsonLdProperty(WebEntityFields.HAS_ADDRESS);
 		hasAddress.addValue(vcardAddress);
 		ldResource.putProperty(hasAddress);
 	}

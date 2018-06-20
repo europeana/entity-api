@@ -90,7 +90,7 @@ public class EntityJsonComparator implements Comparator<Object> {
 		propOrderMap.put(WebEntityConstants.FOAF_HOMEPAGE, 420);
 		propOrderMap.put(WebEntityConstants.FOAF_PHONE, 430);
 		propOrderMap.put(WebEntityConstants.FOAF_MBOX, 440);
-		propOrderMap.put(WebEntityConstants.VCARD_HAS_ADDRESS, 450);
+		propOrderMap.put(WebEntityConstants.HAS_ADDRESS, 450);
 		
 		//Agent - relations
 		propOrderMap.put(WebEntityConstants.HAS_PART, 460);
@@ -104,12 +104,12 @@ public class EntityJsonComparator implements Comparator<Object> {
 		propOrderMap.put(WebEntityConstants.IN_SCHEME, 530);
 		propOrderMap.put(WebEntityConstants.SAME_AS, 540);
 		//address
-		propOrderMap.put(WebEntityConstants.VCARD_STREET_ADDRESS, 1010);
-		propOrderMap.put(WebEntityConstants.VCARD_LOCALITY, 1020);
-		propOrderMap.put(WebEntityConstants.VCARD_REGION, 1030);
-		propOrderMap.put(WebEntityConstants.VCARD_POSTAL_CODE, 1040);
-		propOrderMap.put(WebEntityConstants.VCARD_COUNTRY_NAME, 1050);
-		propOrderMap.put(WebEntityConstants.VCARD_POST_OFFICE_BOX, 1060);
+		propOrderMap.put(WebEntityConstants.STREET_ADDRESS, 1010);
+		propOrderMap.put(WebEntityConstants.LOCALITY, 1020);
+		propOrderMap.put(WebEntityConstants.REGION, 1030);
+		propOrderMap.put(WebEntityConstants.POSTAL_CODE, 1040);
+		propOrderMap.put(WebEntityConstants.COUNTRY_NAME, 1050);
+		propOrderMap.put(WebEntityConstants.POST_OFFICE_BOX, 1060);
 	}
 
 	@Override

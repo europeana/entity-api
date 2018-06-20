@@ -20,10 +20,8 @@ public interface WebEntityFields {
 	public static final String HIDDEN_LABEL = "hiddenLabel";
 	public static final String ALT_LABEL = "altLabel";
 	public static final String NOTE = "note";
-	public static final String RDF_ABOUT = "about";
 	public static final String DEPICTION = "depiction";
 	public static final String SOURCE = "source";
-//	public static final String CONCEPT="Concept";
 
 	// concept fields
 	public static final String NOTATION = "notation";
@@ -76,15 +74,14 @@ public interface WebEntityFields {
 	public static final String FOAF_HOMEPAGE = "homepage";
 	public static final String FOAF_PHONE = "phone";
 	public static final String FOAF_MBOX = "mbox";
-	public static final String VCARD_STREET_ADDRESS = "streetAddress";
-	public static final String VCARD_LOCALITY = "locality";
-	public static final String VCARD_REGION = "region";
-	public static final String VCARD_POSTAL_CODE = "postalCode";
-	public static final String VCARD_COUNTRY_NAME = "countryName";
-	public static final String VCARD_POST_OFFICE_BOX = "postOfficeBox";
-	public static final String VCARD_HAS_ADDRESS = "hasAddress";
 	
-//	public static final String EDM_ORGANIZATION_SECTOR = "edm_organizationSector.*";
-//	public static final String EDM_ORGANIZATION_SCOPE = "edm_organizationScope.*";
+	//Address Fields
+	public static final String STREET_ADDRESS = "streetAddress";
+	public static final String LOCALITY = "locality";
+	public static final String REGION = "region";
+	public static final String POSTAL_CODE = "postalCode";
+	public static final String COUNTRY_NAME = "countryName";
+	public static final String POST_OFFICE_BOX = "postOfficeBox";
+	public static final String HAS_ADDRESS = "hasAddress";
 
 }

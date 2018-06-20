@@ -220,7 +220,7 @@ public class EuropeanaEntityLd extends JsonLd {
 
 	private void putAddressProperty(Organization entity, JsonLdResource ldResource) {
 		
-		if(StringUtils.isEmpty(entity.getHasAddress()))
+		if(StringUtils.isEmpty(entity.getLocality()))
 			return;
 		
 		//build address object (the (json) value of the hasAddress property)

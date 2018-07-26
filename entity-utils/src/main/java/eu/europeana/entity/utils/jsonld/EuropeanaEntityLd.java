@@ -194,20 +194,20 @@ public class EuropeanaEntityLd extends JsonLd {
 				
 		if(entity.getEuropeanaRole() != null){
 			//"en" is mandatory
-			List<String> europeanaRole = entity.getEuropeanaRole().get(OrganizationSolrFields.EDM_EUROPEANA_ROLE_EN);
+			List<String> europeanaRole = entity.getEuropeanaRole().get(OrganizationSolrFields.EUROPEANA_ROLE_EN);
 			putListProperty(WebEntityFields.EUROPEANA_ROLE, europeanaRole, ldResource);
 		}			
 		
 		if(entity.getOrganizationDomain() != null){
 			//"en" is mandatory
-			List<String> europeanaDomain = entity.getOrganizationDomain().get(OrganizationSolrFields.EDM_ORGANIZATION_DOMAIN_EN);
+			List<String> europeanaDomain = entity.getOrganizationDomain().get(OrganizationSolrFields.ORGANIZATION_DOMAIN_EN);
 			putListProperty(WebEntityFields.ORGANIZATION_DOMAIN, 
 					europeanaDomain, ldResource);	
 		}
 		
 		if(entity.getGeographicLevel() != null){
 			//"en" is mandatory
-			String geoLevel = entity.getGeographicLevel().get(OrganizationSolrFields.EDM_GEOGRAPHIC_LEVEL_EN);
+			String geoLevel = entity.getGeographicLevel().get(OrganizationSolrFields.GEOGRAPHIC_LEVEL_EN);
 			ldResource.putProperty(WebEntityFields.GEOGRAPHIC_LEVEL, geoLevel);
 		}
 		

@@ -110,8 +110,11 @@ public class SuggestionUtils {
 			return false;
 		
 		Collection<String> entrySet = prefLabels.values();
+		String label;
 		for (Iterator<String> iterator = entrySet.iterator(); iterator.hasNext();) {
-			if(iterator.next().contains(highlightTerm))
+			label = iterator.next(); 
+			//if highlighter doesn't work, the searched term is lowercase
+			if(label.contains(highlightTerm) || label.toLowerCase().contains(highlightTerm))
 				return true;
 		}
 		return false;

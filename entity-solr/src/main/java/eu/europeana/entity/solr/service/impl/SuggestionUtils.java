@@ -127,7 +127,8 @@ public class SuggestionUtils {
 			while (itr.hasNext()) {
 				currentEntry = itr.next();
 				value = currentEntry.getValue().asText();
-				if(value.contains(highlightTerm))
+				//if the highlighter doesn't work, use searched term ignoring case
+				if(value.toLowerCase().contains(highlightTerm))
 					return new String[]{currentEntry.getKey(), value};
 			}
 		}
@@ -219,13 +220,14 @@ public class SuggestionUtils {
 		//TODO hack for places
 		String defaultLabel = null;
 		final String defaultKey = "";
+		boolean includeAllLanguages = preferredLanguages.contains(WebEntityConstants.PARAM_LANGUAGE_ALL);
 		
 		if (jsonNode != null) {
 			Iterator<Entry<String, JsonNode>> itr = jsonNode.getFields();
 			while (itr.hasNext()) {
 				Entry<String, JsonNode> currentEntry = itr.next();
-				//include only preferredLanguages
-				if(preferredLanguages.contains(currentEntry.getKey())){
+				//include only preferredLanguages, allow also All
+				if(includeAllLanguages || preferredLanguages.contains(currentEntry.getKey())){
 					if (currentEntry.getValue().asText() != null) {
 						languageMap.put(currentEntry.getKey(), currentEntry.getValue().asText());				
 					}

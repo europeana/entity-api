@@ -42,29 +42,24 @@ public class EntityQueryBuilder extends QueryBuilder{
 	}
 
 	private void addFiltersToSuggestQuery(SolrQuery query, EntityTypes[] entityTypes, String scope) {
-		Boolean isScope = scope != null && !scope.equals("");
-		Boolean isSpecificEntityType = entityTypes != null && entityTypes.length > 0 && !EntityTypes.arrayHasValue(entityTypes, EntityTypes.All);
 		//build entityType filter
-		String entityTypeCondition = null;
-		if(isSpecificEntityType)
-			entityTypeCondition = buildEntityTypeCondition(entityTypes);
+		String entityTypeFilter = buildEntityTypeCondition(entityTypes);
 		
 		//build scopeFilter
-		String scopeFilter = null;
-		if(hasScopeEuropeana(scope)){ 
-			scopeFilter = SuggestionFields.FILTER_IN_EUROPEANA;
-		}
-		
+		String scopeFilter = hasScopeEuropeana(scope)? SuggestionFields.FILTER_IN_EUROPEANA : null;
+				
 		//add filters to query
 		String filter = null;
-		if( !isSpecificEntityType && !isScope)
+		if(entityTypeFilter == null && scopeFilter == null)
 			return;
-		if(isSpecificEntityType && !isScope){
-			filter = entityTypeCondition;
-		}else if(!isSpecificEntityType && scopeFilter != null) 
-			filter = scopeFilter;
-		else if(isSpecificEntityType && isScope)
-			filter = entityTypeCondition + " AND " + scopeFilter;
+		//append entity type filter
+		if(entityTypeFilter != null)
+			filter = entityTypeFilter;
+		
+		//append scope filter
+		if(scopeFilter != null){
+			filter = (filter == null)? scopeFilter: " AND " + scopeFilter; 		
+		} 
 		
 		if(filter != null)
 			query.add("suggest.cfq", filter);

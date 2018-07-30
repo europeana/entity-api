@@ -141,7 +141,9 @@ public class SearchController extends BaseRest {
 			EntityTypes[] entityTypes = getEntityTypesFromString(type);
 
 			//get language list
-			String[] preferredLanguages = getLanguageList(outLanguage);
+			String[] preferredLanguages = null;
+			if(outLanguage != null && !outLanguage.contains(WebEntityConstants.PARAM_LANGUAGE_ALL))
+				preferredLanguages = getLanguageList(outLanguage);
 			
 			// perform search
 			Query searchQuery = buildSearchQuery(queryString, qf, facets, sort, page, pageSize, profile);

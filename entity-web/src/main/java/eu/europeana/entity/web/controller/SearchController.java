@@ -70,10 +70,8 @@ public class SearchController extends BaseRest {
 			EntityTypes[] entityTypes = getEntityTypesFromString(type);
 
 			// validate scope parameter
-			if (StringUtils.isNotBlank(scope) && !WebEntityConstants.PARAM_SCOPE_EUROPEANA.equalsIgnoreCase(scope))
-				throw new ParamValidationException("Invalid request parameter value! ",
-						WebEntityConstants.QUERY_PARAM_SCOPE, scope);
-
+			validateScopeParam(scope);
+			
 			//past parguage list
 			String[] requestedLanguages = getLanguageList(language);
 			
@@ -137,9 +135,7 @@ public class SearchController extends BaseRest {
 						CommonApiConstants.QUERY_PARAM_QUERY, queryString);
 
 			// validate scope parameter
-			if (StringUtils.isNotBlank(scope) && !WebEntityConstants.PARAM_SCOPE_EUROPEANA.equalsIgnoreCase(scope))
-				throw new ParamValidationException("Invalid request parameter value! ",
-						WebEntityConstants.QUERY_PARAM_SCOPE, scope);
+			scope = validateScopeParam(scope);
 			
 			// validate and convert type
 			EntityTypes[] entityTypes = getEntityTypesFromString(type);
@@ -178,6 +174,17 @@ public class SearchController extends BaseRest {
 		} catch (Exception e) {
 			throw new InternalServerException(e);
 		}
+	}
+
+	private String validateScopeParam(String scope) throws ParamValidationException {
+		if (StringUtils.isBlank(scope))
+			return null;
+				
+		if (!WebEntityConstants.PARAM_SCOPE_EUROPEANA.equalsIgnoreCase(scope))
+			throw new ParamValidationException("Invalid request parameter value! ",
+					WebEntityConstants.QUERY_PARAM_SCOPE, scope);
+		
+		return WebEntityConstants.PARAM_SCOPE_EUROPEANA;
 	}
 
 	private String searializeResultsPage(ResultsPage<? extends Entity> resPage, SearchProfiles profile)

@@ -5,6 +5,7 @@ import org.apache.solr.client.solrj.SolrQuery;
 import eu.europeana.api.commons.definitions.search.Query;
 import eu.europeana.api.commons.search.util.QueryBuilder;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
+import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
 import eu.europeana.entity.solr.model.vocabulary.SuggestionFields;
 import eu.europeana.entity.solr.service.SolrEntityService;
 
@@ -26,8 +27,12 @@ public class EntityQueryBuilder extends QueryBuilder{
 			addFiltersToSearchQuery(query, entityTypes, scope);
 	}
 
+	private boolean hasScopeEuropeana(String scope) {
+		return WebEntityConstants.PARAM_SCOPE_EUROPEANA.equalsIgnoreCase(scope);
+	}
+	
 	private void addFiltersToSearchQuery(SolrQuery query, EntityTypes[] entityTypes, String scope) {
-		if(SuggestionFields.PARAM_EUROPEANA.equals(scope)) 
+		if(hasScopeEuropeana(scope)) 
 			query.addFilterQuery("suggest_filters:"+ SuggestionFields.FILTER_IN_EUROPEANA);
 		
 		String typeCondition = buildEntityTypeCondition(entityTypes);
@@ -46,7 +51,7 @@ public class EntityQueryBuilder extends QueryBuilder{
 		
 		//build scopeFilter
 		String scopeFilter = null;
-		if(SuggestionFields.PARAM_EUROPEANA.equals(scope)) { 
+		if(hasScopeEuropeana(scope)){ 
 			scopeFilter = SuggestionFields.FILTER_IN_EUROPEANA;
 		}
 		

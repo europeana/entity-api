@@ -9,11 +9,14 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.solr.client.solrj.beans.DocumentObjectBinder;
+import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 
+import eu.europeana.api.commons.definitions.search.FacetFieldView;
 import eu.europeana.api.commons.definitions.search.ResultSet;
+import eu.europeana.api.commons.definitions.search.impl.FacetFieldAdapter;
 import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException;
 import eu.europeana.entity.definitions.model.Agent;
 import eu.europeana.entity.definitions.model.Entity;
@@ -31,7 +34,7 @@ public abstract class BaseEntityService{
 		ResultSet<T> resultSet = new ResultSet<>();
 		
 		DocumentObjectBinder binder = new DocumentObjectBinder();
-		SolrDocumentList docList = rsp. getResults();
+		SolrDocumentList docList = rsp.getResults();
 		String type;
 		T entity;
 		Class<T> entityClass;
@@ -44,6 +47,18 @@ public abstract class BaseEntityService{
 			processLanguageMaps(entity, outLanguage);
 			beans.add(entity);
 		}
+		
+		if (rsp.getFacetFields() != null) {
+			List<FacetFieldView> facetFields = new ArrayList<>(rsp.getFacetFields().size());
+			for (FacetField solrFacetField : rsp.getFacetFields()){
+				facetFields.add(new FacetFieldAdapter(solrFacetField));
+			}
+
+			resultSet.setFacetFields(facetFields);
+		}
+
+//		if (rsp.getFacetQuery() != null)
+//			resultSet.setQueryFacets(rsp.getFacetQuery());
 		
 		resultSet.setResults(beans);
 		resultSet.setResultSize(rsp.getResults().getNumFound());
@@ -80,6 +95,8 @@ public abstract class BaseEntityService{
 				break;//not supported yet
 			case All:
 				break; //actually not possible at this stage
+			default:
+				break;//shouldn't occur as a runtime exception is thrown above
 		}
 		
 	}

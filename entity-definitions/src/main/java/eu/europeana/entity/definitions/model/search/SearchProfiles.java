@@ -2,7 +2,7 @@ package eu.europeana.entity.definitions.model.search;
 
 public enum SearchProfiles {
 	
-	FACETS;
+	facets;
 
 	public static boolean contains(String value) {
 

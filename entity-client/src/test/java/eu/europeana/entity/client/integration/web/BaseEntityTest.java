@@ -1,11 +1,12 @@
-package eu.europeana.annotation.client.integration.web;
+package eu.europeana.entity.client.integration.web;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.stanbol.commons.exception.JsonParseException;
 import org.junit.Before;
 import org.springframework.http.HttpStatus;
@@ -19,7 +20,7 @@ import eu.europeana.entity.definitions.model.Entity;
 
 public class BaseEntityTest {
 
-	protected Logger log = Logger.getLogger(getClass());
+	protected Logger log = LogManager.getLogger(getClass());
 
 	public String TEST_WSKEY = "apidemo";
 

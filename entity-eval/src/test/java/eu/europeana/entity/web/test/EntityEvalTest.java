@@ -13,7 +13,8 @@ import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.LineIterator;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
@@ -24,7 +25,7 @@ import org.apache.solr.common.SolrDocumentList;
 import org.junit.Test;
 
 public class EntityEvalTest {
-	private final Logger LOGGER = Logger.getLogger(getClass());
+	private final Logger LOGGER = LogManager.getLogger(getClass());
 	int posLanguage = 0;
 	int posQuery = 1;
 	int posEntity = 2;

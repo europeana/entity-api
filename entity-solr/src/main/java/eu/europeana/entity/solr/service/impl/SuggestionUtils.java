@@ -9,7 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.JsonParser;
@@ -36,7 +37,7 @@ import eu.europeana.entity.web.model.view.TimeSpanPreview;
 
 public class SuggestionUtils {
 
-	private final Logger log = Logger.getLogger(getClass());
+	private final Logger log = LogManager.getLogger(getClass());
 
 	protected static ObjectMapper objectMapper = new ObjectMapper().setVisibility(JsonMethod.FIELD, Visibility.ANY)
 			.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);

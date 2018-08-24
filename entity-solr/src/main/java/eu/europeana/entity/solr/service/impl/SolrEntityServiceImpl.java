@@ -6,7 +6,8 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.response.QueryResponse;
@@ -33,7 +34,7 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 	SolrClient solrServer;
 	SuggestionUtils suggestionHelper = null;
 
-	private final Logger log = Logger.getLogger(getClass());
+	private final Logger log = LogManager.getLogger(getClass());
 
 	public void setSolrServer(SolrClient solrServer) {
 		this.solrServer = solrServer;

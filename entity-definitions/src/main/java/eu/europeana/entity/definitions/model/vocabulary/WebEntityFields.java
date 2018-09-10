@@ -61,6 +61,8 @@ public interface WebEntityFields {
 	public static final String LATITUDE = "lat";
 	public static final String LONGITUDE = "long";
 	public static final String ALTITUDE = "alt";
+	public static final String LATITUDE_LONGITUDE = "lat_long";
+	
 	public static final String IS_NEXT_IN_SEQUENCE = "isNextInSequence";
 
 	// Organization fields

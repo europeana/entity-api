@@ -155,7 +155,7 @@ public class SearchController extends BaseRest {
 			} 
 			
 			// perform search
-			Query searchQuery = buildSearchQuery(queryString, qf, facets, sort, page, pageSize, profile, retFields);
+			Query searchQuery = buildSearchQuery(queryString, qf, facets, sort, page, pageSize, searchProfile, retFields);
 
 			ResultSet<? extends Entity> results = entityService.search(searchQuery, preferredLanguages, entityTypes, scope);
 			ResultsPage<? extends Entity> resPage = buildResultsPage(searchQuery, results, request.getRequestURL(),

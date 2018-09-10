@@ -16,6 +16,7 @@ public interface WebEntityConstants extends WebEntityFields{
 	public static final String QUERY_PARAM_SCOPE = "scope";
 	public static final String QUERY_PARAM_NAMESPACE = "namespace";
 	public static final String QUERY_PARAM_URI = "uri";
+	public static final String QUERY_PARAM_FL = "fl";
 	
 	public static final String PARAM_TYPE_ALL = "All";
 	public static final String PARAM_LANGUAGE_ALL = "All";

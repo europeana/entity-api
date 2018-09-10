@@ -114,6 +114,7 @@ public class SearchController extends BaseRest {
 			@RequestParam(value = CommonApiConstants.PARAM_WSKEY, required = false) String wskey,
 			@RequestParam(value = CommonApiConstants.QUERY_PARAM_QUERY) String queryString,
 			@RequestParam(value = CommonApiConstants.QUERY_PARAM_QF, required = false) String[] qf,
+			@RequestParam(value = WebEntityConstants.QUERY_PARAM_FL, required = false) String[] retFields,			
 			@RequestParam(value = CommonApiConstants.QUERY_PARAM_FACET, required = false) String[] facets,
 			@RequestParam(value = CommonApiConstants.QUERY_PARAM_LANG, required = false) String outLanguage,
 			@RequestParam(value = WebEntityConstants.QUERY_PARAM_TYPE, required = false, defaultValue = WebEntityConstants.PARAM_TYPE_ALL) String type,
@@ -154,7 +155,8 @@ public class SearchController extends BaseRest {
 			} 
 			
 			// perform search
-			Query searchQuery = buildSearchQuery(queryString, qf, facets, sort, page, pageSize, searchProfile);
+			Query searchQuery = buildSearchQuery(queryString, qf, facets, sort, page, pageSize, profile, retFields);
+
 			ResultSet<? extends Entity> results = entityService.search(searchQuery, preferredLanguages, entityTypes, scope);
 			ResultsPage<? extends Entity> resPage = buildResultsPage(searchQuery, results, request.getRequestURL(),
 					request.getQueryString());
@@ -288,8 +290,19 @@ public class SearchController extends BaseRest {
 		return tmp;
 	}
 
+	/**
+	 * @param queryString
+	 * @param qf
+	 * @param facets
+	 * @param sort
+	 * @param page
+	 * @param pageSize
+	 * @param profile
+	 * @param retFields
+	 * @return
+	 */
 	private Query buildSearchQuery(String queryString, String[] qf, String[] facets, String sort, int page,
-			int pageSize, SearchProfiles profile) {
+			int pageSize, SearchProfiles profile, String[] retFields) {
 		String sortField = null;
 		String sortOrder = null;
 		if (StringUtils.isNotBlank(sort)) {
@@ -305,7 +318,7 @@ public class SearchController extends BaseRest {
 		if (profile != null)
 			profileName = profile.name();
 
-		Query query = builder.buildSearchQuery(queryString, qf, facets, null, sortField, sortOrder, page, pageSize,
+		Query query = builder.buildSearchQuery(queryString, qf, facets, retFields, sortField, sortOrder, page, pageSize,
 				maxPageSize, profileName);
 		return query;
 	}

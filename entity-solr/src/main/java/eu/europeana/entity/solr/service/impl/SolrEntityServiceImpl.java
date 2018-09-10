@@ -6,7 +6,8 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.response.QueryResponse;
@@ -33,7 +34,7 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 	SolrClient solrServer;
 	SuggestionUtils suggestionHelper = null;
 
-	private final Logger log = Logger.getLogger(getClass());
+	private final Logger log = LogManager.getLogger(getClass());
 
 	public void setSolrServer(SolrClient solrServer) {
 		this.solrServer = solrServer;
@@ -148,12 +149,16 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 
 		List<SimpleOrderedMap<?>> suggestions = null;
 
+		String searchedTerm = ""; 
+				
 		if ((SimpleOrderedMap) suggestionsMap.getVal(0) != null) {
 			suggestions = (List<SimpleOrderedMap<?>>) ((SimpleOrderedMap) suggestionsMap.getVal(0))
 					.get(SuggestionFields.SUGGESTIONS);
+			
+			searchedTerm = suggestionsMap.getName(0); 
 		}
 
-		List<T> beans = extractBeans(suggestions, rows, requestedLanguages);
+		List<T> beans = extractBeans(searchedTerm, suggestions, rows, requestedLanguages);
 
 		resultSet.setResults(beans);
 		resultSet.setResultSize(beans.size());
@@ -161,18 +166,18 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 		return resultSet;
 	}
 
-	private <T extends EntityPreview> List<T> extractBeans(List<SimpleOrderedMap<?>> suggestions, int rows,
+	private <T extends EntityPreview> List<T> extractBeans(String searchedTerm, List<SimpleOrderedMap<?>> suggestions, int rows,
 			String[] preferredLanguages) throws EntitySuggestionException {
 		List<T> beans = new ArrayList<T>();
 
 		// add exact matches to list
 		if (suggestions != null)
-			processSuggestionMap(suggestions, beans, rows, preferredLanguages);
+			processSuggestionMap(searchedTerm, suggestions, beans, rows, preferredLanguages);
 
 		return beans;
 	}
 
-	private <T extends EntityPreview> void processSuggestionMap(List<SimpleOrderedMap<?>> suggestionMap, List<T> beans,
+	private <T extends EntityPreview> void processSuggestionMap(String searchedTerm, List<SimpleOrderedMap<?>> suggestionMap, List<T> beans,
 			int rows, String[] preferredLanguages) throws EntitySuggestionException {
 
 		T preview;
@@ -182,13 +187,13 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 			if (beans.size() == rows)
 				return;
 
-			preview = buildEntityPreview(entry, preferredLanguages);
+			preview = buildEntityPreview(searchedTerm, entry, preferredLanguages);
 			beans.add(preview);
 		}
 	}
 
 	@SuppressWarnings("unchecked")
-	private <T extends EntityPreview> T buildEntityPreview(SimpleOrderedMap<?> entry, String[] preferredLanguages)
+	private <T extends EntityPreview> T buildEntityPreview(String searchedTerm, SimpleOrderedMap<?> entry, String[] preferredLanguages)
 			throws EntitySuggestionException {
 		String term;
 		String payload;
@@ -199,10 +204,10 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 		
 		term = (String) entry.get(SuggestionFields.TERM);
 		if (term == null){
-			throw new EntitySuggestionException("The hightlighting is not present in retrieved term: " + term);		 
+			throw new EntitySuggestionException("Suggesting error, no term found in suggester response: " + entry);		 
 		} else if (!term.contains(hightlightStartMarker)){
-			//TODO: enable highlighter
-			highlightTerm = term;
+			//highlighter doesn't work, use the searched term for language logic
+			highlightTerm = searchedTerm.toLowerCase();
 		} else{
 			int beginHighlight = term.indexOf(hightlightStartMarker) + 3;
 			int endHighlight = term.indexOf(hightlightEndMarker);

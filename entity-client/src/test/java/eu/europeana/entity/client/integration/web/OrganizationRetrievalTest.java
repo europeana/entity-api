@@ -1,4 +1,4 @@
-package eu.europeana.annotation.client.integration.web;
+package eu.europeana.entity.client.integration.web;
 
 import java.lang.reflect.InvocationTargetException;
 

@@ -9,7 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.JsonParser;
@@ -36,7 +37,7 @@ import eu.europeana.entity.web.model.view.TimeSpanPreview;
 
 public class SuggestionUtils {
 
-	private final Logger log = Logger.getLogger(getClass());
+	private final Logger log = LogManager.getLogger(getClass());
 
 	protected static ObjectMapper objectMapper = new ObjectMapper().setVisibility(JsonMethod.FIELD, Visibility.ANY)
 			.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -110,8 +111,11 @@ public class SuggestionUtils {
 			return false;
 		
 		Collection<String> entrySet = prefLabels.values();
+		String label;
 		for (Iterator<String> iterator = entrySet.iterator(); iterator.hasNext();) {
-			if(iterator.next().contains(highlightTerm))
+			label = iterator.next(); 
+			//if highlighter doesn't work, the searched term is lowercase
+			if(label.contains(highlightTerm) || label.toLowerCase().contains(highlightTerm))
 				return true;
 		}
 		return false;
@@ -127,7 +131,8 @@ public class SuggestionUtils {
 			while (itr.hasNext()) {
 				currentEntry = itr.next();
 				value = currentEntry.getValue().asText();
-				if(value.contains(highlightTerm))
+				//if the highlighter doesn't work, use searched term ignoring case
+				if(value.toLowerCase().contains(highlightTerm))
 					return new String[]{currentEntry.getKey(), value};
 			}
 		}
@@ -219,13 +224,14 @@ public class SuggestionUtils {
 		//TODO hack for places
 		String defaultLabel = null;
 		final String defaultKey = "";
+		boolean includeAllLanguages = preferredLanguages.contains(WebEntityConstants.PARAM_LANGUAGE_ALL);
 		
 		if (jsonNode != null) {
 			Iterator<Entry<String, JsonNode>> itr = jsonNode.getFields();
 			while (itr.hasNext()) {
 				Entry<String, JsonNode> currentEntry = itr.next();
-				//include only preferredLanguages
-				if(preferredLanguages.contains(currentEntry.getKey())){
+				//include only preferredLanguages, allow also All
+				if(includeAllLanguages || preferredLanguages.contains(currentEntry.getKey())){
 					if (currentEntry.getValue().asText() != null) {
 						languageMap.put(currentEntry.getKey(), currentEntry.getValue().asText());				
 					}
@@ -299,12 +305,12 @@ public class SuggestionUtils {
 		preview.setAcronym(acronym);
 		
 		//only english versions are available for now, and the structure is not a language map
-		JsonNode propertyNode = payloadNode.get(WebEntityFields.PAYLOAD_EDM_COUNTRY_EN);
+		JsonNode propertyNode = payloadNode.get(WebEntityFields.COUNTRY);
 		if (propertyNode != null)
 			preview.setCountry(propertyNode.getTextValue());
 		
 		//only english versions are available for now, and the structure is not a language map
-		propertyNode = payloadNode.get(WebEntityFields.PAYLOAD_ORGANIZATION_DOMAIN_EN);
+		propertyNode = payloadNode.get(WebEntityFields.ORGANIZATION_DOMAIN);
 		if (propertyNode != null)
 			preview.setOrganizationDomain(propertyNode.getTextValue());
 	}

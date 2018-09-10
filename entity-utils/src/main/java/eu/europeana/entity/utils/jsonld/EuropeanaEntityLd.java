@@ -1,5 +1,7 @@
 package eu.europeana.entity.utils.jsonld;
 
+import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.stanbol.commons.jsonld.JsonLd;
 import org.apache.stanbol.commons.jsonld.JsonLdProperty;
@@ -48,7 +50,8 @@ public class EuropeanaEntityLd extends JsonLd {
 		putStringArrayProperty(WebEntityFields.IS_RELATED_TO, entity.getIsRelatedTo(), ldResource);
 
 		if (!StringUtils.isEmpty(entity.getDepiction())) {	
-			ldResource.putProperty(createDepiction(entity));			
+			ldResource.putProperty(createWikimediaResource(
+					entity.getDepiction(), WebEntityFields.DEPICTION));	
 		}
 
 		//common SKOS_Properties
@@ -65,14 +68,15 @@ public class EuropeanaEntityLd extends JsonLd {
 		return ldResource;
 	}
 
-	private JsonLdProperty createDepiction(Entity entity) {
-		JsonLdProperty depictionProperty = new JsonLdProperty(WebEntityFields.DEPICTION);
+	private JsonLdProperty createWikimediaResource(String wikimediaCommonsId, String field) {
+		
+		JsonLdProperty depictionProperty = new JsonLdProperty(field);
 		JsonLdPropertyValue depictionValue = new JsonLdPropertyValue();
 		
-		depictionValue.putProperty(new JsonLdProperty(WebEntityFields.ID, entity.getDepiction()));
-		assert entity.getDepiction().contains("Special:FilePath/");
-		String sourceValue = entity.getDepiction().replace("Special:FilePath/", "File:");
-		depictionValue.putProperty(new JsonLdProperty(WebEntityFields.DEPICTION_SOURCE, sourceValue));
+		depictionValue.putProperty(new JsonLdProperty(WebEntityFields.ID, wikimediaCommonsId));
+		assert wikimediaCommonsId.contains("Special:FilePath/");
+		String sourceValue = wikimediaCommonsId.replace("Special:FilePath/", "File:");
+		depictionValue.putProperty(new JsonLdProperty(WebEntityFields.SOURCE, sourceValue));
 		
 		depictionProperty.addValue(depictionValue);		
 		return depictionProperty;
@@ -120,8 +124,6 @@ public class EuropeanaEntityLd extends JsonLd {
 		}
 
 	}
-
-	
 
 	private void putTimespanSpecificProperties(Timespan entity, JsonLdResource jsonLdResource) {
 		//TODO: in corelib these are maps of string list
@@ -172,32 +174,82 @@ public class EuropeanaEntityLd extends JsonLd {
 		putBaseEntityProperties((BaseEntity)entity, jsonLdResource);
 		
 		// Organization properties
-		putMapOfReferencesProperty(WebEntityFields.ACRONYM, entity.getAcronym(), 
+		putMapOfStringProperty(WebEntityFields.DESCRIPTION, entity.getDcDescription(), OrganizationSolrFields.DC_DESCRIPTION, ldResource);
+		
+		putMapOfStringListProperty(WebEntityFields.ACRONYM, entity.getAcronym(), 
 				OrganizationSolrFields.EDM_ACRONYM, ldResource);		
-		if (!StringUtils.isEmpty(entity.getLogo())) 			
-			ldResource.putProperty(WebEntityFields.FOAF_LOGO, entity.getLogo());
+		
+		if (!StringUtils.isEmpty(entity.getLogo())){ 			
+			ldResource.putProperty(createWikimediaResource(
+					entity.getLogo(), WebEntityFields.FOAF_LOGO));	
+		}
+	
 		if (!StringUtils.isEmpty(entity.getHomepage())) 			
 			ldResource.putProperty(WebEntityFields.FOAF_HOMEPAGE, entity.getHomepage());
-		putMapOfReferencesProperty(WebEntityFields.EUROPEANA_ROLE, entity.getEuropeanaRole(), 
-				OrganizationSolrFields.EDM_EUROPEANA_ROLE, ldResource);
-		putMapOfStringProperty(WebEntityFields.ORGANIZATION_DOMAIN, 
-				entity.getOrganizationDomain(), OrganizationSolrFields.EDM_ORGANIZATION_DOMAIN, ldResource);
-//		putMapOfStringProperty(WebEntityFields.EDM_ORGANIZATION_SECTOR, 
-//				entity.getOrganizationSector(), WebEntityFields.EDM_ORGANIZATION_SECTOR, ldResource);
-//		putMapOfStringProperty(WebEntityFields.EDM_ORGANIZATION_SCOPE, 
-//				entity.getOrganizationScope(), WebEntityFields.EDM_ORGANIZATION_SCOPE, ldResource);
-		putMapOfStringProperty(WebEntityFields.GEO_LEVEL, 
-				entity.getGeographicLevel(), OrganizationSolrFields.EDM_GEOGRAPHIC_LEVEL, ldResource);
-		if (!StringUtils.isEmpty(entity.getStreetAddress())) 			
-			ldResource.putProperty(WebEntityFields.VCARD_STREET, entity.getStreetAddress());
-		if (!StringUtils.isEmpty(entity.getCity())) 			
-			ldResource.putProperty(WebEntityFields.VCARD_CITY, entity.getCity());
-		if (!StringUtils.isEmpty(entity.getPostalCode())) 			
-			ldResource.putProperty(WebEntityFields.VCARD_POSTAL_CODE, entity.getPostalCode());
+		
+		if(entity.getPhone() != null)
+			putListProperty(WebEntityFields.FOAF_PHONE, entity.getPhone(), jsonLdResource);
+		if(entity.getMbox() != null)
+			putListProperty(WebEntityFields.FOAF_MBOX, entity.getMbox(), jsonLdResource);
+				
+		if(entity.getEuropeanaRole() != null){
+			//"en" is mandatory
+			List<String> europeanaRole = entity.getEuropeanaRole().get(OrganizationSolrFields.EUROPEANA_ROLE_EN);
+			putListProperty(WebEntityFields.EUROPEANA_ROLE, europeanaRole, ldResource);
+		}			
+		
+		if(entity.getOrganizationDomain() != null){
+			//"en" is mandatory
+			List<String> europeanaDomain = entity.getOrganizationDomain().get(OrganizationSolrFields.ORGANIZATION_DOMAIN_EN);
+			putListProperty(WebEntityFields.ORGANIZATION_DOMAIN, 
+					europeanaDomain, ldResource);	
+		}
+		
+		if(entity.getGeographicLevel() != null){
+			//"en" is mandatory
+			String geoLevel = entity.getGeographicLevel().get(OrganizationSolrFields.GEOGRAPHIC_LEVEL_EN);
+			ldResource.putProperty(WebEntityFields.GEOGRAPHIC_LEVEL, geoLevel);
+		}
+		
 		if (!StringUtils.isEmpty(entity.getCountry())) 			
-			ldResource.putProperty(WebEntityFields.VCARD_COUNTRY, entity.getCountry());
+			ldResource.putProperty(WebEntityFields.COUNTRY, entity.getCountry());
+		
+		putAddressProperty(entity, ldResource);
+				
+	}
+
+	private void putAddressProperty(Organization entity, JsonLdResource ldResource) {
+		
+		if(StringUtils.isEmpty(entity.getLocality()))
+			return;
+		
+		//build address object (the (json) value of the hasAddress property)
+		JsonLdPropertyValue vcardAddress = new JsonLdPropertyValue(); 
+		//id is mapped to rdf:about
+		vcardAddress.putProperty(new JsonLdProperty(WebEntityFields.ID, entity.getHasAddress()));
+		
+		if (!StringUtils.isEmpty(entity.getStreetAddress())) 			
+			vcardAddress.putProperty(
+					new JsonLdProperty(WebEntityFields.STREET_ADDRESS, entity.getStreetAddress()));
+		if (!StringUtils.isEmpty(entity.getLocality())) 			
+			vcardAddress.putProperty(
+					new JsonLdProperty(WebEntityFields.LOCALITY, entity.getLocality()));
+		if (!StringUtils.isEmpty(entity.getRegion())) 			
+			vcardAddress.putProperty(
+					new JsonLdProperty(WebEntityFields.REGION, entity.getRegion()));
+		if (!StringUtils.isEmpty(entity.getPostalCode())) 			
+			vcardAddress.putProperty(
+					new JsonLdProperty(WebEntityFields.POSTAL_CODE, entity.getPostalCode()));
+		if (!StringUtils.isEmpty(entity.getCountryName())) 			
+			vcardAddress.putProperty(
+					new JsonLdProperty(WebEntityFields.COUNTRY_NAME, entity.getCountryName()));
 		if (!StringUtils.isEmpty(entity.getPostBox())) 			
-			ldResource.putProperty(WebEntityFields.VCARD_POST_OFFICE_BOX, entity.getPostBox());
+			vcardAddress.putProperty(
+					new JsonLdProperty(WebEntityFields.POST_OFFICE_BOX, entity.getPostBox()));
+		
+		JsonLdProperty hasAddress = new JsonLdProperty(WebEntityFields.HAS_ADDRESS);
+		hasAddress.addValue(vcardAddress);
+		ldResource.putProperty(hasAddress);
 	}
 
 	private void putBaseEntityProperties(BaseEntity entity, JsonLdResource jsonLdResource) {
@@ -209,33 +261,4 @@ public class EuropeanaEntityLd extends JsonLd {
 	public JsonLdResource getLdResource() {
 		return ldResource;
 	}
-	
-
-//	/**
-//	 * TODO: move to json ld
-//	 * @param fieldName
-//	 * @param list
-//	 * @param jsonLdResource
-//	 */
-//	private void putDateList(String fieldName, List<Date> list, JsonLdResource jsonLdResource) {
-//		if (list != null) {
-//			List<String> stringList = convertDateListToStringList(list);
-//			putListProperty(fieldName, stringList, jsonLdResource);
-//		}
-//	}
-
-//	private List<String> convertDateListToStringList(List<Date> dateList) {
-//
-//		List<String> stringList = new ArrayList<String>();
-//
-//		// DateFormat simpleDateFormat = new SimpleDateFormat("yyyy");
-//		for (Object date : dateList) {
-//			stringList.add(date.toString());
-//			// for (Date date : dateList) {
-//			// stringList.add(simpleDateFormat.format(date));
-//		}
-//
-//		return stringList;
-//	}
-//	
 }

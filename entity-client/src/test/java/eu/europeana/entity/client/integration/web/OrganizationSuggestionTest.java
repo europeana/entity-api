@@ -1,4 +1,4 @@
-package eu.europeana.annotation.client.integration.web;
+package eu.europeana.entity.client.integration.web;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;

@@ -23,6 +23,12 @@
 			<groupId>at.ac.ait.ngcms</groupId>
 			<artifactId>annotation-ld</artifactId>
 			<version>${version.annotationLd}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>log4j</groupId>
+					<artifactId>log4j</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 
@@ -65,7 +71,13 @@
             <artifactId>apache-jena-libs</artifactId> 
             <type>pom</type>
             <version>2.13.0</version>
-        </dependency>
+            <exclusions>
+            	<exclusion>
+            		<groupId>log4j</groupId>
+            		<artifactId>log4j</artifactId>
+            	</exclusion>
+            </exclusions>
+		</dependency>
 						
 	</dependencies>
 </project>

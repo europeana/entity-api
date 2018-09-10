@@ -70,10 +70,8 @@ public class SearchController extends BaseRest {
 			EntityTypes[] entityTypes = getEntityTypesFromString(type);
 
 			// validate scope parameter
-			if (StringUtils.isNotBlank(scope) && !WebEntityConstants.PARAM_SCOPE_EUROPEANA.equalsIgnoreCase(scope))
-				throw new ParamValidationException("Invalid request parameter value! ",
-						WebEntityConstants.QUERY_PARAM_SCOPE, scope);
-
+			validateScopeParam(scope);
+			
 			//past parguage list
 			String[] requestedLanguages = getLanguageList(language);
 			
@@ -125,7 +123,7 @@ public class SearchController extends BaseRest {
 			@RequestParam(value = CommonApiConstants.QUERY_PARAM_PAGE, required = false, defaultValue = "0") int page,
 			@RequestParam(value = CommonApiConstants.QUERY_PARAM_PAGE_SIZE, required = false, defaultValue = ""
 					+ Query.DEFAULT_PAGE_SIZE) int pageSize,
-			@RequestParam(value = CommonApiConstants.QUERY_PARAM_PROFILE, required = false) SearchProfiles profile,
+			@RequestParam(value = CommonApiConstants.QUERY_PARAM_PROFILE, required = false) String profile,
 			HttpServletRequest request) throws HttpException {
 
 		try {
@@ -138,22 +136,31 @@ public class SearchController extends BaseRest {
 						CommonApiConstants.QUERY_PARAM_QUERY, queryString);
 
 			// validate scope parameter
-			if (StringUtils.isNotBlank(scope) && !WebEntityConstants.PARAM_SCOPE_EUROPEANA.equalsIgnoreCase(scope))
-				throw new ParamValidationException("Invalid request parameter value! ",
-						WebEntityConstants.QUERY_PARAM_SCOPE, scope);
+			scope = validateScopeParam(scope);
 			
 			// validate and convert type
 			EntityTypes[] entityTypes = getEntityTypesFromString(type);
 
 			//get language list
-			String[] preferredLanguages = getLanguageList(outLanguage);
+			String[] preferredLanguages = null;
+			if(outLanguage != null && !outLanguage.contains(WebEntityConstants.PARAM_LANGUAGE_ALL))
+				preferredLanguages = getLanguageList(outLanguage);
+			
+			SearchProfiles searchProfile = null;
+			if(profile != null){
+				if(!SearchProfiles.contains(profile))
+					throw new ParamValidationException(WebEntityConstants.QUERY_PARAM_TYPE, profile);
+				else
+					searchProfile = SearchProfiles.valueOf(profile.toLowerCase());
+			} 
 			
 			// perform search
 			Query searchQuery = buildSearchQuery(queryString, qf, facets, sort, page, pageSize, profile, retFields);
+
 			ResultSet<? extends Entity> results = entityService.search(searchQuery, preferredLanguages, entityTypes, scope);
 			ResultsPage<? extends Entity> resPage = buildResultsPage(searchQuery, results, request.getRequestURL(),
 					request.getQueryString());
-			String jsonLd = searializeResultsPage(resPage, profile);
+			String jsonLd = searializeResultsPage(resPage, searchProfile);
 
 			// build response
 			MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>(5);
@@ -179,6 +186,17 @@ public class SearchController extends BaseRest {
 		} catch (Exception e) {
 			throw new InternalServerException(e);
 		}
+	}
+
+	private String validateScopeParam(String scope) throws ParamValidationException {
+		if (StringUtils.isBlank(scope))
+			return null;
+				
+		if (!WebEntityConstants.PARAM_SCOPE_EUROPEANA.equalsIgnoreCase(scope))
+			throw new ParamValidationException(I18nConstants.INVALID_PARAM_VALUE,
+					WebEntityConstants.QUERY_PARAM_SCOPE, scope);
+		
+		return WebEntityConstants.PARAM_SCOPE_EUROPEANA;
 	}
 
 	private String searializeResultsPage(ResultsPage<? extends Entity> resPage, SearchProfiles profile)
@@ -288,7 +306,7 @@ public class SearchController extends BaseRest {
 		String sortField = null;
 		String sortOrder = null;
 		if (StringUtils.isNotBlank(sort)) {
-			String[] sorting = sort.split("+");
+			String[] sorting = StringUtils.split(sort, '+');
 			sortField = sorting[0];
 			if (sorting.length > 1)
 				sortOrder = sorting[1];
@@ -328,7 +346,7 @@ public class SearchController extends BaseRest {
 				entityTypes[i] = entityType;
 			}
 		} catch (UnsupportedEntityTypeException e) {
-			throw new ParamValidationException("Invalid request parameter value! ", WebEntityConstants.QUERY_PARAM_TYPE,
+			throw new ParamValidationException(I18nConstants.INVALID_PARAM_VALUE, WebEntityConstants.QUERY_PARAM_TYPE,
 					typeAsString);
 		}
 

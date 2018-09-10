@@ -4,7 +4,8 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.ResponseEntity;
 
 import com.google.gson.Gson;
@@ -20,7 +21,7 @@ public class BaseApiConnection {
 	private String apiKey;
 	private String entityServiceUri = "";
 	private HttpConnection httpConnection = new HttpConnection();
-	Logger logger = Logger.getLogger(getClass().getName());
+	Logger logger = LogManager.getLogger(getClass().getName());
 
 	private Gson gson;
 

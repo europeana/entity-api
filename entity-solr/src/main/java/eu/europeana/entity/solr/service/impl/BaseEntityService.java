@@ -17,7 +17,7 @@ import org.apache.solr.common.SolrDocumentList;
 
 import eu.europeana.api.commons.definitions.search.FacetFieldView;
 import eu.europeana.api.commons.definitions.search.ResultSet;
-import eu.europeana.api.commons.definitions.search.impl.FacetFieldAdapter;
+import eu.europeana.api.commons.definitions.search.impl.FacetFieldViewImpl;
 import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException;
 import eu.europeana.entity.definitions.model.Agent;
 import eu.europeana.entity.definitions.model.Entity;
@@ -52,7 +52,7 @@ public abstract class BaseEntityService{
 		if (rsp.getFacetFields() != null) {
 			List<FacetFieldView> facetFields = new ArrayList<>(rsp.getFacetFields().size());
 			for (FacetField solrFacetField : rsp.getFacetFields()){
-				facetFields.add(new FacetFieldAdapter(solrFacetField));
+				facetFields.add(new FacetFieldViewImpl(solrFacetField));
 			}
 
 			resultSet.setFacetFields(facetFields);

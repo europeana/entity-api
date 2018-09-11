@@ -3,6 +3,7 @@ package eu.europeana.entity.web.controller;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +32,7 @@ import eu.europeana.api.commons.web.http.HttpHeaders;
 import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException;
 import eu.europeana.entity.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.search.SearchProfiles;
+import eu.europeana.entity.definitions.model.vocabulary.ConceptSolrFields;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
 import eu.europeana.entity.web.exception.InternalServerException;
@@ -291,6 +293,32 @@ public class SearchController extends BaseRest {
 	}
 
 	/**
+	 * This method enriches provided custom selection fields by required fields
+	 * if they are not already provided in input array.
+	 * @param inputArray
+	 * @return enriched array
+	 */
+	private String[] autocompleteCustomSelectionFieldsArray(String[] inputArray)  
+	{  
+		int ADD_LENGTH = 2;
+	    int i = inputArray.length;  
+	    int n = ADD_LENGTH+i;  
+	    String[] newArray = new String[n];  
+	    for (int cnt=0;cnt<inputArray.length;cnt++) {  
+	        newArray[cnt] = inputArray[cnt];  
+	    }  
+	    if (!ArrayUtils.contains(inputArray, ConceptSolrFields.ID)) {
+	        newArray[i] = ConceptSolrFields.ID;
+	        i = i+1;
+	    }
+	    if (!ArrayUtils.contains(inputArray, ConceptSolrFields.INTERNAL_TYPE)) {
+	        newArray[i] = ConceptSolrFields.INTERNAL_TYPE;
+	        i = i+1;
+	    }
+	    return newArray;  
+	}  
+
+	/**
 	 * @param queryString
 	 * @param qf
 	 * @param facets
@@ -317,6 +345,12 @@ public class SearchController extends BaseRest {
 		String profileName = null;
 		if (profile != null)
 			profileName = profile.name();
+
+		if (retFields != null) {
+			if (retFields.length > 0) {
+				retFields = autocompleteCustomSelectionFieldsArray(retFields);
+			}
+		}
 
 		Query query = builder.buildSearchQuery(queryString, qf, facets, retFields, sortField, sortOrder, page, pageSize,
 				maxPageSize, profileName);

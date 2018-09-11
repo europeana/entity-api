@@ -51,7 +51,10 @@ public class EntityResultsPageSerializer<T extends Entity> extends ResultsPageSe
 		//build property value for the given annotation
 		JsonLdPropertyValue propertyValue = new JsonLdPropertyValue();
 		Map<String, JsonLdProperty> propertyMap = propertyValue.getPropertyMap();
-		propertyMap.putAll(entityLd.getLdResource().getPropertyMap());
+		Map<String, JsonLdProperty> entityProps = entityLd.getLdResource().getPropertyMap();
+		//the context property must not be serialized for individual entities 
+		entityProps.remove(CommonLdConstants.AT_CONTEXT);
+		propertyMap.putAll(entityProps);
 		itemsProp.addValue(propertyValue);
 	}
 }

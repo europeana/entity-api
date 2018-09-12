@@ -80,8 +80,8 @@ public class EntityJsonComparator implements Comparator<Object> {
 		propOrderMap.put(WebEntityConstants.EXACT_MATCH, 340);
 		
 		//Organizations
-		propOrderMap.put(WebEntityConstants.DESCRIPTION, 350);
-		propOrderMap.put(WebEntityConstants.ACRONYM, 360);
+		propOrderMap.put(WebEntityConstants.ACRONYM, 350);
+		propOrderMap.put(WebEntityConstants.DESCRIPTION, 360);
 		propOrderMap.put(WebEntityConstants.FOAF_LOGO, 370);
 		propOrderMap.put(WebEntityConstants.EUROPEANA_ROLE, 380);
 		propOrderMap.put(WebEntityConstants.ORGANIZATION_DOMAIN, 390);
@@ -90,7 +90,9 @@ public class EntityJsonComparator implements Comparator<Object> {
 		propOrderMap.put(WebEntityConstants.FOAF_HOMEPAGE, 420);
 		propOrderMap.put(WebEntityConstants.FOAF_PHONE, 430);
 		propOrderMap.put(WebEntityConstants.FOAF_MBOX, 440);
-		propOrderMap.put(WebEntityConstants.HAS_ADDRESS, 450);
+		//Organization - relations
+		propOrderMap.put(WebEntityConstants.IDENTIFIER, 510);
+		propOrderMap.put(WebEntityConstants.HAS_ADDRESS, 520);
 		
 		//Agent - relations
 		propOrderMap.put(WebEntityConstants.HAS_PART, 460);
@@ -98,18 +100,17 @@ public class EntityJsonComparator implements Comparator<Object> {
 		propOrderMap.put(WebEntityConstants.HAS_MET, 480);
 		propOrderMap.put(WebEntityConstants.IS_RELATED_TO, 490);
 		propOrderMap.put(WebEntityConstants.WAS_PRESENT_AT, 500);
-		propOrderMap.put(WebEntityConstants.IDENTIFIER, 510);
 		//generic/other relations
 		propOrderMap.put(WebEntityConstants.IS_NEXT_IN_SEQUENCE, 520);
 		propOrderMap.put(WebEntityConstants.IN_SCHEME, 530);
 		propOrderMap.put(WebEntityConstants.SAME_AS, 540);
 		//address
 		propOrderMap.put(WebEntityConstants.STREET_ADDRESS, 1010);
-		propOrderMap.put(WebEntityConstants.LOCALITY, 1020);
-		propOrderMap.put(WebEntityConstants.REGION, 1030);
-		propOrderMap.put(WebEntityConstants.POSTAL_CODE, 1040);
-		propOrderMap.put(WebEntityConstants.COUNTRY_NAME, 1050);
-		propOrderMap.put(WebEntityConstants.POST_OFFICE_BOX, 1060);
+		propOrderMap.put(WebEntityConstants.POSTAL_CODE, 1020);
+		propOrderMap.put(WebEntityConstants.POST_OFFICE_BOX, 1030);
+		propOrderMap.put(WebEntityConstants.LOCALITY, 1040);
+		propOrderMap.put(WebEntityConstants.REGION, 1050);
+		propOrderMap.put(WebEntityConstants.COUNTRY_NAME, 1060);
 	}
 
 	@Override

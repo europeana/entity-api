@@ -1,5 +1,9 @@
 package eu.europeana.entity.web.controller;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
@@ -298,24 +302,18 @@ public class SearchController extends BaseRest {
 	 * @param inputArray
 	 * @return enriched array
 	 */
-	private String[] autocompleteCustomSelectionFieldsArray(String[] inputArray)  
+	private String[] buildCustomSelectionFields(String[] inputFields)  
 	{  
-		int ADD_LENGTH = 2;
-	    int i = inputArray.length;  
-	    int n = ADD_LENGTH+i;  
-	    String[] newArray = new String[n];  
-	    for (int cnt=0;cnt<inputArray.length;cnt++) {  
-	        newArray[cnt] = inputArray[cnt];  
-	    }  
-	    if (!ArrayUtils.contains(inputArray, ConceptSolrFields.ID)) {
-	        newArray[i] = ConceptSolrFields.ID;
-	        i = i+1;
-	    }
-	    if (!ArrayUtils.contains(inputArray, ConceptSolrFields.INTERNAL_TYPE)) {
-	        newArray[i] = ConceptSolrFields.INTERNAL_TYPE;
-	        i = i+1;
-	    }
-	    return newArray;  
+		List<String> fieldList = new ArrayList<String>();
+		String[] fixedFields = {ConceptSolrFields.ID, ConceptSolrFields.INTERNAL_TYPE};
+
+		Collections.addAll(fieldList, inputFields);
+		Collections.addAll(fieldList, fixedFields);
+		
+		String [] resultFields = new String[fieldList.size()];
+		fieldList.toArray(resultFields);
+		
+		return resultFields;
 	}  
 
 	/**
@@ -343,13 +341,12 @@ public class SearchController extends BaseRest {
 		QueryBuilder builder = new QueryBuilder();
 		int maxPageSize = Query.DEFAULT_MAX_PAGE_SIZE;
 		String profileName = null;
-		if (profile != null)
+		if (profile != null) {
 			profileName = profile.name();
-
+		}
+		
 		if (retFields != null) {
-			if (retFields.length > 0) {
-				retFields = autocompleteCustomSelectionFieldsArray(retFields);
-			}
+			retFields = buildCustomSelectionFields(retFields);
 		}
 
 		Query query = builder.buildSearchQuery(queryString, qf, facets, retFields, sortField, sortOrder, page, pageSize,

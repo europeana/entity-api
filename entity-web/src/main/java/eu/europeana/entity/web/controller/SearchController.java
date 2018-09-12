@@ -21,19 +21,14 @@ import eu.europeana.api.commons.definitions.search.Query;
 import eu.europeana.api.commons.definitions.search.ResultSet;
 import eu.europeana.api.commons.definitions.search.result.ResultsPage;
 import eu.europeana.api.commons.definitions.vocabulary.CommonApiConstants;
-import eu.europeana.api.commons.definitions.vocabulary.CommonLdConstants;
-import eu.europeana.api.commons.definitions.vocabulary.ContextTypes;
-import eu.europeana.api.commons.utils.ResultsPageSerializer;
 import eu.europeana.api.commons.web.exception.HttpException;
 import eu.europeana.api.commons.web.http.HttpHeaders;
-import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException;
 import eu.europeana.entity.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.search.SearchProfiles;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
 import eu.europeana.entity.web.exception.InternalServerException;
 import eu.europeana.entity.web.exception.ParamValidationException;
-import eu.europeana.entity.web.jsonld.EntityResultsPageSerializer;
 import eu.europeana.entity.web.jsonld.SuggestionSetSerializer;
 import eu.europeana.entity.web.model.view.EntityPreview;
 import eu.europeana.entity.web.service.EntityService;
@@ -173,17 +168,15 @@ public class SearchController extends BaseRest {
 		} catch (HttpException e) {
 			// avoid wrapping http exception
 			throw e;
-		} catch (RuntimeException e) {
-			// not found ..
-			// System.out.println(e);
-			throw new InternalServerException(e);
 		} catch (JsonProcessingException e) {
 			// not found ..
 			// System.out.println(e);
 			throw new InternalServerException(e);
-		} catch (Exception e) {
+		} catch (RuntimeException e) {
+			// not found ..
+			// System.out.println(e);
 			throw new InternalServerException(e);
-		}
+		} 
 	}
 	
 	

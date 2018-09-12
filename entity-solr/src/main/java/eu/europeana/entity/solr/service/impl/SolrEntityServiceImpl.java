@@ -1,5 +1,6 @@
 package eu.europeana.entity.solr.service.impl;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +11,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrQuery;
+import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.util.SimpleOrderedMap;
@@ -102,10 +104,11 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 			res = buildResultSet(rsp, outLanguage);
 
 			getLogger().debug("search obj res size: " + res.getResultSize());
-		} catch (Exception e) {
+		} catch (IOException | SolrServerException | RuntimeException e) {
 			throw new EntityRetrievalException(
-					"Unexpected exception occured when searching entities: " + searchQuery.toString(), e);
-		}
+					"Unexpected exception occured when searching entities: " + searchQuery.toString() + "" , e);
+		} 
+		
 
 		return res;
 	}
@@ -129,7 +132,7 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 
 			res = buildSuggestionSet(rsp, requestedLanguages, rows);
 			getLogger().debug("search obj res size: " + res.getResultSize());
-		} catch (Exception e) {
+		} catch (RuntimeException | SolrServerException | IOException e) {
 			throw new EntitySuggestionException(
 					"Unexpected exception occured when searching entities: " + searchQuery.toString(), e);
 		}
@@ -255,7 +258,7 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 				throw new EntityRetrievalException("Too many solr entries found for coref uri: " + uri
 						+ ". Expected 0..1, but found " + docs.getNumFound());
 
-		} catch (Exception e) {
+		} catch (RuntimeException | SolrServerException | IOException e) {
 			throw new EntityRuntimeException("Unexpected exception occured when searching Solr entities. ", e);
 		}
 

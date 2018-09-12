@@ -80,7 +80,7 @@ public class EntityJsonComparator implements Comparator<Object> {
 		propOrderMap.put(WebEntityConstants.EXACT_MATCH, 340);
 		
 		//Organizations
-		propOrderMap.put(WebEntityConstants.ACRONYM, 350);
+		propOrderMap.put(WebEntityConstants.ACRONYM, 65);
 		propOrderMap.put(WebEntityConstants.DESCRIPTION, 360);
 		propOrderMap.put(WebEntityConstants.FOAF_LOGO, 370);
 		propOrderMap.put(WebEntityConstants.EUROPEANA_ROLE, 380);

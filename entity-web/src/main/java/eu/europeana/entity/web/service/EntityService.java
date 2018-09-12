@@ -2,8 +2,10 @@ package eu.europeana.entity.web.service;
 
 import eu.europeana.api.commons.definitions.search.Query;
 import eu.europeana.api.commons.definitions.search.ResultSet;
+import eu.europeana.api.commons.definitions.search.result.ResultsPage;
 import eu.europeana.api.commons.web.exception.HttpException;
 import eu.europeana.entity.definitions.model.Entity;
+import eu.europeana.entity.definitions.model.search.SearchProfiles;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.web.model.view.EntityPreview;
 
@@ -52,5 +54,29 @@ public interface EntityService {
 	 * @throws HttpException
 	 */
 	String resolveByUri(String uri) throws HttpException;
+	
+	/**
+	 * @param queryString
+	 * @param qf
+	 * @param facets
+	 * @param sort
+	 * @param page
+	 * @param pageSize
+	 * @param profile
+	 * @param retFields
+	 * @return
+	 */
+	public Query buildSearchQuery(String queryString, String[] qf, String[] facets, String sort, int page,
+			int pageSize, SearchProfiles profile, String[] retFields);
 
+	/**
+	 * This method build the results page object for the search results retrieved with the given search query.
+	 * @param searchQuery
+	 * @param results
+	 * @param requestUrl
+	 * @param reqParams
+	 * @return
+	 */
+	public <T extends Entity> ResultsPage<T> buildResultsPage(Query searchQuery, ResultSet<T> results,
+			StringBuffer requestUrl, String reqParams);
 }

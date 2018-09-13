@@ -86,13 +86,15 @@ public abstract class BaseRest{
 	}
 
 	/**
-	 * This method splits the list of languages provided as URL parameter into a String array
-	 * @param requestedLanguages
+	 * This method splits the list of values provided as concatenated string to the corresponding array representation 
+	 * @param requestParam
 	 * @return
 	 */
-	protected String[] getLanguageList(String requestedLanguages){
-		String[] languageArray = StringUtils.splitByWholeSeparator(requestedLanguages, ",");
-		return StringUtils.stripAll(languageArray);	
+	protected String[] toArray(String requestParam){
+		if(StringUtils.isEmpty(requestParam))
+			return null;
+		String[] array = StringUtils.splitByWholeSeparator(requestParam, ",");
+		return StringUtils.stripAll(array);	
 	}
 	
 	/**

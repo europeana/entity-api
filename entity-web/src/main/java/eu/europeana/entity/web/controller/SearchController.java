@@ -66,9 +66,7 @@ public class SearchController extends BaseRest {
 			validateScopeParam(scope);
 			
 			//past parguage list
-			String[] requestedLanguages = getLanguageList(language);
-			
-			//TODO:use buildSearchQuery method to build the query object at this stage already
+			String[] requestedLanguages = toArray(language);
 			
 			// perform search
 			ResultSet<? extends EntityPreview> results = entityService.suggest(text, requestedLanguages, entityTypes, scope, null,
@@ -107,8 +105,8 @@ public class SearchController extends BaseRest {
 			@RequestParam(value = CommonApiConstants.PARAM_WSKEY, required = false) String wskey,
 			@RequestParam(value = CommonApiConstants.QUERY_PARAM_QUERY) String queryString,
 			@RequestParam(value = CommonApiConstants.QUERY_PARAM_QF, required = false) String[] qf,
-			@RequestParam(value = WebEntityConstants.QUERY_PARAM_FL, required = false) String[] retFields,			
-			@RequestParam(value = CommonApiConstants.QUERY_PARAM_FACET, required = false) String[] facets,
+			@RequestParam(value = WebEntityConstants.QUERY_PARAM_FL, required = false) String fl,			
+			@RequestParam(value = CommonApiConstants.QUERY_PARAM_FACET, required = false) String facet,
 			@RequestParam(value = CommonApiConstants.QUERY_PARAM_LANG, required = false) String outLanguage,
 			@RequestParam(value = WebEntityConstants.QUERY_PARAM_TYPE, required = false, defaultValue = WebEntityConstants.PARAM_TYPE_ALL) String type,
 			@RequestParam(value = WebEntityConstants.QUERY_PARAM_SCOPE, required = false) String scope,
@@ -128,17 +126,18 @@ public class SearchController extends BaseRest {
 				throw new ParamValidationException(I18nConstants.EMPTY_PARAM_MANDATORY,
 						CommonApiConstants.QUERY_PARAM_QUERY, queryString);
 
-			// validate scope parameter
+			//process scope
 			scope = validateScopeParam(scope);
 			
-			// validate and convert type
+			//process type
 			EntityTypes[] entityTypes = getEntityTypesFromString(type);
 
-			//get language list
+			//process lang 
 			String[] preferredLanguages = null;
 			if(outLanguage != null && !outLanguage.contains(WebEntityConstants.PARAM_LANGUAGE_ALL))
-				preferredLanguages = getLanguageList(outLanguage);
+				preferredLanguages = toArray(outLanguage);
 			
+			//process profile
 			SearchProfiles searchProfile = null;
 			if(profile != null){
 				if(!SearchProfiles.contains(profile))
@@ -146,6 +145,12 @@ public class SearchController extends BaseRest {
 				else
 					searchProfile = SearchProfiles.valueOf(profile.toLowerCase());
 			} 
+			
+			//process fl
+			String[] retFields = toArray(fl);
+			
+			//process facet
+			String[] facets = toArray(facet);
 			
 			// perform search
 			Query searchQuery = entityService.buildSearchQuery(queryString, qf, facets, sort, page, pageSize, searchProfile, retFields);

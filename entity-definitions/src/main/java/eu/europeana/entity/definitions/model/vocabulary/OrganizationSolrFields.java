@@ -5,7 +5,6 @@ public interface OrganizationSolrFields extends AgentSolrFields{
 	public static final String EDM_ACRONYM = "edm_acronym";
 	public static final String EDM_ACRONYM_ALL = EDM_ACRONYM + ".*";
 	public static final String LABEL = "label";
-	public static final String DC_IDENTIFIER = "dc_identifier";
 	public static final String DC_DESCRIPTION = "dc_description";
 	public static final String FOAF_LOGO = "foaf_logo";
 	public static final String FOAF_HOMEPAGE = "foaf_homepage";

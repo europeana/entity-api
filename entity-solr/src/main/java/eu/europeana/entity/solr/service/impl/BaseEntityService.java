@@ -21,6 +21,7 @@ import eu.europeana.api.commons.definitions.search.impl.FacetFieldViewImpl;
 import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException;
 import eu.europeana.entity.definitions.model.Agent;
 import eu.europeana.entity.definitions.model.Entity;
+import eu.europeana.entity.definitions.model.Organization;
 import eu.europeana.entity.definitions.model.vocabulary.ConceptSolrFields;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.solr.model.factory.EntityObjectFactory;
@@ -94,6 +95,9 @@ public abstract class BaseEntityService{
 				break;//has only common language maps
 			case Timespan:
 				break;//not supported yet
+			case Organization:
+				 processSpecificLanguageMaps((Organization) entity, outLanguage);
+				 break;
 			case All:
 				break; //actually not possible at this stage
 			default:
@@ -134,7 +138,11 @@ public abstract class BaseEntityService{
 		filterLanguageMap(entity.getProfessionOrOccupation(), outLanguage);
 	}
 
-
+	void processSpecificLanguageMaps(Organization entity, String[] outLanguage) {
+		filterLanguageMap(entity.getAcronym(), outLanguage);
+		filterLanguageMap(entity.getDescription(), outLanguage);	
+	}
+	
 	public Logger getLog() {
 		return log;
 	}

@@ -28,7 +28,7 @@ public interface Organization extends Agent {
 	 * 
 	 * @return A language map containing the dcDescription information 
 	 */
-	Map<String, String> getDcDescription();
+	Map<String, String> getDescription();
 	
 	/**
 	 * Sets the (dc) descriptions for current organization
@@ -36,7 +36,7 @@ public interface Organization extends Agent {
 	 * @param prefLabel
 	 *            A Map<String,String> of dc descriptions (one per language)
 	 */
-	void setDcDescription(Map<String, String> prefLabel);
+	void setDescription(Map<String, String> description);
 	
 	/**
 	 * Retrieves the europeanaRole for an Organization Class (language,value)

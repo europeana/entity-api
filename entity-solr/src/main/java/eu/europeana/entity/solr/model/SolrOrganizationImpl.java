@@ -24,9 +24,9 @@ public class SolrOrganizationImpl extends BaseOrganization implements Organizati
 	}
 	
 	@Override
-	@Field(ConceptSolrFields.PREF_LABEL_ALL)
-	public void setDcDescription(Map<String, String> dcDescription) {
-		super.setDcDescription(dcDescription);
+	@Field(OrganizationSolrFields.DC_DESCRIPTION)
+	public void setDescription(Map<String, String> dcDescription) {
+		super.setDescription(dcDescription);
 	}
 	
 	@Override
@@ -71,18 +71,6 @@ public class SolrOrganizationImpl extends BaseOrganization implements Organizati
 	public void setGeographicLevel(Map<String, String> geographicLevel) {
 		super.setGeographicLevel(geographicLevel);
 	}
-
-//	@Override
-//	@Field(OrganizationSolrFields.EDM_ORGANIZATION_SCOPE_ALL)
-//	public void setOrganizationScope(Map<String, String> organizationScope) {
-//		super.setOrganizationScope(organizationScope);
-//	}
-
-//	@Override
-//	@Field(OrganizationSolrFields.EDM_ORGANIZATION_SECTOR_ALL)
-//	public void setOrganizationSector(Map<String, String> organizationSector) {
-//		super.setOrganizationSector(organizationSector);
-//	}
 
 	@Override
 	@Field(OrganizationSolrFields.ORGANIZATION_DOMAIN_ALL)

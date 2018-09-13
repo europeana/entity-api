@@ -12,7 +12,7 @@ import eu.europeana.entity.definitions.model.Organization;
  */
 public class BaseOrganization extends BaseAgent implements Organization {
 
-	private Map<String, String> dcDescription;
+	private Map<String, String> description;
 	private Map<String, List<String>> acronym;	
 	private String logo;
 	private String homepage;
@@ -36,13 +36,13 @@ public class BaseOrganization extends BaseAgent implements Organization {
 //	private Map<String, String> organizationSector;
 	
 	@Override
-	public Map<String, String> getDcDescription() {
-		return dcDescription;
+	public Map<String, String> getDescription() {
+		return description;
 	}
 
 	@Override
-	public void setDcDescription(Map<String, String> dcDescription) {
-		this.dcDescription = dcDescription;
+	public void setDescription(Map<String, String> dcDescription) {
+		this.description = dcDescription;
 	}
 	
 	@Override
@@ -174,22 +174,6 @@ public class BaseOrganization extends BaseAgent implements Organization {
 	public void setGeographicLevel(Map<String, String> geographicLevel) {
 		this.geographicLevel = geographicLevel;
 	}
-
-//	public Map<String, String> getOrganizationScope() {
-//		return organizationScope;
-//	}
-//
-//	public void setOrganizationScope(Map<String, String> organizationScope) {
-//		this.organizationScope = organizationScope;
-//	}
-
-//	public Map<String, String> getOrganizationSector() {
-//		return organizationSector;
-//	}
-//
-//	public void setOrganizationSector(Map<String, String> organizationSector) {
-//		this.organizationSector = organizationSector;
-//	}
 
 	@Override
 	public Map<String, List<String>> getOrganizationDomain() {

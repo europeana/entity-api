@@ -174,7 +174,7 @@ public class EuropeanaEntityLd extends JsonLd {
 		putBaseEntityProperties((BaseEntity)entity, jsonLdResource);
 		
 		// Organization properties
-		putMapOfStringProperty(WebEntityFields.DESCRIPTION, entity.getDcDescription(), OrganizationSolrFields.DC_DESCRIPTION, ldResource);
+		putMapOfStringProperty(WebEntityFields.DESCRIPTION, entity.getDescription(), OrganizationSolrFields.DC_DESCRIPTION, ldResource);
 		
 		putMapOfStringListProperty(WebEntityFields.ACRONYM, entity.getAcronym(), 
 				OrganizationSolrFields.EDM_ACRONYM, ldResource);		

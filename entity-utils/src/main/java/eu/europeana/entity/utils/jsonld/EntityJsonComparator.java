@@ -91,8 +91,7 @@ public class EntityJsonComparator implements Comparator<Object> {
 		propOrderMap.put(WebEntityConstants.FOAF_PHONE, 430);
 		propOrderMap.put(WebEntityConstants.FOAF_MBOX, 440);
 		//Organization - relations
-		propOrderMap.put(WebEntityConstants.IDENTIFIER, 510);
-		propOrderMap.put(WebEntityConstants.HAS_ADDRESS, 520);
+		propOrderMap.put(WebEntityConstants.HAS_ADDRESS, 510);
 		
 		//Agent - relations
 		propOrderMap.put(WebEntityConstants.HAS_PART, 460);
@@ -100,10 +99,12 @@ public class EntityJsonComparator implements Comparator<Object> {
 		propOrderMap.put(WebEntityConstants.HAS_MET, 480);
 		propOrderMap.put(WebEntityConstants.IS_RELATED_TO, 490);
 		propOrderMap.put(WebEntityConstants.WAS_PRESENT_AT, 500);
+		
 		//generic/other relations
-		propOrderMap.put(WebEntityConstants.IS_NEXT_IN_SEQUENCE, 520);
-		propOrderMap.put(WebEntityConstants.IN_SCHEME, 530);
-		propOrderMap.put(WebEntityConstants.SAME_AS, 540);
+		propOrderMap.put(WebEntityConstants.IDENTIFIER, 620);
+		propOrderMap.put(WebEntityConstants.IS_NEXT_IN_SEQUENCE, 630);
+		propOrderMap.put(WebEntityConstants.IN_SCHEME, 640);
+		propOrderMap.put(WebEntityConstants.SAME_AS, 650);
 		//address
 		propOrderMap.put(WebEntityConstants.STREET_ADDRESS, 1010);
 		propOrderMap.put(WebEntityConstants.POSTAL_CODE, 1020);

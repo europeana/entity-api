@@ -66,7 +66,7 @@ public interface EntityService {
 	 * @param retFields
 	 * @return
 	 */
-	public Query buildSearchQuery(String queryString, String[] qf, String[] facets, String sort, int page,
+	public Query buildSearchQuery(String queryString, String[] qf, String[] facets, String[] sort, int page,
 			int pageSize, SearchProfiles profile, String[] retFields);
 
 	/**

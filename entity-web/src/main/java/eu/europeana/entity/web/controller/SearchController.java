@@ -152,8 +152,11 @@ public class SearchController extends BaseRest {
 			//process facet
 			String[] facets = toArray(facet);
 			
+			//process sort param
+			String[] sortCriteria = toArray(sort);
+			
 			// perform search
-			Query searchQuery = entityService.buildSearchQuery(queryString, qf, facets, sort, page, pageSize, searchProfile, retFields);
+			Query searchQuery = entityService.buildSearchQuery(queryString, qf, facets, sortCriteria, page, pageSize, searchProfile, retFields);
 			ResultSet<? extends Entity> results = entityService.search(searchQuery, preferredLanguages, entityTypes, scope);
 
 			ResultsPage<? extends Entity> resPage = entityService.buildResultsPage(searchQuery, results, request.getRequestURL(),

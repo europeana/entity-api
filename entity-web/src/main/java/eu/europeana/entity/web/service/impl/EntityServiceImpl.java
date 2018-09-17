@@ -138,17 +138,9 @@ public class EntityServiceImpl implements EntityService {
 	 * @param retFields
 	 * @return
 	 */
-	public Query buildSearchQuery(String queryString, String[] qf, String[] facets, String sort, int page, int pageSize,
+	public Query buildSearchQuery(String queryString, String[] qf, String[] facets, String[] sort, int page, int pageSize,
 			SearchProfiles profile, String[] retFields) {
-		String sortField = null;
-		String sortOrder = null;
-		if (StringUtils.isNotBlank(sort)) {
-			String[] sorting = StringUtils.split(sort, '+');
-			sortField = sorting[0];
-			if (sorting.length > 1)
-				sortOrder = sorting[1];
-		}
-
+	
 		QueryBuilder builder = new QueryBuilder();
 		int maxPageSize = Query.DEFAULT_MAX_PAGE_SIZE;
 		String profileName = null;
@@ -160,7 +152,7 @@ public class EntityServiceImpl implements EntityService {
 			retFields = buildCustomSelectionFields(retFields);
 		}
 
-		Query query = builder.buildSearchQuery(queryString, qf, facets, retFields, sortField, sortOrder, page, pageSize,
+		Query query = builder.buildSearchQuery(queryString, qf, facets, retFields, sort, page, pageSize,
 				maxPageSize, profileName);
 		return query;
 	}

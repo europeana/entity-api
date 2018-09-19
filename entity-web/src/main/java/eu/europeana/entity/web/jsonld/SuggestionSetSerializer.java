@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 
 import eu.europeana.api.common.config.I18nConstants;
 import eu.europeana.api.commons.definitions.search.ResultSet;
+import eu.europeana.api.commons.definitions.vocabulary.CommonLdConstants;
 import eu.europeana.api.commons.web.exception.HttpException;
 import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException;
 import eu.europeana.entity.definitions.model.ResourcePreview;
@@ -76,8 +77,7 @@ public class SuggestionSetSerializer extends JsonLd {
 
 		// TODO: update JSONLD output and add the @language:en to context
 
-		// String[] type = new String[] { "BasicContainer", "Collection" };
-		jsonLdResource.putProperty(WebEntityConstants.TYPE, WebEntityConstants.TYPE_BASIC_CONTAINER);
+		jsonLdResource.putProperty(WebEntityConstants.TYPE, CommonLdConstants.RESULT_PAGE);
 		jsonLdResource.putProperty(WebEntityConstants.TOTAL, getEntitySet().getResultSize());
 
 		serializeItems(jsonLdResource);

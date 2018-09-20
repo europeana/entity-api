@@ -17,8 +17,7 @@ public class EntityQueryBuilder extends QueryBuilder{
 		addQueryFilterParam(solrQuery, entityTypes, scope);
 		return solrQuery;
 	}
-	
-	
+		
 	private void addQueryFilterParam(SolrQuery query, EntityTypes[] entityTypes, String scope) {
 		
 		if(SolrEntityService.HANDLER_SUGGEST.equals(query.getRequestHandler()))
@@ -77,4 +76,8 @@ public class EntityQueryBuilder extends QueryBuilder{
 		
 	}
 
+	protected void verifySortField(String fieldName){
+		//TODO: implement when field list is specified
+	}
+	
 }

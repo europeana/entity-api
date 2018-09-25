@@ -77,7 +77,7 @@ public class SuggestionSetSerializer extends JsonLd {
 
 		// TODO: update JSONLD output and add the @language:en to context
 
-		jsonLdResource.putProperty(WebEntityConstants.TYPE, CommonLdConstants.RESULT_PAGE);
+		jsonLdResource.putProperty(WebEntityConstants.TYPE, CommonLdConstants.RESULT_LIST);
 		jsonLdResource.putProperty(WebEntityConstants.TOTAL, getEntitySet().getResultSize());
 
 		serializeItems(jsonLdResource);

@@ -50,7 +50,7 @@ public abstract class BaseRest{
 	protected String searializeResultsPage(ResultsPage<? extends Entity> resPage, SearchProfiles profile)
 			throws JsonProcessingException {
 		ResultsPageSerializer<? extends Entity> serializer = new EntityResultsPageSerializer<>(resPage,
-				ContextTypes.ENTITY.getJsonValue(), CommonLdConstants.RESULT_LIST);
+				ContextTypes.ENTITY.getJsonValue(), CommonLdConstants.RESULT_PAGE);
 		String profileVal = (profile == null)? null : profile.name(); 
 		return serializer.serialize(profileVal);
 	}

@@ -227,6 +227,7 @@ public class EuropeanaEntityLd extends JsonLd {
 		JsonLdPropertyValue vcardAddress = new JsonLdPropertyValue(); 
 		//id is mapped to rdf:about
 		vcardAddress.putProperty(new JsonLdProperty(WebEntityFields.ID, entity.getHasAddress()));
+		vcardAddress.putProperty(new JsonLdProperty(WebEntityFields.TYPE, WebEntityFields.ADDRESS_TYPE));
 		
 		if (!StringUtils.isEmpty(entity.getStreetAddress())) 			
 			vcardAddress.putProperty(

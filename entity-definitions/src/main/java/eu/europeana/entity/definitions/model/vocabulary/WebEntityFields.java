@@ -85,5 +85,6 @@ public interface WebEntityFields {
 	public static final String COUNTRY_NAME = "countryName";
 	public static final String POST_OFFICE_BOX = "postOfficeBox";
 	public static final String HAS_ADDRESS = "hasAddress";
+	public static final String ADDRESS_TYPE = "Address";
 
 }

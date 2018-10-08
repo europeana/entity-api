@@ -215,13 +215,13 @@ public abstract class BaseEvaluation {
 		switch(testCase){
 			case FIELD_SKOS_PREF_LABEL:
 				//?q=skos_prefLabel%3AMozart*&sort=derived_score+desc&rows=100&fl=skos_prefLabel%2C+payload%2C+id%2C+pagerank%2C+derived_score%2C+europeana_term_hits%2C+europeana_doc_count&wt=json&indent=true
-				searchParams = new String[]{CommonParams.SORT, "derived_score desc"};
+				searchParams = new String[]{CommonParams.SORT, "derived_score desc", "q.op", "AND"};
 				fields = new String[]{"id", "skos_prefLabel", "payload", "derived_score"};
 				solrQuery = buildSolrQuery(FIELD_SKOS_PREF_LABEL + ":(" +query + "*)", searchParams, fields);
 				break;
 			case FIELD_LABEL:
-				//?q=skos_prefLabel%3AMozart*&sort=derived_score+desc&rows=100&fl=skos_prefLabel%2C+payload%2C+id%2C+pagerank%2C+derived_score%2C+europeana_term_hits%2C+europeana_doc_count&wt=json&indent=true
-				searchParams = new String[]{CommonParams.SORT, "derived_score desc"};
+				//?q=label%3AMozart*&sort=derived_score+desc&rows=100&fl=skos_prefLabel%2C+payload%2C+id%2C+pagerank%2C+derived_score%2C+europeana_term_hits%2C+europeana_doc_count&wt=json&indent=true
+				searchParams = new String[]{CommonParams.SORT, "derived_score desc", "q.op", "AND"};
 				fields = new String[]{"id", "skos_prefLabel", "payload", "derived_score"};
 				solrQuery = buildSolrQuery(FIELD_LABEL + ":(" +query + "*)", searchParams, fields);
 				break;	

@@ -112,6 +112,17 @@ public class EntityJsonComparator implements Comparator<Object> {
 		propOrderMap.put(WebEntityConstants.LOCALITY, 1040);
 		propOrderMap.put(WebEntityConstants.REGION, 1050);
 		propOrderMap.put(WebEntityConstants.COUNTRY_NAME, 1060);
+		
+		//Page
+		propOrderMap.put(WebEntityConstants.PARAM_PART_OF, 2050);
+		propOrderMap.put(WebEntityConstants.PARAM_PART_OF_ID, 2060);
+		propOrderMap.put(WebEntityConstants.PARAM_PART_OF_TYPE, 2070);
+		propOrderMap.put(WebEntityConstants.PARAM_PART_OF_TOTAL, 2080);
+		propOrderMap.put(WebEntityConstants.PARAM_PREV, 2090);
+		propOrderMap.put(WebEntityConstants.PARAM_NEXT, 2100);
+		propOrderMap.put(WebEntityConstants.PARAM_FACETS, 2110);
+		propOrderMap.put(WebEntityConstants.ITEMS, 2120);
+		
 	}
 
 	@Override

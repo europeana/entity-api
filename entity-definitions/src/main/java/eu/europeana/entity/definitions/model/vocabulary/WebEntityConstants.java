@@ -53,5 +53,10 @@ public interface WebEntityConstants extends WebEntityFields{
 	public static final String ENTITY_CONTEXT = "http://www.europeana.eu/schemas/context/entity.jsonld";
 	public static final String TOTAL = "total";
 	
+	// Page fields
+	public static final String PART_OF = "partOf";
+	public static final String PREV = "prev";
+	public static final String NEXT = "next";
+	public static final String FACETS = "facets";
 	
 }

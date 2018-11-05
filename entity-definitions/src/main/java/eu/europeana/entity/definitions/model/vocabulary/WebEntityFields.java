@@ -87,15 +87,4 @@ public interface WebEntityFields {
 	public static final String HAS_ADDRESS = "hasAddress";
 	public static final String ADDRESS_TYPE = "Address";
 
-	// Page fields
-	public static final String ITEMS = "items";
-	public static final String TOTAL = "total";	
-	public static final String PARAM_PART_OF = "partOf";
-	public static final String PARAM_PART_OF_ID = "partOf.id";
-	public static final String PARAM_PART_OF_TYPE = "partOf.type";
-	public static final String PARAM_PART_OF_TOTAL = "partOf.total";
-	public static final String PARAM_PREV = "prev";
-	public static final String PARAM_NEXT = "next";
-	public static final String PARAM_FACETS = "facets";
-	
 }

@@ -115,9 +115,6 @@ public class EntityJsonComparator implements Comparator<Object> {
 		
 		//Page
 		propOrderMap.put(WebEntityConstants.PART_OF, 2050);
-		propOrderMap.put(WebEntityConstants.ID, 2060);
-		propOrderMap.put(WebEntityConstants.TYPE, 2070);
-		propOrderMap.put(WebEntityConstants.TOTAL, 2080);
 		propOrderMap.put(WebEntityConstants.PREV, 2090);
 		propOrderMap.put(WebEntityConstants.NEXT, 2100);
 		propOrderMap.put(WebEntityConstants.FACETS, 2110);

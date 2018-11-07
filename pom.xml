@@ -48,10 +48,6 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<version.java>1.8</version.java>
 		<version.junit>4.11</version.junit>
-		<!-- 
-		<version.corelib>2.1</version.corelib>
-		<version.log4j>1.2.12</version.log4j>
-		-->
 		
 		<version.entityApi>0.0.4-SNAPSHOT</version.entityApi>
 		<version.annotationLd>1.1.4-SNAPSHOT</version.annotationLd>
@@ -64,9 +60,6 @@
 		<version.apacheSolr>6.5.1</version.apacheSolr>
 		<version.servletJstl>1.2</version.servletJstl>
 		<version.mapstruct>1.2.0.Final</version.mapstruct>
-		<!-- 
-		<version.log4j>1.2.17</version.log4j>
-		 -->
 		<version.log4j2>2.9.1</version.log4j2>
 			
 	</properties>

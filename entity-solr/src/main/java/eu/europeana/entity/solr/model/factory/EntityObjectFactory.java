@@ -4,6 +4,7 @@ import eu.europeana.entity.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.solr.model.SolrAgentImpl;
 import eu.europeana.entity.solr.model.SolrConceptImpl;
+import eu.europeana.entity.solr.model.SolrOrganizationImpl;
 import eu.europeana.entity.solr.model.SolrPlaceImpl;
 
 
@@ -44,6 +45,9 @@ public class EntityObjectFactory extends AbstractModelObjectFactory<Entity, Enti
 		EntityTypes entityType = EntityTypes.valueOf(modelType.name());
 		
 		switch (entityType) {
+		case Organization:
+			ret = SolrOrganizationImpl.class;
+			break;
 		case Concept:
 			ret = SolrConceptImpl.class;
 			break;

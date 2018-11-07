@@ -3,6 +3,7 @@ package eu.europeana.entity.solr.model.factory;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.solr.view.AgentPreviewImpl;
 import eu.europeana.entity.solr.view.ConceptPreviewImpl;
+import eu.europeana.entity.solr.view.OrganizationPreviewImpl;
 import eu.europeana.entity.solr.view.PlacePreviewImpl;
 import eu.europeana.entity.solr.view.TimeSpanPreviewImpl;
 import eu.europeana.entity.web.model.view.EntityPreview;
@@ -45,6 +46,9 @@ public class EntityPreviewObjectFactory extends AbstractModelObjectFactory<Entit
 		EntityTypes entityType = EntityTypes.valueOf(modelType.name());
 		
 		switch (entityType) {
+		case Organization:
+			ret = OrganizationPreviewImpl.class;
+			break;
 		case Concept:
 			ret = ConceptPreviewImpl.class;
 			break;

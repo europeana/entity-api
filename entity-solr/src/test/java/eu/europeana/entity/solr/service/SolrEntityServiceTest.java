@@ -5,7 +5,8 @@ import static org.junit.Assert.assertTrue;
 
 import javax.annotation.Resource;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -25,7 +26,7 @@ public class SolrEntityServiceTest {
 	@Resource
 	SolrEntityService solrEntityService;
 
-	private final Logger log = Logger.getLogger(getClass());
+	private final Logger log = LogManager.getLogger(getClass());
 
 	@Test
 	public void testSearchByUrl() throws EntityRetrievalException, UnsupportedEntityTypeException {

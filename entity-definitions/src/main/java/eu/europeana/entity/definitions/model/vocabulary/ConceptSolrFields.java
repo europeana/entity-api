@@ -30,6 +30,8 @@ public interface ConceptSolrFields {
 	public static final String SAME_AS = "owl_sameAs";
 
 	public static final String ID = "id";
+	@Deprecated 
+	/** TODO: to be replaced by type */ 
 	public static final String INTERNAL_TYPE = "internal_type";
 	public static final String TIMESTAMP = "timestamp";
 		

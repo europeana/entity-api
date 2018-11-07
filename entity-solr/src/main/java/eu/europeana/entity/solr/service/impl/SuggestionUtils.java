@@ -9,7 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.JsonParser;
@@ -22,6 +23,7 @@ import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException
 import eu.europeana.entity.definitions.model.ResourcePreview;
 import eu.europeana.entity.definitions.model.ResourcePreviewImpl;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
+import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityFields;
 import eu.europeana.entity.solr.exception.EntitySuggestionException;
 import eu.europeana.entity.solr.model.factory.EntityPreviewObjectFactory;
@@ -29,12 +31,13 @@ import eu.europeana.entity.solr.model.vocabulary.SuggestionFields;
 import eu.europeana.entity.web.model.view.AgentPreview;
 import eu.europeana.entity.web.model.view.ConceptPreview;
 import eu.europeana.entity.web.model.view.EntityPreview;
+import eu.europeana.entity.web.model.view.OrganizationPreview;
 import eu.europeana.entity.web.model.view.PlacePreview;
 import eu.europeana.entity.web.model.view.TimeSpanPreview;
 
 public class SuggestionUtils {
 
-	private final Logger log = Logger.getLogger(getClass());
+	private final Logger log = LogManager.getLogger(getClass());
 
 	protected static ObjectMapper objectMapper = new ObjectMapper().setVisibility(JsonMethod.FIELD, Visibility.ANY)
 			.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -78,10 +81,13 @@ public class SuggestionUtils {
 		Map<String, String> prefLabel = getValuesAsLanguageMap(entityNode, SuggestionFields.PREF_LABEL, preferredLanguages);
 		if(!containsHighlightTerm(prefLabel, highlightTerm)){
 			String[] highlightLabel = getHighlightLabel(entityNode, SuggestionFields.PREF_LABEL, highlightTerm);
-			String matchedLanguage = highlightLabel[0];
-			prefLabel.put(matchedLanguage, highlightLabel[1]);
-			//#56 add the matched label to language list
-			preferredLanguages = updateLanguageList(preferredLanguages, matchedLanguage);
+			//currently missmatch between the pref label and alt label, edmAcronym
+			if(highlightLabel != null){
+				String matchedLanguage = highlightLabel[0];
+				prefLabel.put(matchedLanguage, highlightLabel[1]);
+				//#56 add the matched label to language list
+				preferredLanguages = updateLanguageList(preferredLanguages, matchedLanguage);
+			}
 		}
 		preview.setPreferredLabel(prefLabel);
 
@@ -105,8 +111,11 @@ public class SuggestionUtils {
 			return false;
 		
 		Collection<String> entrySet = prefLabels.values();
+		String label;
 		for (Iterator<String> iterator = entrySet.iterator(); iterator.hasNext();) {
-			if(iterator.next().contains(highlightTerm))
+			label = iterator.next(); 
+			//if highlighter doesn't work, the searched term is lowercase
+			if(label.contains(highlightTerm) || label.toLowerCase().contains(highlightTerm))
 				return true;
 		}
 		return false;
@@ -122,7 +131,8 @@ public class SuggestionUtils {
 			while (itr.hasNext()) {
 				currentEntry = itr.next();
 				value = currentEntry.getValue().asText();
-				if(value.contains(highlightTerm))
+				//if the highlighter doesn't work, use searched term ignoring case
+				if(value.toLowerCase().contains(highlightTerm))
 					return new String[]{currentEntry.getKey(), value};
 			}
 		}
@@ -152,11 +162,61 @@ public class SuggestionUtils {
 		return languageMap;
 	}
 
+//	/**
+//	 * This method addresses use case, when content of payload field
+//	 * is a JsonArray
+//	 * @param payloadNode The payload data
+//	 * @param key The name of the field
+//	 * @param preferredLanguages The list of possible languages
+//	 * @return
+//	 */
+//	private Map<String, List<String>> getValuesAsLanguageMapListFromJsonArray(
+//			JsonNode payloadNode, String key, List<String> preferredLanguages) {
+//
+//		Map<String, List<String>> languageMap = new HashMap<>();
+//
+//		for(String language : preferredLanguages) {
+//			JsonNode jsonNode = payloadNode.get(key + "." + language);
+//	
+//			if (jsonNode != null) {
+//				Iterator<JsonNode> itr = jsonNode.getElements();
+//				while (itr.hasNext()) {
+//					JsonNode currentEntry = itr.next();
+//					ArrayList<String> valueList = new ArrayList<String>();
+//					valueList.add(currentEntry.getTextValue());
+//					languageMap.put(language, valueList);
+//				}
+//			}
+//		}
+//		return languageMap;
+//	}
+
 	private Map<String, String> getValuesAsLanguageMap(JsonNode payloadNode, String key, List<String> preferredLanguages) {
 
 		JsonNode jsonNode = payloadNode.get(key);
 		return extractLanguageMap(jsonNode, preferredLanguages);
 	}
+
+	/**
+	 * This method addresses use case, when content of payload field
+	 * is a text node
+	 * @param payloadNode The payload data
+	 * @param key The name of the field
+	 * @param preferredLanguages The list of possible languages
+	 * @return
+	 */
+//	private Map<String, String> getValuesAsLanguageMapFromTextNode(
+//			JsonNode payloadNode, String key, List<String> preferredLanguages) {
+//
+//		Map<String, String> languageMap = new HashMap<>();
+//
+//		for(String language : preferredLanguages) {
+//			JsonNode jsonNode = payloadNode.get(key + "." + language);
+//			if (jsonNode != null)
+//				languageMap.put(language, jsonNode.getTextValue());
+//		}		
+//		return languageMap;
+//	}
 
 	private Map<String, String> extractLanguageMap(JsonNode jsonNode, List<String> preferredLanguages) {
 		Map<String, String> languageMap = new HashMap<>();
@@ -164,13 +224,14 @@ public class SuggestionUtils {
 		//TODO hack for places
 		String defaultLabel = null;
 		final String defaultKey = "";
+		boolean includeAllLanguages = preferredLanguages.contains(WebEntityConstants.PARAM_LANGUAGE_ALL);
 		
 		if (jsonNode != null) {
 			Iterator<Entry<String, JsonNode>> itr = jsonNode.getFields();
 			while (itr.hasNext()) {
 				Entry<String, JsonNode> currentEntry = itr.next();
-				//include only preferredLanguages
-				if(preferredLanguages.contains(currentEntry.getKey())){
+				//include only preferredLanguages, allow also All
+				if(includeAllLanguages || preferredLanguages.contains(currentEntry.getKey())){
 					if (currentEntry.getValue().asText() != null) {
 						languageMap.put(currentEntry.getKey(), currentEntry.getValue().asText());				
 					}
@@ -191,6 +252,9 @@ public class SuggestionUtils {
 	
 	private void setEntitySpecificProperties(EntityPreview preview, JsonNode payloadNode, List<String> preferredLanguages) {
 		switch (preview.getEntityType()) {
+		case Organization:
+			putOrganizationSpecificProperties((OrganizationPreview) preview, payloadNode, preferredLanguages);
+			break;
 		case Agent:
 			putAgentSpecificProperties((AgentPreview) preview, payloadNode, preferredLanguages);
 			break;
@@ -233,19 +297,23 @@ public class SuggestionUtils {
 
 	}
 
-//	private List<String> getValuesAsList(JsonNode payloadNode, String key) {
-//		
-//		JsonNode arrayNode = payloadNode.get(key);
-//		
-//		List<String> values = null;
-//		if (arrayNode != null) {
-//			values = new ArrayList<String>(arrayNode.size());
-//			for (JsonNode profession : arrayNode) {
-//				values.add(profession.toString());
-//			}
-//		}
-//		return values;
-//	}
+	private void putOrganizationSpecificProperties(
+			OrganizationPreview preview, JsonNode payloadNode, List<String> preferredLanguages) {
+
+		Map<String, List<String>> acronym = getValuesAsLanguageMapList(
+				payloadNode, WebEntityConstants.ACRONYM, preferredLanguages);
+		preview.setAcronym(acronym);
+		
+		//only english versions are available for now, and the structure is not a language map
+		JsonNode propertyNode = payloadNode.get(WebEntityFields.COUNTRY);
+		if (propertyNode != null)
+			preview.setCountry(propertyNode.getTextValue());
+		
+		//only english versions are available for now, and the structure is not a language map
+		propertyNode = payloadNode.get(WebEntityFields.ORGANIZATION_DOMAIN);
+		if (propertyNode != null)
+			preview.setOrganizationDomain(propertyNode.getTextValue());
+	}
 
 	private void putPlaceSpecificProperties(PlacePreview preview, JsonNode payloadNode, List<String> preferredLanguages) {
 		JsonNode propertyNode = payloadNode.get(SuggestionFields.IS_PART_OF);

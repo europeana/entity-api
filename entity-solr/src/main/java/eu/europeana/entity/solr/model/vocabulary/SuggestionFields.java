@@ -11,8 +11,6 @@ public interface SuggestionFields {
 	public static final String PREFIX_SUGGEST_ENTITY = "suggestEntity";
 	
 	public static final String FILTER_IN_EUROPEANA = "in_europeana";
-	public static final String PARAM_EUROPEANA = "europeana";
-	
 	
 	public static final String TERM = "term";
 	public static final String PAYLOAD = "payload";
@@ -33,7 +31,7 @@ public interface SuggestionFields {
 	public static final String HIDDEN_LABEL = WebEntityFields.HIDDEN_LABEL; // "hiddenLabel";
 	public static final String TYPE = WebEntityFields.TYPE; // "type";
 	public static final String PROFESSION_OR_OCCUPATION = WebEntityFields.PROFESSION_OR_OCCUPATION;
-	
+
 //TODO: remove .. not supported anymore	
 //	public static final String COUNTRY =  WebEntityFields.COUNTRY;
 	public static final String IS_PART_OF = WebEntityFields.IS_PART_OF;

@@ -5,6 +5,7 @@ import org.apache.solr.client.solrj.SolrQuery;
 import eu.europeana.api.commons.definitions.search.Query;
 import eu.europeana.api.commons.search.util.QueryBuilder;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
+import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
 import eu.europeana.entity.solr.model.vocabulary.SuggestionFields;
 import eu.europeana.entity.solr.service.SolrEntityService;
 
@@ -16,8 +17,7 @@ public class EntityQueryBuilder extends QueryBuilder{
 		addQueryFilterParam(solrQuery, entityTypes, scope);
 		return solrQuery;
 	}
-	
-	
+		
 	private void addQueryFilterParam(SolrQuery query, EntityTypes[] entityTypes, String scope) {
 		
 		if(SolrEntityService.HANDLER_SUGGEST.equals(query.getRequestHandler()))
@@ -26,8 +26,12 @@ public class EntityQueryBuilder extends QueryBuilder{
 			addFiltersToSearchQuery(query, entityTypes, scope);
 	}
 
+	private boolean hasScopeEuropeana(String scope) {
+		return WebEntityConstants.PARAM_SCOPE_EUROPEANA.equalsIgnoreCase(scope);
+	}
+	
 	private void addFiltersToSearchQuery(SolrQuery query, EntityTypes[] entityTypes, String scope) {
-		if(SuggestionFields.PARAM_EUROPEANA.equals(scope)) 
+		if(hasScopeEuropeana(scope)) 
 			query.addFilterQuery("suggest_filters:"+ SuggestionFields.FILTER_IN_EUROPEANA);
 		
 		String typeCondition = buildEntityTypeCondition(entityTypes);
@@ -37,29 +41,24 @@ public class EntityQueryBuilder extends QueryBuilder{
 	}
 
 	private void addFiltersToSuggestQuery(SolrQuery query, EntityTypes[] entityTypes, String scope) {
-		Boolean isScope = scope != null && !scope.equals("");
-		Boolean isSpecificEntityType = entityTypes != null && entityTypes.length > 0 && !EntityTypes.arrayHasValue(entityTypes, EntityTypes.All);
 		//build entityType filter
-		String entityTypeCondition = null;
-		if(isSpecificEntityType)
-			entityTypeCondition = buildEntityTypeCondition(entityTypes);
+		String entityTypeFilter = buildEntityTypeCondition(entityTypes);
 		
 		//build scopeFilter
-		String scopeFilter = null;
-		if(SuggestionFields.PARAM_EUROPEANA.equals(scope)) { 
-			scopeFilter = SuggestionFields.FILTER_IN_EUROPEANA;
-		}
-		
+		String scopeFilter = hasScopeEuropeana(scope)? SuggestionFields.FILTER_IN_EUROPEANA : null;
+				
 		//add filters to query
 		String filter = null;
-		if( !isSpecificEntityType && !isScope)
+		if(entityTypeFilter == null && scopeFilter == null)
 			return;
-		if(isSpecificEntityType && !isScope){
-			filter = entityTypeCondition;
-		}else if(!isSpecificEntityType && scopeFilter != null) 
-			filter = scopeFilter;
-		else if(isSpecificEntityType && isScope)
-			filter = entityTypeCondition + " AND " + scopeFilter;
+		//append entity type filter
+		if(entityTypeFilter != null)
+			filter = entityTypeFilter;
+		
+		//append scope filter
+		if(scopeFilter != null){
+			filter = (filter == null)? scopeFilter: " AND " + scopeFilter; 		
+		} 
 		
 		if(filter != null)
 			query.add("suggest.cfq", filter);
@@ -77,4 +76,8 @@ public class EntityQueryBuilder extends QueryBuilder{
 		
 	}
 
+	protected void verifySortField(String fieldName){
+		//TODO: implement when field list is specified
+	}
+	
 }

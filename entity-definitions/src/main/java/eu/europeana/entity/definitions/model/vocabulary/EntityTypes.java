@@ -4,6 +4,7 @@ import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException
 
 public enum EntityTypes implements EntityKeyword{
 
+	Organization("edm", "Organization", "http://www.europeana.eu/schemas/edm/Organization"), 
 	Concept("skos", "Concept", "https://www.w3.org/2009/08/skos-reference/skos.html#Concept"), 
 	Agent("edm", "Agent", "http://www.europeana.eu/schemas/edm/Agent"), 
 	Place("edm", "Place", "http://www.europeana.eu/schemas/edm/Place"), 

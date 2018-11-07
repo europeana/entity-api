@@ -19,14 +19,19 @@ public class ParamValidationException extends HttpException{
 //	String parameterValue;
 	
 	
+	public ParamValidationException(String parameterName, String parameterValue){
+		this(I18nConstants.INVALID_PARAM_VALUE, parameterName, parameterValue, null);
+	}
+	
 	public ParamValidationException(String i18nKey, String parameterName, String parameterValue){
 		this(i18nKey, parameterName, parameterValue, null);
 	}
 	public ParamValidationException(String i18nKey, String parameterName, String parameterValue, Throwable th){
 		this(i18nKey, parameterName, parameterValue, HttpStatus.BAD_REQUEST, th);
 	}
+	
 	public ParamValidationException(String i18nKey, String parameterName, String parameterValue, HttpStatus status, Throwable th){
-		this(I18nConstants.INVALID_PARAM_VALUE, I18nConstants.INVALID_PARAM_VALUE, new String[]{parameterValue}, status, th);
+		this(i18nKey, i18nKey, new String[]{parameterValue}, status, th);
 	}
 	
 	public ParamValidationException(String message, String i18nKey, String[] i18nParams, HttpStatus status, Throwable th){

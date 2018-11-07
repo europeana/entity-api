@@ -45,12 +45,9 @@ public class ResolveController extends BaseRest {
 			@PathVariable(value = WebEntityConstants.PATH_PARAM_IDENTIFIER) String identifier
 			) throws HttpException  {
 
-//		String action = "get:/entity/{type}/{namespace}/{identifier}";
-
-		try {
-			
+		try {			
 			validateApiKey(wskey);
-
+		
 			Entity entity = entityService.retrieveByUrl(type, namespace, identifier);
 			
 			EuropeanaEntityLd entityLd = new EuropeanaEntityLd(entity);
@@ -116,6 +113,5 @@ public class ResolveController extends BaseRest {
 		}
 					
 	}
-
 	
 }

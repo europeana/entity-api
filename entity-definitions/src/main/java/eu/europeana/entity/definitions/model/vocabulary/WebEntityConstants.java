@@ -16,8 +16,10 @@ public interface WebEntityConstants extends WebEntityFields{
 	public static final String QUERY_PARAM_SCOPE = "scope";
 	public static final String QUERY_PARAM_NAMESPACE = "namespace";
 	public static final String QUERY_PARAM_URI = "uri";
+	public static final String QUERY_PARAM_FL = "fl";
 	
 	public static final String PARAM_TYPE_ALL = "All";
+	public static final String PARAM_LANGUAGE_ALL = "All";
 	public static final String PARAM_LANGUAGE_EN = "en";
 	
 	public static final String PARAM_TYPE_AGENT = "agent";
@@ -51,5 +53,10 @@ public interface WebEntityConstants extends WebEntityFields{
 	public static final String ENTITY_CONTEXT = "http://www.europeana.eu/schemas/context/entity.jsonld";
 	public static final String TOTAL = "total";
 	
+	// Page fields
+	public static final String PART_OF = "partOf";
+	public static final String PREV = "prev";
+	public static final String NEXT = "next";
+	public static final String FACETS = "facets";
 	
 }

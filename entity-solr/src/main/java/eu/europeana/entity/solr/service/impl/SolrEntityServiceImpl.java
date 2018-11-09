@@ -2,6 +2,7 @@ package eu.europeana.entity.solr.service.impl;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +14,7 @@ import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.util.SimpleOrderedMap;
 
@@ -139,6 +141,25 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 		return res;
 	}
 
+	@Override
+	public ResultSet<? extends EntityPreview> suggestByLabel(String text, SolrQuery query, String[] requestedLanguages, EntityTypes[] entityTypes,
+			String scope, int rows) throws EntitySuggestionException {
+
+		ResultSet<? extends EntityPreview> res = null;
+		try {
+			getLogger().debug("invoke suggest handler: " + SolrEntityService.HANDLER_SUGGEST);
+			getLogger().debug("suggest query: " + query);
+			QueryResponse rsp = solrServer.query(query);
+
+			res = buildSuggestionSetForSearchByLabel(text, rsp, requestedLanguages, rows);
+			getLogger().debug("search obj res size: " + res.getResultSize());
+		} catch (RuntimeException | SolrServerException | IOException e) {
+			throw new EntitySuggestionException(
+					"Unexpected exception occured when searching entities: " + query.toString(), e);
+		}
+		return res;
+	}
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	protected <T extends EntityPreview> ResultSet<T> buildSuggestionSet(QueryResponse rsp, String[] requestedLanguages, int rows)
 			throws EntitySuggestionException {
@@ -169,6 +190,34 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 		return resultSet;
 	}
 
+	@SuppressWarnings({ "unchecked" })
+	protected <T extends EntityPreview> ResultSet<T> buildSuggestionSetForSearchByLabel(String searchedTerm,
+			QueryResponse rsp, String[] requestedLanguages, int rows)
+			throws EntitySuggestionException {
+
+		ResultSet<T> resultSet = new ResultSet<>();
+		List<T> resultList = new ArrayList<T>();
+
+		SolrDocumentList docList = rsp.getResults();		
+		if(docList != null){
+			T preview;
+			String payload;
+			List<String> payloadList = new ArrayList<String>();
+			for (SolrDocument solrDocument : docList) {
+				payloadList = (List<String>)solrDocument.getFieldValue(SuggestionFields.PAYLOAD);
+				payload = Arrays.toString(payloadList.toArray()); 
+				preview = (T) getSuggestionHelper().parsePayload(
+						payload.substring(1, payload.length()-1), requestedLanguages, searchedTerm);
+				resultList.add(preview);
+			}
+		}
+
+		resultSet.setResults(resultList);
+		resultSet.setResultSize(resultList.size());
+
+		return resultSet;
+	}
+	
 	private <T extends EntityPreview> List<T> extractBeans(String searchedTerm, List<SimpleOrderedMap<?>> suggestions, int rows,
 			String[] preferredLanguages) throws EntitySuggestionException {
 		List<T> beans = new ArrayList<T>();

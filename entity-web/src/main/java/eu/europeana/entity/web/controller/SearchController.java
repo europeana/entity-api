@@ -1,5 +1,8 @@
 package eu.europeana.entity.web.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
@@ -9,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -52,7 +56,8 @@ public class SearchController extends BaseRest {
 			@RequestParam(value = CommonApiConstants.QUERY_PARAM_LANGUAGE, defaultValue = WebEntityConstants.PARAM_LANGUAGE_EN) String language,
 			@RequestParam(value = WebEntityConstants.QUERY_PARAM_SCOPE, required = false) String scope,
 			@RequestParam(value = WebEntityConstants.QUERY_PARAM_TYPE, defaultValue = WebEntityConstants.PARAM_TYPE_ALL) String type,
-			@RequestParam(value = CommonApiConstants.QUERY_PARAM_ROWS, defaultValue = WebEntityConstants.PARAM_DEFAULT_ROWS) int rows)
+			@RequestParam(value = CommonApiConstants.QUERY_PARAM_ROWS, defaultValue = WebEntityConstants.PARAM_DEFAULT_ROWS) int rows,
+			@RequestParam(value = WebEntityConstants.ALGORITHM, required = false, defaultValue = WebEntityConstants.SUGGEST_ALGORITHM) String algorithm)
 			throws HttpException {
 
 		try {
@@ -70,7 +75,7 @@ public class SearchController extends BaseRest {
 			
 			// perform search
 			ResultSet<? extends EntityPreview> results = entityService.suggest(text, requestedLanguages, entityTypes, scope, null,
-					rows);
+					rows, algorithm);
 
 			// serialize results
 			SuggestionSetSerializer serializer = new SuggestionSetSerializer(results);
@@ -98,6 +103,14 @@ public class SearchController extends BaseRest {
 		}
 	}
 
+   @ModelAttribute("algorithmType")
+   public List<String> getAlgorithmTypeList() {
+      List<String> webFrameworkList = new ArrayList<String>();
+      webFrameworkList.add("Suggest");
+      webFrameworkList.add("SearchByLabel");
+      return webFrameworkList;
+   }
+	   	
 	@ApiOperation(value = "Search entitties for the given text query.", nickname = "search", response = java.lang.Void.class)
 	@RequestMapping(value = { "/entity/search", "/entity/search.jsonld" }, method = RequestMethod.GET, produces = {
 			HttpHeaders.CONTENT_TYPE_JSON_UTF8, HttpHeaders.CONTENT_TYPE_JSONLD_UTF8 })

@@ -59,4 +59,10 @@ public interface WebEntityConstants extends WebEntityFields{
 	public static final String NEXT = "next";
 	public static final String FACETS = "facets";
 	
+	// Algorithm types
+	public static final String ALGORITHM = "algorithm";
+	public static final String SUGGEST_ALGORITHM = "suggest";
+	public static final String SEARCH_ALGORITHM = "search";
+	public static final String FIELD_LABEL = "label";
+	
 }

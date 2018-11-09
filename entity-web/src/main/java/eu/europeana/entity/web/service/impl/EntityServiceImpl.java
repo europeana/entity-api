@@ -7,6 +7,8 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.solr.client.solrj.SolrQuery;
+import org.apache.solr.common.params.CommonParams;
 import org.springframework.http.HttpStatus;
 
 import eu.europeana.api.common.config.I18nConstants;
@@ -23,6 +25,7 @@ import eu.europeana.entity.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.search.SearchProfiles;
 import eu.europeana.entity.definitions.model.vocabulary.ConceptSolrFields;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
+import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
 import eu.europeana.entity.solr.exception.EntityRetrievalException;
 import eu.europeana.entity.solr.exception.EntitySuggestionException;
 import eu.europeana.entity.solr.service.SolrEntityService;
@@ -85,6 +88,22 @@ public class EntityServiceImpl implements EntityService {
 		return searchQuery;
 	}
 
+	/**
+	 * This method builds Solr query for search by label
+	 * @param query
+	 * @param searchParams
+	 * @param fields
+	 * @return The Solr query for search by label
+	 */
+	protected SolrQuery buildSolrQuery(String query, String[] searchParams, String[] fields) {
+		/**
+		 * Construct a SolrQuery
+		 */
+		SolrQuery solrQuery = new SolrQuery(CommonParams.Q, query, searchParams);		
+		solrQuery.setFields(fields);
+		return solrQuery;
+	}
+		
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -92,15 +111,39 @@ public class EntityServiceImpl implements EntityService {
 	 */
 	@Override
 	public ResultSet<? extends EntityPreview> suggest(String text, String[] language, EntityTypes[] internalEntityTypes,
-			String scope, String namespace, int rows) throws HttpException {
+			String scope, String namespace, int rows, String algorithm) throws HttpException {
 
+		SolrQuery solrQuery = null;
+		Query query = null;
+		
 		try {
-			Query query = buildSearchQuery(text, null, rows);
-			return solrEntityService.suggest(query, language, internalEntityTypes, scope, rows);
+			if (algorithm.equals(WebEntityConstants.SUGGEST_ALGORITHM)) {
+				query = buildSearchQuery(text, null, rows);
+				return solrEntityService.suggest(query, language, internalEntityTypes, scope, rows);
+			} else {
+				solrQuery = buildSuggestByLabelQuery(text);				
+				return solrEntityService.suggestByLabel(text, solrQuery, language, internalEntityTypes, scope, rows);
+			}
 		} catch (EntitySuggestionException e) {
 			throw new HttpException(e.getMessage(), I18nConstants.SERVER_ERROR_CANT_RETRIEVE_URI, null,
 					HttpStatus.INTERNAL_SERVER_ERROR, e);
 		}
+	}
+
+	/**
+	 * This method builds suggest query using 'searchByLabel' algorithm.
+	 * @param text
+	 * @return the Solr query
+	 */
+	private SolrQuery buildSuggestByLabelQuery(String text) {
+		SolrQuery solrQuery;
+		String[] searchParams;
+		String[] fields;
+		//?q=label%3AMozart*&sort=derived_score+desc&rows=100&fl=payload%2C+id%2C+derived_score&wt=json&indent=true&hl=true&hl.fl=label&hl.q=Mozart&hl.method=unified&hl.tag.pre=%3Cb%3E&&hl.tag.post=%3C/b%3E
+		searchParams = new String[]{CommonParams.SORT, "derived_score desc", "q.op", "AND"};
+		fields = new String[]{"id", "payload", "derived_score"};
+		solrQuery = buildSolrQuery(WebEntityConstants.FIELD_LABEL + ":(" + text + "*)", searchParams, fields);
+		return solrQuery;
 	}
 
 	@Override

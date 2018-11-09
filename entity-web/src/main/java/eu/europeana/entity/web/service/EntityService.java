@@ -21,13 +21,14 @@ public interface EntityService {
 	 * @param internalEntityType
 	 * @param namespace
 	 * @param rows
+	 * @param algorithm The default algorithm is "suggest" but other types are possible
 	 * @return
 	 * @throws HttpException
 	 * 
 	 * e.g. GET /entity/suggest?text=leonard&language=en
 	 */
 	ResultSet<? extends EntityPreview> suggest(
-			String text, String[] language, EntityTypes[] internalEntityTypes, String scope, String namespace, int rows) throws HttpException;
+			String text, String[] language, EntityTypes[] internalEntityTypes, String scope, String namespace, int rows, String algorithm) throws HttpException;
 
 
 	/**

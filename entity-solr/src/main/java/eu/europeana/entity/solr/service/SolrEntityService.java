@@ -1,5 +1,7 @@
 package eu.europeana.entity.solr.service;
 
+import org.apache.solr.client.solrj.SolrQuery;
+
 import eu.europeana.api.commons.definitions.search.Query;
 import eu.europeana.api.commons.definitions.search.ResultSet;
 import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException;
@@ -52,6 +54,18 @@ public interface SolrEntityService {
 	 * @throws EntitySuggestionException 
 	 */
 	public ResultSet<? extends EntityPreview> suggest(Query searchQuery, String[] requestedLanguages, EntityTypes[] entityTypes, String scope,  int rows) throws EntitySuggestionException;
+
+	/**
+	 * This method retrieves available Entities that meet the query criteria using search by label algorithm
+	 * @param searchQuery The query text
+	 * @param searchQuery The search query
+	 * @param requestedLanguages
+	 * @param rows
+	 * @return
+	 * @throws EntityRetrievalException 
+	 * @throws EntitySuggestionException 
+	 */
+	public ResultSet<? extends EntityPreview> suggestByLabel(String text, SolrQuery searchQuery, String[] requestedLanguages, EntityTypes[] entityTypes, String scope,  int rows) throws EntitySuggestionException;
 
 	
 //	/**

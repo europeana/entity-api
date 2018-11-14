@@ -145,11 +145,14 @@ public class SuggestionUtils {
 		JsonNode jsonNode = payloadNode.get(key);
 		Map<String, List<String>> languageMap = new HashMap<>();
 
+		boolean includeAllLanguages = preferredLanguages.contains(WebEntityConstants.PARAM_LANGUAGE_ALL);
+
 		if (jsonNode != null) {
 			Iterator<Entry<String, JsonNode>> itr = jsonNode.getFields();
 			while (itr.hasNext()) {
 				Entry<String, JsonNode> currentEntry = itr.next();
-				if(preferredLanguages.contains(currentEntry.getKey())){
+				//include only preferredLanguages, allow also All
+				if(includeAllLanguages || preferredLanguages.contains(currentEntry.getKey())){
 					ArrayList<String> valueList = new ArrayList<String>();
 					for (JsonNode value : currentEntry.getValue()) {
 							//need to extract text value, otherwise 

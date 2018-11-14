@@ -77,7 +77,7 @@ public class SuggestionUtils {
 		if (propertyNode != null)
 			preview.setDepiction(propertyNode.getTextValue());
 		
-			
+		//filter prefLabels to keep only prefered languages 	
 		Map<String, String> prefLabel = getValuesAsLanguageMap(entityNode, SuggestionFields.PREF_LABEL, preferredLanguages);
 		if(!containsHighlightTerm(prefLabel, highlightTerm)){
 			String[] highlightLabel = getHighlightLabel(entityNode, SuggestionFields.PREF_LABEL, highlightTerm);
@@ -132,7 +132,7 @@ public class SuggestionUtils {
 				currentEntry = itr.next();
 				value = currentEntry.getValue().asText();
 				//if the highlighter doesn't work, use searched term ignoring case
-				if(value.toLowerCase().contains(highlightTerm))
+				if(value.contains(highlightTerm) || value.toLowerCase().contains(highlightTerm.toLowerCase()))
 					return new String[]{currentEntry.getKey(), value};
 			}
 		}

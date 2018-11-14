@@ -151,7 +151,7 @@ public class SuggestionUtils {
 			Iterator<Entry<String, JsonNode>> itr = jsonNode.getFields();
 			while (itr.hasNext()) {
 				Entry<String, JsonNode> currentEntry = itr.next();
-				//include only preferredLanguages, allow also All
+				// include only preferredLanguages, allow also All
 				if(includeAllLanguages || preferredLanguages.contains(currentEntry.getKey())){
 					ArrayList<String> valueList = new ArrayList<String>();
 					for (JsonNode value : currentEntry.getValue()) {

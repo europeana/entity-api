@@ -219,7 +219,7 @@ public class SuggestionSetSerializer extends JsonLd {
 
 	private void putOrganizationSpecificProperties(OrganizationPreview entityPreview, JsonLdPropertyValue entityPreviewPropValue) {
 		if (entityPreview.getAcronym() != null && !entityPreview.getAcronym().isEmpty())
-			entityPreviewPropValue.putProperty(buildMapProperty(WebEntityConstants.ACRONYM, entityPreview.getAcronym(), ""));
+			entityPreviewPropValue.putProperty(buildMapProperty(WebEntityConstants.ACRONYM, entityPreview.getAcronym(), null));
 
 		if (entityPreview.getCountry() != null)
 			entityPreviewPropValue

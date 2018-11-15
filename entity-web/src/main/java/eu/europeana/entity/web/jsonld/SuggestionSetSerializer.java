@@ -113,7 +113,9 @@ public class SuggestionSetSerializer extends JsonLd {
 		entityPreviewPropValue.putProperty(new JsonLdProperty(WebEntityConstants.ID, entityPreview.getEntityId()));
 		JsonLdProperty prefLabelProp = buildMapOfStringsProperty(WebEntityConstants.PREF_LABEL, entityPreview.getPreferredLabel(), 
 				"");
-		entityPreviewPropValue.putProperty(prefLabelProp);
+		if (prefLabelProp != null) {
+			entityPreviewPropValue.putProperty(prefLabelProp);
+		}
 		
 		// hiddenLabel
 		if(entityPreview.getHiddenLabel() != null && !entityPreview.getHiddenLabel().isEmpty()){

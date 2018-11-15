@@ -89,7 +89,11 @@ public class SuggestionUtils {
 				preferredLanguages = updateLanguageList(preferredLanguages, matchedLanguage);
 			}
 		}
-		preview.setPreferredLabel(prefLabel);
+		if (!prefLabel.isEmpty()) {
+			preview.setPreferredLabel(prefLabel);
+		} else {
+			log.error("PreferredLabel not found for entity: " + preview.getEntityId());
+		}
 
 		Map<String, List<String>> hiddenLabel = getValuesAsLanguageMapList(entityNode, SuggestionFields.HIDDEN_LABEL, preferredLanguages);
 		preview.setHiddenLabel(hiddenLabel);

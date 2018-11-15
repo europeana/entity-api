@@ -113,7 +113,9 @@ public class SuggestionSetSerializer extends JsonLd {
 		entityPreviewPropValue.putProperty(new JsonLdProperty(WebEntityConstants.ID, entityPreview.getEntityId()));
 		JsonLdProperty prefLabelProp = buildMapOfStringsProperty(WebEntityConstants.PREF_LABEL, entityPreview.getPreferredLabel(), 
 				"");
-		entityPreviewPropValue.putProperty(prefLabelProp);
+		if (prefLabelProp != null) {
+			entityPreviewPropValue.putProperty(prefLabelProp);
+		}
 		
 		// hiddenLabel
 		if(entityPreview.getHiddenLabel() != null && !entityPreview.getHiddenLabel().isEmpty()){
@@ -219,7 +221,7 @@ public class SuggestionSetSerializer extends JsonLd {
 
 	private void putOrganizationSpecificProperties(OrganizationPreview entityPreview, JsonLdPropertyValue entityPreviewPropValue) {
 		if (entityPreview.getAcronym() != null && !entityPreview.getAcronym().isEmpty())
-			entityPreviewPropValue.putProperty(buildMapProperty(WebEntityConstants.ACRONYM, entityPreview.getAcronym(), ""));
+			entityPreviewPropValue.putProperty(buildMapProperty(WebEntityConstants.ACRONYM, entityPreview.getAcronym(), null));
 
 		if (entityPreview.getCountry() != null)
 			entityPreviewPropValue

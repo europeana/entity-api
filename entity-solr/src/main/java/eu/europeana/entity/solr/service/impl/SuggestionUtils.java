@@ -77,7 +77,7 @@ public class SuggestionUtils {
 		if (propertyNode != null)
 			preview.setDepiction(propertyNode.getTextValue());
 		
-			
+		//filter prefLabels to keep only prefered languages 	
 		Map<String, String> prefLabel = getValuesAsLanguageMap(entityNode, SuggestionFields.PREF_LABEL, preferredLanguages);
 		if(!containsHighlightTerm(prefLabel, highlightTerm)){
 			String[] highlightLabel = getHighlightLabel(entityNode, SuggestionFields.PREF_LABEL, highlightTerm);
@@ -89,7 +89,11 @@ public class SuggestionUtils {
 				preferredLanguages = updateLanguageList(preferredLanguages, matchedLanguage);
 			}
 		}
-		preview.setPreferredLabel(prefLabel);
+		if (!prefLabel.isEmpty()) {
+			preview.setPreferredLabel(prefLabel);
+		} else {
+			log.error("PreferredLabel not found for entity: " + preview.getEntityId());
+		}
 
 		Map<String, List<String>> hiddenLabel = getValuesAsLanguageMapList(entityNode, SuggestionFields.HIDDEN_LABEL, preferredLanguages);
 		preview.setHiddenLabel(hiddenLabel);
@@ -132,7 +136,7 @@ public class SuggestionUtils {
 				currentEntry = itr.next();
 				value = currentEntry.getValue().asText();
 				//if the highlighter doesn't work, use searched term ignoring case
-				if(value.toLowerCase().contains(highlightTerm))
+				if(value.contains(highlightTerm) || value.toLowerCase().contains(highlightTerm.toLowerCase()))
 					return new String[]{currentEntry.getKey(), value};
 			}
 		}
@@ -145,11 +149,14 @@ public class SuggestionUtils {
 		JsonNode jsonNode = payloadNode.get(key);
 		Map<String, List<String>> languageMap = new HashMap<>();
 
+		boolean includeAllLanguages = preferredLanguages.contains(WebEntityConstants.PARAM_LANGUAGE_ALL);
+
 		if (jsonNode != null) {
 			Iterator<Entry<String, JsonNode>> itr = jsonNode.getFields();
 			while (itr.hasNext()) {
 				Entry<String, JsonNode> currentEntry = itr.next();
-				if(preferredLanguages.contains(currentEntry.getKey())){
+				// include only preferredLanguages, allow also All
+				if(includeAllLanguages || preferredLanguages.contains(currentEntry.getKey())){
 					ArrayList<String> valueList = new ArrayList<String>();
 					for (JsonNode value : currentEntry.getValue()) {
 							//need to extract text value, otherwise 

@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.codehaus.jackson.JsonFactory;
@@ -89,11 +90,18 @@ public class SuggestionUtils {
 				preferredLanguages = updateLanguageList(preferredLanguages, matchedLanguage);
 			}
 		}
-		if (!prefLabel.isEmpty()) {
-			preview.setPreferredLabel(prefLabel);
-		} else {
-			log.error("PreferredLabel not found for entity: " + preview.getEntityId());
-		}
+		//Fallback no pref label matched
+		if (prefLabel.isEmpty()) {
+			//no prefLabel was matched, the suggestion was based on the acronym
+			//#EA-1368 include all languages
+			log.error("Fallback, return all languages, no preferredLabel matched for entity: " + preview.getEntityId() 
+				+ ", using searched term: " + highlightTerm + ", and languages: " + StringUtils.join(preferredLanguages, ','));
+			
+			preferredLanguages.add(WebEntityConstants.PARAM_LANGUAGE_ALL);
+			prefLabel = getValuesAsLanguageMap(entityNode, SuggestionFields.PREF_LABEL, preferredLanguages);		
+		} 
+		
+		preview.setPreferredLabel(prefLabel);
 
 		Map<String, List<String>> hiddenLabel = getValuesAsLanguageMapList(entityNode, SuggestionFields.HIDDEN_LABEL, preferredLanguages);
 		preview.setHiddenLabel(hiddenLabel);

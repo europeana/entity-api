@@ -27,6 +27,7 @@ import eu.europeana.entity.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.search.SearchProfiles;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
+import eu.europeana.entity.solr.exception.EntityRetrievalException;
 import eu.europeana.entity.web.exception.InternalServerException;
 import eu.europeana.entity.web.exception.ParamValidationException;
 import eu.europeana.entity.web.jsonld.SuggestionSetSerializer;
@@ -180,6 +181,9 @@ public class SearchController extends BaseRest {
 			// not found ..
 			// System.out.println(e);
 			throw new InternalServerException(e);
+		} catch (EntityRetrievalException e) {
+			throw new ParamValidationException(I18nConstants.INVALID_FIELD_NAME,
+					WebEntityConstants.QUERY_PARAM_FIELD, e.getMessage());
 		} catch (RuntimeException e) {
 			// not found ..
 			// System.out.println(e);

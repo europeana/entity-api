@@ -14,6 +14,8 @@ public interface WebEntityConstants extends WebEntityFields{
 	
 	public static final String QUERY_PARAM_TYPE = "type";
 	public static final String QUERY_PARAM_SCOPE = "scope";
+	public static final String QUERY_PARAM_TEXT = "text";
+	public static final String QUERY_PARAM_ALGORITHM = "algorithm";
 	public static final String QUERY_PARAM_NAMESPACE = "namespace";
 	public static final String QUERY_PARAM_URI = "uri";
 	public static final String QUERY_PARAM_FL = "fl";
@@ -37,6 +39,7 @@ public interface WebEntityConstants extends WebEntityFields{
 	 * Solr fields
 	 */
 	public static final String SOLR_INTERNAL_TYPE = "internal_type";
+	public static final String FIELD_DELIMITER = ":";
 	
 	/**
 	 * Model attribute names

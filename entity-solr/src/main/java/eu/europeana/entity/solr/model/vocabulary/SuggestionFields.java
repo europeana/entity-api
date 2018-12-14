@@ -14,7 +14,9 @@ public interface SuggestionFields {
 	
 	public static final String TERM = "term";
 	public static final String PAYLOAD = "payload";
-	
+	public static final String HIGHLIGHT_START_MARKER = "<b>";
+	public static final String HIGHLIGHT_END_MARKER = "</b>";
+
 	//TODO: update to correct values from specs
 	public static final String TIME_SPAN_START = "lifespanStart";
 	public static final String TIME_SPAN_END = "lifespanEnd";

@@ -1,8 +1,5 @@
 package eu.europeana.entity.web.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
@@ -12,15 +9,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
+import eu.europeana.api.common.config.I18nConstants;
 import eu.europeana.api.common.config.swagger.SwaggerSelect;
-import eu.europeana.api.commons.config.i18n.I18nConstants;
 import eu.europeana.api.commons.definitions.search.Query;
 import eu.europeana.api.commons.definitions.search.ResultSet;
 import eu.europeana.api.commons.definitions.search.result.ResultsPage;
@@ -67,11 +63,17 @@ public class SearchController extends BaseRest {
 			// validate and convert type
 			EntityTypes[] entityTypes = getEntityTypesFromString(type);
 
+			// validate text parameter
+			validateTextParam(text);
+			
 			// validate scope parameter
 			validateScopeParam(scope);
 			
 			//past parguage list
 			String[] requestedLanguages = toArray(language);
+			
+			// validate algorithm parameter
+			validateAlgorithmParam(algorithm);
 			
 			// perform search
 			ResultSet<? extends EntityPreview> results = entityService.suggest(text, requestedLanguages, entityTypes, scope, null,
@@ -103,14 +105,6 @@ public class SearchController extends BaseRest {
 		}
 	}
 
-   @ModelAttribute("algorithmType")
-   public List<String> getAlgorithmTypeList() {
-      List<String> webFrameworkList = new ArrayList<String>();
-      webFrameworkList.add("Suggest");
-      webFrameworkList.add("SearchByLabel");
-      return webFrameworkList;
-   }
-	   	
 	@ApiOperation(value = "Search entitties for the given text query.", nickname = "search", response = java.lang.Void.class)
 	@RequestMapping(value = { "/entity/search", "/entity/search.jsonld" }, method = RequestMethod.GET, produces = {
 			HttpHeaders.CONTENT_TYPE_JSON_UTF8, HttpHeaders.CONTENT_TYPE_JSONLD_UTF8 })

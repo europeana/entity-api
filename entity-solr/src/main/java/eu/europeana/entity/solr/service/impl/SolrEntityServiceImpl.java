@@ -2,7 +2,6 @@ package eu.europeana.entity.solr.service.impl;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -147,7 +146,7 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 
 		ResultSet<? extends EntityPreview> res = null;
 		try {
-			getLogger().debug("invoke suggest handler: " + SolrEntityService.HANDLER_SUGGEST);
+			getLogger().debug("invoke select handler: " + SolrEntityService.HANDLER_SELECT);
 			getLogger().debug("suggest query: " + query);
 			QueryResponse rsp = solrServer.query(query);
 
@@ -197,17 +196,20 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 
 		ResultSet<T> resultSet = new ResultSet<>();
 		List<T> resultList = new ArrayList<T>();
-
+		
 		SolrDocumentList docList = rsp.getResults();		
 		if(docList != null){
 			T preview;
 			String payload;
+			String highlightTerm;
+			
 			List<String> payloadList = new ArrayList<String>();
-			for (SolrDocument solrDocument : docList) {
+			for (SolrDocument solrDocument : docList) {				
 				payloadList = (List<String>)solrDocument.getFieldValue(SuggestionFields.PAYLOAD);
-				payload = Arrays.toString(payloadList.toArray()); 
+				payload = payloadList.get(0).toString(); 
+				highlightTerm = getHighlightTerm(payload, searchedTerm, solrDocument.toString());
 				preview = (T) getSuggestionHelper().parsePayload(
-						payload.substring(1, payload.length()-1), requestedLanguages, searchedTerm);
+						payload, requestedLanguages, highlightTerm);
 				resultList.add(preview);
 			}
 		}
@@ -216,6 +218,29 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 		resultSet.setResultSize(resultList.size());
 
 		return resultSet;
+	}
+
+	/**
+	 * This method extracts highlight term from response string.
+	 * @param term The term extracted from payload
+	 * @param searchedTerm The searched term
+	 * @param responseStr The response string
+	 * @return highlight term
+	 * @throws EntitySuggestionException
+	 */
+	private String getHighlightTerm(String term, String searchedTerm, String responseStr) throws EntitySuggestionException {
+		String highlightTerm;
+		if (term == null){
+			throw new EntitySuggestionException("Search error, no term found in search response: " + responseStr);		 
+		} else if (!term.contains(SuggestionFields.HIGHLIGHT_START_MARKER)){
+			//highlighter doesn't work, use the searched term for language logic
+			highlightTerm = searchedTerm.toLowerCase();
+		} else{
+			int beginHighlight = term.indexOf(SuggestionFields.HIGHLIGHT_START_MARKER) + 3;
+			int endHighlight = term.indexOf(SuggestionFields.HIGHLIGHT_END_MARKER);
+			highlightTerm = term.substring(beginHighlight, endHighlight);
+		}
+		return highlightTerm;
 	}
 	
 	private <T extends EntityPreview> List<T> extractBeans(String searchedTerm, List<SimpleOrderedMap<?>> suggestions, int rows,

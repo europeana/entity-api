@@ -7,8 +7,6 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.solr.client.solrj.SolrQuery;
-import org.apache.solr.common.params.CommonParams;
 import org.springframework.http.HttpStatus;
 
 import eu.europeana.api.common.config.I18nConstants;
@@ -20,23 +18,23 @@ import eu.europeana.api.commons.definitions.search.result.impl.ResultsPageImpl;
 import eu.europeana.api.commons.definitions.vocabulary.CommonApiConstants;
 import eu.europeana.api.commons.search.util.QueryBuilder;
 import eu.europeana.api.commons.web.exception.HttpException;
-import eu.europeana.entity.definitions.exceptions.UnsupportedAlgorithmTypeException;
 import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException;
 import eu.europeana.entity.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.search.SearchProfiles;
 import eu.europeana.entity.definitions.model.vocabulary.ConceptSolrFields;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
-import eu.europeana.entity.definitions.model.vocabulary.SearchAlgorithmTypes;
+import eu.europeana.entity.definitions.model.vocabulary.SuggestAlgorithmTypes;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
 import eu.europeana.entity.solr.exception.EntityRetrievalException;
 import eu.europeana.entity.solr.exception.EntitySuggestionException;
 import eu.europeana.entity.solr.service.SolrEntityService;
+import eu.europeana.entity.web.exception.InternalServerException;
 import eu.europeana.entity.web.exception.ParamValidationException;
 import eu.europeana.entity.web.model.view.EntityPreview;
 import eu.europeana.entity.web.service.EntityService;
 
 public class EntityServiceImpl implements EntityService {
-
+	
 	public final String BASE_URL_DATA = "http://data.europeana.eu/";
 
 	@Resource
@@ -91,22 +89,6 @@ public class EntityServiceImpl implements EntityService {
 		return searchQuery;
 	}
 
-	/**
-	 * This method builds Solr query for search by label request method
-	 * @param query
-	 * @param searchParams
-	 * @param fields
-	 * @return The Solr query for search by label
-	 */
-	protected SolrQuery buildSolrQuery(String query, String[] searchParams, String[] fields) {
-		/**
-		 * Construct a SolrQuery
-		 */
-		SolrQuery solrQuery = new SolrQuery(CommonParams.Q, query, searchParams);		
-		solrQuery.setFields(fields);
-		return solrQuery;
-	}
-		
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -114,47 +96,29 @@ public class EntityServiceImpl implements EntityService {
 	 */
 	@Override
 	public ResultSet<? extends EntityPreview> suggest(String text, String[] language, EntityTypes[] internalEntityTypes,
-			String scope, String namespace, int rows, String algorithm) throws HttpException, ParamValidationException {
+			String scope, String namespace, int rows, SuggestAlgorithmTypes algorithm)
+			throws InternalServerException, ParamValidationException {
 
-		SolrQuery solrQuery = null;
 		Query query = null;
-		SearchAlgorithmTypes algorithmType = null;
-		
+		ResultSet<? extends EntityPreview> res;
 		try {
-			algorithmType = SearchAlgorithmTypes.getByName(algorithm);
-			
-			switch (algorithmType) {
-				case suggest:
-					query = buildSearchQuery(text, null, rows);
-					return solrEntityService.suggest(query, language, internalEntityTypes, scope, rows);
-				case searchByLabel:
-				default:
-					solrQuery = buildSuggestByLabelQuery(text);				
-					return solrEntityService.suggestByLabel(text, solrQuery, language, internalEntityTypes, scope, rows);
+			switch (algorithm) {
+			case suggest:
+				query = buildSearchQuery(text, null, rows);
+				res = solrEntityService.suggest(query, language, internalEntityTypes, scope, rows);
+				break;
+			case suggestByLabel:
+				res = solrEntityService.suggestByLabel(text, language, internalEntityTypes, scope, rows);
+				break;
+			default:
+				throw new ParamValidationException(WebEntityConstants.ALGORITHM, "" + algorithm);
+					
 			}
-		} catch (UnsupportedAlgorithmTypeException e) {
-			throw new ParamValidationException(I18nConstants.UNSUPPORTED_ALGORITHM_TYPE,
-					WebEntityConstants.QUERY_PARAM_ALGORITHM, algorithm);
 		} catch (EntitySuggestionException e) {
-			throw new HttpException(e.getMessage(), I18nConstants.SERVER_ERROR_CANT_RETRIEVE_URI, null,
-					HttpStatus.INTERNAL_SERVER_ERROR, e);
+			throw new InternalServerException(e);
 		}
-	}
-
-	/**
-	 * This method builds suggest query using 'searchByLabel' algorithm.
-	 * @param text
-	 * @return the Solr query
-	 */
-	private SolrQuery buildSuggestByLabelQuery(String text) {
-		SolrQuery solrQuery;
-		String[] searchParams;
-		String[] fields;
-		//?q=label%3AMozart*&sort=derived_score+desc&rows=100&fl=payload%2C+id%2C+derived_score&wt=json&indent=true&hl=true&hl.fl=label&hl.q=Mozart&hl.method=unified&hl.tag.pre=%3Cb%3E&&hl.tag.post=%3C/b%3E
-		searchParams = new String[]{CommonParams.SORT, "derived_score desc"};
-		fields = new String[]{"id", "payload", "derived_score"};
-		solrQuery = buildSolrQuery(WebEntityConstants.FIELD_LABEL + ":(" + text + "*)", searchParams, fields);
-		return solrQuery;
+		
+		return res;
 	}
 
 	@Override
@@ -192,9 +156,9 @@ public class EntityServiceImpl implements EntityService {
 	 * @param retFields
 	 * @return
 	 */
-	public Query buildSearchQuery(String queryString, String[] qf, String[] facets, String[] sort, int page, int pageSize,
-			SearchProfiles profile, String[] retFields) {
-	
+	public Query buildSearchQuery(String queryString, String[] qf, String[] facets, String[] sort, int page,
+			int pageSize, SearchProfiles profile, String[] retFields) {
+
 		QueryBuilder builder = new QueryBuilder();
 		int maxPageSize = Query.DEFAULT_MAX_PAGE_SIZE;
 		String profileName = null;
@@ -206,14 +170,14 @@ public class EntityServiceImpl implements EntityService {
 			retFields = buildCustomSelectionFields(retFields);
 		}
 
-		Query query = builder.buildSearchQuery(queryString, qf, facets, retFields, sort, page, pageSize,
-				maxPageSize, profileName);
+		Query query = builder.buildSearchQuery(queryString, qf, facets, retFields, sort, page, pageSize, maxPageSize,
+				profileName);
 		return query;
 	}
 
 	/**
-	 * This method enriches provided custom selection fields by required fields
-	 * if they are not already provided in input array.
+	 * This method enriches provided custom selection fields by required fields if
+	 * they are not already provided in input array.
 	 * 
 	 * @param inputArray
 	 * @return enriched array
@@ -221,12 +185,12 @@ public class EntityServiceImpl implements EntityService {
 	protected String[] buildCustomSelectionFields(String[] inputFields) {
 		List<String> fieldList = new ArrayList<String>();
 		Collections.addAll(fieldList, inputFields);
-		//add mandatory fields
-		if(!fieldList.contains(ConceptSolrFields.ID))
+		// add mandatory fields
+		if (!fieldList.contains(ConceptSolrFields.ID))
 			fieldList.add(ConceptSolrFields.ID);
-		if(!fieldList.contains(ConceptSolrFields.INTERNAL_TYPE))
+		if (!fieldList.contains(ConceptSolrFields.INTERNAL_TYPE))
 			fieldList.add(ConceptSolrFields.INTERNAL_TYPE);
-		
+
 		return fieldList.toArray(new String[fieldList.size()]);
 	}
 

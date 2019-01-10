@@ -14,7 +14,7 @@ import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException
 import eu.europeana.entity.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.search.SearchProfiles;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
-import eu.europeana.entity.definitions.model.vocabulary.SearchAlgorithmTypes;
+import eu.europeana.entity.definitions.model.vocabulary.SuggestAlgorithmTypes;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
 import eu.europeana.entity.web.exception.ParamValidationException;
 import eu.europeana.entity.web.exception.authentication.EntityAuthenticationException;
@@ -141,16 +141,12 @@ public abstract class BaseRest{
 	 * @return validated algorithm
 	 * @throws ParamValidationException
 	 */
-	protected String validateAlgorithmParam(String algorithm) throws ParamValidationException {
-		if (StringUtils.isBlank(algorithm))
-			return null;
-				
-		if (!SearchAlgorithmTypes.suggest.name().equalsIgnoreCase(algorithm) &&
-				!SearchAlgorithmTypes.searchByLabel.name().equalsIgnoreCase(algorithm)) {
+	protected SuggestAlgorithmTypes validateAlgorithmParam(String algorithm) throws ParamValidationException {
+		try {
+			return SuggestAlgorithmTypes.getByName(algorithm);
+		} catch(Exception e) {
 			throw new ParamValidationException(I18nConstants.INVALID_PARAM_VALUE,
 					WebEntityConstants.QUERY_PARAM_ALGORITHM, algorithm);
 		}
-		
-		return WebEntityConstants.SUGGEST_ALGORITHM;
 	}
 }

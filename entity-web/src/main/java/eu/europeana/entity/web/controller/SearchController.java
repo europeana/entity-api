@@ -26,6 +26,7 @@ import eu.europeana.api.commons.web.http.HttpHeaders;
 import eu.europeana.entity.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.search.SearchProfiles;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
+import eu.europeana.entity.definitions.model.vocabulary.SuggestAlgorithmTypes;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
 import eu.europeana.entity.web.exception.InternalServerException;
 import eu.europeana.entity.web.exception.ParamValidationException;
@@ -53,7 +54,7 @@ public class SearchController extends BaseRest {
 			@RequestParam(value = WebEntityConstants.QUERY_PARAM_SCOPE, required = false) String scope,
 			@RequestParam(value = WebEntityConstants.QUERY_PARAM_TYPE, defaultValue = WebEntityConstants.PARAM_TYPE_ALL) String type,
 			@RequestParam(value = CommonApiConstants.QUERY_PARAM_ROWS, defaultValue = WebEntityConstants.PARAM_DEFAULT_ROWS) int rows,
-			@RequestParam(value = WebEntityConstants.ALGORITHM, required = false, defaultValue = WebEntityConstants.SUGGEST_ALGORITHM) String algorithm)
+			@RequestParam(value = WebEntityConstants.ALGORITHM, required = false, defaultValue = WebEntityConstants.SUGGEST_ALGORITHM_DEFAULT) String algorithm)
 			throws HttpException {
 
 		try {
@@ -73,11 +74,11 @@ public class SearchController extends BaseRest {
 			String[] requestedLanguages = toArray(language);
 			
 			// validate algorithm parameter
-			validateAlgorithmParam(algorithm);
+			SuggestAlgorithmTypes suggestType = validateAlgorithmParam(algorithm);
 			
 			// perform search
 			ResultSet<? extends EntityPreview> results = entityService.suggest(text, requestedLanguages, entityTypes, scope, null,
-					rows, algorithm);
+					rows, suggestType);
 
 			// serialize results
 			SuggestionSetSerializer serializer = new SuggestionSetSerializer(results);

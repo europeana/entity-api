@@ -2,13 +2,13 @@ package eu.europeana.entity.definitions.model.vocabulary;
 
 import eu.europeana.entity.definitions.exceptions.UnsupportedAlgorithmTypeException;
 
-public enum SearchAlgorithmTypes {
+public enum SuggestAlgorithmTypes {
 
-	suggest, searchByLabel;
+	suggest, suggestByLabel;
 	
-	public static SearchAlgorithmTypes getByName(String name) throws UnsupportedAlgorithmTypeException{
+	public static SuggestAlgorithmTypes getByName(String name) throws UnsupportedAlgorithmTypeException{
 
-		for(SearchAlgorithmTypes algorithmType : SearchAlgorithmTypes.values()){
+		for(SuggestAlgorithmTypes algorithmType : SuggestAlgorithmTypes.values()){
 			if(algorithmType.name().equalsIgnoreCase(name))
 				return algorithmType;
 		}

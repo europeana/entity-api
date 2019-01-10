@@ -64,8 +64,14 @@ public interface WebEntityConstants extends WebEntityFields{
 	
 	// Algorithm types
 	public static final String ALGORITHM = "algorithm";
-	public static final String SUGGEST_ALGORITHM = "suggest";
-	public static final String SEARCH_ALGORITHM = "search";
+	//see SuggestAlgorithmTypes.suggestByLabel
+	public static final String SUGGEST_ALGORITHM_DEFAULT = "suggestByLabel"; 
 	public static final String FIELD_LABEL = "label";
+	
+	// Query definitions
+	public static final String HIGHLIGHT_START_MARKER = "<b>";
+	public static final String HIGHLIGHT_END_MARKER = "</b>";
+	public static final String ROWS = "rows";
+
 	
 }

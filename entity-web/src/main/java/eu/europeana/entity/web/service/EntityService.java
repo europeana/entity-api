@@ -7,6 +7,7 @@ import eu.europeana.api.commons.web.exception.HttpException;
 import eu.europeana.entity.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.search.SearchProfiles;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
+import eu.europeana.entity.definitions.model.vocabulary.SuggestAlgorithmTypes;
 import eu.europeana.entity.web.model.view.EntityPreview;
 
 public interface EntityService {
@@ -28,7 +29,7 @@ public interface EntityService {
 	 * e.g. GET /entity/suggest?text=leonard&language=en
 	 */
 	ResultSet<? extends EntityPreview> suggest(
-			String text, String[] language, EntityTypes[] internalEntityTypes, String scope, String namespace, int rows, String algorithm) throws HttpException;
+			String text, String[] language, EntityTypes[] internalEntityTypes, String scope, String namespace, int rows, SuggestAlgorithmTypes algorithm) throws HttpException;
 
 
 	/**

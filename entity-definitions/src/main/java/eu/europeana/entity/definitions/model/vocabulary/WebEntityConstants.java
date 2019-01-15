@@ -13,6 +13,7 @@ public interface WebEntityConstants extends WebEntityFields{
 	public static final String PATH_PARAM_IDENTIFIER = "identifier";
 	
 	public static final String QUERY_PARAM_TYPE = "type";
+	public static final String QUERY_PARAM_FIELD = "field";
 	public static final String QUERY_PARAM_SCOPE = "scope";
 	public static final String QUERY_PARAM_TEXT = "text";
 	public static final String QUERY_PARAM_ALGORITHM = "algorithm";
@@ -21,7 +22,7 @@ public interface WebEntityConstants extends WebEntityFields{
 	public static final String QUERY_PARAM_FL = "fl";
 	
 	public static final String PARAM_TYPE_ALL = "All";
-	public static final String PARAM_LANGUAGE_ALL = "All";
+	public static final String PARAM_LANGUAGE_ALL = "all";
 	public static final String PARAM_LANGUAGE_EN = "en";
 	
 	public static final String PARAM_TYPE_AGENT = "agent";

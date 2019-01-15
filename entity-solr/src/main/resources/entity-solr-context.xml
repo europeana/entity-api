@@ -27,7 +27,7 @@
 
 	<!-- SERVICES -->
 	<!-- OVERRIDE FOR TESTING -->
-	<bean name="entity_solr_entity_service"
+	<bean id="solrEntityService" name="entity_solr_entity_service"
 		class="eu.europeana.entity.solr.service.impl.SolrEntityServiceImpl"
 		p:solrServer-ref="entity_solr_server" />
 

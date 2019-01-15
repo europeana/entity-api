@@ -14,6 +14,7 @@ import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException
 import eu.europeana.entity.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.search.SearchProfiles;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
+import eu.europeana.entity.definitions.model.vocabulary.SuggestAlgorithmTypes;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
 import eu.europeana.entity.web.exception.ParamValidationException;
 import eu.europeana.entity.web.exception.authentication.EntityAuthenticationException;
@@ -112,5 +113,40 @@ public abstract class BaseRest{
 					WebEntityConstants.QUERY_PARAM_SCOPE, scope);
 		
 		return WebEntityConstants.PARAM_SCOPE_EUROPEANA;
+	}
+
+	/**
+	 * This method verifies that the provided text parameter is a valid one.
+	 * It should not contain field names e.g. "who:mozart"
+	 * @param text
+	 * @return validated text 
+	 * @throws ParamValidationException
+	 */
+	protected String validateTextParam(String text) throws ParamValidationException {
+		if (StringUtils.isBlank(text)) {
+			return null;
+		}
+				
+		if (text.contains(WebEntityConstants.FIELD_DELIMITER)) {
+			throw new ParamValidationException(I18nConstants.INVALID_PARAM_VALUE,
+					WebEntityConstants.QUERY_PARAM_TEXT, text);
+		}
+		
+		return text;
+	}
+
+	/**
+	 * This method verifies if the provided algorithm parameter is a valid one
+	 * @param algorithm
+	 * @return validated algorithm
+	 * @throws ParamValidationException
+	 */
+	protected SuggestAlgorithmTypes validateAlgorithmParam(String algorithm) throws ParamValidationException {
+		try {
+			return SuggestAlgorithmTypes.getByName(algorithm);
+		} catch(Exception e) {
+			throw new ParamValidationException(I18nConstants.INVALID_PARAM_VALUE,
+					WebEntityConstants.QUERY_PARAM_ALGORITHM, algorithm);
+		}
 	}
 }

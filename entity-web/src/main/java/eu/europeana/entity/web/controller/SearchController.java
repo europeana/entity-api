@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
+import eu.europeana.api.common.config.I18nConstants;
 import eu.europeana.api.common.config.swagger.SwaggerSelect;
-import eu.europeana.api.commons.config.i18n.I18nConstants;
 import eu.europeana.api.commons.definitions.search.Query;
 import eu.europeana.api.commons.definitions.search.ResultSet;
 import eu.europeana.api.commons.definitions.search.result.ResultsPage;
@@ -26,6 +26,7 @@ import eu.europeana.api.commons.web.http.HttpHeaders;
 import eu.europeana.entity.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.search.SearchProfiles;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
+import eu.europeana.entity.definitions.model.vocabulary.SuggestAlgorithmTypes;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
 import eu.europeana.entity.solr.exception.EntityRetrievalException;
 import eu.europeana.entity.web.exception.InternalServerException;
@@ -53,7 +54,8 @@ public class SearchController extends BaseRest {
 			@RequestParam(value = CommonApiConstants.QUERY_PARAM_LANGUAGE, defaultValue = WebEntityConstants.PARAM_LANGUAGE_EN) String language,
 			@RequestParam(value = WebEntityConstants.QUERY_PARAM_SCOPE, required = false) String scope,
 			@RequestParam(value = WebEntityConstants.QUERY_PARAM_TYPE, defaultValue = WebEntityConstants.PARAM_TYPE_ALL) String type,
-			@RequestParam(value = CommonApiConstants.QUERY_PARAM_ROWS, defaultValue = WebEntityConstants.PARAM_DEFAULT_ROWS) int rows)
+			@RequestParam(value = CommonApiConstants.QUERY_PARAM_ROWS, defaultValue = WebEntityConstants.PARAM_DEFAULT_ROWS) int rows,
+			@RequestParam(value = WebEntityConstants.ALGORITHM, required = false, defaultValue = WebEntityConstants.SUGGEST_ALGORITHM_DEFAULT) String algorithm)
 			throws HttpException {
 
 		try {
@@ -63,15 +65,21 @@ public class SearchController extends BaseRest {
 			// validate and convert type
 			EntityTypes[] entityTypes = getEntityTypesFromString(type);
 
+			// validate text parameter
+			validateTextParam(text);
+			
 			// validate scope parameter
 			validateScopeParam(scope);
 			
 			//past parguage list
 			String[] requestedLanguages = toArray(language);
 			
+			// validate algorithm parameter
+			SuggestAlgorithmTypes suggestType = validateAlgorithmParam(algorithm);
+			
 			// perform search
 			ResultSet<? extends EntityPreview> results = entityService.suggest(text, requestedLanguages, entityTypes, scope, null,
-					rows);
+					rows, suggestType);
 
 			// serialize results
 			SuggestionSetSerializer serializer = new SuggestionSetSerializer(results);

@@ -6,6 +6,9 @@ public interface I18nConstants extends eu.europeana.api.commons.config.i18n.I18n
 	//replaced by generic error message
 	//static final String INVALID_APIKEY = "error.entity_invalid_apikey";
 
+	//400
+	static final String INVALID_FIELD_NAME = "error.invalid_field_name";
+	
 	//401
 	//replaced by generic error message
 	//static final String EMPTY_APIKEY = "error.entity_empty_apikey";

@@ -49,12 +49,12 @@ public class SolrEntityServiceTest {
 
 	private String RES_SUGGEST_BY_LABEL = "ResultSet [query=null, results=[entityId: http://data.europeana.eu/agent/base/146951\n" + 
 			"preferredLabel: {de=Wolfgang Amadeus Mozart, en=Wolfgang Amadeus Mozart, fr=Wolfgang Amadeus Mozart}, entityId: http://data.europeana.eu/agent/base/145380\n" + 
-			"preferredLabel: {de=Moses Mendelssohn, en=Moses Mendelssohn, fr=Moses Mendelssohn}, entityId: http://data.europeana.eu/concept/base/45\n" + 
-			"preferredLabel: {de=Mosaik, en=Mosaic, fr=Mosaïque}, entityId: http://data.europeana.eu/place/base/216282\n" + 
-			"preferredLabel: {de=Birma (Myanmar), en=Birma (Myanmar), fr=Birmanie}, entityId: http://data.europeana.eu/agent/base/147150\n" + 
+			"preferredLabel: {de=Moses Mendelssohn, en=Moses Mendelssohn, lv=Mozess Mendelsons, fr=Moses Mendelssohn}, entityId: http://data.europeana.eu/concept/base/45\n" + 
+			"preferredLabel: {de=Mosaik, lt=Mozaika, en=Mosaic, fr=Mosaïque}, entityId: http://data.europeana.eu/place/base/216282\n" + 
+			"preferredLabel: {de=Birma (Myanmar), ln=Mozambiki, en=Birma (Myanmar), fr=Birmanie}, entityId: http://data.europeana.eu/agent/base/147150\n" + 
 			"preferredLabel: {de=Leopold Mozart, en=Leopold Mozart, fr=Leopold Mozart}, entityId: http://data.europeana.eu/place/base/51\n" + 
-			"preferredLabel: {de=Mosambik, en=Mozambique, fr=Mozambique}, entityId: http://data.europeana.eu/place/base/134394\n" + 
-			"preferredLabel: {de=Woiwodschaft Ermland-Masuren, en=Warmian-Masurian Voivodeship, fr=Voïvodie de Varmie-Mazurie}, entityId: http://data.europeana.eu/agent/base/1325\n" + 
+			"preferredLabel: {de=Mosambik, en=Mozambique, fr=Mozambique, rn=Mozambiki}, entityId: http://data.europeana.eu/place/base/134394\n" + 
+			"preferredLabel: {de=Woiwodschaft Ermland-Masuren, lt=Varmijos Mozūrų vaivadija, en=Warmian-Masurian Voivodeship, fr=Voïvodie de Varmie-Mazurie}, entityId: http://data.europeana.eu/agent/base/1325\n" + 
 			"preferredLabel: {de=Mozart Camargo Guarnieri, en=Camargo Guarnieri, fr=Camargo Guarnieri}, entityId: http://data.europeana.eu/agent/base/55638\n" + 
 			"preferredLabel: {de=Leszek Możdżer, en=Leszek Możdżer, fr=Leszek Możdżer}, entityId: http://data.europeana.eu/agent/base/145487\n" + 
 			"preferredLabel: {de=Mozi, en=Mozi, fr=Mozi}], facetFields=null, resultSize=10, searchTime=0]";

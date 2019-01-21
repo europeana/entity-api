@@ -212,16 +212,13 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 			String payload;
 			String highlightTerm;
 			String id;
-			String term;
+			String highlights;
 			
-			List<String> payloadList = new ArrayList<String>();
 			for (SolrDocument solrDocument : docList) {				
 				id = (String)solrDocument.getFieldValue(SuggestionFields.ID);
-				term = highlightingResultMap.get(id);
-				payloadList = (List<String>)solrDocument.getFieldValue(SuggestionFields.PAYLOAD);
-				payload = payloadList.get(0);
-				
-				highlightTerm = getHighlightTerm(term, searchedTerm);
+				highlights = highlightingResultMap.get(id);
+				payload = (String)solrDocument.getFieldValue(SuggestionFields.PAYLOAD);				
+				highlightTerm = getHighlightTerm(highlights, searchedTerm);
 				preview = (T) getSuggestionHelper().parsePayload(
 						payload, requestedLanguages, highlightTerm);
 				resultList.add(preview);

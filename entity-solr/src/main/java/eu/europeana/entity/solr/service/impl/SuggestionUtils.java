@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -48,7 +49,16 @@ public class SuggestionUtils {
 		return log;
 	}
 
-	public EntityPreview parsePayload(String payload, String[] preferredLanguages, String highlightTerm) throws EntitySuggestionException {	
+	/**
+	 * This method parses a payload employing preferred languages and highlighted terms.
+	 * @param payload
+	 * @param preferredLanguages
+	 * @param highlightTerms
+	 * @return parsed payload
+	 * @throws EntitySuggestionException
+	 */
+	public EntityPreview parsePayload(String payload, String[] preferredLanguages, Set<String> highlightTerms) 
+			throws EntitySuggestionException {	
 		EntityPreview preview = null;
 		try {
 			JsonParser parser = jsonFactory.createJsonParser(payload);
@@ -59,7 +69,7 @@ public class SuggestionUtils {
 			//increase the size with 2 as additional languages may be added by language logic  
 			List<String> prefLanguagesList = new ArrayList<String>(preferredLanguages.length + 2);
 			prefLanguagesList.addAll(Arrays.asList(preferredLanguages));
-			preview = parseEntity(payloadNode, prefLanguagesList, highlightTerm);
+			preview = parseEntity(payloadNode, prefLanguagesList, highlightTerms);
 
 		} catch (Exception e) {
 			throw new EntitySuggestionException("Cannot parse suggestion payload: " + payload, e);
@@ -67,7 +77,16 @@ public class SuggestionUtils {
 		return preview;
 	}
 
-	private EntityPreview parseEntity(JsonNode entityNode,  List<String> preferredLanguages, String highlightTerm) throws UnsupportedEntityTypeException {
+	/**
+	 * This method parses entity employing preferred languages and highlighted terms.
+	 * @param entityNode
+	 * @param preferredLanguages
+	 * @param highlightTerms
+	 * @return parsed entity
+	 * @throws UnsupportedEntityTypeException
+	 */
+	private EntityPreview parseEntity(JsonNode entityNode,  List<String> preferredLanguages, Set<String> highlightTerms) 
+			throws UnsupportedEntityTypeException {
 		EntityPreview preview;
 		JsonNode propertyNode = entityNode.get(SuggestionFields.TYPE);
 		String entityType = propertyNode.getTextValue();
@@ -83,8 +102,8 @@ public class SuggestionUtils {
 		
 		//filter prefLabels to keep only prefered languages 	
 		Map<String, String> prefLabel = getValuesAsLanguageMap(entityNode, SuggestionFields.PREF_LABEL, preferredLanguages);
-		if(!containsHighlightTerm(prefLabel, highlightTerm)){
-			String[] highlightLabel = getHighlightLabel(entityNode, SuggestionFields.PREF_LABEL, highlightTerm);
+		if(!containsHighlightTerm(prefLabel, highlightTerms)){
+			String[] highlightLabel = getHighlightLabel(entityNode, highlightTerms);
 			//currently missmatch between the pref label and alt label, edmAcronym
 			if(highlightLabel != null){
 				//#56 add the matched label to language list
@@ -97,7 +116,8 @@ public class SuggestionUtils {
 		if (prefLabel.isEmpty()) {
 			//no prefLabel was matched, the suggestion was based on the acronym
 			log.error("Fallback, return all languages, no preferredLabel matched for entity: " + preview.getEntityId() 
-				+ ", using searched term: " + highlightTerm + ", and languages: " + StringUtils.join(preferredLanguages, ','));
+				+ ", using searched terms: " + StringUtils.join(highlightTerms, ", ") 
+				+ ", and languages: " + StringUtils.join(preferredLanguages, ','));
 			
 			//#EA-1368 include all languages
 			preferredLanguages.add(WebEntityConstants.PARAM_LANGUAGE_ALL);
@@ -115,34 +135,55 @@ public class SuggestionUtils {
 	}
 
 	
-	private boolean containsHighlightTerm(Map<String, String> prefLabels, String highlightTerm) {
+	/**
+	 * This method checks if highlight term from provided set is included in prefLabel.
+	 * @param prefLabels
+	 * @param highlightTerms
+	 * @return true if highlight term found in prefLabel
+	 */
+	private boolean containsHighlightTerm(Map<String, String> prefLabels, Set<String> highlightTerms) {
 		if(prefLabels == null || prefLabels.isEmpty())
 			return false;
 		
-		Collection<String> entrySet = prefLabels.values();
+		String highlightTerm;
 		String label;
-		for (Iterator<String> iterator = entrySet.iterator(); iterator.hasNext();) {
-			label = iterator.next(); 
-			//if highlighter doesn't work, the searched term is lowercase
-			if(label.contains(highlightTerm) || label.toLowerCase().contains(highlightTerm))
-				return true;
+		Collection<String> labels = prefLabels.values();
+		
+		for (Iterator<String> iterator = highlightTerms.iterator(); iterator.hasNext();) {
+			highlightTerm = (String) iterator.next();
+			
+			for (Iterator<String> labelIterator = labels.iterator(); labelIterator.hasNext();) {
+				label = labelIterator.next(); 
+				
+				if(label.contains(highlightTerm) || label.toLowerCase().contains(highlightTerm.toLowerCase()))
+					return true;
+			}
 		}
+		
 		return false;
 	}
 
-	private String[] getHighlightLabel(JsonNode entityNode, String key, String highlightTerm) {
-		JsonNode jsonNode = entityNode.get(key);
+	/**
+	 * If highlighted terms are not included in prefLabel we look in json node value.
+	 * @param entityNode
+	 * @param highlightTerms
+	 * @return highlighted term if it is included in json node value
+	 */
+	private String[] getHighlightLabel(JsonNode entityNode, Set<String> highlightTerms) {
+		JsonNode jsonNode = entityNode.get(SuggestionFields.PREF_LABEL);
 		if (jsonNode != null) {
 			Iterator<Entry<String, JsonNode>> itr = jsonNode.getFields();
 			Entry<String, JsonNode> currentEntry;
-			String value;
+			String label;
 			
 			while (itr.hasNext()) {
 				currentEntry = itr.next();
-				value = currentEntry.getValue().asText();
+				label = currentEntry.getValue().asText();
 				//if the highlighter doesn't work, use searched term ignoring case
-				if(value.contains(highlightTerm) || value.toLowerCase().contains(highlightTerm.toLowerCase()))
-					return new String[]{currentEntry.getKey(), value};
+				for (String highlightTerm : highlightTerms) {
+					if(label.toLowerCase().contains(highlightTerm.toLowerCase()))
+						return new String[]{currentEntry.getKey(), label};
+				}
 			}
 		}
 		return null;

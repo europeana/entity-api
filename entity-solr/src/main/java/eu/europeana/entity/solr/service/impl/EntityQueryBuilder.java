@@ -79,9 +79,11 @@ public class EntityQueryBuilder extends QueryBuilder{
 	 * @param entityTypes
 	 * @param scope
 	 * @param rows
-	 * @return
+	 * @param snippets
+	 * @return Solr query
 	 */
-	public SolrQuery buildSuggestByLabelQuery(String text, EntityTypes[] entityTypes, String scope, int rows) {
+	public SolrQuery buildSuggestByLabelQuery(String text, EntityTypes[] entityTypes, String scope, 
+			int rows, int snippets) {
 		
 		String query = OrganizationSolrFields.LABEL + ":(" + text + "*)";
 		SolrQuery solrQuery = new SolrQuery(query);
@@ -104,6 +106,9 @@ public class EntityQueryBuilder extends QueryBuilder{
 		solrQuery.set(HighlightParams.METHOD,"unified");
 		solrQuery.set(HighlightParams.TAG_PRE,WebEntityConstants.HIGHLIGHT_START_MARKER);
 		solrQuery.set(HighlightParams.TAG_POST,WebEntityConstants.HIGHLIGHT_END_MARKER);
+		if (snippets > 0) {
+			solrQuery.set(HighlightParams.SNIPPETS, snippets);
+		}		
 		solrQuery.set(HighlightParams.Q, query);
 		solrQuery.setFields(fields);
 		

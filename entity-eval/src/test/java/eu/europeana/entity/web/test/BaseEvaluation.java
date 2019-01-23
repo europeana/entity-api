@@ -7,9 +7,12 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.LineIterator;
@@ -169,7 +172,8 @@ public abstract class BaseEvaluation {
 		SimpleOrderedMap<?> suggestionsMap = (SimpleOrderedMap) suggest.get(SuggestionFields.PREFIX_SUGGEST_ENTITY);
 		List<SimpleOrderedMap<?>> suggestions = null;
 		String searchedTerm = ""; 
-				
+		Set<String> highlightTerms;
+		
 		if ((SimpleOrderedMap) suggestionsMap.getVal(0) != null) {
 			suggestions = (List<SimpleOrderedMap<?>>) ((SimpleOrderedMap) suggestionsMap.getVal(0))
 					.get(SuggestionFields.SUGGESTIONS);
@@ -183,7 +187,8 @@ public abstract class BaseEvaluation {
 			for (SimpleOrderedMap<?> entry : suggestions) {
 				// cut to rows
 				payload = (String) entry.get(SuggestionFields.PAYLOAD);
-				preview = getSuggestionHelper().parsePayload(payload, new String[]{"All"}, searchedTerm);
+				highlightTerms = new HashSet<>(Arrays.asList(searchedTerm));
+				preview = getSuggestionHelper().parsePayload(payload, new String[]{"All"}, highlightTerms);
 				res.add(preview.getEntityId());
 			}
 		}

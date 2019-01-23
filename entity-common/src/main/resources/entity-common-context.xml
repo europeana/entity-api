@@ -32,12 +32,11 @@
     <util:properties id="entityProperties" location="classpath:config/entity.properties" scope="singleton" />
      	
     <!--  configuration bean -->
-	<!-- 
+	 
 	<beans:bean id="configuration" class="eu.europeana.entity.config.EntityConfigurationImpl">
 		<beans:property name="entityPropertiesConfig" ref="entityProperties"/>		 	
     </beans:bean>
-     -->
-   
+       
    <beans:bean id="entity_i18n_messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
 		<beans:property name="basename" value="classpath:messages"/>	
 		<beans:property name="defaultEncoding" value="utf-8"/>	 	

@@ -53,7 +53,7 @@ public class SolrEntityServiceTest {
 			"preferredLabel: {de=Mosaik, lt=Mozaika, en=Mosaic, fr=Mosaïque}, entityId: http://data.europeana.eu/place/base/216282\n" + 
 			"preferredLabel: {de=Birma (Myanmar), ln=Mozambiki, en=Birma (Myanmar), fr=Birmanie}, entityId: http://data.europeana.eu/agent/base/147150\n" + 
 			"preferredLabel: {de=Leopold Mozart, en=Leopold Mozart, fr=Leopold Mozart}, entityId: http://data.europeana.eu/place/base/51\n" + 
-			"preferredLabel: {de=Mosambik, en=Mozambique, fr=Mozambique, rn=Mozambiki}, entityId: http://data.europeana.eu/place/base/134394\n" + 
+			"preferredLabel: {de=Mosambik, en=Mozambique, fr=Mozambique}, entityId: http://data.europeana.eu/place/base/134394\n" + 
 			"preferredLabel: {de=Woiwodschaft Ermland-Masuren, lt=Varmijos Mozūrų vaivadija, en=Warmian-Masurian Voivodeship, fr=Voïvodie de Varmie-Mazurie}, entityId: http://data.europeana.eu/agent/base/1325\n" + 
 			"preferredLabel: {de=Mozart Camargo Guarnieri, en=Camargo Guarnieri, fr=Camargo Guarnieri}, entityId: http://data.europeana.eu/agent/base/55638\n" + 
 			"preferredLabel: {de=Leszek Możdżer, en=Leszek Możdżer, fr=Leszek Możdżer}, entityId: http://data.europeana.eu/agent/base/145487\n" + 

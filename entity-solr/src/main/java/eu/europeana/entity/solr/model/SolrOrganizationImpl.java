@@ -97,6 +97,12 @@ public class SolrOrganizationImpl extends BaseOrganization implements Organizati
 	}
 	
 	@Override
+	@Field(ConceptSolrFields.DEPICTION)
+	public void setDepiction(String depiction) {
+		super.setDepiction(depiction);
+	}
+	
+	@Override
 	@Field(ConceptSolrFields.SAME_AS)
 	public void setSameAs(String[] sameAs) {
 		super.setSameAs(sameAs);

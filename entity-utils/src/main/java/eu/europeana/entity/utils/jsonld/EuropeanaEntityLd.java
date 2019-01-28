@@ -20,6 +20,7 @@ import eu.europeana.entity.definitions.model.vocabulary.AgentSolrFields;
 import eu.europeana.entity.definitions.model.vocabulary.ConceptSolrFields;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.definitions.model.vocabulary.OrganizationSolrFields;
+import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityFields;
 
 
@@ -248,11 +249,19 @@ public class EuropeanaEntityLd extends JsonLd {
 			vcardAddress.putProperty(
 					new JsonLdProperty(WebEntityFields.POST_OFFICE_BOX, entity.getPostBox()));
 		
+		if (!StringUtils.isEmpty(entity.getHasGeo())) 			
+			vcardAddress.putProperty(
+					new JsonLdProperty(WebEntityFields.HAS_GEO, getGeoUri(entity.getHasGeo())));
+		
 		JsonLdProperty hasAddress = new JsonLdProperty(WebEntityFields.HAS_ADDRESS);
 		hasAddress.addValue(vcardAddress);
 		ldResource.putProperty(hasAddress);
 	}
 
+	protected String getGeoUri(String latLon){
+		return WebEntityConstants.PROTOCOL_GEO + latLon;
+	}
+	
 	private void putBaseEntityProperties(BaseEntity entity, JsonLdResource jsonLdResource) {
 		// COMMON Entity PROPERTIES?
 		putStringArrayProperty(WebEntityFields.IS_PART_OF, entity.getIsPartOf(), jsonLdResource);

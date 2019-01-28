@@ -169,4 +169,12 @@ public class SolrOrganizationImpl extends BaseOrganization implements Organizati
 		super.setMbox(mbox);
 	}
 
+	@Override
+	@Field(OrganizationSolrFields.VCARD_HAS_GEO)
+	public void setHasGeo(String hasGeo) {
+		super.setHasGeo(hasGeo);
+	}
+
+	
+
 }

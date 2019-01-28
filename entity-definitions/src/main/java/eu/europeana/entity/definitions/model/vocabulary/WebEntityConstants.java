@@ -36,6 +36,9 @@ public interface WebEntityConstants extends WebEntityFields{
 
 	public static final String TYPE_BASIC_CONTAINER = "BasicContainer";
 	
+	/** URI constants */
+	public static final String PROTOCOL_GEO="geo:";
+	
 	/**
 	 * Solr fields
 	 */

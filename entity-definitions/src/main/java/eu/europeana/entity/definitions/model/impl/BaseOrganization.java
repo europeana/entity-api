@@ -31,9 +31,7 @@ public class BaseOrganization extends BaseAgent implements Organization {
 	private String postalCode;
 	private String countryName;
 	private String postBox;
-	
-//	private Map<String, String> organizationScope;
-//	private Map<String, String> organizationSector;
+	private String hasGeo;
 	
 	@Override
 	public Map<String, String> getDescription() {
@@ -205,4 +203,13 @@ public class BaseOrganization extends BaseAgent implements Organization {
 		this.logo = logo;
 	}
 
+	@Override
+	public String getHasGeo() {
+		return hasGeo;
+	}
+
+	@Override
+	public void setHasGeo(String hasGeo) {
+		this.hasGeo = hasGeo;
+	}
 }

@@ -37,3 +37,6 @@ solr.facetLimit=750
 
 #placeholder to store generation timestamp
 entity.properties.timestamp=-1
+
+# hl.snippets parameter in the url for highlighted terms
+entity.suggester.snippets=50

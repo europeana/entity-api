@@ -15,6 +15,8 @@ public interface WebEntityConstants extends WebEntityFields{
 	public static final String QUERY_PARAM_TYPE = "type";
 	public static final String QUERY_PARAM_FIELD = "field";
 	public static final String QUERY_PARAM_SCOPE = "scope";
+	public static final String QUERY_PARAM_TEXT = "text";
+	public static final String QUERY_PARAM_ALGORITHM = "algorithm";
 	public static final String QUERY_PARAM_NAMESPACE = "namespace";
 	public static final String QUERY_PARAM_URI = "uri";
 	public static final String QUERY_PARAM_FL = "fl";
@@ -34,10 +36,14 @@ public interface WebEntityConstants extends WebEntityFields{
 
 	public static final String TYPE_BASIC_CONTAINER = "BasicContainer";
 	
+	/** URI constants */
+	public static final String PROTOCOL_GEO="geo:";
+	
 	/**
 	 * Solr fields
 	 */
 	public static final String SOLR_INTERNAL_TYPE = "internal_type";
+	public static final String FIELD_DELIMITER = ":";
 	
 	/**
 	 * Model attribute names
@@ -59,5 +65,17 @@ public interface WebEntityConstants extends WebEntityFields{
 	public static final String PREV = "prev";
 	public static final String NEXT = "next";
 	public static final String FACETS = "facets";
+	
+	// Algorithm types
+	public static final String ALGORITHM = "algorithm";
+	//see SuggestAlgorithmTypes.suggestByLabel
+	public static final String SUGGEST_ALGORITHM_DEFAULT = "suggestByLabel"; 
+	public static final String FIELD_LABEL = "label";
+	
+	// Query definitions
+	public static final String HIGHLIGHT_START_MARKER = "<b>";
+	public static final String HIGHLIGHT_END_MARKER = "</b>";
+	public static final String ROWS = "rows";
+
 	
 }

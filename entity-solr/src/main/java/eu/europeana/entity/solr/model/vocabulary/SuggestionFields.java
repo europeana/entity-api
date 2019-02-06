@@ -14,7 +14,7 @@ public interface SuggestionFields {
 	
 	public static final String TERM = "term";
 	public static final String PAYLOAD = "payload";
-	
+
 	//TODO: update to correct values from specs
 	public static final String TIME_SPAN_START = "lifespanStart";
 	public static final String TIME_SPAN_END = "lifespanEnd";

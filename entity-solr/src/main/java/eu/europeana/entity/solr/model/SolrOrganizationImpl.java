@@ -97,6 +97,12 @@ public class SolrOrganizationImpl extends BaseOrganization implements Organizati
 	}
 	
 	@Override
+	@Field(ConceptSolrFields.DEPICTION)
+	public void setDepiction(String depiction) {
+		super.setDepiction(depiction);
+	}
+	
+	@Override
 	@Field(ConceptSolrFields.SAME_AS)
 	public void setSameAs(String[] sameAs) {
 		super.setSameAs(sameAs);
@@ -162,5 +168,13 @@ public class SolrOrganizationImpl extends BaseOrganization implements Organizati
 	public void setMbox(List<String> mbox) {
 		super.setMbox(mbox);
 	}
+
+	@Override
+	@Field(OrganizationSolrFields.VCARD_HAS_GEO)
+	public void setHasGeo(String hasGeo) {
+		super.setHasGeo(hasGeo);
+	}
+
+	
 
 }

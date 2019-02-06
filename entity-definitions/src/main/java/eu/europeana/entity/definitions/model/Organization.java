@@ -112,4 +112,8 @@ public interface Organization extends Agent {
 
 	List<String> getMbox();
 
+	void setHasGeo(String hasGeo);
+
+	String getHasGeo();
+
 }

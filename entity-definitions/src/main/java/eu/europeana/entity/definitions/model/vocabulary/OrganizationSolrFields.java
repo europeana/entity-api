@@ -28,6 +28,7 @@ public interface OrganizationSolrFields extends AgentSolrFields{
 	public static final String VCARD_REGION = "vcard_region.1";
 	public static final String VCARD_POST_OFFICE_BOX = "vcard_postOfficeBox.1";
 	public static final String VCARD_HAS_ADDRESS = "vcard_hasAddress.1";
+	public static final String VCARD_HAS_GEO = "vcard_hasGeo.1";
 	public static final String TIMESTAMP = "timestamp";
 	public static final String PAYLOAD = "payload";
 	

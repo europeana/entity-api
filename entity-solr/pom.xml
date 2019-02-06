@@ -34,6 +34,12 @@
 		</dependency>
 		
 		<dependency>
+			<groupId>eu.europeana.entity</groupId>
+			<artifactId>entity-common</artifactId>
+			<version>${version.entityApi}</version>
+		</dependency>
+		
+		<dependency>
 			<groupId>eu.europeana.api.commons</groupId>
 			<artifactId>commons-search</artifactId>
 			<version>${version.commonsApi}</version>

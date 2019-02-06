@@ -2,7 +2,7 @@ package eu.europeana.entity.config;
 
 import java.util.Properties;
 
-public class EntityConfigurationImpl implements EntityConfiguration{
+public class EntityConfigurationImpl implements EntityConfiguration {
 
 	private Properties entityProperties;
 	
@@ -20,6 +20,10 @@ public class EntityConfigurationImpl implements EntityConfiguration{
 		this.entityProperties = entityProperties;
 	}
 
+	public void setEntityPropertiesConfig(Properties entityProperties) {
+		this.entityProperties = entityProperties;
+	}
+
 	@Override
 	public boolean isProductionEnvironment() {
 		return VALUE_ENVIRONMENT_PRODUCTION.equals(getEnvironment());
@@ -28,6 +32,12 @@ public class EntityConfigurationImpl implements EntityConfiguration{
 	@Override
 	public String getEnvironment() {
 		return getEntityProperties().getProperty(ENTITY_ENVIRONMENT);
+	}
+
+
+	@Override
+	public int getSuggesterSnippets() {
+		return Integer.parseInt(getEntityProperties().getProperty(KEY_ENTITY_SUGGESTER_SNIPPETS));
 	}
 
 }

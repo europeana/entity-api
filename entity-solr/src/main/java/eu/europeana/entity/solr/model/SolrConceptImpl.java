@@ -1,8 +1,10 @@
 package eu.europeana.entity.solr.model;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.apache.solr.client.solrj.beans.Field;
 
@@ -88,10 +90,25 @@ public class SolrConceptImpl extends BaseConcept implements Concept{
 	
 	@Override
 	@Field(ConceptSolrFields.PREF_LABEL_ALL)
-	public void setPrefLabel(Map<String, String> prefLabel) {
-		super.setPrefLabel(prefLabel);
+	public void setPrefLabelStringMap(Map<String, String> prefLabel) {
+		Map<String, String> normalizedPrefLabel = normalizePrefLabel(prefLabel);
+		super.setPrefLabelStringMap(normalizedPrefLabel);
 	}
 	
+	/**
+	 * This method removes unnecessary prefixes from the fields e.g. "skos_prefLabel"
+	 * @param prefLabel
+	 * @return
+	 */
+	private Map<String, String> normalizePrefLabel(Map<String, String> prefLabel) {
+		String SKOS_PREF_LABEL_PREFIX = "skos_prefLabel.";
+		Map<String, String> res = prefLabel.entrySet().stream().collect(Collectors.toMap(
+				entry -> entry.getKey().replace(SKOS_PREF_LABEL_PREFIX, ""), 
+				entry -> entry.getValue())
+		);	
+		return res;
+	}
+
 	@Override
 	@Field(ConceptSolrFields.ALT_LABEL_ALL)
 	public void setAltLabel(Map<String, List<String>> altLabel) {

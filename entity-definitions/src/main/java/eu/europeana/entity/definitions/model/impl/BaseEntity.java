@@ -39,11 +39,11 @@ public class BaseEntity implements Entity, RankedEntity {
 	// depiction
 	private String depiction;
 
-	public Map<String, String> getPrefLabel() {
+	public Map<String, String> getPrefLabelStringMap() {
 		return prefLabel;
 	}
 
-	public void setPrefLabel(Map<String, String> prefLabel) {
+	public void setPrefLabelStringMap(Map<String, String> prefLabel) {
 		this.prefLabel = prefLabel;
 	}
 

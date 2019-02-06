@@ -36,7 +36,7 @@ public interface CoreContextualClass extends CoreAbstractEdmEntity {
 	 * @return A Map<String,List<List<String>>> for the Preferable Labels of a contextual
 	 *         class (one per language)
 	 */
-	Map<String, String> getPrefLabel();
+	Map<String, String> getPrefLabelStringMap();
 
 	/**
 	 * Retrieves the Alternative Label for a Contextual Class (language,value)
@@ -78,7 +78,7 @@ public interface CoreContextualClass extends CoreAbstractEdmEntity {
 	 *            A Map<String,List<List<String>>> for the Preferable Labels of a contextual
 	 *            class (one per language)
 	 */
-	void setPrefLabel(Map<String, String> prefLabel);
+	void setPrefLabelStringMap(Map<String, String> prefLabel);
 
 	/**
 	 * sets the skos:hiddenLabel for a contextual class

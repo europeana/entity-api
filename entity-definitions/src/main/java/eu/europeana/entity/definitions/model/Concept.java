@@ -4,7 +4,7 @@ import java.util.Date;
 
 import eu.europeana.entity.definitions.core.CoreConcept;
 
-public interface Concept extends CoreConcept, Entity {
+public interface Concept extends CoreConcept, Entity, eu.europeana.corelib.definitions.edm.entity.Concept {
 
 	public void setDefinition(String definition);
 

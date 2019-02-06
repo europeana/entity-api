@@ -52,5 +52,12 @@
 			<scope>test</scope>
 		</dependency>
 		
+
+		<dependency>
+			<groupId>eu.europeana.entity</groupId>
+			<artifactId>entity-solr</artifactId>
+			<version>${version.entityApi}</version>
+		</dependency>
+				
 	</dependencies>
 </project>

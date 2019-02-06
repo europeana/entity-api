@@ -75,8 +75,8 @@ public class SolrPlaceImpl extends BasePlace implements Place {
 	
 	@Override
 	@Field(ConceptSolrFields.PREF_LABEL_ALL)
-	public void setPrefLabel(Map<String, String> prefLabel) {
-		super.setPrefLabel(prefLabel);
+	public void setPrefLabelStringMap(Map<String, String> prefLabel) {
+		super.setPrefLabelStringMap(prefLabel);
 	}
 
 	@Override

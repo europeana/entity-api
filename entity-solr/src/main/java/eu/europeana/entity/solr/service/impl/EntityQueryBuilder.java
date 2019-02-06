@@ -3,6 +3,7 @@ package eu.europeana.entity.solr.service.impl;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.common.params.CommonParams;
 import org.apache.solr.common.params.HighlightParams;
+import org.apache.solr.common.params.SimpleParams;
 
 import eu.europeana.api.commons.definitions.search.Query;
 import eu.europeana.api.commons.definitions.vocabulary.CommonApiConstants;
@@ -17,6 +18,8 @@ import eu.europeana.entity.solr.service.SolrEntityService;
 public class EntityQueryBuilder extends QueryBuilder{
 
 	public static final String DESC = "desc";
+	public static final String OR = " " + SimpleParams.OR_OPERATOR + " ";
+	public static final String AND = " "+ SimpleParams.AND_OPERATOR + " ";
 	
 	public SolrQuery toSolrQuery(Query searchQuery, String searchHandler, EntityTypes[] entityTypes, String scope) {
 		SolrQuery solrQuery = super.toSolrQuery(searchQuery, searchHandler);
@@ -65,7 +68,7 @@ public class EntityQueryBuilder extends QueryBuilder{
 		
 		//append scope filter
 		if(scopeFilter != null){
-			filter = (filter == null)? scopeFilter: " AND " + scopeFilter; 		
+			filter = (filter == null)? scopeFilter: AND + scopeFilter; 		
 		} 
 		
 		if(filter != null)
@@ -122,7 +125,7 @@ public class EntityQueryBuilder extends QueryBuilder{
 		if(entityTypes.length == 1)
 				return entityTypes[0].getInternalType();
 		
-		String disjunction = String.join(" or ", EntityTypes.toStringArray(entityTypes));
+		String disjunction = String.join(OR, EntityTypes.toStringArray(entityTypes));
 		return "(" + disjunction + ")";
 		
 	}

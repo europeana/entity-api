@@ -101,11 +101,16 @@ public class SolrConceptImpl extends BaseConcept implements Concept{
 	 * @return
 	 */
 	private Map<String, String> normalizePrefLabel(Map<String, String> prefLabel) {
-		String SKOS_PREF_LABEL_PREFIX = "skos_prefLabel.";
-		Map<String, String> res = prefLabel.entrySet().stream().collect(Collectors.toMap(
-				entry -> entry.getKey().replace(SKOS_PREF_LABEL_PREFIX, ""), 
-				entry -> entry.getValue())
-		);	
+		Map<String, String> res;
+		int prefixLen = ConceptSolrFields.PREF_LABEL.length() + 1;
+		if (prefLabel.keySet().iterator().next().startsWith(ConceptSolrFields.PREF_LABEL)) {
+			res = prefLabel.entrySet().stream().collect(Collectors.toMap(
+					entry -> entry.getKey().substring(prefixLen), 
+					entry -> entry.getValue())
+			);	
+		} else {
+			res = prefLabel;
+		}
 		return res;
 	}
 

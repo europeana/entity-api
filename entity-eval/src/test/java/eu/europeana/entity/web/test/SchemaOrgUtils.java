@@ -3,6 +3,7 @@ package eu.europeana.entity.web.test;
 import eu.europeana.corelib.definitions.edm.entity.Agent;
 import eu.europeana.corelib.definitions.edm.entity.Aggregation;
 import eu.europeana.corelib.definitions.edm.entity.Concept;
+//import eu.europeana.corelib.definitions.edm.entity.Place;
 import eu.europeana.corelib.definitions.edm.entity.WebResource;
 import eu.europeana.corelib.edm.model.schemaorg.*;
 import eu.europeana.corelib.edm.utils.EdmUtils;
@@ -154,7 +155,8 @@ public final class SchemaOrgUtils {
      * @param place source place object
      * @param placeObject Place object to update
      */
-    private static void processPlace(PlaceImpl place, Place placeObject) {
+    public static void processPlace(eu.europeana.corelib.definitions.edm.entity.Place place, Place placeObject) {
+//        private static void processPlace(PlaceImpl place, Place placeObject) {
         if (place == null) {
             return;
         }
@@ -191,7 +193,7 @@ public final class SchemaOrgUtils {
      * @param place PlaceImpl object with necessary data
      * @param placeObject Place object to update
      */
-    private static void createGeoCoordinates(PlaceImpl place, Place placeObject) {
+    private static void createGeoCoordinates(eu.europeana.corelib.definitions.edm.entity.Place place, Place placeObject) {
         GeoCoordinates geoCoordinates = new GeoCoordinates();
 
         // latitude
@@ -239,7 +241,8 @@ public final class SchemaOrgUtils {
      * @param agentObject Person or Organization object to update
      * @param agent source agent
      */
-    private static void processAgent(Agent agent, Thing agentObject) {
+    public static void processAgent(Agent agent, Thing agentObject) {
+//        private static void processAgent(Agent agent, Thing agentObject) {
         // @id
         agentObject.setId(agent.getAbout());
 

@@ -159,8 +159,8 @@ public class EuropeanaEntityLd extends JsonLd {
 	
 		putStringArrayProperty(WebEntityFields.DATE_OF_DEATH, entity.getDateOfDeath(), jsonLdResource);
 		putStringArrayProperty(WebEntityFields.DATE_OF_BIRTH, entity.getDateOfBirth(), jsonLdResource);
-		putStringArrayProperty(WebEntityFields.BEGIN, entity.getBegin(), jsonLdResource);
-		putStringArrayProperty(WebEntityFields.END, entity.getEnd(), jsonLdResource);
+		putStringArrayProperty(WebEntityFields.BEGIN, entity.getBeginArray(), jsonLdResource);
+		putStringArrayProperty(WebEntityFields.END, entity.getEndArray(), jsonLdResource);
 
 		putMapOfReferencesProperty(WebEntityFields.PLACE_OF_BIRTH, entity.getPlaceOfBirth(), 
 				AgentSolrFields.PLACE_OF_BIRTH, jsonLdResource);
@@ -221,7 +221,8 @@ public class EuropeanaEntityLd extends JsonLd {
 
 	private void putAddressProperty(Organization entity, JsonLdResource ldResource) {
 		
-		if(StringUtils.isEmpty(entity.getLocality()))
+		//locality or geolocation is expected
+		if(StringUtils.isEmpty(entity.getLocality()) && StringUtils.isEmpty(entity.getHasGeo()))
 			return;
 		
 		//build address object (the (json) value of the hasAddress property)
@@ -264,7 +265,7 @@ public class EuropeanaEntityLd extends JsonLd {
 	
 	private void putBaseEntityProperties(BaseEntity entity, JsonLdResource jsonLdResource) {
 		// COMMON Entity PROPERTIES?
-		putStringArrayProperty(WebEntityFields.IS_PART_OF, entity.getIsPartOf(), jsonLdResource);
+		putStringArrayProperty(WebEntityFields.IS_PART_OF, entity.getIsPartOfArray(), jsonLdResource);
 		putStringArrayProperty(WebEntityFields.HAS_PART, entity.getHasPart(), jsonLdResource);
 	}
 

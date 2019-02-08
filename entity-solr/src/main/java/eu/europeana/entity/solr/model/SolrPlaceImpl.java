@@ -60,8 +60,8 @@ public class SolrPlaceImpl extends BasePlace implements Place {
 
 	@Override
 	@Field(AgentSolrFields.IS_PART_OF)
-	public void setIsPartOf(String[] isPartOf) {
-		super.setIsPartOf(isPartOf);
+	public void setIsPartOfArray(String[] isPartOf) {
+		super.setIsPartOfArray(isPartOf);
 	}
 	
 	/**

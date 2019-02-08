@@ -9,6 +9,8 @@ import eu.europeana.entity.definitions.model.RankedEntity;
 
 public class BaseEntity implements Entity, RankedEntity {
 
+	protected String TMP_KEY = "def";
+	
 	// common functional fields
 	private String about;
 	private String internalType;
@@ -195,11 +197,11 @@ public class BaseEntity implements Entity, RankedEntity {
 		this.hasPart = hasPart;
 	}
 
-	public String[] getIsPartOf() {
+	public String[] getIsPartOfArray() {
 		return isPartOf;
 	}
 
-	public void setIsPartOf(String[] isPartOf) {
+	public void setIsPartOfArray(String[] isPartOf) {
 		this.isPartOf = isPartOf;
 	}
 

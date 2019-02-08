@@ -62,8 +62,8 @@ public class SolrAgentImpl extends BaseAgent implements Agent {
 
 	@Override
 	@Field(AgentSolrFields.IS_PART_OF)
-	public void setIsPartOf(String[] isPartOf) {
-		super.setIsPartOf(isPartOf);
+	public void setIsPartOfArray(String[] isPartOf) {
+		super.setIsPartOfArray(isPartOf);
 	}
 
 	@Override

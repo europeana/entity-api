@@ -23,7 +23,7 @@ public interface Place extends Entity {
 
 	public void setHasPart(String[] hasPart);
 
-	public String[] getIsPartOf();
+	public String[] getIsPartOfArray();
 
-	public void setIsPartOf(String[] isPartOf);
+	public void setIsPartOfArray(String[] isPartOf);
 }

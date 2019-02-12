@@ -73,6 +73,56 @@ public class EntityApiConnection extends BaseApiConnection {
 		return getURL(url);		
 	}
 
+	/**
+	 * This method retrieves Entity object from REST interface.
+	 * Example HTTP request for tag object: 
+	 *     http://localhost:8080/entity/concept/base/10?wskey=apidemo
+	 * @param url
+	 * @return entity operation response
+	 * @throws IOException
+	 */
+	public EntitySearchResults retrieveEntityWithUrl(String url)  throws IOException {
+		/**
+		 * Execute Europeana API request
+		 */
+		String json = getJSONResult(url);
+		
+		return getEntityResolveResults(json);		
+
+	}
+	
+	/**
+	 * This method returns a list of Entity objects for the passed query.
+     * E.g. http://entity-api-test.eanadev.org/entity/search?wskey=apidemo&query=label%3AGermany&lang=all&type=Place&sort=derived_score%2Bdesc&page=0&pageSize=10
+	 * @param apiKey
+     * @param query The query string
+	 * @param language
+	 * @param type
+	 * @param sort
+	 * @param page
+	 * @param pageSize
+	 * @return entity operation response
+	 * @throws IOException
+	 */
+	public EntitySearchResults getSearch (
+			String apiKey
+			, String query
+			, String language
+			, String type
+			, String sort
+			, String page
+			, String pageSize
+			) throws IOException {
+		
+		String url = buildSearchUrl(apiKey, query, language, type, sort, page, pageSize);
+		
+		/**
+		 * Execute Europeana API request
+		 */
+		String json = getJSONResult(url);
+		
+		return getEntitySearchResults(language, json);
+	}
 	
 	/**
 	 * This method returns a list of Entity objects for the passed query.
@@ -116,6 +166,7 @@ public class EntityApiConnection extends BaseApiConnection {
         	if (json.contains("Unauthorized")) {
         		asr.setError(json);
         	} else {
+        		if(jsonListObj.has(WebEntityConstants.ITEMS)) {
 	        	JSONArray jsonArray = jsonListObj.getJSONArray(WebEntityConstants.ITEMS);
 	        	if(jsonArray!=null && jsonArray.length()>0){
 			        List<Entity> entityList = new ArrayList<Entity>();
@@ -133,6 +184,7 @@ public class EntityApiConnection extends BaseApiConnection {
 				    }
 				    asr.setItems(entityList);
 				}
+        	}
         	}
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -204,6 +256,50 @@ public class EntityApiConnection extends BaseApiConnection {
 			builder.append("&rows=").append(rows);
 		else
 			builder.append("&rows=10");
+				
+		return builder.toString();		
+	}
+
+	/**
+	 * This method constructs url dependent on search parameter.
+	 * @param apiKey
+	 * @param query
+	 * @param language
+	 * @param type
+	 * @param sort
+	 * @param page
+	 * @param pageSize
+	 * @return query
+	 */
+	private String buildSearchUrl(String apiKey, String query, String language, String type, String sort, String page, String pageSize) {		
+		
+		StringBuilder builder = new StringBuilder();
+		builder.append(getEntityServiceUri());
+//		String wskey = apiKey;
+//		if (StringUtils.isEmpty(apiKey))
+//			wskey = getApiKey();
+		builder.append("/search?wskey=").append(apiKey);
+		if (StringUtils.isNotEmpty(query)) {
+			builder.append("&query=").append(query);
+		}
+		if (StringUtils.isNotEmpty(language))
+			builder.append("&language=").append(language);
+		else
+			builder.append("&language=en");
+		if (StringUtils.isNotEmpty(type))
+			builder.append("&type=").append(type);
+		else
+			builder.append("&type=All");
+		if (StringUtils.isNotEmpty(sort))
+			builder.append("&sort=").append(sort);
+		if (StringUtils.isNotEmpty(page))
+			builder.append("&page=").append(page);
+		else
+			builder.append("&page=0");
+		if (StringUtils.isNotEmpty(pageSize))
+			builder.append("&pageSize=").append(pageSize);
+		else
+			builder.append("&pageSize=10");
 				
 		return builder.toString();		
 	}

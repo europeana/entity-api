@@ -12,7 +12,7 @@ public class BaseEntity implements Entity, RankedEntity {
 	protected String TMP_KEY = "def";
 	
 	// common functional fields
-	private String about;
+//	private String about;
 	private String internalType;
 	private String entityId;
 	private Map<String, List<String>> note;
@@ -114,11 +114,11 @@ public class BaseEntity implements Entity, RankedEntity {
 	}
 
 	public String getAbout() {
-		return about;
+		return getEntityId();
 	}
 
 	public void setAbout(String about) {
-		this.about = about;
+		setEntityId(about);
 	}
 
 	@Override

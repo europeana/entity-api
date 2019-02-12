@@ -31,9 +31,14 @@ public class BaseAgent extends BaseEntity implements Agent, eu.europeana.corelib
 	
 	private String[] exactMatch;
 
+	private Map<String, List<String>> tmpPrefLabel;
 	private Map<String, List<String>> tmpBegin;
 	private Map<String, List<String>> tmpEnd;
+	private Map<String, List<String>> tmpDateOfBirth;
+	private Map<String, List<String>> tmpDateOfDeath;
+	private Map<String, List<String>> tmpGender;
 	
+
 	public Date getDate() {
 		return date;
 	}
@@ -156,8 +161,21 @@ public class BaseAgent extends BaseEntity implements Agent, eu.europeana.corelib
 
 	@Override
 	public Map<String, List<String>> getPrefLabel() {
-		// TODO Auto-generated method stub
-		return null;
+		if (tmpPrefLabel == null)
+			fillTmpPrefLabel(getPrefLabelStringMap());
+
+		return tmpPrefLabel;
+	}
+
+	/**
+	 * This method converts Map<String, String> to Map<String, List<String>> 
+	 * @param prefLabelStringMap
+	 */
+	private void fillTmpPrefLabel(Map<String, String> prefLabelStringMap) {
+		tmpPrefLabel = prefLabelStringMap.entrySet().stream().collect(Collectors.toMap(
+				entry -> entry.getKey(), 
+				entry -> Collections.singletonList(entry.getValue()))
+		);	
 	}
 
 	@Override
@@ -174,8 +192,7 @@ public class BaseAgent extends BaseEntity implements Agent, eu.europeana.corelib
 
 	@Override
 	public String getFoafDepiction() {
-		// TODO Auto-generated method stub
-		return null;
+		return getFoafDepiction();
 	}
 
 	@Override
@@ -194,7 +211,7 @@ public class BaseAgent extends BaseEntity implements Agent, eu.europeana.corelib
 	public Map<String, List<String>> getBegin() {
 		if (tmpBegin == null) {
 			if (getBeginArray() != null) {
-				fillTmpPeriod(tmpBegin, Arrays.asList(getBeginArray()));
+				fillStringListMapFromStringList(tmpBegin, Arrays.asList(getBeginArray()));
 			}
 		}
 
@@ -205,7 +222,7 @@ public class BaseAgent extends BaseEntity implements Agent, eu.europeana.corelib
 	public Map<String, List<String>> getEnd() {
 		if (tmpEnd == null) {
 			if (getEndArray() != null) {
-				fillTmpPeriod(tmpEnd, Arrays.asList(getEndArray()));
+				fillStringListMapFromStringList(tmpEnd, Arrays.asList(getEndArray()));
 			}			
 		}
 			
@@ -217,7 +234,7 @@ public class BaseAgent extends BaseEntity implements Agent, eu.europeana.corelib
 	 * @param period stands for begin or end map
 	 * @param tmpPeriodArray contains a list of strings for begin or end period
 	 */
-	private void fillTmpPeriod(Map<String, List<String>> period, List<String> tmpPeriodArray) {
+	private void fillStringListMapFromStringList(Map<String, List<String>> period, List<String> tmpPeriodArray) {
 		period = tmpPeriodArray.stream().collect(Collectors.toMap(
 			entry -> TMP_KEY, 
 			entry -> Collections.singletonList(entry))
@@ -282,8 +299,7 @@ public class BaseAgent extends BaseEntity implements Agent, eu.europeana.corelib
 
 	@Override
 	public String[] getOwlSameAs() {
-		// TODO Auto-generated method stub
-		return null;
+		return getSameAs();
 	}
 
 	@Override
@@ -294,7 +310,6 @@ public class BaseAgent extends BaseEntity implements Agent, eu.europeana.corelib
 
 	@Override
 	public Map<String, List<String>> getFoafName() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -306,8 +321,7 @@ public class BaseAgent extends BaseEntity implements Agent, eu.europeana.corelib
 
 	@Override
 	public Map<String, List<String>> getDcDate() {
-		// TODO Auto-generated method stub
-		return null;
+		return getDcDate();
 	}
 
 	@Override
@@ -330,8 +344,13 @@ public class BaseAgent extends BaseEntity implements Agent, eu.europeana.corelib
 
 	@Override
 	public Map<String, List<String>> getRdaGr2DateOfBirth() {
-		// TODO Auto-generated method stub
-		return null;
+		if (tmpDateOfBirth == null) {
+			if (getDateOfBirth() != null) {
+				fillStringListMapFromStringList(tmpDateOfBirth, Arrays.asList(getDateOfBirth()));
+			}			
+		}
+			
+		return tmpDateOfBirth;		
 	}
 
 	@Override
@@ -342,8 +361,7 @@ public class BaseAgent extends BaseEntity implements Agent, eu.europeana.corelib
 
 	@Override
 	public Map<String, List<String>> getRdaGr2PlaceOfDeath() {
-		// TODO Auto-generated method stub
-		return null;
+		return getPlaceOfDeath();
 	}
 
 	@Override
@@ -354,8 +372,7 @@ public class BaseAgent extends BaseEntity implements Agent, eu.europeana.corelib
 
 	@Override
 	public Map<String, List<String>> getRdaGr2PlaceOfBirth() {
-		// TODO Auto-generated method stub
-		return null;
+		return getPlaceOfBirth();
 	}
 
 	@Override
@@ -366,8 +383,13 @@ public class BaseAgent extends BaseEntity implements Agent, eu.europeana.corelib
 
 	@Override
 	public Map<String, List<String>> getRdaGr2DateOfDeath() {
-		// TODO Auto-generated method stub
-		return null;
+		if (tmpDateOfDeath == null) {
+			if (getDateOfDeath() != null) {
+				fillStringListMapFromStringList(tmpDateOfDeath, Arrays.asList(getDateOfDeath()));
+			}			
+		}
+			
+		return tmpDateOfDeath;		
 	}
 
 	@Override
@@ -396,14 +418,18 @@ public class BaseAgent extends BaseEntity implements Agent, eu.europeana.corelib
 
 	@Override
 	public void setRdaGr2Gender(Map<String, List<String>> rdaGr2Gender) {
-		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public Map<String, List<String>> getRdaGr2Gender() {
-		// TODO Auto-generated method stub
-		return null;
+		if (tmpGender == null) {
+			if (getGender() != null) {
+				fillStringListMapFromStringList(tmpGender, Arrays.asList(getGender()));
+			}			
+		}
+			
+		return tmpGender;		
 	}
 
 	@Override
@@ -414,8 +440,7 @@ public class BaseAgent extends BaseEntity implements Agent, eu.europeana.corelib
 
 	@Override
 	public Map<String, List<String>> getRdaGr2ProfessionOrOccupation() {
-		// TODO Auto-generated method stub
-		return null;
+		return getProfessionOrOccupation();
 	}
 
 	@Override
@@ -426,8 +451,7 @@ public class BaseAgent extends BaseEntity implements Agent, eu.europeana.corelib
 
 	@Override
 	public Map<String, List<String>> getRdaGr2BiographicalInformation() {
-		// TODO Auto-generated method stub
-		return null;
+		return getBiographicalInformation();
 	}
 
 }

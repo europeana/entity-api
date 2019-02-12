@@ -1,10 +1,15 @@
 package eu.europeana.entity.web.test;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.io.FileUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,12 +20,12 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import eu.europeana.api.common.config.I18nConstants;
 import eu.europeana.api.commons.web.exception.HttpException;
 import eu.europeana.corelib.definitions.edm.entity.Agent;
+import eu.europeana.corelib.edm.model.schemaorg.Person;
 import eu.europeana.corelib.edm.model.schemaorg.Place;
 import eu.europeana.corelib.edm.model.schemaorg.Thing;
 import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException;
 import eu.europeana.entity.definitions.model.Concept;
 import eu.europeana.entity.definitions.model.Entity;
-import eu.europeana.entity.definitions.model.impl.BaseAgent;
 import eu.europeana.entity.definitions.model.impl.BaseConcept;
 import eu.europeana.entity.definitions.model.impl.BasePlace;
 import eu.europeana.entity.solr.exception.EntityRetrievalException;
@@ -52,16 +57,16 @@ public class ConceptEntitySchemaMapTest {
 	/**
 	 * This test investigates EDM entity Concept mapping to Schema.org
 	 * @throws HttpException 
+	 * @throws IOException 
 	 */
 	@Test
-	public void testConceptMappingToSchemaOrg() throws HttpException {
+	public void testConceptMappingToSchemaOrg() throws HttpException, IOException {
 		
 		String entityUri = TEST_CONCEPT_ENTITY_URI;
-		Entity result;
 		Concept concept;
 		
 		try {
-			result = solrEntityService.searchByUrl(TEST_CONCEPT_ENTITY_TYPE, entityUri);
+			concept = (Concept) solrEntityService.searchByUrl(TEST_CONCEPT_ENTITY_TYPE, entityUri);
 		} catch (EntityRetrievalException e) {
 			throw new HttpException(e.getMessage(), I18nConstants.SERVER_ERROR_CANT_RETRIEVE_URI,
 					new String[] { entityUri }, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -70,29 +75,29 @@ public class ConceptEntitySchemaMapTest {
 					HttpStatus.NOT_FOUND, null);
 		}	
 		
-		Map<String, List<String>> prefLabel = ((BaseConcept) result).getPrefLabel();
+		Map<String, List<String>> prefLabel = concept.getPrefLabel();
         Assert.assertNotNull(prefLabel);        
 		
-		concept = (BaseConcept) result;
         Thing conceptObject = new Thing();
         SchemaOrgUtils.processConcept(concept, conceptObject);
         String output = SchemaOrgUtils.thingToSchemaOrg(conceptObject);
         Assert.assertNotNull(output);        
+        FileUtils.writeStringToFile(new File("concept-output.txt"), output);        
 	}
 	
 	/**
 	 * This test investigates EDM entity Agent mapping to Schema.org
 	 * @throws HttpException 
+	 * @throws IOException 
 	 */
-	@Test
-	public void testAgentMappingToSchemaOrg() throws HttpException {
+//	@Test
+	public void testAgentMappingToSchemaOrg() throws HttpException, IOException {
 		
 		String entityUri = TEST_AGENT_ENTITY_URI;
-		Entity result;
 		Agent agent;
 		
 		try {
-			result = solrEntityService.searchByUrl(TEST_AGENT_ENTITY_TYPE, entityUri);
+			agent = (Agent) solrEntityService.searchByUrl(TEST_AGENT_ENTITY_TYPE, entityUri);
 		} catch (EntityRetrievalException e) {
 			throw new HttpException(e.getMessage(), I18nConstants.SERVER_ERROR_CANT_RETRIEVE_URI,
 					new String[] { entityUri }, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -101,23 +106,18 @@ public class ConceptEntitySchemaMapTest {
 					HttpStatus.NOT_FOUND, null);
 		}	
 		
-		Map<String, List<String>> begin = ((BaseAgent) result).getBegin();
-//        Assert.assertNotNull(begin);        
-		Map<String, List<String>> end = ((BaseAgent) result).getEnd();
-//        Assert.assertNotNull(end);        
-		
-		agent = (BaseAgent) result;
-        Thing agentObject = new Thing();
+		Person agentObject = new Person();
         SchemaOrgUtils.processAgent(agent, agentObject);
         String output = SchemaOrgUtils.thingToSchemaOrg(agentObject);
-        Assert.assertNotNull(output);        
+        Assert.assertNotNull(output);  
+        FileUtils.writeStringToFile(new File("agent-output.txt"), output);
 	}
 	
 	/**
 	 * This test investigates EDM entity Place mapping to Schema.org
 	 * @throws HttpException 
 	 */
-	@Test
+//	@Test
 	public void testPlaceMappingToSchemaOrg() throws HttpException {
 		
 		String entityUri = TEST_PLACE_ENTITY_URI;

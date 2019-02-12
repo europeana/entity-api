@@ -1,1 +1,314 @@
-{"@context":"http://schema.org","scopedObj":[{"@type":"Thing","name":[{"@value":"गणित","@language":"hi"},{"@value":"Mathematik","@language":"de"},{"@value":"Matematikk","@language":"no"},{"@value":"Матэматыка","@language":"be"},{"@value":"Математика","@language":"ru"},{"@value":"Matematiikka","@language":"fi"},{"@value":"Matemática","@language":"pt"},{"@value":"Математика","@language":"bg"},{"@value":"Matematika","@language":"lt"},{"@value":"Matematika","@language":"hr"},{"@value":"Matemātika","@language":"lv"},{"@value":"Mathématiques","@language":"fr"},{"@value":"Matematika","@language":"hu"},{"@value":"מאטעמאטיק","@language":"yi"},{"@value":"Մաթեմատիկա","@language":"hy"},{"@value":"Matematika","@language":"bs"},{"@value":"მათემატიკა","@language":"ka"},{"@value":"Математика","@language":"uk"},{"@value":"Matematika","@language":"sk"},{"@value":"Matematika","@language":"sl"},{"@value":"Matamaitic","@language":"ga"},{"@value":"Matamataig","@language":"gd"},{"@value":"Matemàtiques","@language":"ca"},{"@value":"Matematika","@language":"sq"},{"@value":"Математика","@language":"mk"},{"@value":"Математика","@language":"sr"},{"@value":"Matematik","@language":"sv"},{"@value":"수학","@language":"ko"},{"@value":"Matemáticas","@language":"gl"},{"@value":"Μαθηματικά","@language":"el"},{"@value":"Mathematics","@language":"en"},{"@value":"Stærðfræði","@language":"is"},{"@value":"Matematica","@language":"it"},{"@value":"数学","@language":"zh"},{"@value":"Matemáticas","@language":"es"},{"@value":"Matemaatika","@language":"et"},{"@value":"Matematika","@language":"cs"},{"@value":"Matematika","@language":"eu"},{"@value":"رياضيات","@language":"ar"},{"@value":"Mathemateg","@language":"cy"},{"@value":"数学","@language":"ja"},{"@value":"Riyaziyyat","@language":"az"},{"@value":"Matematyka","@language":"pl"},{"@value":"מתמטיקה","@language":"he"},{"@value":"Matematik","@language":"da"},{"@value":"Matematik","@language":"tr"},{"@value":"Wiskunde","@language":"nl"}],"sameAs":["http://pt.dbpedia.org/resource/Matemática","http://ms.dbpedia.org/resource/Matematik","http://ast.dbpedia.org/resource/Matemátiques","http://sq.dbpedia.org/resource/Matematika","http://ga.dbpedia.org/resource/Matamaitic","http://vi.dbpedia.org/resource/Toán_học","http://te.dbpedia.org/resource/గణితము","http://de.dbpedia.org/resource/Mathematik","http://ca.dbpedia.org/resource/Matemàtiques","http://it.dbpedia.org/resource/Matematica","http://gu.dbpedia.org/resource/ગણિત","http://ba.dbpedia.org/resource/Математика","http://jv.dbpedia.org/resource/Matématika","http://nl.dbpedia.org/resource/Wiskunde","http://rdf.freebase.com/ns/m.04rjg","http://ka.dbpedia.org/resource/მათემატიკა","http://gl.dbpedia.org/resource/Matemáticas","http://nn.dbpedia.org/resource/Matematikk","http://ko.dbpedia.org/resource/수학","http://wikidata.dbpedia.org/resource/Q395","http://qu.dbpedia.org/resource/Yupay_yachay","http://sh.dbpedia.org/resource/Matematika","http://hy.dbpedia.org/resource/Մաթեմատիկա","http://tg.dbpedia.org/resource/Риёзиёт","http://ja.dbpedia.org/resource/数学","http://cv.dbpedia.org/resource/Математика","http://da.dbpedia.org/resource/Matematik","http://arz.dbpedia.org/resource/رياضيات","http://nds.dbpedia.org/resource/Mathematik","http://bug.dbpedia.org/resource/ᨆᨈᨛᨆᨈᨗᨀ","http://hi.dbpedia.org/resource/गणित","http://scn.dbpedia.org/resource/Matimàtica","http://no.dbpedia.org/resource/Matematikk","http://cy.dbpedia.org/resource/Mathemateg","http://pl.dbpedia.org/resource/Matematyka","http://is.dbpedia.org/resource/Stærðfræði","http://eu.dbpedia.org/resource/Matematika","http://el.dbpedia.org/resource/Μαθηματικά","http://pa.dbpedia.org/resource/ਹਿਸਾਬ","http://fi.dbpedia.org/resource/Matematiikka","http://sw.cyc.com/concept/Mx4rvVjHd5wpEbGdrcN5Y29ycA","http://mk.dbpedia.org/resource/Математика","http://fr.dbpedia.org/resource/Mathématiques","http://si.dbpedia.org/resource/ගණිතය","http://ar.dbpedia.org/resource/رياضيات","http://eo.dbpedia.org/resource/Matematiko","http://simple.dbpedia.org/resource/Mathematics","http://ur.dbpedia.org/resource/ریاضی","http://mg.dbpedia.org/resource/Fanisana","http://new.dbpedia.org/resource/ल्याःज्या","http://fa.dbpedia.org/resource/ریاضیات","http://ru.dbpedia.org/resource/Математика","http://my.dbpedia.org/resource/သင်္ချာ","http://bpy.dbpedia.org/resource/গণিত","http://sk.dbpedia.org/resource/Matematika","http://lmo.dbpedia.org/resource/Matemàtega","http://sah.dbpedia.org/resource/Математика","http://tr.dbpedia.org/resource/Matematik","http://sco.dbpedia.org/resource/Mathematics","http://ro.dbpedia.org/resource/Matematică","http://tt.dbpedia.org/resource/Математика","http://ia.dbpedia.org/resource/Mathematica","http://an.dbpedia.org/resource/Matematicas","http://als.dbpedia.org/resource/Mathematik","http://ku.dbpedia.org/resource/Matematîk","http://am.dbpedia.org/resource/ትምህርተ_ሂሳብ","http://io.dbpedia.org/resource/Matematiko","http://pms.dbpedia.org/resource/Matemàtica","http://lb.dbpedia.org/resource/Mathematik","http://kn.dbpedia.org/resource/ಗಣಿತ","http://kk.dbpedia.org/resource/Математика","http://hr.dbpedia.org/resource/Matematika","http://lt.dbpedia.org/resource/Matematika","http://bn.dbpedia.org/resource/গণিত","http://bs.dbpedia.org/resource/Matematika","http://ckb.dbpedia.org/resource/ماتماتیک","http://sw.dbpedia.org/resource/Hisabati","http://uk.dbpedia.org/resource/Математика","http://et.dbpedia.org/resource/Matemaatika","http://ne.dbpedia.org/resource/गणित","http://yi.dbpedia.org/resource/מאטעמאטיק","http://ht.dbpedia.org/resource/Matematik","http://mn.dbpedia.org/resource/Математик","http://zh.dbpedia.org/resource/数学","http://la.dbpedia.org/resource/Mathematica","http://sv.dbpedia.org/resource/Matematik","http://yo.dbpedia.org/resource/Mathimátíkì","http://gd.dbpedia.org/resource/Matamataig","http://fy.dbpedia.org/resource/Wiskunde","http://vo.dbpedia.org/resource/Matemat","http://sl.dbpedia.org/resource/Matematika","http://lv.dbpedia.org/resource/Matemātika","http://vec.dbpedia.org/resource/Matemàtega","http://es.dbpedia.org/resource/Matemáticas","http://pnb.dbpedia.org/resource/میتھمیٹکس","http://af.dbpedia.org/resource/Wiskunde","http://uz.dbpedia.org/resource/Matematika","http://tl.dbpedia.org/resource/Matematika","http://sr.dbpedia.org/resource/Математика","http://hu.dbpedia.org/resource/Matematika","http://th.dbpedia.org/resource/คณิตศาสตร์","http://ceb.dbpedia.org/resource/Matematika","http://he.dbpedia.org/resource/מתמטיקה","http://br.dbpedia.org/resource/Matematik","http://id.dbpedia.org/resource/Matematika","http://bg.dbpedia.org/resource/Математика","http://www.wikidata.org/entity/Q395","http://war.dbpedia.org/resource/Matematika","http://oc.dbpedia.org/resource/Matematicas","http://ky.dbpedia.org/resource/Математика","http://az.dbpedia.org/resource/Riyaziyyat","http://su.dbpedia.org/resource/Matematika","http://ta.dbpedia.org/resource/கணிதம்","http://ml.dbpedia.org/resource/ഗണിതം","http://mr.dbpedia.org/resource/गणित","http://be.dbpedia.org/resource/Матэматыка","http://cs.dbpedia.org/resource/Matematika","http://sa.dbpedia.org/resource/गणितम्","http://dbpedia.org/resource/Mathematics"]}]}
+{
+	"@context": "http://schema.org",
+	"scopedObj": [{
+		"@type": "Thing",
+		"@id": "http://data.europeana.eu/concept/base/153",
+		"name": [{
+			"@value": "गणित",
+			"@language": "hi"
+		},
+		{
+			"@value": "Mathematik",
+			"@language": "de"
+		},
+		{
+			"@value": "Matematikk",
+			"@language": "no"
+		},
+		{
+			"@value": "Матэматыка",
+			"@language": "be"
+		},
+		{
+			"@value": "Математика",
+			"@language": "ru"
+		},
+		{
+			"@value": "Matematiikka",
+			"@language": "fi"
+		},
+		{
+			"@value": "Matemática",
+			"@language": "pt"
+		},
+		{
+			"@value": "Математика",
+			"@language": "bg"
+		},
+		{
+			"@value": "Matematika",
+			"@language": "lt"
+		},
+		{
+			"@value": "Matematika",
+			"@language": "hr"
+		},
+		{
+			"@value": "Matemātika",
+			"@language": "lv"
+		},
+		{
+			"@value": "Mathématiques",
+			"@language": "fr"
+		},
+		{
+			"@value": "Matematika",
+			"@language": "hu"
+		},
+		{
+			"@value": "מאטעמאטיק",
+			"@language": "yi"
+		},
+		{
+			"@value": "Մաթեմատիկա",
+			"@language": "hy"
+		},
+		{
+			"@value": "Matematika",
+			"@language": "bs"
+		},
+		{
+			"@value": "მათემატიკა",
+			"@language": "ka"
+		},
+		{
+			"@value": "Математика",
+			"@language": "uk"
+		},
+		{
+			"@value": "Matematika",
+			"@language": "sk"
+		},
+		{
+			"@value": "Matematika",
+			"@language": "sl"
+		},
+		{
+			"@value": "Matamaitic",
+			"@language": "ga"
+		},
+		{
+			"@value": "Matamataig",
+			"@language": "gd"
+		},
+		{
+			"@value": "Matemàtiques",
+			"@language": "ca"
+		},
+		{
+			"@value": "Matematika",
+			"@language": "sq"
+		},
+		{
+			"@value": "Математика",
+			"@language": "mk"
+		},
+		{
+			"@value": "Математика",
+			"@language": "sr"
+		},
+		{
+			"@value": "Matematik",
+			"@language": "sv"
+		},
+		{
+			"@value": "수학",
+			"@language": "ko"
+		},
+		{
+			"@value": "Matemáticas",
+			"@language": "gl"
+		},
+		{
+			"@value": "Μαθηματικά",
+			"@language": "el"
+		},
+		{
+			"@value": "Mathematics",
+			"@language": "en"
+		},
+		{
+			"@value": "Stærðfræði",
+			"@language": "is"
+		},
+		{
+			"@value": "Matematica",
+			"@language": "it"
+		},
+		{
+			"@value": "数学",
+			"@language": "zh"
+		},
+		{
+			"@value": "Matemáticas",
+			"@language": "es"
+		},
+		{
+			"@value": "Matemaatika",
+			"@language": "et"
+		},
+		{
+			"@value": "Matematika",
+			"@language": "cs"
+		},
+		{
+			"@value": "Matematika",
+			"@language": "eu"
+		},
+		{
+			"@value": "رياضيات",
+			"@language": "ar"
+		},
+		{
+			"@value": "Mathemateg",
+			"@language": "cy"
+		},
+		{
+			"@value": "数学",
+			"@language": "ja"
+		},
+		{
+			"@value": "Riyaziyyat",
+			"@language": "az"
+		},
+		{
+			"@value": "Matematyka",
+			"@language": "pl"
+		},
+		{
+			"@value": "מתמטיקה",
+			"@language": "he"
+		},
+		{
+			"@value": "Matematik",
+			"@language": "da"
+		},
+		{
+			"@value": "Matematik",
+			"@language": "tr"
+		},
+		{
+			"@value": "Wiskunde",
+			"@language": "nl"
+		}],
+		"sameAs": ["http://pt.dbpedia.org/resource/Matemática",
+		"http://ms.dbpedia.org/resource/Matematik",
+		"http://ast.dbpedia.org/resource/Matemátiques",
+		"http://sq.dbpedia.org/resource/Matematika",
+		"http://ga.dbpedia.org/resource/Matamaitic",
+		"http://vi.dbpedia.org/resource/Toán_học",
+		"http://te.dbpedia.org/resource/గణితము",
+		"http://de.dbpedia.org/resource/Mathematik",
+		"http://ca.dbpedia.org/resource/Matemàtiques",
+		"http://it.dbpedia.org/resource/Matematica",
+		"http://gu.dbpedia.org/resource/ગણિત",
+		"http://ba.dbpedia.org/resource/Математика",
+		"http://jv.dbpedia.org/resource/Matématika",
+		"http://nl.dbpedia.org/resource/Wiskunde",
+		"http://rdf.freebase.com/ns/m.04rjg",
+		"http://ka.dbpedia.org/resource/მათემატიკა",
+		"http://gl.dbpedia.org/resource/Matemáticas",
+		"http://nn.dbpedia.org/resource/Matematikk",
+		"http://ko.dbpedia.org/resource/수학",
+		"http://wikidata.dbpedia.org/resource/Q395",
+		"http://qu.dbpedia.org/resource/Yupay_yachay",
+		"http://sh.dbpedia.org/resource/Matematika",
+		"http://hy.dbpedia.org/resource/Մաթեմատիկա",
+		"http://tg.dbpedia.org/resource/Риёзиёт",
+		"http://ja.dbpedia.org/resource/数学",
+		"http://cv.dbpedia.org/resource/Математика",
+		"http://da.dbpedia.org/resource/Matematik",
+		"http://arz.dbpedia.org/resource/رياضيات",
+		"http://nds.dbpedia.org/resource/Mathematik",
+		"http://bug.dbpedia.org/resource/ᨆᨈᨛᨆᨈᨗᨀ",
+		"http://hi.dbpedia.org/resource/गणित",
+		"http://scn.dbpedia.org/resource/Matimàtica",
+		"http://no.dbpedia.org/resource/Matematikk",
+		"http://cy.dbpedia.org/resource/Mathemateg",
+		"http://pl.dbpedia.org/resource/Matematyka",
+		"http://is.dbpedia.org/resource/Stærðfræði",
+		"http://eu.dbpedia.org/resource/Matematika",
+		"http://el.dbpedia.org/resource/Μαθηματικά",
+		"http://pa.dbpedia.org/resource/ਹਿਸਾਬ",
+		"http://fi.dbpedia.org/resource/Matematiikka",
+		"http://sw.cyc.com/concept/Mx4rvVjHd5wpEbGdrcN5Y29ycA",
+		"http://mk.dbpedia.org/resource/Математика",
+		"http://fr.dbpedia.org/resource/Mathématiques",
+		"http://si.dbpedia.org/resource/ගණිතය",
+		"http://ar.dbpedia.org/resource/رياضيات",
+		"http://eo.dbpedia.org/resource/Matematiko",
+		"http://simple.dbpedia.org/resource/Mathematics",
+		"http://ur.dbpedia.org/resource/ریاضی",
+		"http://mg.dbpedia.org/resource/Fanisana",
+		"http://new.dbpedia.org/resource/ल्याःज्या",
+		"http://fa.dbpedia.org/resource/ریاضیات",
+		"http://ru.dbpedia.org/resource/Математика",
+		"http://my.dbpedia.org/resource/သင်္ချာ",
+		"http://bpy.dbpedia.org/resource/গণিত",
+		"http://sk.dbpedia.org/resource/Matematika",
+		"http://lmo.dbpedia.org/resource/Matemàtega",
+		"http://sah.dbpedia.org/resource/Математика",
+		"http://tr.dbpedia.org/resource/Matematik",
+		"http://sco.dbpedia.org/resource/Mathematics",
+		"http://ro.dbpedia.org/resource/Matematică",
+		"http://tt.dbpedia.org/resource/Математика",
+		"http://ia.dbpedia.org/resource/Mathematica",
+		"http://an.dbpedia.org/resource/Matematicas",
+		"http://als.dbpedia.org/resource/Mathematik",
+		"http://ku.dbpedia.org/resource/Matematîk",
+		"http://am.dbpedia.org/resource/ትምህርተ_ሂሳብ",
+		"http://io.dbpedia.org/resource/Matematiko",
+		"http://pms.dbpedia.org/resource/Matemàtica",
+		"http://lb.dbpedia.org/resource/Mathematik",
+		"http://kn.dbpedia.org/resource/ಗಣಿತ",
+		"http://kk.dbpedia.org/resource/Математика",
+		"http://hr.dbpedia.org/resource/Matematika",
+		"http://lt.dbpedia.org/resource/Matematika",
+		"http://bn.dbpedia.org/resource/গণিত",
+		"http://bs.dbpedia.org/resource/Matematika",
+		"http://ckb.dbpedia.org/resource/ماتماتیک",
+		"http://sw.dbpedia.org/resource/Hisabati",
+		"http://uk.dbpedia.org/resource/Математика",
+		"http://et.dbpedia.org/resource/Matemaatika",
+		"http://ne.dbpedia.org/resource/गणित",
+		"http://yi.dbpedia.org/resource/מאטעמאטיק",
+		"http://ht.dbpedia.org/resource/Matematik",
+		"http://mn.dbpedia.org/resource/Математик",
+		"http://zh.dbpedia.org/resource/数学",
+		"http://la.dbpedia.org/resource/Mathematica",
+		"http://sv.dbpedia.org/resource/Matematik",
+		"http://yo.dbpedia.org/resource/Mathimátíkì",
+		"http://gd.dbpedia.org/resource/Matamataig",
+		"http://fy.dbpedia.org/resource/Wiskunde",
+		"http://vo.dbpedia.org/resource/Matemat",
+		"http://sl.dbpedia.org/resource/Matematika",
+		"http://lv.dbpedia.org/resource/Matemātika",
+		"http://vec.dbpedia.org/resource/Matemàtega",
+		"http://es.dbpedia.org/resource/Matemáticas",
+		"http://pnb.dbpedia.org/resource/میتھمیٹکس",
+		"http://af.dbpedia.org/resource/Wiskunde",
+		"http://uz.dbpedia.org/resource/Matematika",
+		"http://tl.dbpedia.org/resource/Matematika",
+		"http://sr.dbpedia.org/resource/Математика",
+		"http://hu.dbpedia.org/resource/Matematika",
+		"http://th.dbpedia.org/resource/คณิตศาสตร์",
+		"http://ceb.dbpedia.org/resource/Matematika",
+		"http://he.dbpedia.org/resource/מתמטיקה",
+		"http://br.dbpedia.org/resource/Matematik",
+		"http://id.dbpedia.org/resource/Matematika",
+		"http://bg.dbpedia.org/resource/Математика",
+		"http://www.wikidata.org/entity/Q395",
+		"http://war.dbpedia.org/resource/Matematika",
+		"http://oc.dbpedia.org/resource/Matematicas",
+		"http://ky.dbpedia.org/resource/Математика",
+		"http://az.dbpedia.org/resource/Riyaziyyat",
+		"http://su.dbpedia.org/resource/Matematika",
+		"http://ta.dbpedia.org/resource/கணிதம்",
+		"http://ml.dbpedia.org/resource/ഗണിതം",
+		"http://mr.dbpedia.org/resource/गणित",
+		"http://be.dbpedia.org/resource/Матэматыка",
+		"http://cs.dbpedia.org/resource/Matematika",
+		"http://sa.dbpedia.org/resource/गणितम्",
+		"http://dbpedia.org/resource/Mathematics"]
+	}]
+}

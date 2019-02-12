@@ -13,14 +13,6 @@ import eu.europeana.entity.definitions.model.vocabulary.ConceptSolrFields;
 
 public class SolrAgentImpl extends BaseAgent implements Agent {
 
-	// Need to annotate concept fields as well as this class doesn't extend the
-	// SolrConceptImpl
-	@Override
-	@Field(ConceptSolrFields.RDF_ABOUT)
-	public void setAbout(String about) {
-		super.setAbout(about);
-	}
-	
 	@Override
 	@Field(AgentSolrFields.SAME_AS)
 	public void setSameAs(String[] sameAs) {
@@ -81,13 +73,17 @@ public class SolrAgentImpl extends BaseAgent implements Agent {
 	@Override
 	@Field(ConceptSolrFields.PREF_LABEL_ALL)
 	public void setPrefLabelStringMap(Map<String, String> prefLabel) {
-		super.setPrefLabelStringMap(prefLabel);
+		Map<String, String> normalizedPrefLabel = SolrUtils.normalizeStringMap(
+				ConceptSolrFields.PREF_LABEL, prefLabel);
+		super.setPrefLabelStringMap(normalizedPrefLabel);
 	}
 
 	@Override
 	@Field(ConceptSolrFields.ALT_LABEL_ALL)
 	public void setAltLabel(Map<String, List<String>> altLabel) {
-		super.setAltLabel(altLabel);
+		Map<String, List<String>> normalizedAltLabel = SolrUtils.normalizeStringListMap(
+				ConceptSolrFields.ALT_LABEL, altLabel);
+		super.setAltLabel(normalizedAltLabel);
 	}
 
 	@Override
@@ -136,7 +132,9 @@ public class SolrAgentImpl extends BaseAgent implements Agent {
 	@Override
 	@Field(AgentSolrFields.BIOGRAPHICAL_INFORMATION_ALL)
 	public void setBiographicalInformation(Map<String, List<String>> biographicalInformation) {
-		super.setBiographicalInformation(biographicalInformation);
+		Map<String, List<String>> normalizedBiographicalInformation = SolrUtils.normalizeStringListMap(
+				AgentSolrFields.BIOGRAPHICAL_INFORMATION, biographicalInformation);
+		super.setBiographicalInformation(normalizedBiographicalInformation);
 	}
 
 	@Override

@@ -117,7 +117,6 @@ public final class SchemaOrgUtils {
      * @param conceptObject Thing object in which the properties will be filled in
      */
     public static void processConcept(Concept concept, Thing conceptObject) {
-//        private static void processConcept(ConceptImpl concept, Thing conceptObject) {
         // @id
         conceptObject.setId(concept.getAbout());
 
@@ -156,7 +155,6 @@ public final class SchemaOrgUtils {
      * @param placeObject Place object to update
      */
     public static void processPlace(eu.europeana.corelib.definitions.edm.entity.Place place, Place placeObject) {
-//        private static void processPlace(PlaceImpl place, Place placeObject) {
         if (place == null) {
             return;
         }
@@ -242,7 +240,6 @@ public final class SchemaOrgUtils {
      * @param agent source agent
      */
     public static void processAgent(Agent agent, Thing agentObject) {
-//        private static void processAgent(Agent agent, Thing agentObject) {
         // @id
         agentObject.setId(agent.getAbout());
 

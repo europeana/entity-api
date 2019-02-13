@@ -65,7 +65,9 @@ public class SolrConceptImpl extends BaseConcept implements Concept{
 	@Override
 	@Field(ConceptSolrFields.NOTATION_ALL)
 	public void setNotation(Map<String, List<String>> notation) {
-		super.setNotation(notation);
+		Map<String, List<String>>  normalizedNotation = SolrUtils.normalizeStringListMap(
+				ConceptSolrFields.NOTATION, notation);
+		super.setNotation(normalizedNotation);
 	}
 	
 	@Override
@@ -111,7 +113,9 @@ public class SolrConceptImpl extends BaseConcept implements Concept{
 	@Override
 	@Field(ConceptSolrFields.NOTE_ALL)
 	public void setNote(Map<String, List<String>> note) {
-		super.setNote(note);
+		Map<String, List<String>>  normalizedNote = SolrUtils.normalizeStringListMap(
+				ConceptSolrFields.NOTE, note);
+		super.setNote(normalizedNote);
 	}
 
 	@Override

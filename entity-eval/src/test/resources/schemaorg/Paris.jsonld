@@ -1,1 +1,493 @@
-{"@context":"http://schema.org","scopedObj":[{"@type":"Place","alternateName":[{"@value":"Lutetia Parisorum","@language":"skos_altLabel.la"},{"@value":"Paris","@language":"skos_altLabel.vi"},{"@value":"Parisi","@language":"skos_altLabel.sq"},{"@value":"Paname","@language":"skos_altLabel.fr"},{"@value":"Pantruche","@language":"skos_altLabel.fr"},{"@value":"Paris","@language":"skos_altLabel.fr"},{"@value":"Ville-Lumière","@language":"skos_altLabel.fr"},{"@value":"Paris","@language":"skos_altLabel.tl"}],"containedInPlace":[{"@type":"Place","@id":"http://data.europeana.eu/place/base/85"}],"geo":[{"@type":"GeoCoordinates","longitude":["2.3488"],"latitude":["48.85341"]}]}]}
+{
+	"@context": "http://schema.org",
+	"scopedObj": [{
+		"@type": "Place",
+		"@id": "http://data.europeana.eu/place/base/41948",
+		"name": [{
+			"@value": "Paris",
+			"@language": ""
+		},
+		{
+			"@value": "पैरिस",
+			"@language": "hi"
+		},
+		{
+			"@value": "پاريس",
+			"@language": "ps"
+		},
+		{
+			"@value": "Paris",
+			"@language": "pt"
+		},
+		{
+			"@value": "Pariz",
+			"@language": "hr"
+		},
+		{
+			"@value": "Párizs",
+			"@language": "hu"
+		},
+		{
+			"@value": "פאריז",
+			"@language": "yi"
+		},
+		{
+			"@value": "Փարիզ",
+			"@language": "hy"
+		},
+		{
+			"@value": "Parisi",
+			"@language": "yo"
+		},
+		{
+			"@value": "Paris",
+			"@language": "ia"
+		},
+		{
+			"@value": "Paris",
+			"@language": "id"
+		},
+		{
+			"@value": "Parys",
+			"@language": "af"
+		},
+		{
+			"@value": "Paris",
+			"@language": "io"
+		},
+		{
+			"@value": "Bahliz",
+			"@language": "za"
+		},
+		{
+			"@value": "París",
+			"@language": "is"
+		},
+		{
+			"@value": "Parigi",
+			"@language": "it"
+		},
+		{
+			"@value": "ፓሪስ",
+			"@language": "am"
+		},
+		{
+			"@value": "París",
+			"@language": "an"
+		},
+		{
+			"@value": "巴黎",
+			"@language": "zh"
+		},
+		{
+			"@value": "باريس",
+			"@language": "ar"
+		},
+		{
+			"@value": "パリ",
+			"@language": "ja"
+		},
+		{
+			"@value": "Paris",
+			"@language": "ro"
+		},
+		{
+			"@value": "Париж",
+			"@language": "ba"
+		},
+		{
+			"@value": "Париж",
+			"@language": "ru"
+		},
+		{
+			"@value": "Горад Парыж",
+			"@language": "be"
+		},
+		{
+			"@value": "Париж",
+			"@language": "bg"
+		},
+		{
+			"@value": "প্যারিস",
+			"@language": "bn"
+		},
+		{
+			"@value": "ཕ་རི།",
+			"@language": "bo"
+		},
+		{
+			"@value": "Parigi",
+			"@language": "sc"
+		},
+		{
+			"@value": "Pariz",
+			"@language": "br"
+		},
+		{
+			"@value": "Pariz",
+			"@language": "bs"
+		},
+		{
+			"@value": "პარიზი",
+			"@language": "ka"
+		},
+		{
+			"@value": "Paríž",
+			"@language": "sk"
+		},
+		{
+			"@value": "Pariz",
+			"@language": "sl"
+		},
+		{
+			"@value": "Baariis",
+			"@language": "so"
+		},
+		{
+			"@value": "Paris",
+			"@language": "sq"
+		},
+		{
+			"@value": "París",
+			"@language": "ca"
+		},
+		{
+			"@value": "Париз",
+			"@language": "sr"
+		},
+		{
+			"@value": "Париж",
+			"@language": "kk"
+		},
+		{
+			"@value": "ប៉ារីស",
+			"@language": "km"
+		},
+		{
+			"@value": "Paris",
+			"@language": "sv"
+		},
+		{
+			"@value": "ಪ್ಯಾರಿಸ್",
+			"@language": "kn"
+		},
+		{
+			"@value": "Paris",
+			"@language": "sw"
+		},
+		{
+			"@value": "파리",
+			"@language": "ko"
+		},
+		{
+			"@value": "Parîs",
+			"@language": "ku"
+		},
+		{
+			"@value": "Париж",
+			"@language": "kv"
+		},
+		{
+			"@value": "Paris",
+			"@language": "kw"
+		},
+		{
+			"@value": "Parighji",
+			"@language": "co"
+		},
+		{
+			"@value": "பாரிஸ்",
+			"@language": "ta"
+		},
+		{
+			"@value": "Париж",
+			"@language": "ky"
+		},
+		{
+			"@value": "Paříž",
+			"@language": "cs"
+		},
+		{
+			"@value": "పారిస్",
+			"@language": "te"
+		},
+		{
+			"@value": "Парижь",
+			"@language": "cu"
+		},
+		{
+			"@value": "Париж",
+			"@language": "tg"
+		},
+		{
+			"@value": "Парис",
+			"@language": "cv"
+		},
+		{
+			"@value": "ปารีส",
+			"@language": "th"
+		},
+		{
+			"@value": "Lutetia",
+			"@language": "la"
+		},
+		{
+			"@value": "Paris",
+			"@language": "cy"
+		},
+		{
+			"@value": "Paräis",
+			"@language": "lb"
+		},
+		{
+			"@value": "Pariž",
+			"@language": "tk"
+		},
+		{
+			"@value": "Lungsod ng Paris",
+			"@language": "tl"
+		},
+		{
+			"@value": "Paris",
+			"@language": "da"
+		},
+		{
+			"@value": "Paries",
+			"@language": "li"
+		},
+		{
+			"@value": "Paris",
+			"@language": "tr"
+		},
+		{
+			"@value": "Париж",
+			"@language": "tt"
+		},
+		{
+			"@value": "Paris",
+			"@language": "de"
+		},
+		{
+			"@value": "Pari",
+			"@language": "ln"
+		},
+		{
+			"@value": "Paris",
+			"@language": "ty"
+		},
+		{
+			"@value": "Paryžius",
+			"@language": "lt"
+		},
+		{
+			"@value": "Parīze",
+			"@language": "lv"
+		},
+		{
+			"@value": "پارىژ",
+			"@language": "ug"
+		},
+		{
+			"@value": "Париж",
+			"@language": "uk"
+		},
+		{
+			"@value": "Paris",
+			"@language": "mg"
+		},
+		{
+			"@value": "Parī",
+			"@language": "mi"
+		},
+		{
+			"@value": "پیرس",
+			"@language": "ur"
+		},
+		{
+			"@value": "Париз",
+			"@language": "mk"
+		},
+		{
+			"@value": "പാരിസ്",
+			"@language": "ml"
+		},
+		{
+			"@value": "Парис",
+			"@language": "mn"
+		},
+		{
+			"@value": "Parij",
+			"@language": "uz"
+		},
+		{
+			"@value": "पॅरिस",
+			"@language": "mr"
+		},
+		{
+			"@value": "Paris",
+			"@language": "ms"
+		},
+		{
+			"@value": "Παρίσι",
+			"@language": "el"
+		},
+		{
+			"@value": "Paris",
+			"@language": "en"
+		},
+		{
+			"@value": "Parizo",
+			"@language": "eo"
+		},
+		{
+			"@value": "ပါရီမြို့",
+			"@language": "my"
+		},
+		{
+			"@value": "París",
+			"@language": "es"
+		},
+		{
+			"@value": "Pariis",
+			"@language": "et"
+		},
+		{
+			"@value": "Paris",
+			"@language": "eu"
+		},
+		{
+			"@value": "Pa-ri",
+			"@language": "vi"
+		},
+		{
+			"@value": "Paris",
+			"@language": "na"
+		},
+		{
+			"@value": "पेरिस",
+			"@language": "ne"
+		},
+		{
+			"@value": "پاریس",
+			"@language": "fa"
+		},
+		{
+			"@value": "Parijs",
+			"@language": "nl"
+		},
+		{
+			"@value": "Paris",
+			"@language": "nn"
+		},
+		{
+			"@value": "Paris",
+			"@language": "no"
+		},
+		{
+			"@value": "Pariisi",
+			"@language": "fi"
+		},
+		{
+			"@value": "Lutèce",
+			"@language": "fr"
+		},
+		{
+			"@value": "Parys",
+			"@language": "fy"
+		},
+		{
+			"@value": "París",
+			"@language": "oc"
+		},
+		{
+			"@value": "Pari",
+			"@language": "wo"
+		},
+		{
+			"@value": "Páras",
+			"@language": "ga"
+		},
+		{
+			"@value": "Paris",
+			"@language": "gd"
+		},
+		{
+			"@value": "Париж",
+			"@language": "os"
+		},
+		{
+			"@value": "París",
+			"@language": "gl"
+		},
+		{
+			"@value": "Parĩ",
+			"@language": "gn"
+		},
+		{
+			"@value": "પૅરિસ",
+			"@language": "gu"
+		},
+		{
+			"@value": "Paarys",
+			"@language": "gv"
+		},
+		{
+			"@value": "ਪੈਰਿਸ",
+			"@language": "pa"
+		},
+		{
+			"@value": "Pariis",
+			"@language": "ha"
+		},
+		{
+			"@value": "Paryż",
+			"@language": "pl"
+		},
+		{
+			"@value": "פריז",
+			"@language": "he"
+		}],
+		"alternateName": [{
+			"@value": "Paris",
+			"@language": "vi"
+		},
+		{
+			"@value": "Lutetia Parisorum",
+			"@language": "la"
+		},
+		{
+			"@value": "Paris",
+			"@language": "tl"
+		},
+		{
+			"@value": "Paname",
+			"@language": "fr"
+		},
+		{
+			"@value": "Pantruche",
+			"@language": "fr"
+		},
+		{
+			"@value": "Paris",
+			"@language": "fr"
+		},
+		{
+			"@value": "Ville-Lumière",
+			"@language": "fr"
+		},
+		{
+			"@value": "Parisi",
+			"@language": "sq"
+		}],
+		"sameAs": ["http://sws.geonames.org/2988507/"],
+		"geo": [{
+			"@type": "GeoCoordinates",
+			"latitude": ["48.85341"],
+			"longitude": ["2.3488"]
+		}],
+		"containedInPlace": [{
+			"@type": "Place",
+			"@id": "http://data.europeana.eu/place/base/85"
+		}]
+	}]
+}

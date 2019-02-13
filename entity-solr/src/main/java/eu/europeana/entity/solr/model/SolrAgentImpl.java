@@ -95,7 +95,9 @@ public class SolrAgentImpl extends BaseAgent implements Agent {
 	@Override
 	@Field(ConceptSolrFields.NOTE_ALL)
 	public void setNote(Map<String, List<String>> note) {
-		super.setNote(note);
+		Map<String, List<String>>  normalizedNote = SolrUtils.normalizeStringListMap(
+				ConceptSolrFields.NOTE, note);
+		super.setNote(normalizedNote);
 	}
 	
 	@Override
@@ -152,13 +154,17 @@ public class SolrAgentImpl extends BaseAgent implements Agent {
 	@Override
 	@Field(AgentSolrFields.PLACE_OF_BIRTH_ALL)
 	public void setPlaceOfBirth(Map<String, List<String>> placeOfBirth) {
-		super.setPlaceOfBirth(placeOfBirth);
+		Map<String, List<String>> normalizedPlaceOfBirth = SolrUtils.normalizeStringListMap(
+				AgentSolrFields.PLACE_OF_BIRTH, placeOfBirth);
+		super.setPlaceOfBirth(normalizedPlaceOfBirth);
 	}
 
 	@Override
 	@Field(AgentSolrFields.PLACE_OF_DEATH_ALL)
 	public void setPlaceOfDeath(Map<String, List<String>> placeOfDeath) {
-		super.setPlaceOfDeath(placeOfDeath);
+		Map<String, List<String>> normalizedPlaceOfDeath = SolrUtils.normalizeStringListMap(
+				AgentSolrFields.PLACE_OF_DEATH, placeOfDeath);
+		super.setPlaceOfDeath(normalizedPlaceOfDeath);
 	}
 
 	@Override
@@ -176,7 +182,9 @@ public class SolrAgentImpl extends BaseAgent implements Agent {
 	@Override
 	@Field(AgentSolrFields.PROFESSION_OR_OCCUPATION_ALL)
 	public void setProfessionOrOccupation(Map<String, List<String>> professionOrOccupation) {
-		super.setProfessionOrOccupation(professionOrOccupation);
+		Map<String, List<String>> normalizedProfessionOrOccupation = SolrUtils.normalizeStringListMap(
+				AgentSolrFields.PROFESSION_OR_OCCUPATION, professionOrOccupation);
+		super.setProfessionOrOccupation(normalizedProfessionOrOccupation);
 	}
 
 

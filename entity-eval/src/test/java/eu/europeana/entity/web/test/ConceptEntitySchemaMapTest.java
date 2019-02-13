@@ -90,7 +90,7 @@ public class ConceptEntitySchemaMapTest {
 	 * @throws HttpException 
 	 * @throws IOException 
 	 */
-//	@Test
+	@Test
 	public void testAgentMappingToSchemaOrg() throws HttpException, IOException {
 		
 		String entityUri = TEST_AGENT_ENTITY_URI;
@@ -116,16 +116,17 @@ public class ConceptEntitySchemaMapTest {
 	/**
 	 * This test investigates EDM entity Place mapping to Schema.org
 	 * @throws HttpException 
+	 * @throws IOException 
 	 */
-//	@Test
-	public void testPlaceMappingToSchemaOrg() throws HttpException {
+	@Test
+	public void testPlaceMappingToSchemaOrg() throws HttpException, IOException {
 		
 		String entityUri = TEST_PLACE_ENTITY_URI;
-		Entity result;
 		eu.europeana.corelib.definitions.edm.entity.Place place;
 		
 		try {
-			result = solrEntityService.searchByUrl(TEST_PLACE_ENTITY_TYPE, entityUri);
+			place = (eu.europeana.corelib.definitions.edm.entity.Place) solrEntityService.searchByUrl(
+					TEST_PLACE_ENTITY_TYPE, entityUri);
 		} catch (EntityRetrievalException e) {
 			throw new HttpException(e.getMessage(), I18nConstants.SERVER_ERROR_CANT_RETRIEVE_URI,
 					new String[] { entityUri }, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -134,14 +135,14 @@ public class ConceptEntitySchemaMapTest {
 					HttpStatus.NOT_FOUND, null);
 		}	
 		
-		Map<String, List<String>> isPartOf = ((BasePlace) result).getIsPartOf();
+		Map<String, List<String>> isPartOf = place.getIsPartOf();
         Assert.assertNotNull(isPartOf);        
 		
-		place = (BasePlace) result;
         Place placeObject = new Place();
         SchemaOrgUtils.processPlace(place, placeObject);
         String output = SchemaOrgUtils.thingToSchemaOrg(placeObject);
         Assert.assertNotNull(output);        
+        FileUtils.writeStringToFile(new File("place-output.txt"), output);
 	}
 	
 }

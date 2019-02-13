@@ -16,7 +16,8 @@ public class BasePlace extends BaseEntity implements Place, eu.europeana.corelib
 	private Float latitude, longitude, altitude;
 	private String[] exactMatch;
 
-	private Map<String, List<String>> tmpIsPartOf;
+	private Map<String, List<String>> tmpIsPartOf;	
+	private Map<String, List<String>> tmpPrefLabel;
 	
 	@Override
 	public String[] getIsNextInSequence() {
@@ -68,8 +69,21 @@ public class BasePlace extends BaseEntity implements Place, eu.europeana.corelib
 
 	@Override
 	public Map<String, List<String>> getPrefLabel() {
-		// TODO Auto-generated method stub
-		return null;
+		if (tmpPrefLabel == null)
+			fillTmpPrefLabel(getPrefLabelStringMap());
+
+		return tmpPrefLabel;
+	}
+
+	/**
+	 * This method converts Map<String, String> to Map<String, List<String>> 
+	 * @param prefLabelStringMap
+	 */
+	private void fillTmpPrefLabel(Map<String, String> prefLabelStringMap) {
+		tmpPrefLabel = prefLabelStringMap.entrySet().stream().collect(Collectors.toMap(
+				entry -> entry.getKey(), 
+				entry -> Collections.singletonList(entry.getValue()))
+		);	
 	}
 
 	@Override
@@ -86,8 +100,7 @@ public class BasePlace extends BaseEntity implements Place, eu.europeana.corelib
 
 	@Override
 	public String getFoafDepiction() {
-		// TODO Auto-generated method stub
-		return null;
+		return getDepiction();
 	}
 
 	@Override
@@ -141,8 +154,7 @@ public class BasePlace extends BaseEntity implements Place, eu.europeana.corelib
 
 	@Override
 	public String[] getOwlSameAs() {
-		// TODO Auto-generated method stub
-		return null;
+		return getSameAs();
 	}
 
 	@Override

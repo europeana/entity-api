@@ -530,7 +530,7 @@
 		},
 		{
 			"@value": "Vinci, Republic of Florence",
-			"@language": "rdagr2_placeOfBirth.en"
+			"@language": "en"
 		}],
 		"deathPlace": [{
 			"@type": "Place",

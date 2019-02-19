@@ -1,12 +1,8 @@
 package eu.europeana.entity.definitions.model.impl;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-
-import org.bson.types.ObjectId;
 
 import eu.europeana.entity.definitions.model.Place;
 
@@ -17,7 +13,7 @@ public class BasePlace extends BaseEntity implements Place, eu.europeana.corelib
 	private String[] exactMatch;
 
 	private Map<String, List<String>> tmpIsPartOf;	
-	private Map<String, List<String>> tmpPrefLabel;
+	private Map<String, List<String>> tmpHasPart;	
 	
 	@Override
 	public String[] getIsNextInSequence() {
@@ -67,54 +63,7 @@ public class BasePlace extends BaseEntity implements Place, eu.europeana.corelib
 		this.exactMatch = exactMatch;
 	}
 
-	@Override
-	public Map<String, List<String>> getPrefLabel() {
-		if (tmpPrefLabel == null)
-			fillTmpPrefLabel(getPrefLabelStringMap());
-
-		return tmpPrefLabel;
-	}
-
-	/**
-	 * This method converts Map<String, String> to Map<String, List<String>> 
-	 * @param prefLabelStringMap
-	 */
-	private void fillTmpPrefLabel(Map<String, String> prefLabelStringMap) {
-		tmpPrefLabel = prefLabelStringMap.entrySet().stream().collect(Collectors.toMap(
-				entry -> entry.getKey(), 
-				entry -> Collections.singletonList(entry.getValue()))
-		);	
-	}
-
-	@Override
-	public void setPrefLabel(Map<String, List<String>> prefLabel) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setFoafDepiction(String foafDepiction) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public String getFoafDepiction() {
-		return getDepiction();
-	}
-
-	@Override
-	public ObjectId getId() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setId(ObjectId id) {
-		// TODO Auto-generated method stub
-		
-	}
-
+	
 	@Override
 	@Deprecated
 	public void setIsPartOf(Map<String, List<String>> isPartOf) {
@@ -123,18 +72,21 @@ public class BasePlace extends BaseEntity implements Place, eu.europeana.corelib
 	}
 
 	@Override
+	@Deprecated
 	public void setPosition(Map<String, Float> position) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
+	@Deprecated
 	public Map<String, Float> getPosition() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
+	@Deprecated
 	public void setDcTermsHasPart(Map<String, List<String>> dcTermsHasPart) {
 		// TODO Auto-generated method stub
 		
@@ -142,41 +94,26 @@ public class BasePlace extends BaseEntity implements Place, eu.europeana.corelib
 
 	@Override
 	public Map<String, List<String>> getDcTermsHasPart() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setOwlSameAs(String[] owlSameAs) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public String[] getOwlSameAs() {
-		return getSameAs();
+		//if not available
+		if (getHasPart() == null)
+			return null;
+		//if not transformed
+		if (tmpHasPart == null) 
+			tmpHasPart = fillTmpMap(Arrays.asList(getHasPart()));
+			
+		return tmpHasPart;
 	}
 
 	@Override
 	public Map<String, List<String>> getIsPartOf() {
-		if (tmpIsPartOf == null) {
-			if (getIsPartOfArray() != null) {
-				fillTmpIsPartOf(Arrays.asList(getIsPartOfArray()));
-			}
-		}
+		//if not available
+		if (getIsPartOfArray() == null)
+			return null;
+		//if not transformed
+		if (tmpIsPartOf == null) 
+			tmpIsPartOf = fillTmpMap(Arrays.asList(getIsPartOfArray()));
 
 		return tmpIsPartOf;
-	}
-	
-	/**
-	 * This method converts List<String> to Map<String, List<String>> 
-	 * @param prefLabelStringMap
-	 */
-	private void fillTmpIsPartOf(List<String> tmpIsPartOfArray) {
-		tmpIsPartOf = tmpIsPartOfArray.stream().collect(Collectors.toMap(
-			entry -> TMP_KEY, 
-			entry -> Collections.singletonList(entry))
-		);	
 	}
 	
 }

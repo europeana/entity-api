@@ -89,7 +89,9 @@ public class SolrAgentImpl extends BaseAgent implements Agent {
 	@Override
 	@Field(ConceptSolrFields.HIDDEN_LABEL)
 	public void setHiddenLabel(Map<String, List<String>> hiddenLabel) {
-		super.setHiddenLabel(hiddenLabel);
+		Map<String, List<String>> normalizedHiddenLabel = SolrUtils.normalizeStringListMap(
+				ConceptSolrFields.HIDDEN_LABEL, hiddenLabel);
+		super.setHiddenLabel(normalizedHiddenLabel);
 	}
 
 	@Override

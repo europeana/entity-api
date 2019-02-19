@@ -1,11 +1,8 @@
 package eu.europeana.entity.definitions.model.impl;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
-import org.bson.types.ObjectId;
 import eu.europeana.entity.definitions.model.Concept;
 import eu.europeana.entity.definitions.model.RankedEntity;
 
@@ -22,8 +19,6 @@ public class BaseConcept extends BaseEntity implements Concept, RankedEntity {
 	private String[] closeMatch;
 	private String[] inScheme;
 	private Map<String, List<String>> notation;
-
-	private Map<String, List<String>> tmpPrefLabel;
 
 	public String[] getBroader() {
 		return broader;
@@ -112,56 +107,4 @@ public class BaseConcept extends BaseEntity implements Concept, RankedEntity {
 	public void setNotation(Map<String, List<String>> notation) {
 		this.notation = notation;
 	}
-
-	@Override
-	public Map<String, List<String>> getPrefLabel() {
-		if (tmpPrefLabel == null)
-			fillTmpPrefLabel(getPrefLabelStringMap());
-
-		return tmpPrefLabel;
-	}
-
-	/**
-	 * This method converts Map<String, String> to Map<String, List<String>> 
-	 * @param prefLabelStringMap
-	 */
-	private void fillTmpPrefLabel(Map<String, String> prefLabelStringMap) {
-		tmpPrefLabel = prefLabelStringMap.entrySet().stream().collect(Collectors.toMap(
-				entry -> entry.getKey(), 
-				entry -> Collections.singletonList(entry.getValue()))
-		);	
-	}
-
-	@Override
-	@Deprecated
-	public void setPrefLabel(Map<String, List<String>> prefLabel) {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	@Deprecated
-	public void setFoafDepiction(String foafDepiction) {
-		// setDepiction(foafDepiction);
-	}
-
-	@Override
-	@Deprecated
-	public String getFoafDepiction() {
-		return getDepiction();
-	}
-
-	@Override
-	@Deprecated
-	public ObjectId getId() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	@Deprecated
-	public void setId(ObjectId id) {
-		// TODO Auto-generated method stub
-
-	}
-
 }

@@ -1,13 +1,9 @@
 package eu.europeana.entity.definitions.model.impl;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-
-import org.bson.types.ObjectId;
 
 import eu.europeana.entity.definitions.model.Agent;
 
@@ -31,7 +27,6 @@ public class BaseAgent extends BaseEntity implements Agent, eu.europeana.corelib
 	
 	private String[] exactMatch;
 
-	private Map<String, List<String>> tmpPrefLabel;
 	private Map<String, List<String>> tmpBegin;
 	private Map<String, List<String>> tmpEnd;
 	private Map<String, List<String>> tmpDateOfBirth;
@@ -157,90 +152,32 @@ public class BaseAgent extends BaseEntity implements Agent, eu.europeana.corelib
 
 	public void setExactMatch(String[] exactMatch) {
 		this.exactMatch = exactMatch;
-	}
-
-	@Override
-	public Map<String, List<String>> getPrefLabel() {
-		if (tmpPrefLabel == null)
-			fillTmpPrefLabel(getPrefLabelStringMap());
-
-		return tmpPrefLabel;
-	}
-
-	/**
-	 * This method converts Map<String, String> to Map<String, List<String>> 
-	 * @param prefLabelStringMap
-	 */
-	private void fillTmpPrefLabel(Map<String, String> prefLabelStringMap) {
-		tmpPrefLabel = prefLabelStringMap.entrySet().stream().collect(Collectors.toMap(
-				entry -> entry.getKey(), 
-				entry -> Collections.singletonList(entry.getValue()))
-		);	
-	}
-
-	@Override
-	public void setPrefLabel(Map<String, List<String>> prefLabel) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setFoafDepiction(String foafDepiction) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public String getFoafDepiction() {
-		return getFoafDepiction();
-	}
-
-	@Override
-	public ObjectId getId() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setId(ObjectId id) {
-		// TODO Auto-generated method stub
-		
-	}
+	}	
 
 	@Override
 	public Map<String, List<String>> getBegin() {
-		if (tmpBegin == null) {
-			if (getBeginArray() != null) {
-				fillStringListMapFromStringList(tmpBegin, Arrays.asList(getBeginArray()));
-			}
-		}
+		//if not available
+		if (getBeginArray() == null)
+			return null;
+		//if not transformed
+		if (tmpBegin == null) 
+			tmpBegin = fillTmpMap(Arrays.asList(getBeginArray()));
 
 		return tmpBegin;
 	}
 
 	@Override
 	public Map<String, List<String>> getEnd() {
-		if (tmpEnd == null) {
-			if (getEndArray() != null) {
-				fillStringListMapFromStringList(tmpEnd, Arrays.asList(getEndArray()));
-			}			
-		}
-			
+		//if not available
+		if (getEndArray() == null)
+			return null;
+		//if not transformed
+		if (tmpEnd == null) 
+			tmpEnd = fillTmpMap(Arrays.asList(getEndArray()));
+
 		return tmpEnd;
 	}
 
-	/**
-	 * This method converts List<String> to Map<String, List<String>> 
-	 * @param period stands for begin or end map
-	 * @param tmpPeriodArray contains a list of strings for begin or end period
-	 */
-	private void fillStringListMapFromStringList(Map<String, List<String>> period, List<String> tmpPeriodArray) {
-		period = tmpPeriodArray.stream().collect(Collectors.toMap(
-			entry -> TMP_KEY, 
-			entry -> Collections.singletonList(entry))
-		);	
-	}
-	
 	@Override
 	@Deprecated
 	public void setBegin(Map<String, List<String>> begin) {
@@ -256,64 +193,63 @@ public class BaseAgent extends BaseEntity implements Agent, eu.europeana.corelib
 	}
 
 	@Override
+	@Deprecated  
 	public void setEdmWasPresentAt(String[] edmWasPresentAt) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
+	@Deprecated  
 	public String[] getEdmWasPresentAt() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
+	@Deprecated  
 	public void setEdmHasMet(Map<String, List<String>> edmHasMet) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
+	@Deprecated  
 	public Map<String, List<String>> getEdmHasMet() {
 		// TODO Auto-generated method stub
+//		getHasMet();
 		return null;
 	}
 
 	@Override
+	@Deprecated  
 	public void setEdmIsRelatedTo(Map<String, List<String>> edmIsRelatedTo) {
-		// TODO Auto-generated method stub
-		
+		// TODO Auto-generated method stub		
 	}
 
 	@Override
+	@Deprecated  
 	public Map<String, List<String>> getEdmIsRelatedTo() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	
 	@Override
-	public void setOwlSameAs(String[] owlSameAs) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public String[] getOwlSameAs() {
-		return getSameAs();
-	}
-
-	@Override
+	@Deprecated  
 	public void setFoafName(Map<String, List<String>> foafName) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
+	@Deprecated
 	public Map<String, List<String>> getFoafName() {
 		return null;
 	}
 
 	@Override
+	@Deprecated
 	public void setDcDate(Map<String, List<String>> dcDate) {
 		// TODO Auto-generated method stub
 		
@@ -325,18 +261,23 @@ public class BaseAgent extends BaseEntity implements Agent, eu.europeana.corelib
 	}
 
 	@Override
+	@Deprecated
 	public void setDcIdentifier(Map<String, List<String>> dcIdentifier) {
 		// TODO Auto-generated method stub
 		
 	}
 
+	/**
+	 * see {@link #getIdentifier()}
+	 */
 	@Override
+	@Deprecated  
 	public Map<String, List<String>> getDcIdentifier() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
+	@Deprecated  
 	public void setRdaGr2DateOfBirth(Map<String, List<String>> rdaGr2DateOfBirth) {
 		// TODO Auto-generated method stub
 		
@@ -344,16 +285,18 @@ public class BaseAgent extends BaseEntity implements Agent, eu.europeana.corelib
 
 	@Override
 	public Map<String, List<String>> getRdaGr2DateOfBirth() {
-		if (tmpDateOfBirth == null) {
-			if (getDateOfBirth() != null) {
-				fillStringListMapFromStringList(tmpDateOfBirth, Arrays.asList(getDateOfBirth()));
-			}			
-		}
-			
-		return tmpDateOfBirth;		
+		//if not available
+		if (getDateOfBirth() == null)
+			return null;
+		//if not transformed
+		if (tmpDateOfBirth == null) 
+			tmpDateOfBirth = fillTmpMap(Arrays.asList(getDateOfBirth()));
+
+		return tmpDateOfBirth;
 	}
 
 	@Override
+	@Deprecated
 	public void setRdaGr2PlaceOfDeath(Map<String, List<String>> rdaGr2PlaceOfDeath) {
 		// TODO Auto-generated method stub
 		
@@ -365,6 +308,7 @@ public class BaseAgent extends BaseEntity implements Agent, eu.europeana.corelib
 	}
 
 	@Override
+	@Deprecated
 	public void setRdaGr2PlaceOfBirth(Map<String, List<String>> rdaGr2PlaceOfBirth) {
 		// TODO Auto-generated method stub
 		
@@ -376,6 +320,7 @@ public class BaseAgent extends BaseEntity implements Agent, eu.europeana.corelib
 	}
 
 	@Override
+	@Deprecated
 	public void setRdaGr2DateOfDeath(Map<String, List<String>> rdaGr2DateOfDeath) {
 		// TODO Auto-generated method stub
 		
@@ -383,56 +328,64 @@ public class BaseAgent extends BaseEntity implements Agent, eu.europeana.corelib
 
 	@Override
 	public Map<String, List<String>> getRdaGr2DateOfDeath() {
-		if (tmpDateOfDeath == null) {
-			if (getDateOfDeath() != null) {
-				fillStringListMapFromStringList(tmpDateOfDeath, Arrays.asList(getDateOfDeath()));
-			}			
-		}
-			
-		return tmpDateOfDeath;		
+		//if not available
+		if (getDateOfDeath() == null)
+			return null;
+		//if not transformed
+		if (tmpDateOfDeath == null) 
+			tmpDateOfDeath = fillTmpMap(Arrays.asList(getDateOfDeath()));
+
+		return tmpDateOfDeath;
 	}
 
 	@Override
+	@Deprecated
 	public void setRdaGr2DateOfEstablishment(Map<String, List<String>> rdaGr2DateOfEstablishment) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
+	@Deprecated
 	public Map<String, List<String>> getRdaGr2DateOfEstablishment() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
+	@Deprecated
 	public void setRdaGr2DateOfTermination(Map<String, List<String>> rdaGr2DateOfTermination) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
+	@Deprecated
 	public Map<String, List<String>> getRdaGr2DateOfTermination() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
+	@Deprecated
 	public void setRdaGr2Gender(Map<String, List<String>> rdaGr2Gender) {
 
 	}
 
 	@Override
 	public Map<String, List<String>> getRdaGr2Gender() {
-		if (tmpGender == null) {
-			if (getGender() != null) {
-				fillStringListMapFromStringList(tmpGender, Arrays.asList(getGender()));
-			}			
-		}
-			
-		return tmpGender;		
+		//if not available
+		if (getGender() == null)
+			return null;
+		//if not transformed
+		if (tmpGender == null) 
+			tmpGender = fillTmpMap(Arrays.asList(getGender()));
+
+		return tmpGender;
 	}
 
 	@Override
+	@Deprecated
 	public void setRdaGr2ProfessionOrOccupation(Map<String, List<String>> rdaGr2ProfessionOrOccupation) {
 		// TODO Auto-generated method stub
 		
@@ -444,6 +397,7 @@ public class BaseAgent extends BaseEntity implements Agent, eu.europeana.corelib
 	}
 
 	@Override
+	@Deprecated
 	public void setRdaGr2BiographicalInformation(Map<String, List<String>> rdaGr2BiographicalInformation) {
 		// TODO Auto-generated method stub
 		

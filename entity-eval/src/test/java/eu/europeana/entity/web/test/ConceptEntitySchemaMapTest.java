@@ -1,15 +1,15 @@
 package eu.europeana.entity.web.test;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,11 +23,10 @@ import eu.europeana.corelib.definitions.edm.entity.Agent;
 import eu.europeana.corelib.edm.model.schemaorg.Person;
 import eu.europeana.corelib.edm.model.schemaorg.Place;
 import eu.europeana.corelib.edm.model.schemaorg.Thing;
+import eu.europeana.corelib.edm.utils.JsonLdSerializer;
+import eu.europeana.corelib.edm.utils.SchemaOrgUtils;
 import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException;
 import eu.europeana.entity.definitions.model.Concept;
-import eu.europeana.entity.definitions.model.Entity;
-import eu.europeana.entity.definitions.model.impl.BaseConcept;
-import eu.europeana.entity.definitions.model.impl.BasePlace;
 import eu.europeana.entity.solr.exception.EntityRetrievalException;
 import eu.europeana.entity.solr.service.SolrEntityService;
 
@@ -54,6 +53,8 @@ public class ConceptEntitySchemaMapTest {
 	@Resource
 	SolrEntityService solrEntityService;
 	
+    private static final Logger LOG = LogManager.getLogger(ConceptEntitySchemaMapTest.class);
+	
 	/**
 	 * This test investigates EDM entity Concept mapping to Schema.org
 	 * @throws HttpException 
@@ -64,6 +65,7 @@ public class ConceptEntitySchemaMapTest {
 		
 		String entityUri = TEST_CONCEPT_ENTITY_URI;
 		Concept concept;
+		String output = null;
 		
 		try {
 			concept = (Concept) solrEntityService.searchByUrl(TEST_CONCEPT_ENTITY_TYPE, entityUri);
@@ -80,7 +82,14 @@ public class ConceptEntitySchemaMapTest {
 		
         Thing conceptObject = new Thing();
         SchemaOrgUtils.processConcept(concept, conceptObject);
-        String output = SchemaOrgUtils.thingToSchemaOrg(conceptObject);
+        
+        JsonLdSerializer serializer = new JsonLdSerializer();
+        try {
+            output = serializer.serialize(conceptObject);
+        } catch (IOException e) {
+            LOG.error("Serialization to schema.org failed for " + conceptObject.getId(), e);
+        }
+        
         Assert.assertNotNull(output);        
         FileUtils.writeStringToFile(new File("concept-output.txt"), output);        
 	}
@@ -95,6 +104,7 @@ public class ConceptEntitySchemaMapTest {
 		
 		String entityUri = TEST_AGENT_ENTITY_URI;
 		Agent agent;
+		String output = null;
 		
 		try {
 			agent = (Agent) solrEntityService.searchByUrl(TEST_AGENT_ENTITY_TYPE, entityUri);
@@ -108,7 +118,14 @@ public class ConceptEntitySchemaMapTest {
 		
 		Person agentObject = new Person();
         SchemaOrgUtils.processAgent(agent, agentObject);
-        String output = SchemaOrgUtils.thingToSchemaOrg(agentObject);
+        
+        JsonLdSerializer serializer = new JsonLdSerializer();
+        try {
+            output = serializer.serialize(agentObject);
+        } catch (IOException e) {
+            LOG.error("Serialization to schema.org failed for " + agentObject.getId(), e);
+        }
+        
         Assert.assertNotNull(output);  
         FileUtils.writeStringToFile(new File("agent-output.txt"), output);
 	}
@@ -123,6 +140,7 @@ public class ConceptEntitySchemaMapTest {
 		
 		String entityUri = TEST_PLACE_ENTITY_URI;
 		eu.europeana.corelib.definitions.edm.entity.Place place;
+		String output = null;
 		
 		try {
 			place = (eu.europeana.corelib.definitions.edm.entity.Place) solrEntityService.searchByUrl(
@@ -140,7 +158,14 @@ public class ConceptEntitySchemaMapTest {
 		
         Place placeObject = new Place();
         SchemaOrgUtils.processPlace(place, placeObject);
-        String output = SchemaOrgUtils.thingToSchemaOrg(placeObject);
+        
+        JsonLdSerializer serializer = new JsonLdSerializer();
+        try {
+            output = serializer.serialize(placeObject);
+        } catch (IOException e) {
+            LOG.error("Serialization to schema.org failed for " + placeObject.getId(), e);
+        }        
+        
         Assert.assertNotNull(output);        
         FileUtils.writeStringToFile(new File("place-output.txt"), output);
 	}

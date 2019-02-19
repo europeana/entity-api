@@ -56,10 +56,9 @@ public class EuropeanaEntityLd extends JsonLd {
 		}
 
 		//common SKOS_Properties
-//		putMapOfStringListProperty(WebEntityFields.PREF_LABEL, entity.getPrefLabel(), ConceptSolrFields.PREF_LABEL, jsonLdResource);
-		putMapOfStringProperty(WebEntityFields.PREF_LABEL, ((BaseEntity) entity).getPrefLabelStringMap(), ConceptSolrFields.PREF_LABEL, ldResource);
-		putMapOfStringListProperty(WebEntityFields.ALT_LABEL, entity.getAltLabel(), ConceptSolrFields.ALT_LABEL, ldResource);
-		putMapOfStringListProperty(WebEntityFields.NOTE, entity.getNote(), ConceptSolrFields.NOTE, ldResource);
+		putMapOfStringProperty(WebEntityFields.PREF_LABEL, ((BaseEntity) entity).getPrefLabelStringMap(), "", ldResource);
+		putMapOfStringListProperty(WebEntityFields.ALT_LABEL, entity.getAltLabel(), "", ldResource);
+		putMapOfStringListProperty(WebEntityFields.NOTE, entity.getNote(), "", ldResource);
 
 		// specific properties (by entity type)
 		putSpecificProperties(entity, ldResource);
@@ -153,9 +152,9 @@ public class EuropeanaEntityLd extends JsonLd {
 		//Agent Props
 		putMapOfStringProperty(WebEntityFields.NAME, entity.getName(), AgentSolrFields.NAME, jsonLdResource);
 		putMapOfReferencesProperty(WebEntityFields.BIOGRAPHICAL_INFORMATION,
-					entity.getBiographicalInformation(), AgentSolrFields.BIOGRAPHICAL_INFORMATION, jsonLdResource);
+					entity.getBiographicalInformation(), "", jsonLdResource);
 		putMapOfReferencesProperty(WebEntityFields.PROFESSION_OR_OCCUPATION,
-				entity.getProfessionOrOccupation(), AgentSolrFields.PROFESSION_OR_OCCUPATION, jsonLdResource);
+				entity.getProfessionOrOccupation(), "", jsonLdResource);
 	
 		putStringArrayProperty(WebEntityFields.DATE_OF_DEATH, entity.getDateOfDeath(), jsonLdResource);
 		putStringArrayProperty(WebEntityFields.DATE_OF_BIRTH, entity.getDateOfBirth(), jsonLdResource);
@@ -163,10 +162,10 @@ public class EuropeanaEntityLd extends JsonLd {
 		putStringArrayProperty(WebEntityFields.END, entity.getEndArray(), jsonLdResource);
 
 		putMapOfReferencesProperty(WebEntityFields.PLACE_OF_BIRTH, entity.getPlaceOfBirth(), 
-				AgentSolrFields.PLACE_OF_BIRTH, jsonLdResource);
+				"", jsonLdResource);
 
 		putMapOfReferencesProperty(WebEntityFields.PLACE_OF_DEATH,
-					entity.getPlaceOfDeath(), AgentSolrFields.PLACE_OF_DEATH, jsonLdResource);
+					entity.getPlaceOfDeath(), "", jsonLdResource);
 
 	}
 

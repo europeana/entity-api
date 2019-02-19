@@ -60,10 +60,7 @@ public class ResolveController extends BaseRest {
 		try {			
 			validateApiKey(wskey);
 			
-			// identify required extension
-			String uri = request.getRequestURI();
-			int extensionBeginPos = uri.indexOf('.');
-			String extension = uri.substring(extensionBeginPos+1);
+			String extension = getExtension(request);
 			
 			//identify required format
 			FormatTypes outFormat = getFormatType(extension);
@@ -98,6 +95,24 @@ public class ResolveController extends BaseRest {
 		} catch (Exception e) {
 			throw new InternalServerException(e);
 		}				
+	}
+
+
+	/**
+	 * This method evaluates extension 
+	 * @param request The HTTP request
+	 * @return current extension
+	 */
+	private String getExtension(HttpServletRequest request) {
+		// identify required extension
+		String uri = request.getRequestURI();
+		int extensionBeginPos = uri.indexOf('.');
+		// set default extension
+		String extension = FormatTypes.jsonld.name();
+		// use extension if provided
+		if (extensionBeginPos != -1)
+			extension = uri.substring(extensionBeginPos+1);
+		return extension;
 	}
 
 

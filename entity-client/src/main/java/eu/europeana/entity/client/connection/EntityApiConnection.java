@@ -88,9 +88,8 @@ public class EntityApiConnection extends BaseApiConnection {
 		String json = getJSONResult(url);
 		
 		return getEntityResolveResults(json);		
-
 	}
-	
+
 	/**
 	 * This method returns a list of Entity objects for the passed query.
      * E.g. http://entity-api-test.eanadev.org/entity/search?wskey=apidemo&query=label%3AGermany&lang=all&type=Place&sort=derived_score%2Bdesc&page=0&pageSize=10
@@ -167,24 +166,24 @@ public class EntityApiConnection extends BaseApiConnection {
         		asr.setError(json);
         	} else {
         		if(jsonListObj.has(WebEntityConstants.ITEMS)) {
-	        	JSONArray jsonArray = jsonListObj.getJSONArray(WebEntityConstants.ITEMS);
-	        	if(jsonArray!=null && jsonArray.length()>0){
-			        List<Entity> entityList = new ArrayList<Entity>();
-	                for (int i = 0; i < jsonArray.length(); i++) {
-	                	JSONObject jsonObj = jsonArray.getJSONObject(i);
-	                	BaseEntity entityObject = new BaseEntity();
-			        	entityObject.setEntityId(jsonObj.getString(WebEntityFields.ID));
-//			        	Map<String, List<String>> prefLabelMap = new HashMap<String, List<String>>();
-			        	Map<String, String> prefLabelMap = new HashMap<String, String>();
-			        	String label = jsonObj.getString((WebEntityFields.PREF_LABEL));
-//						prefLabelMap.put(language, Arrays.asList(label));
-						prefLabelMap.put(language, label);
-			        	entityObject.setPrefLabelStringMap(prefLabelMap);
-						entityList.add(entityObject);
-				    }
-				    asr.setItems(entityList);
-				}
-        	}
+		        	JSONArray jsonArray = jsonListObj.getJSONArray(WebEntityConstants.ITEMS);
+		        	if(jsonArray!=null && jsonArray.length()>0){
+				        List<Entity> entityList = new ArrayList<Entity>();
+		                for (int i = 0; i < jsonArray.length(); i++) {
+		                	JSONObject jsonObj = jsonArray.getJSONObject(i);
+		                	BaseEntity entityObject = new BaseEntity();
+				        	entityObject.setEntityId(jsonObj.getString(WebEntityFields.ID));
+	//			        	Map<String, List<String>> prefLabelMap = new HashMap<String, List<String>>();
+				        	Map<String, String> prefLabelMap = new HashMap<String, String>();
+				        	String label = jsonObj.getString((WebEntityFields.PREF_LABEL));
+	//						prefLabelMap.put(language, Arrays.asList(label));
+							prefLabelMap.put(language, label);
+				        	entityObject.setPrefLabelStringMap(prefLabelMap);
+							entityList.add(entityObject);
+					    }
+					    asr.setItems(entityList);
+					}
+        		}
         	}
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -259,7 +258,7 @@ public class EntityApiConnection extends BaseApiConnection {
 				
 		return builder.toString();		
 	}
-
+	
 	/**
 	 * This method constructs url dependent on search parameter.
 	 * @param apiKey

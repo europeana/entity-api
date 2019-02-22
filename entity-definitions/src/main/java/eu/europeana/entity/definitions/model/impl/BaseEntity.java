@@ -236,7 +236,7 @@ public class BaseEntity implements Entity, RankedEntity {
 
 	@Override
 	public String getFoafDepiction() {
-		return getFoafDepiction();
+		return getDepiction();
 	}
 	
 	@Override

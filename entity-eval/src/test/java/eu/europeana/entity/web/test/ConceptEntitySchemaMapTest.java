@@ -64,7 +64,7 @@ public class ConceptEntitySchemaMapTest {
 	 * @throws HttpException 
 	 * @throws IOException 
 	 */
-//	@Test
+	@Test
 	public void testConceptMappingToSchemaOrg() throws HttpException, IOException {
 		
 		String entityUri = TEST_CONCEPT_ENTITY_URI;
@@ -103,7 +103,7 @@ public class ConceptEntitySchemaMapTest {
 	 * @throws HttpException 
 	 * @throws IOException 
 	 */
-//	@Test
+	@Test
 	public void testAgentMappingToSchemaOrg() throws HttpException, IOException {
 		
 		String entityUri = TEST_AGENT_ENTITY_URI;

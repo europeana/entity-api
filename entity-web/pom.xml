@@ -72,6 +72,16 @@
             <groupId>eu.europeana.corelib</groupId>
             <artifactId>corelib-schemaorg</artifactId>
             <version>${version.corelib}</version>
+			<exclusions>
+				<exclusion>
+				    <groupId>org.mongodb.morphia</groupId>
+				    <artifactId>morphia</artifactId>
+				</exclusion>
+				<exclusion>
+				    <groupId>eu.europeana.corelib</groupId>
+    				<artifactId>corelib-storage</artifactId>
+				</exclusion>
+			</exclusions>
         </dependency>
 		
 		<!-- spring -->

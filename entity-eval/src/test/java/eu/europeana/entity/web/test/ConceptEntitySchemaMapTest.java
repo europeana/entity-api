@@ -20,6 +20,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import eu.europeana.api.common.config.I18nConstants;
 import eu.europeana.api.commons.web.exception.HttpException;
 import eu.europeana.corelib.definitions.edm.entity.Agent;
+import eu.europeana.corelib.definitions.edm.entity.Organization;
 import eu.europeana.corelib.edm.model.schemaorg.Person;
 import eu.europeana.corelib.edm.model.schemaorg.Place;
 import eu.europeana.corelib.edm.model.schemaorg.Thing;
@@ -49,6 +50,9 @@ public class ConceptEntitySchemaMapTest {
 	// paris
 	public final String TEST_PLACE_ENTITY_URI = "http://data.europeana.eu/place/base/41948";
 	public final String TEST_PLACE_ENTITY_TYPE = "place";
+	// bnf
+	public final String TEST_ORGANIZATION_ENTITY_URI = "http://data.europeana.eu/organization/1482250000002112001";
+	public final String TEST_ORGANIZATION_ENTITY_TYPE = "organization";
 	
 	@Resource
 	SolrEntityService solrEntityService;
@@ -60,7 +64,7 @@ public class ConceptEntitySchemaMapTest {
 	 * @throws HttpException 
 	 * @throws IOException 
 	 */
-	@Test
+//	@Test
 	public void testConceptMappingToSchemaOrg() throws HttpException, IOException {
 		
 		String entityUri = TEST_CONCEPT_ENTITY_URI;
@@ -99,7 +103,7 @@ public class ConceptEntitySchemaMapTest {
 	 * @throws HttpException 
 	 * @throws IOException 
 	 */
-	@Test
+//	@Test
 	public void testAgentMappingToSchemaOrg() throws HttpException, IOException {
 		
 		String entityUri = TEST_AGENT_ENTITY_URI;
@@ -168,6 +172,44 @@ public class ConceptEntitySchemaMapTest {
         
         Assert.assertNotNull(output);        
         FileUtils.writeStringToFile(new File("place-output.txt"), output);
+	}
+	
+	/**
+	 * This test investigates EDM entity Organization mapping to Schema.org
+	 * @throws HttpException 
+	 * @throws IOException 
+	 */
+	@Test
+	public void testOrganizationMappingToSchemaOrg() throws HttpException, IOException {
+		
+		String entityUri = TEST_ORGANIZATION_ENTITY_URI;
+		eu.europeana.corelib.definitions.edm.entity.Organization organization;
+		String output = null;
+		
+		try {
+			organization = (eu.europeana.corelib.definitions.edm.entity.Organization) 
+					solrEntityService.searchByUrl(TEST_ORGANIZATION_ENTITY_TYPE, entityUri);
+		} catch (EntityRetrievalException e) {
+			throw new HttpException(e.getMessage(), I18nConstants.SERVER_ERROR_CANT_RETRIEVE_URI,
+					new String[] { entityUri }, HttpStatus.INTERNAL_SERVER_ERROR);
+		} catch (UnsupportedEntityTypeException e) {
+			throw new HttpException(null, I18nConstants.UNSUPPORTED_ENTITY_TYPE, new String[] { TEST_ORGANIZATION_ENTITY_TYPE },
+					HttpStatus.NOT_FOUND, null);
+		}	
+		
+		eu.europeana.corelib.edm.model.schemaorg.Organization organizationObject = 
+				new eu.europeana.corelib.edm.model.schemaorg.Organization();
+        SchemaOrgUtils.processEntity(organization, organizationObject);
+        
+        JsonLdSerializer serializer = new JsonLdSerializer();
+        try {
+            output = serializer.serialize(organizationObject);
+        } catch (IOException e) {
+            LOG.error("Serialization to schema.org failed for " + organizationObject.getId(), e);
+        }
+        
+        Assert.assertNotNull(output);  
+        FileUtils.writeStringToFile(new File("organization-output.txt"), output);
 	}
 	
 }

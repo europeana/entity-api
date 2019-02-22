@@ -22,7 +22,6 @@ import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException
 import eu.europeana.entity.definitions.model.Agent;
 import eu.europeana.entity.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.Organization;
-import eu.europeana.entity.definitions.model.impl.BaseEntity;
 import eu.europeana.entity.definitions.model.vocabulary.ConceptSolrFields;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.solr.model.factory.EntityObjectFactory;
@@ -74,7 +73,7 @@ public abstract class BaseEntityService{
 		if(outLanguage == null || outLanguage.length == 0)
 			return;
 		
-		filterLanguageMap(((BaseEntity) entity).getPrefLabelStringMap(), outLanguage);
+		filterLanguageMap(entity.getPrefLabelStringMap(), outLanguage);
 		filterLanguageMap(entity.getAltLabel(), outLanguage);
 		filterLanguageMap(entity.getHiddenLabel(), outLanguage);
 		filterLanguageMap(entity.getNote(), outLanguage);	

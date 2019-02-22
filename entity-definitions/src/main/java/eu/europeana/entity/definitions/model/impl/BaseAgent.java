@@ -32,6 +32,10 @@ public class BaseAgent extends BaseEntity implements Agent, eu.europeana.corelib
 	private Map<String, List<String>> tmpDateOfBirth;
 	private Map<String, List<String>> tmpDateOfDeath;
 	private Map<String, List<String>> tmpGender;
+	private Map<String, List<String>> tmpDateOfEstablishment;
+	private Map<String, List<String>> tmpDateOfTermination;
+	private Map<String, List<String>> tmpName;
+	private Map<String, List<String>> tmpIdentifier;
 	
 
 	public Date getDate() {
@@ -245,7 +249,15 @@ public class BaseAgent extends BaseEntity implements Agent, eu.europeana.corelib
 	@Override
 	@Deprecated
 	public Map<String, List<String>> getFoafName() {
-		return null;
+		//if not available
+		if (getName() == null)
+			return null;
+		//if not transformed
+		if (tmpName == null) {
+			tmpName = fillTmpMapToMap(getName());
+		}
+
+		return tmpName;
 	}
 
 	@Override
@@ -273,7 +285,14 @@ public class BaseAgent extends BaseEntity implements Agent, eu.europeana.corelib
 	@Override
 	@Deprecated  
 	public Map<String, List<String>> getDcIdentifier() {
-		return null;
+		//if not available
+		if (getIdentifier() == null)
+			return null;
+		//if not transformed
+		if (tmpIdentifier == null) 
+			tmpIdentifier = fillTmpMap(Arrays.asList(getIdentifier()));
+
+		return tmpIdentifier;
 	}
 
 	@Override
@@ -348,8 +367,15 @@ public class BaseAgent extends BaseEntity implements Agent, eu.europeana.corelib
 	@Override
 	@Deprecated
 	public Map<String, List<String>> getRdaGr2DateOfEstablishment() {
-		// TODO Auto-generated method stub
-		return null;
+		//if not available
+		if (getDateOfEstablishment() == null)
+			return null;
+		//if not transformed
+		if (tmpDateOfEstablishment == null) {
+			tmpDateOfEstablishment = fillTmpMap(Arrays.asList(getDateOfEstablishment()));
+		}
+
+		return tmpDateOfEstablishment;
 	}
 
 	@Override
@@ -362,8 +388,15 @@ public class BaseAgent extends BaseEntity implements Agent, eu.europeana.corelib
 	@Override
 	@Deprecated
 	public Map<String, List<String>> getRdaGr2DateOfTermination() {
-		// TODO Auto-generated method stub
-		return null;
+		//if not available
+		if (getDateOfTermination() == null)
+			return null;
+		//if not transformed
+		if (tmpDateOfTermination == null) {
+			tmpDateOfTermination = fillTmpMap(Arrays.asList(getDateOfTermination()));
+		}
+
+		return tmpDateOfTermination;
 	}
 
 	@Override

@@ -264,22 +264,6 @@ public class BaseEntity implements Entity, RankedEntity {
 		return tmpPrefLabel;
 	}
 
-	@Override
-	@Deprecated
-	public void setPrefLabel(Map<String, List<String>> prefLabel) {
-		// TODO Auto-generated method stub
-	}
-	
-	@Deprecated
-	public void setOwlSameAs(String[] owlSameAs) {
-		setSameAs(sameAs);
-		
-	}
-
-	public String[] getOwlSameAs() {
-		return getSameAs();
-	}
-
 	/**
 	 * This method converts List<String> to Map<String, List<String>> 
 	 * @param list of strings
@@ -307,6 +291,22 @@ public class BaseEntity implements Entity, RankedEntity {
 		);	
 		
 		return tmpMap;
+	}
+	
+	@Override
+	@Deprecated
+	public void setPrefLabel(Map<String, List<String>> prefLabel) {
+		// TODO Auto-generated method stub
+	}
+	
+	@Deprecated
+	public void setOwlSameAs(String[] owlSameAs) {
+		setSameAs(sameAs);
+		
+	}
+
+	public String[] getOwlSameAs() {
+		return getSameAs();
 	}
 
 }

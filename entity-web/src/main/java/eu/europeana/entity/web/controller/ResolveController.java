@@ -133,36 +133,49 @@ public class ResolveController extends BaseRest {
         if(FormatTypes.jsonld.equals(format)) {
         	EuropeanaEntityLd entityLd = new EuropeanaEntityLd(entity);		
 			return entityLd.toString(4);
-        }
-        
-		if (FormatTypes.schema.equals(format)) {
-			
-			switch (entityType) {
-			case Organization:
-				thingObject = new Organization(); 
-				break;
-			case Concept:
-				thingObject = new Thing(); 
-				break;
-			case Agent:
-				thingObject = new Person(); 
-				break;
-			case Place:
-				thingObject = new Place(); 
-				break;
-			default:
-				throw new RuntimeException(
-						"The given type is not supported by the schema.org interface");
-			}
-			
-	        SchemaOrgUtils.processEntity(entity, thingObject);
-	        JsonLdSerializer serializer = new JsonLdSerializer();
-	        try {
-	            jsonLd = serializer.serialize(thingObject);
-	        } catch (IOException e) {
-	        	throw new UnsupportedEntityTypeException(
-	        			"Serialization to schema.org failed for " + thingObject.getId() + e.getMessage());
-	        }	        
+        } else if (FormatTypes.schema.equals(format)) {			
+			jsonLd = serializeSchema(entity, entityType, jsonLd, thingObject);	        
+		}
+		return jsonLd;
+	}
+
+
+	/**
+	 * This method serializes Entity object applying schema.org serialization.
+	 * @param entity The Entity object
+	 * @param entityType The type of the entity
+	 * @param jsonLd The resulting json-ld string
+	 * @param thingObject The object in corelib format
+	 * @return The serialized entity in json-ld string format
+	 * @throws UnsupportedEntityTypeException
+	 */
+	private String serializeSchema(Entity entity, EntityTypes entityType, String jsonLd, Thing thingObject)
+			throws UnsupportedEntityTypeException {
+		switch (entityType) {
+		case Organization:
+			thingObject = new Organization(); 
+			break;
+		case Concept:
+			thingObject = new Thing(); 
+			break;
+		case Agent:
+			thingObject = new Person(); 
+			break;
+		case Place:
+			thingObject = new Place(); 
+			break;
+		default:
+			throw new RuntimeException(
+					"The given type is not supported by the schema.org interface");
+		}
+		
+		SchemaOrgUtils.processEntity(entity, thingObject);
+		JsonLdSerializer serializer = new JsonLdSerializer();
+		try {
+		    jsonLd = serializer.serialize(thingObject);
+		} catch (IOException e) {
+			throw new UnsupportedEntityTypeException(
+					"Serialization to schema.org failed for " + thingObject.getId() + e.getMessage());
 		}
 		return jsonLd;
 	}

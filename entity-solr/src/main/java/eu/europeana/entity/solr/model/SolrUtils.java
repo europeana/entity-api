@@ -53,4 +53,37 @@ public class SolrUtils {
 		}
 		return res;
 	}
+	
+	/**
+	 * This method removes unnecessary prefixes from the fields in format List<String> itemList
+	 * e.g. "rdagr2_dateOfBirth"
+	 * @param labelId e.g. AgentSolrFields.DATE_OF_BIRTH
+	 * @param itemList e.g. dateOfBirth
+	 * @return normalized content in formatString[]  
+	 */
+	public static String[] normalizeStringList(String labelId, List<String> itemList) {
+		List<String> res;
+		int prefixLen = labelId.length() + 1;
+		if (itemList.iterator().next().startsWith(labelId)) {
+			res = itemList.stream() 
+                     .map(entry -> entry.substring(prefixLen)) 
+                     .collect(Collectors.toList()			
+			);	
+		} else {
+			res = itemList;
+		}
+		return convertListToArray(res);
+	}
+	
+	/**
+	 * This method converts a string list to an array
+	 * @param itemList
+	 * @return string array
+	 */
+	public static String[] convertListToArray(List<String> itemList) {
+		String[] itemArr = new String[itemList.size()];
+		itemArr = itemList.toArray(itemArr);
+		return itemArr;
+	}
+
 }

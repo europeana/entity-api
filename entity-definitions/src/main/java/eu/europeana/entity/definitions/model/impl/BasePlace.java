@@ -1,10 +1,14 @@
 package eu.europeana.entity.definitions.model.impl;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import eu.europeana.entity.definitions.model.Place;
+import eu.europeana.entity.definitions.model.vocabulary.WebEntityFields;
 
 public class BasePlace extends BaseEntity implements Place, eu.europeana.corelib.definitions.edm.entity.Place {
 
@@ -81,8 +85,12 @@ public class BasePlace extends BaseEntity implements Place, eu.europeana.corelib
 	@Override
 	@Deprecated
 	public Map<String, Float> getPosition() {
-		// TODO Auto-generated method stub
-		return null;
+		Map<String, Float> positionMap = new HashMap<String,Float>();	
+		if (getLatitude() != null)
+			positionMap.put(WebEntityFields.LATITUDE, getLatitude());
+		if (getLongitude() != null)
+			positionMap.put(WebEntityFields.LONGITUDE, getLongitude());
+		return positionMap;	
 	}
 
 	@Override

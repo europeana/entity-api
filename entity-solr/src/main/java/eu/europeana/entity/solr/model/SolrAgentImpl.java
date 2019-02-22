@@ -1,5 +1,6 @@
 package eu.europeana.entity.solr.model;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -144,13 +145,17 @@ public class SolrAgentImpl extends BaseAgent implements Agent {
 	@Override
 	@Field(AgentSolrFields.DATE_OF_BIRTH_ALL)
 	public void setDateOfBirth(String[] dateOfBirth) {
-		super.setDateOfBirth(dateOfBirth);
+		String[] normalizedDateOfBirth = SolrUtils.normalizeStringList(
+				AgentSolrFields.DATE_OF_BIRTH_ALL, Arrays.asList(dateOfBirth));
+		super.setDateOfBirth(normalizedDateOfBirth);
 	}
 
 	@Override
 	@Field(AgentSolrFields.DATE_OF_DEATH_ALL)
 	public void setDateOfDeath(String[] dateOfDeath) {
-		super.setDateOfDeath(dateOfDeath);
+		String[] normalizedDateOfDeath = SolrUtils.normalizeStringList(
+				AgentSolrFields.DATE_OF_DEATH_ALL, Arrays.asList(dateOfDeath));
+		super.setDateOfDeath(normalizedDateOfDeath);
 	}
 
 	@Override

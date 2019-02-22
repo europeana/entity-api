@@ -83,7 +83,7 @@ public class EuropeanaEntityLd extends JsonLd {
 	}
 
 	private void putConceptSpecificProperties(Concept entity, JsonLdResource jsonLdResource) {
-		putMapOfStringListProperty(WebEntityFields.NOTATION, entity.getNotation(), ConceptSolrFields.NOTATION, jsonLdResource);
+		putMapOfStringListProperty(WebEntityFields.NOTATION, entity.getNotation(), "", jsonLdResource);
 		putStringArrayProperty(WebEntityFields.RELATED, entity.getRelated(), jsonLdResource);
 		putStringArrayProperty(WebEntityFields.BROADER, entity.getBroader(), jsonLdResource);
 		putStringArrayProperty(WebEntityFields.NARROWER, entity.getNarrower(), jsonLdResource);
@@ -150,7 +150,7 @@ public class EuropeanaEntityLd extends JsonLd {
 		putBaseEntityProperties((BaseEntity)entity, jsonLdResource);
 		
 		//Agent Props
-		putMapOfStringProperty(WebEntityFields.NAME, entity.getName(), AgentSolrFields.NAME, jsonLdResource);
+		putMapOfStringProperty(WebEntityFields.NAME, entity.getName(), "", jsonLdResource);
 		putMapOfReferencesProperty(WebEntityFields.BIOGRAPHICAL_INFORMATION,
 					entity.getBiographicalInformation(), "", jsonLdResource);
 		putMapOfReferencesProperty(WebEntityFields.PROFESSION_OR_OCCUPATION,
@@ -174,10 +174,9 @@ public class EuropeanaEntityLd extends JsonLd {
 		putBaseEntityProperties((BaseEntity)entity, jsonLdResource);
 		
 		// Organization properties
-		putMapOfStringProperty(WebEntityFields.DESCRIPTION, entity.getDescription(), OrganizationSolrFields.DC_DESCRIPTION, ldResource);
+		putMapOfStringProperty(WebEntityFields.DESCRIPTION, entity.getDescription(), "", ldResource);
 		
-		putMapOfStringListProperty(WebEntityFields.ACRONYM, entity.getAcronym(), 
-				OrganizationSolrFields.EDM_ACRONYM, ldResource);		
+		putMapOfStringListProperty(WebEntityFields.ACRONYM, entity.getAcronym(), "", ldResource);		
 		
 		if (!StringUtils.isEmpty(entity.getLogo())){ 			
 			ldResource.putProperty(createWikimediaResource(

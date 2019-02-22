@@ -1,0 +1,579 @@
+{
+	"@context": "http://schema.org",
+	"scopedObj": [{
+		"@type": "Organization",
+		"@id": "http://data.europeana.eu/organization/1482250000002112001",
+		"name": [{
+			"@value": "Bibliothèque nationale de France",
+			"@language": "de"
+		},
+		{
+			"@value": "Ranskan kansalliskirjasto",
+			"@language": "fi"
+		},
+		{
+			"@value": "Национальная библиотека Франции",
+			"@language": "ru"
+		},
+		{
+			"@value": "Нацыянальная бібліятэка Францыі",
+			"@language": "be"
+		},
+		{
+			"@value": "Biblioteca Nacional da França",
+			"@language": "pt"
+		},
+		{
+			"@value": "Национална библиотека на Франция",
+			"@language": "bg"
+		},
+		{
+			"@value": "Nacionalna knjižnica Francuske",
+			"@language": "hr"
+		},
+		{
+			"@value": "Bibliothèque nationale de France",
+			"@language": "fr"
+		},
+		{
+			"@value": "Francia Nemzeti Könyvtár",
+			"@language": "hu"
+		},
+		{
+			"@value": "Ֆրանսիայի ազգային գրադարան",
+			"@language": "hy"
+		},
+		{
+			"@value": "საფრანგეთის ეროვნული ბიბლიოთეკა",
+			"@language": "ka"
+		},
+		{
+			"@value": "Національна бібліотека Франції",
+			"@language": "uk"
+		},
+		{
+			"@value": "Bibliothèque nationale de France",
+			"@language": "sk"
+		},
+		{
+			"@value": "Francoska narodna knjižnica",
+			"@language": "sl"
+		},
+		{
+			"@value": "Leabharlann Náisiúnta na Fraince",
+			"@language": "ga"
+		},
+		{
+			"@value": "Bibliothèque nationale de France",
+			"@language": "gd"
+		},
+		{
+			"@value": "Biblioteca Nacional de França",
+			"@language": "ca"
+		},
+		{
+			"@value": "Национална библиотека на Франција",
+			"@language": "mk"
+		},
+		{
+			"@value": "Национална библиотека Француске",
+			"@language": "sr"
+		},
+		{
+			"@value": "Bibliothèque nationale de France",
+			"@language": "sv"
+		},
+		{
+			"@value": "프랑스 국립도서관",
+			"@language": "ko"
+		},
+		{
+			"@value": "Bibliothèque nationale de France",
+			"@language": "gl"
+		},
+		{
+			"@value": "Εθνική Βιβλιοθήκη της Γαλλίας",
+			"@language": "el"
+		},
+		{
+			"@value": "National Library of France",
+			"@language": "en"
+		},
+		{
+			"@value": "Bibliothèque nationale de France",
+			"@language": "it"
+		},
+		{
+			"@value": "Biblioteca Nacional de Francia",
+			"@language": "es"
+		},
+		{
+			"@value": "法國國家圖書館",
+			"@language": "zh"
+		},
+		{
+			"@value": "Frantziako Liburutegi Nazionala",
+			"@language": "eu"
+		},
+		{
+			"@value": "Francouzská národní knihovna",
+			"@language": "cs"
+		},
+		{
+			"@value": "المكتبة الوطنية الفرنسية",
+			"@language": "ar"
+		},
+		{
+			"@value": "Bibliothèque nationale de France",
+			"@language": "cy"
+		},
+		{
+			"@value": "ビブリオテーク・ナショナル",
+			"@language": "ja"
+		},
+		{
+			"@value": "Fransa milli kitabxanası",
+			"@language": "az"
+		},
+		{
+			"@value": "Francuska Biblioteka Narodowa",
+			"@language": "pl"
+		},
+		{
+			"@value": "Bibliothèque nationale de France",
+			"@language": "da"
+		},
+		{
+			"@value": "Bibliothèque nationale de France",
+			"@language": "ro"
+		},
+		{
+			"@value": "הספרייה הלאומית של צרפת",
+			"@language": "he"
+		},
+		{
+			"@value": "Fransa Ulusal Kütüphanesi",
+			"@language": "tr"
+		},
+		{
+			"@value": "Bibliothèque nationale de France",
+			"@language": "nl"
+		}],
+		"alternateName": [{
+			"@value": "Bibliothèque de l'Arsenal",
+			"@language": "de"
+		},
+		{
+			"@value": "BnF",
+			"@language": "de"
+		},
+		{
+			"@value": "Französische Nationalbibliothek",
+			"@language": "de"
+		},
+		{
+			"@value": "Французская нацыянальная бібліятэка",
+			"@language": "be"
+		},
+		{
+			"@value": "Парижская национальная библиотека",
+			"@language": "ru"
+		},
+		{
+			"@value": "Парижская библиотека",
+			"@language": "ru"
+		},
+		{
+			"@value": "Королевская библиотека Франции",
+			"@language": "ru"
+		},
+		{
+			"@value": "Французская национальная библиотека",
+			"@language": "ru"
+		},
+		{
+			"@value": "Библиотека Парижа",
+			"@language": "ru"
+		},
+		{
+			"@value": "BnF",
+			"@language": "fi"
+		},
+		{
+			"@value": "Bibliothèque nationale de France",
+			"@language": "fi"
+		},
+		{
+			"@value": "Bibliothèque Nationale de France",
+			"@language": "pt"
+		},
+		{
+			"@value": "Gallica",
+			"@language": "pt"
+		},
+		{
+			"@value": "Biblioteca Nacional de Paris",
+			"@language": "pt"
+		},
+		{
+			"@value": "Bibliothèque Nationale",
+			"@language": "pt"
+		},
+		{
+			"@value": "BnF",
+			"@language": "pt"
+		},
+		{
+			"@value": "Biblioteca Nacional de França",
+			"@language": "pt"
+		},
+		{
+			"@value": "Национална библиотека „Франсоа Митеран“",
+			"@language": "bg"
+		},
+		{
+			"@value": "BnF",
+			"@language": "hr"
+		},
+		{
+			"@value": "Bibliothèque de france",
+			"@language": "fr"
+		},
+		{
+			"@value": "Très Grande Bibliothèque",
+			"@language": "fr"
+		},
+		{
+			"@value": "quadrilatère Richelieu",
+			"@language": "fr"
+		},
+		{
+			"@value": "BnF",
+			"@language": "fr"
+		},
+		{
+			"@value": "Bibliothèque Nationale de Paris",
+			"@language": "fr"
+		},
+		{
+			"@value": "Bibliothèque nationale de France",
+			"@language": "fr"
+		},
+		{
+			"@value": "Phonothèque nationale",
+			"@language": "fr"
+		},
+		{
+			"@value": "Bibliothèque royale",
+			"@language": "fr"
+		},
+		{
+			"@value": "BnF",
+			"@language": "hu"
+		},
+		{
+			"@value": "Французька національна бібліотека",
+			"@language": "uk"
+		},
+		{
+			"@value": "Національна бібліотека в Парижі",
+			"@language": "uk"
+		},
+		{
+			"@value": "Francúzska národná knižnica",
+			"@language": "sk"
+		},
+		{
+			"@value": "BnF",
+			"@language": "sk"
+		},
+		{
+			"@value": "BnF",
+			"@language": "sl"
+		},
+		{
+			"@value": "BnF",
+			"@language": "ga"
+		},
+		{
+			"@value": "BnF",
+			"@language": "gd"
+		},
+		{
+			"@value": "Bibliothèque Nationale de France",
+			"@language": "ca"
+		},
+		{
+			"@value": "Biblioteca Nacional de Paris",
+			"@language": "ca"
+		},
+		{
+			"@value": "Biblioteca Nacional de París",
+			"@language": "ca"
+		},
+		{
+			"@value": "Frankrikes nationalbibliotek",
+			"@language": "sv"
+		},
+		{
+			"@value": "BnF",
+			"@language": "sv"
+		},
+		{
+			"@value": "Nationalbiblioteket",
+			"@language": "sv"
+		},
+		{
+			"@value": "Bibliothèque nationale",
+			"@language": "sv"
+		},
+		{
+			"@value": "파리 국립도서관",
+			"@language": "ko"
+		},
+		{
+			"@value": "BnF",
+			"@language": "gl"
+		},
+		{
+			"@value": "National library of France",
+			"@language": "en"
+		},
+		{
+			"@value": "National Library of France",
+			"@language": "en"
+		},
+		{
+			"@value": "Bibliotheque nationale de France",
+			"@language": "en"
+		},
+		{
+			"@value": "BnF",
+			"@language": "en"
+		},
+		{
+			"@value": "Bibliothèque nationale de France",
+			"@language": "en"
+		},
+		{
+			"@value": "Biblioteca nazionale di Parigi",
+			"@language": "it"
+		},
+		{
+			"@value": "Bibliothèque Nationale di Parigi",
+			"@language": "it"
+		},
+		{
+			"@value": "Biblioteca Nazionale di Francia",
+			"@language": "it"
+		},
+		{
+			"@value": "Bibliothèque nationale",
+			"@language": "it"
+		},
+		{
+			"@value": "Biblioteca nazionale francese",
+			"@language": "it"
+		},
+		{
+			"@value": "Bibliothèque National",
+			"@language": "it"
+		},
+		{
+			"@value": "Bibliothèque nationale de France",
+			"@language": "zh"
+		},
+		{
+			"@value": "法国国家图书馆",
+			"@language": "zh"
+		},
+		{
+			"@value": "Bibliothèque Nationale de France",
+			"@language": "es"
+		},
+		{
+			"@value": "Bibliotheque Nationale de France",
+			"@language": "es"
+		},
+		{
+			"@value": "Bibliotheque Nationale",
+			"@language": "es"
+		},
+		{
+			"@value": "Biblioteca Nacional de Paris",
+			"@language": "es"
+		},
+		{
+			"@value": "BnF",
+			"@language": "es"
+		},
+		{
+			"@value": "Biblioteca Nacional de París",
+			"@language": "es"
+		},
+		{
+			"@value": "Bibliothèque nationale",
+			"@language": "es"
+		},
+		{
+			"@value": "Bibliotheque nationale de France",
+			"@language": "cs"
+		},
+		{
+			"@value": "Bibliotheque François Mitterrand",
+			"@language": "cs"
+		},
+		{
+			"@value": "Bibliothèque nationale de France",
+			"@language": "cs"
+		},
+		{
+			"@value": "Bibliothéque nationale de France",
+			"@language": "cs"
+		},
+		{
+			"@value": "BnF",
+			"@language": "eu"
+		},
+		{
+			"@value": "Bibliothèque nationale de France",
+			"@language": "eu"
+		},
+		{
+			"@value": "المكتبة الوطنية بباريس",
+			"@language": "ar"
+		},
+		{
+			"@value": "Gallica",
+			"@language": "ar"
+		},
+		{
+			"@value": "Bibliothèque nationale de France",
+			"@language": "ar"
+		},
+		{
+			"@value": "مكتبه فرنسا الوطنيه",
+			"@language": "ar"
+		},
+		{
+			"@value": "خزانة باريس الوطنية",
+			"@language": "ar"
+		},
+		{
+			"@value": "BnF",
+			"@language": "cy"
+		},
+		{
+			"@value": "フランス国立図書館",
+			"@language": "ja"
+		},
+		{
+			"@value": "パリ国立図書館",
+			"@language": "ja"
+		},
+		{
+			"@value": "BnF",
+			"@language": "ja"
+		},
+		{
+			"@value": "BnF",
+			"@language": "az"
+		},
+		{
+			"@value": "BnF",
+			"@language": "pl"
+		},
+		{
+			"@value": "Bibliothèque nationale de France",
+			"@language": "pl"
+		},
+		{
+			"@value": "הספרייה הלאומית בפריס",
+			"@language": "he"
+		},
+		{
+			"@value": "הספרייה הלאומית הצרפתית",
+			"@language": "he"
+		},
+		{
+			"@value": "הספרייה הלאומית בפריז",
+			"@language": "he"
+		},
+		{
+			"@value": "הספרייה הלאומית של פריז",
+			"@language": "he"
+		},
+		{
+			"@value": "BnF",
+			"@language": "ro"
+		},
+		{
+			"@value": "BnF",
+			"@language": "da"
+		},
+		{
+			"@value": "Bibliotheque Nationale",
+			"@language": "nl"
+		},
+		{
+			"@value": "Bibliotheque nationale de France",
+			"@language": "nl"
+		},
+		{
+			"@value": "Bibliotheque Francois Mitterrand",
+			"@language": "nl"
+		},
+		{
+			"@value": "Nationale Bibliotheek van Frankrijk",
+			"@language": "nl"
+		},
+		{
+			"@value": "Bibliothèque François Mitterrand",
+			"@language": "nl"
+		},
+		{
+			"@value": "BnF",
+			"@language": "nl"
+		},
+		{
+			"@value": "Bibliothèque nationale",
+			"@language": "nl"
+		},
+		{
+			"@value": "Fransa Milli Kütüphanesi",
+			"@language": "tr"
+		},
+		{
+			"@value": "Millî Kütüphane",
+			"@language": "tr"
+		},
+		{
+			"@value": "Fransa Millî Kütüphanesi",
+			"@language": "tr"
+		},
+		{
+			"@value": "BnF",
+			"@language": "tr"
+		},
+		{
+			"@value": "Bibliothèque nationale de France",
+			"@language": "tr"
+		},
+		{
+			"@value": "Bibilothèque National",
+			"@language": "tr"
+		}],
+		"sameAs": ["http://isni.org/isni/0000000123531945",
+		"https://g.co/kg/m/01cb6r",
+		"https://www.freebase.com/m/01cb6r",
+		"http://viaf.org/viaf/137156173",
+		"http://www.wikidata.org/entity/Q193563",
+		"http://id.loc.gov/authorities/names/no95028191",
+		"http://babelnet.org/rdf/s01268347n",
+		"http://d-nb.info/gnd/5156217-0",
+		"http://vocab.getty.edu/ulan/500309981",
+		"http://data.bnf.fr/ark:/12148/cb12381002j",
+		"http://sws.geonames.org/6452876/",
+		"http://datos.bne.es/resource/XX179415"]
+	}]
+}

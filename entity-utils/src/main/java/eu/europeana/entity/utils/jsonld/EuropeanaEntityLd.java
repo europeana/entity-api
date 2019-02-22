@@ -56,10 +56,9 @@ public class EuropeanaEntityLd extends JsonLd {
 		}
 
 		//common SKOS_Properties
-//		putMapOfStringListProperty(WebEntityFields.PREF_LABEL, entity.getPrefLabel(), ConceptSolrFields.PREF_LABEL, jsonLdResource);
-		putMapOfStringProperty(WebEntityFields.PREF_LABEL, entity.getPrefLabel(), ConceptSolrFields.PREF_LABEL, ldResource);
-		putMapOfStringListProperty(WebEntityFields.ALT_LABEL, entity.getAltLabel(), ConceptSolrFields.ALT_LABEL, ldResource);
-		putMapOfStringListProperty(WebEntityFields.NOTE, entity.getNote(), ConceptSolrFields.NOTE, ldResource);
+		putMapOfStringProperty(WebEntityFields.PREF_LABEL, ((BaseEntity) entity).getPrefLabelStringMap(), "", ldResource);
+		putMapOfStringListProperty(WebEntityFields.ALT_LABEL, entity.getAltLabel(), "", ldResource);
+		putMapOfStringListProperty(WebEntityFields.NOTE, entity.getNote(), "", ldResource);
 
 		// specific properties (by entity type)
 		putSpecificProperties(entity, ldResource);
@@ -84,7 +83,7 @@ public class EuropeanaEntityLd extends JsonLd {
 	}
 
 	private void putConceptSpecificProperties(Concept entity, JsonLdResource jsonLdResource) {
-		putMapOfStringListProperty(WebEntityFields.NOTATION, entity.getNotation(), ConceptSolrFields.NOTATION, jsonLdResource);
+		putMapOfStringListProperty(WebEntityFields.NOTATION, entity.getNotation(), "", jsonLdResource);
 		putStringArrayProperty(WebEntityFields.RELATED, entity.getRelated(), jsonLdResource);
 		putStringArrayProperty(WebEntityFields.BROADER, entity.getBroader(), jsonLdResource);
 		putStringArrayProperty(WebEntityFields.NARROWER, entity.getNarrower(), jsonLdResource);
@@ -151,22 +150,22 @@ public class EuropeanaEntityLd extends JsonLd {
 		putBaseEntityProperties((BaseEntity)entity, jsonLdResource);
 		
 		//Agent Props
-		putMapOfStringProperty(WebEntityFields.NAME, entity.getName(), AgentSolrFields.NAME, jsonLdResource);
+		putMapOfStringProperty(WebEntityFields.NAME, entity.getName(), "", jsonLdResource);
 		putMapOfReferencesProperty(WebEntityFields.BIOGRAPHICAL_INFORMATION,
-					entity.getBiographicalInformation(), AgentSolrFields.BIOGRAPHICAL_INFORMATION, jsonLdResource);
+					entity.getBiographicalInformation(), "", jsonLdResource);
 		putMapOfReferencesProperty(WebEntityFields.PROFESSION_OR_OCCUPATION,
-				entity.getProfessionOrOccupation(), AgentSolrFields.PROFESSION_OR_OCCUPATION, jsonLdResource);
+				entity.getProfessionOrOccupation(), "", jsonLdResource);
 	
 		putStringArrayProperty(WebEntityFields.DATE_OF_DEATH, entity.getDateOfDeath(), jsonLdResource);
 		putStringArrayProperty(WebEntityFields.DATE_OF_BIRTH, entity.getDateOfBirth(), jsonLdResource);
-		putStringArrayProperty(WebEntityFields.BEGIN, entity.getBegin(), jsonLdResource);
-		putStringArrayProperty(WebEntityFields.END, entity.getEnd(), jsonLdResource);
+		putStringArrayProperty(WebEntityFields.BEGIN, entity.getBeginArray(), jsonLdResource);
+		putStringArrayProperty(WebEntityFields.END, entity.getEndArray(), jsonLdResource);
 
 		putMapOfReferencesProperty(WebEntityFields.PLACE_OF_BIRTH, entity.getPlaceOfBirth(), 
-				AgentSolrFields.PLACE_OF_BIRTH, jsonLdResource);
+				"", jsonLdResource);
 
 		putMapOfReferencesProperty(WebEntityFields.PLACE_OF_DEATH,
-					entity.getPlaceOfDeath(), AgentSolrFields.PLACE_OF_DEATH, jsonLdResource);
+					entity.getPlaceOfDeath(), "", jsonLdResource);
 
 	}
 
@@ -175,10 +174,9 @@ public class EuropeanaEntityLd extends JsonLd {
 		putBaseEntityProperties((BaseEntity)entity, jsonLdResource);
 		
 		// Organization properties
-		putMapOfStringProperty(WebEntityFields.DESCRIPTION, entity.getDescription(), OrganizationSolrFields.DC_DESCRIPTION, ldResource);
+		putMapOfStringProperty(WebEntityFields.DESCRIPTION, entity.getDescription(), "", ldResource);
 		
-		putMapOfStringListProperty(WebEntityFields.ACRONYM, entity.getAcronym(), 
-				OrganizationSolrFields.EDM_ACRONYM, ldResource);		
+		putMapOfStringListProperty(WebEntityFields.ACRONYM, entity.getAcronym(), "", ldResource);		
 		
 		if (!StringUtils.isEmpty(entity.getLogo())){ 			
 			ldResource.putProperty(createWikimediaResource(
@@ -265,7 +263,7 @@ public class EuropeanaEntityLd extends JsonLd {
 	
 	private void putBaseEntityProperties(BaseEntity entity, JsonLdResource jsonLdResource) {
 		// COMMON Entity PROPERTIES?
-		putStringArrayProperty(WebEntityFields.IS_PART_OF, entity.getIsPartOf(), jsonLdResource);
+		putStringArrayProperty(WebEntityFields.IS_PART_OF, entity.getIsPartOfArray(), jsonLdResource);
 		putStringArrayProperty(WebEntityFields.HAS_PART, entity.getHasPart(), jsonLdResource);
 	}
 

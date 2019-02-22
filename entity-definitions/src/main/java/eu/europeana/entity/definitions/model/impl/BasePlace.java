@@ -1,13 +1,24 @@
 package eu.europeana.entity.definitions.model.impl;
 
-import eu.europeana.entity.definitions.model.Place;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
-public class BasePlace extends BaseEntity implements Place {
+import eu.europeana.entity.definitions.model.Place;
+import eu.europeana.entity.definitions.model.vocabulary.WebEntityFields;
+
+public class BasePlace extends BaseEntity implements Place, eu.europeana.corelib.definitions.edm.entity.Place {
 
 	private String[] isNextInSequence;
 	private Float latitude, longitude, altitude;
 	private String[] exactMatch;
 
+	private Map<String, List<String>> tmpIsPartOf;	
+	private Map<String, List<String>> tmpHasPart;	
+	
 	@Override
 	public String[] getIsNextInSequence() {
 		return isNextInSequence;
@@ -55,4 +66,62 @@ public class BasePlace extends BaseEntity implements Place {
 	public void setExactMatch(String[] exactMatch) {
 		this.exactMatch = exactMatch;
 	}
+
+	
+	@Override
+	@Deprecated
+	public void setIsPartOf(Map<String, List<String>> isPartOf) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	@Deprecated
+	public void setPosition(Map<String, Float> position) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	@Deprecated
+	public Map<String, Float> getPosition() {
+		Map<String, Float> positionMap = new HashMap<String,Float>();	
+		if (getLatitude() != null)
+			positionMap.put(WebEntityFields.LATITUDE, getLatitude());
+		if (getLongitude() != null)
+			positionMap.put(WebEntityFields.LONGITUDE, getLongitude());
+		return positionMap;	
+	}
+
+	@Override
+	@Deprecated
+	public void setDcTermsHasPart(Map<String, List<String>> dcTermsHasPart) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Map<String, List<String>> getDcTermsHasPart() {
+		//if not available
+		if (getHasPart() == null)
+			return null;
+		//if not transformed
+		if (tmpHasPart == null) 
+			tmpHasPart = fillTmpMap(Arrays.asList(getHasPart()));
+			
+		return tmpHasPart;
+	}
+
+	@Override
+	public Map<String, List<String>> getIsPartOf() {
+		//if not available
+		if (getIsPartOfArray() == null)
+			return null;
+		//if not transformed
+		if (tmpIsPartOf == null) 
+			tmpIsPartOf = fillTmpMap(Arrays.asList(getIsPartOfArray()));
+
+		return tmpIsPartOf;
+	}
+	
 }

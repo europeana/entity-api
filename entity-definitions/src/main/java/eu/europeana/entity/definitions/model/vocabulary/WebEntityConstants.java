@@ -15,6 +15,7 @@ public interface WebEntityConstants extends WebEntityFields{
 	public static final String QUERY_PARAM_TYPE = "type";
 	public static final String QUERY_PARAM_FIELD = "field";
 	public static final String QUERY_PARAM_SCOPE = "scope";
+	public static final String QUERY_PARAM_FORMAT = "format";
 	public static final String QUERY_PARAM_TEXT = "text";
 	public static final String QUERY_PARAM_ALGORITHM = "algorithm";
 	public static final String QUERY_PARAM_NAMESPACE = "namespace";

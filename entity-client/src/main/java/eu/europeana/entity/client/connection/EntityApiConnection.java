@@ -178,7 +178,7 @@ public class EntityApiConnection extends BaseApiConnection {
 				        	String label = jsonObj.getString((WebEntityFields.PREF_LABEL));
 	//						prefLabelMap.put(language, Arrays.asList(label));
 							prefLabelMap.put(language, label);
-				        	entityObject.setPrefLabel(prefLabelMap);
+				        	entityObject.setPrefLabelStringMap(prefLabelMap);
 							entityList.add(entityObject);
 					    }
 					    asr.setItems(entityList);

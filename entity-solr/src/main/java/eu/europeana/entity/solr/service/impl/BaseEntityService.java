@@ -73,7 +73,7 @@ public abstract class BaseEntityService{
 		if(outLanguage == null || outLanguage.length == 0)
 			return;
 		
-		filterLanguageMap(entity.getPrefLabel(), outLanguage);
+		filterLanguageMap(entity.getPrefLabelStringMap(), outLanguage);
 		filterLanguageMap(entity.getAltLabel(), outLanguage);
 		filterLanguageMap(entity.getHiddenLabel(), outLanguage);
 		filterLanguageMap(entity.getNote(), outLanguage);	

@@ -3,6 +3,7 @@ package eu.europeana.entity.definitions.model.impl;
 import java.util.List;
 import java.util.Map;
 
+import eu.europeana.corelib.definitions.edm.entity.Address;
 import eu.europeana.entity.definitions.model.Organization;
 
 /**
@@ -10,7 +11,8 @@ import eu.europeana.entity.definitions.model.Organization;
  * @author GrafR
  *
  */
-public class BaseOrganization extends BaseAgent implements Organization {
+public class BaseOrganization extends BaseAgent 
+		implements Organization, eu.europeana.corelib.definitions.edm.entity.Organization {
 
 	private Map<String, String> description;
 	private Map<String, List<String>> acronym;	
@@ -211,5 +213,181 @@ public class BaseOrganization extends BaseAgent implements Organization {
 	@Override
 	public void setHasGeo(String hasGeo) {
 		this.hasGeo = hasGeo;
+	}
+
+	public Map<String, String> getGeographicLevelStringMap() {
+		return geographicLevel;
+	}
+
+	public void setGeographicLevelStringMap(Map<String, String> geographicLevel) {
+		this.geographicLevel = geographicLevel;
+	}
+
+	@Override
+	public Map<String, List<String>> getEdmAcronym() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setEdmAcronym(Map<String, List<String>> edmAcronym) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Map<String, String> getEdmOrganizationScope() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setEdmOrganizationScope(Map<String, String> edmOrganizationScope) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Map<String, String> getEdmOrganizationDomain() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setEdmOrganizationDomain(Map<String, String> edmOrganizationDomain) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Map<String, String> getEdmOrganizationSector() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setEdmOrganizationSector(Map<String, String> edmOrganizationSector) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Map<String, String> getEdmGeographicLevel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setEdmGeorgraphicLevel(Map<String, String> edmGeographicLevel) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Map<String, String> getEdmCountry() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setEdmCountry(Map<String, String> edmCountry) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setFoafMbox(List<String> foafMbox) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public List<String> getFoafMbox() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setFoafPhone(List<String> foafPhone) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public List<String> getFoafPhone() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setDcDescription(Map<String, String> dcDescription) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Map<String, String> getDcDescription() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setRdfType(String rdfType) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String getRdfType() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setFoafLogo(String foafLogo) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String getFoafLogo() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setFoafHomepage(String foafHomePage) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String getFoafHomepage() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setEdmEuropeanaRole(Map<String, List<String>> edmEuropeanaRole) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Map<String, List<String>> getEdmEuropeanaRole() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setAddress(Address address) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Address getAddress() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

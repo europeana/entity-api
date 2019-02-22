@@ -20,7 +20,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import eu.europeana.api.common.config.I18nConstants;
 import eu.europeana.api.commons.web.exception.HttpException;
 import eu.europeana.corelib.definitions.edm.entity.Agent;
-import eu.europeana.corelib.definitions.edm.entity.Organization;
 import eu.europeana.corelib.edm.model.schemaorg.Person;
 import eu.europeana.corelib.edm.model.schemaorg.Place;
 import eu.europeana.corelib.edm.model.schemaorg.Thing;

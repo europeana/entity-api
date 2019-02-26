@@ -18,7 +18,6 @@
 		<groupId>eu.europeana.entity</groupId>
 		<!-- <version>${version.annotationApiSnapshot}</version> -->
 		<version>${version.entityApi}</version>
-		<relativePath>../pom.xml</relativePath>
 	</parent>
 
 	<artifactId>entity-definitions</artifactId>

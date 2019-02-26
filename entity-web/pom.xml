@@ -15,30 +15,19 @@
 	</parent>
 
 	<dependencies>
-
-		<!-- for some reasons -->
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-core</artifactId>
-			<version>${version.log4j2}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-slf4j-impl</artifactId>
-			<version>${version.log4j2}</version>
-		</dependency>
 		<!-- entity projects -->
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
 			<version>18.0</version>
 		</dependency>
+		
 		<dependency>
-			<groupId>eu.europeana.entity</groupId>
-			<artifactId>entity-utils</artifactId>
-			<version>${version.entityApi}</version>
+			<groupId>eu.europeana.api.commons</groupId>
+			<artifactId>commons-web</artifactId>
+			<version>${version.commonsApi}</version>
 		</dependency>
-
+		
 		<dependency>
 			<groupId>eu.europeana.entity</groupId>
 			<artifactId>entity-solr</artifactId>
@@ -47,15 +36,10 @@
 
 		<dependency>
 			<groupId>eu.europeana.entity</groupId>
-			<artifactId>entity-common</artifactId>
+			<artifactId>entity-utils</artifactId>
 			<version>${version.entityApi}</version>
 		</dependency>
-
-		<dependency>
-			<groupId>eu.europeana.api.commons</groupId>
-			<artifactId>commons-web</artifactId>
-			<version>${version.commonsApi}</version>
-		</dependency>
+		
 		<dependency>
 			<groupId>eu.europeana.api.commons</groupId>
 			<artifactId>commons-oauth</artifactId>

@@ -9,7 +9,6 @@
 		<groupId>eu.europeana.entity</groupId>
 		<artifactId>entity-api</artifactId>
 		<version>${version.entityApi}</version>
-		<relativePath>../pom.xml</relativePath>
 	</parent>
 	
 	<dependencies>

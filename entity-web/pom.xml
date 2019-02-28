@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
@@ -21,13 +22,19 @@
 			<artifactId>guava</artifactId>
 			<version>18.0</version>
 		</dependency>
-		
+
+		<dependency>
+			<groupId>at.ac.ait.ngcms</groupId>
+			<artifactId>annotation-ld</artifactId>
+			<version>${version.annotationLd}</version>
+		</dependency>
+
 		<dependency>
 			<groupId>eu.europeana.api.commons</groupId>
 			<artifactId>commons-web</artifactId>
 			<version>${version.commonsApi}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>eu.europeana.entity</groupId>
 			<artifactId>entity-solr</artifactId>
@@ -39,7 +46,7 @@
 			<artifactId>entity-utils</artifactId>
 			<version>${version.entityApi}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>eu.europeana.api.commons</groupId>
 			<artifactId>commons-oauth</artifactId>
@@ -52,22 +59,22 @@
 		</dependency>
 
 
- 		<dependency>
-            <groupId>eu.europeana.corelib</groupId>
-            <artifactId>corelib-schemaorg</artifactId>
-            <version>${version.corelib}</version>
+		<dependency>
+			<groupId>eu.europeana.corelib</groupId>
+			<artifactId>corelib-schemaorg</artifactId>
+			<version>${version.corelib}</version>
 			<exclusions>
 				<exclusion>
-				    <groupId>org.mongodb.morphia</groupId>
-				    <artifactId>morphia</artifactId>
+					<groupId>org.mongodb.morphia</groupId>
+					<artifactId>morphia</artifactId>
 				</exclusion>
 				<exclusion>
-				    <groupId>eu.europeana.corelib</groupId>
-    				<artifactId>corelib-storage</artifactId>
+					<groupId>eu.europeana.corelib</groupId>
+					<artifactId>corelib-storage</artifactId>
 				</exclusion>
 			</exclusions>
-        </dependency>
-		
+		</dependency>
+
 		<!-- spring -->
 		<dependency>
 			<groupId>io.springfox</groupId>

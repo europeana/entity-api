@@ -77,10 +77,12 @@ public class ResolveController extends BaseRest {
 			int etag = etagDate.hashCode(); 
 			
 			MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>(5);
-			headers.add(HttpHeaders.VARY, HttpHeaders.ACCEPT);
 			headers.add(HttpHeaders.ETAG, "" + etag);
-			headers.add(HttpHeaders.LINK, HttpHeaders.VALUE_LDP_RESOURCE);
 			headers.add(HttpHeaders.ALLOW, HttpHeaders.ALLOW_GET);
+			if(!outFormat.equals(FormatTypes.schema)) {
+				headers.add(HttpHeaders.VARY, HttpHeaders.ACCEPT);
+				headers.add(HttpHeaders.LINK, HttpHeaders.VALUE_LDP_RESOURCE);
+			}
 
 			ResponseEntity<String> response = new ResponseEntity<String>(jsonLd, headers, HttpStatus.OK);
 			

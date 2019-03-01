@@ -16,8 +16,6 @@ import eu.europeana.entity.definitions.model.Organization;
 import eu.europeana.entity.definitions.model.Place;
 import eu.europeana.entity.definitions.model.Timespan;
 import eu.europeana.entity.definitions.model.impl.BaseEntity;
-import eu.europeana.entity.definitions.model.vocabulary.AgentSolrFields;
-import eu.europeana.entity.definitions.model.vocabulary.ConceptSolrFields;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.definitions.model.vocabulary.OrganizationSolrFields;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
@@ -193,20 +191,20 @@ public class EuropeanaEntityLd extends JsonLd {
 				
 		if(entity.getEuropeanaRole() != null){
 			//"en" is mandatory
-			List<String> europeanaRole = entity.getEuropeanaRole().get(OrganizationSolrFields.EUROPEANA_ROLE_EN);
+			List<String> europeanaRole = entity.getEuropeanaRole().get(WebEntityFields.LANGUAGE_EN);
 			putListProperty(WebEntityFields.EUROPEANA_ROLE, europeanaRole, ldResource);
 		}			
 		
 		if(entity.getOrganizationDomain() != null){
 			//"en" is mandatory
-			List<String> europeanaDomain = entity.getOrganizationDomain().get(OrganizationSolrFields.ORGANIZATION_DOMAIN_EN);
+			List<String> europeanaDomain = entity.getOrganizationDomain().get(WebEntityFields.LANGUAGE_EN);
 			putListProperty(WebEntityFields.ORGANIZATION_DOMAIN, 
 					europeanaDomain, ldResource);	
 		}
 		
 		if(entity.getGeographicLevel() != null){
 			//"en" is mandatory
-			String geoLevel = entity.getGeographicLevel().get(OrganizationSolrFields.GEOGRAPHIC_LEVEL_EN);
+			String geoLevel = entity.getGeographicLevel().get(WebEntityFields.LANGUAGE_EN);
 			ldResource.putProperty(WebEntityFields.GEOGRAPHIC_LEVEL, geoLevel);
 		}
 		

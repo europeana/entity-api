@@ -1,9 +1,11 @@
 package eu.europeana.entity.definitions.model.impl;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import eu.europeana.entity.definitions.model.Place;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityFields;

@@ -20,6 +20,8 @@ import eu.europeana.api.common.config.swagger.SwaggerSelect;
 import eu.europeana.api.commons.definitions.vocabulary.CommonApiConstants;
 import eu.europeana.api.commons.web.exception.HttpException;
 import eu.europeana.api.commons.web.http.HttpHeaders;
+import eu.europeana.corelib.edm.model.schemaorg.Concept;
+import eu.europeana.corelib.edm.model.schemaorg.ContextualEntity;
 import eu.europeana.corelib.edm.model.schemaorg.Organization;
 import eu.europeana.corelib.edm.model.schemaorg.Person;
 import eu.europeana.corelib.edm.model.schemaorg.Place;
@@ -130,7 +132,7 @@ public class ResolveController extends BaseRest {
 			throws UnsupportedEntityTypeException {
 		
 		String jsonLd = null;
-        Thing thingObject = null;
+		ContextualEntity thingObject = null;
         
         if(FormatTypes.jsonld.equals(format)) {
         	EuropeanaEntityLd entityLd = new EuropeanaEntityLd(entity);		
@@ -151,14 +153,14 @@ public class ResolveController extends BaseRest {
 	 * @return The serialized entity in json-ld string format
 	 * @throws UnsupportedEntityTypeException
 	 */
-	private String serializeSchema(Entity entity, EntityTypes entityType, String jsonLd, Thing thingObject)
+	private String serializeSchema(Entity entity, EntityTypes entityType, String jsonLd, ContextualEntity thingObject)
 			throws UnsupportedEntityTypeException {
 		switch (entityType) {
 		case Organization:
 			thingObject = new Organization(); 
 			break;
 		case Concept:
-			thingObject = new Thing(); 
+			thingObject = new Concept(); 
 			break;
 		case Agent:
 			thingObject = new Person(); 

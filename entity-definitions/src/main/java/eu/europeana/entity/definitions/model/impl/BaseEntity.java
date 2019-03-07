@@ -309,4 +309,10 @@ public class BaseEntity implements Entity, RankedEntity {
 		return getSameAs();
 	}
 
+	@Override
+	public String getEntityIdentifier() {
+		String[] splitArray = this.getAbout().split("/");
+		return splitArray[splitArray.length-1];
+	}
+
 }

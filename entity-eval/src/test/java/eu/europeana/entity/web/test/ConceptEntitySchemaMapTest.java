@@ -20,6 +20,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import eu.europeana.api.common.config.I18nConstants;
 import eu.europeana.api.commons.web.exception.HttpException;
 import eu.europeana.corelib.definitions.edm.entity.Agent;
+import eu.europeana.corelib.edm.model.schemaorg.ContextualEntity;
 import eu.europeana.corelib.edm.model.schemaorg.Person;
 import eu.europeana.corelib.edm.model.schemaorg.Place;
 import eu.europeana.corelib.edm.model.schemaorg.Thing;
@@ -83,7 +84,7 @@ public class ConceptEntitySchemaMapTest {
 		Map<String, List<String>> prefLabel = concept.getPrefLabel();
         Assert.assertNotNull(prefLabel);        
 		
-        Thing conceptObject = new Thing();
+        ContextualEntity conceptObject = new eu.europeana.corelib.edm.model.schemaorg.Concept();
         SchemaOrgUtils.processConcept(concept, conceptObject);
         
         JsonLdSerializer serializer = new JsonLdSerializer();

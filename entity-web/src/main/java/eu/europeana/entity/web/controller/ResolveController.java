@@ -22,6 +22,7 @@ import eu.europeana.api.commons.web.exception.HttpException;
 import eu.europeana.api.commons.web.http.HttpHeaders;
 import eu.europeana.corelib.edm.model.schemaorg.Concept;
 import eu.europeana.corelib.edm.model.schemaorg.ContextualEntity;
+import eu.europeana.corelib.edm.model.schemaorg.EdmOrganization;
 import eu.europeana.corelib.edm.model.schemaorg.Organization;
 import eu.europeana.corelib.edm.model.schemaorg.Person;
 import eu.europeana.corelib.edm.model.schemaorg.Place;
@@ -69,7 +70,7 @@ public class ResolveController extends BaseRest {
 			
 			// validate and convert type
 			EntityTypes[] entityTypes = getEntityTypesFromString(type);			
-		
+			
 			Entity entity = entityService.retrieveByUrl(type, namespace, identifier);
 			
 			String jsonLd = serialize(entity, entityTypes[0], outFormat);
@@ -157,7 +158,7 @@ public class ResolveController extends BaseRest {
 			throws UnsupportedEntityTypeException {
 		switch (entityType) {
 		case Organization:
-			thingObject = new Organization(); 
+			thingObject = new EdmOrganization();
 			break;
 		case Concept:
 			thingObject = new Concept(); 

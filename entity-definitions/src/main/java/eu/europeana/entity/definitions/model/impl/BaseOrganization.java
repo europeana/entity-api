@@ -34,6 +34,7 @@ public class BaseOrganization extends BaseAgent
 	private String countryName;
 	private String postBox;
 	private String hasGeo;
+	private Address address;
 	
 	@Override
 	public Map<String, String> getDescription() {
@@ -225,14 +226,12 @@ public class BaseOrganization extends BaseAgent
 
 	@Override
 	public Map<String, List<String>> getEdmAcronym() {
-		// TODO Auto-generated method stub
-		return null;
+		return getAcronym();
 	}
 
 	@Override
 	public void setEdmAcronym(Map<String, List<String>> edmAcronym) {
-		// TODO Auto-generated method stub
-		
+		setAcronym(edmAcronym);
 	}
 
 	@Override
@@ -309,26 +308,22 @@ public class BaseOrganization extends BaseAgent
 
 	@Override
 	public void setFoafPhone(List<String> foafPhone) {
-		// TODO Auto-generated method stub
-		
+		setPhone(foafPhone);
 	}
 
 	@Override
 	public List<String> getFoafPhone() {
-		// TODO Auto-generated method stub
-		return null;
+		return getPhone();
 	}
 
 	@Override
 	public void setDcDescription(Map<String, String> dcDescription) {
-		// TODO Auto-generated method stub
-		
+		setDescription(dcDescription);
 	}
 
 	@Override
 	public Map<String, String> getDcDescription() {
-		// TODO Auto-generated method stub
-		return null;
+		return getDescription();
 	}
 
 	@Override
@@ -345,26 +340,22 @@ public class BaseOrganization extends BaseAgent
 
 	@Override
 	public void setFoafLogo(String foafLogo) {
-		// TODO Auto-generated method stub
-		
+		setLogo(foafLogo);
 	}
 
 	@Override
 	public String getFoafLogo() {
-		// TODO Auto-generated method stub
-		return null;
+		return getLogo();
 	}
 
 	@Override
 	public void setFoafHomepage(String foafHomePage) {
-		// TODO Auto-generated method stub
-		
+		setHomepage(foafHomePage);
 	}
 
 	@Override
 	public String getFoafHomepage() {
-		// TODO Auto-generated method stub
-		return null;
+		return getHomepage();
 	}
 
 	@Override
@@ -381,13 +372,31 @@ public class BaseOrganization extends BaseAgent
 
 	@Override
 	public void setAddress(Address address) {
-		// TODO Auto-generated method stub
-		
+	    	if(address != null) {
+	    	    this.address = address;
+	    	    hasAddress = this.address.getAbout();
+	    	    streetAddress = this.address.getVcardStreetAddress();
+	    	    postalCode = this.address.getVcardPostalCode();
+	    	    postBox = this.address.getVcardPostOfficeBox();
+	    	    locality = this.address.getVcardLocality();
+	    	    //region
+	    	    countryName = this.address.getVcardCountryName();
+	    	    
+	    	}
 	}
 
 	@Override
 	public Address getAddress() {
-		// TODO Auto-generated method stub
-		return null;
+	    	if(address == null) {
+	    	    address = new BasePostalAddress();
+	    	    address.setAbout(hasAddress);
+	    	    address.setVcardStreetAddress(streetAddress);
+	    	    address.setVcardPostalCode(postalCode);
+	    	    address.setVcardPostOfficeBox(postBox);
+	    	    address.setVcardLocality(locality);
+	    	    //region
+	    	    address.setVcardCountryName(countryName);
+	    	}
+		return this.address;
 	}
 }

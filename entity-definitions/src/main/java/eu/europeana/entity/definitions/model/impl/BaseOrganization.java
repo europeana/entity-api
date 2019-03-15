@@ -1,5 +1,7 @@
 package eu.europeana.entity.definitions.model.impl;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -284,14 +286,16 @@ public class BaseOrganization extends BaseAgent
 
 	@Override
 	public Map<String, String> getEdmCountry() {
-		// TODO Auto-generated method stub
-		return null;
+		Map<String, String> newMap = new HashMap<>();
+		newMap.put(TMP_KEY, country);
+		return newMap;
 	}
 
 	@Override
 	public void setEdmCountry(Map<String, String> edmCountry) {
-		// TODO Auto-generated method stub
-		
+		if(edmCountry != null && edmCountry.containsKey(TMP_KEY)) {
+		    country = edmCountry.get(TMP_KEY);
+		}
 	}
 
 	@Override

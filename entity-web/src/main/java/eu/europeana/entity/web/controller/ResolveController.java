@@ -28,12 +28,12 @@ import eu.europeana.corelib.edm.model.schemaorg.Person;
 import eu.europeana.corelib.edm.model.schemaorg.Place;
 import eu.europeana.corelib.edm.model.schemaorg.Thing;
 import eu.europeana.corelib.edm.utils.JsonLdSerializer;
+import eu.europeana.corelib.edm.utils.SchemaOrgTypeFactory;
 import eu.europeana.corelib.edm.utils.SchemaOrgUtils;
 import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException;
 import eu.europeana.entity.definitions.formats.FormatTypes;
 import eu.europeana.entity.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.RankedEntity;
-import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
 import eu.europeana.entity.utils.jsonld.EuropeanaEntityLd;
 import eu.europeana.entity.web.exception.InternalServerException;
@@ -66,14 +66,11 @@ public class ResolveController extends BaseRest {
 			String extension = getExtension(request);
 			
 			//identify required format
-			FormatTypes outFormat = getFormatType(extension);
-			
-			// validate and convert type
-			EntityTypes[] entityTypes = getEntityTypesFromString(type);			
+			FormatTypes outFormat = getFormatType(extension);		
 			
 			Entity entity = entityService.retrieveByUrl(type, namespace, identifier);
 			
-			String jsonLd = serialize(entity, entityTypes[0], outFormat);
+			String jsonLd = serialize(entity, outFormat);
 
 			Date timestamp = ((RankedEntity)entity).getTimestamp();
 			Date etagDate = (timestamp != null)? timestamp : new Date();
@@ -124,12 +121,11 @@ public class ResolveController extends BaseRest {
 	/**
 	 * This method selects serialization method according to provided format.
 	 * @param entity The entity
-	 * @param entityType The entity type
 	 * @param format The format extension
 	 * @return entity in jsonLd format
 	 * @throws UnsupportedEntityTypeException
 	 */
-	private String serialize(Entity entity, EntityTypes entityType, FormatTypes format) 
+	private String serialize(Entity entity, FormatTypes format) 
 			throws UnsupportedEntityTypeException {
 		
 		String jsonLd = null;
@@ -139,7 +135,7 @@ public class ResolveController extends BaseRest {
         	EuropeanaEntityLd entityLd = new EuropeanaEntityLd(entity);		
 			return entityLd.toString(4);
         } else if (FormatTypes.schema.equals(format)) {			
-			jsonLd = serializeSchema(entity, entityType, jsonLd, thingObject);	        
+			jsonLd = serializeSchema(entity, jsonLd, thingObject);	        
 		}
 		return jsonLd;
 	}
@@ -154,25 +150,9 @@ public class ResolveController extends BaseRest {
 	 * @return The serialized entity in json-ld string format
 	 * @throws UnsupportedEntityTypeException
 	 */
-	private String serializeSchema(Entity entity, EntityTypes entityType, String jsonLd, ContextualEntity thingObject)
+	private String serializeSchema(Entity entity, String jsonLd, ContextualEntity thingObject)
 			throws UnsupportedEntityTypeException {
-		switch (entityType) {
-		case Organization:
-			thingObject = new EdmOrganization();
-			break;
-		case Concept:
-			thingObject = new Concept(); 
-			break;
-		case Agent:
-			thingObject = new Person(); 
-			break;
-		case Place:
-			thingObject = new Place(); 
-			break;
-		default:
-			throw new RuntimeException(
-					"The given type is not supported by the schema.org interface");
-		}
+		thingObject = SchemaOrgTypeFactory.createContextualEntity(entity);
 		
 		SchemaOrgUtils.processEntity(entity, thingObject);
 		JsonLdSerializer serializer = new JsonLdSerializer();

@@ -1,5 +1,8 @@
 package eu.europeana.entity.definitions.model.impl;
 
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -11,7 +14,7 @@ import eu.europeana.entity.definitions.model.Organization;
  * @author GrafR
  *
  */
-public class BaseOrganization extends BaseAgent 
+public class BaseOrganization extends BaseEntity 
 		implements Organization, eu.europeana.corelib.definitions.edm.entity.Organization {
 
 	private Map<String, String> description;
@@ -24,6 +27,8 @@ public class BaseOrganization extends BaseAgent
 	private Map<String, List<String>> organizationDomain;
 	private Map<String, String> geographicLevel;
 	private String country;
+	private Map<String, String> countryMap;
+	private Map<String, List<String>> tmpIdentifier;
 	
 	//address fields
 	private String hasAddress;
@@ -34,6 +39,7 @@ public class BaseOrganization extends BaseAgent
 	private String countryName;
 	private String postBox;
 	private String hasGeo;
+	private Address address;
 	
 	@Override
 	public Map<String, String> getDescription() {
@@ -42,7 +48,7 @@ public class BaseOrganization extends BaseAgent
 
 	@Override
 	public void setDescription(Map<String, String> dcDescription) {
-		this.description = dcDescription;
+	    	this.description = dcDescription;
 	}
 	
 	@Override
@@ -52,7 +58,7 @@ public class BaseOrganization extends BaseAgent
 
 	@Override
 	public void setAcronym(Map<String, List<String>> acronym) {
-		this.acronym = acronym;
+	    	this.acronym = acronym;
 	}
 	
 	@Override
@@ -62,7 +68,7 @@ public class BaseOrganization extends BaseAgent
 
 	@Override
 	public void setEuropeanaRole(Map<String, List<String>> europeanaRole) {
-		this.europeanaRole = europeanaRole;
+	    	this.europeanaRole = europeanaRole;
 	}
 	
 	@Override
@@ -171,6 +177,7 @@ public class BaseOrganization extends BaseAgent
 	}
 
 	@Override
+	@Deprecated
 	public void setGeographicLevel(Map<String, String> geographicLevel) {
 		this.geographicLevel = geographicLevel;
 	}
@@ -222,17 +229,16 @@ public class BaseOrganization extends BaseAgent
 	public void setGeographicLevelStringMap(Map<String, String> geographicLevel) {
 		this.geographicLevel = geographicLevel;
 	}
-
+	
 	@Override
 	public Map<String, List<String>> getEdmAcronym() {
-		// TODO Auto-generated method stub
-		return null;
+		return getAcronym();
 	}
 
 	@Override
+	@Deprecated
 	public void setEdmAcronym(Map<String, List<String>> edmAcronym) {
-		// TODO Auto-generated method stub
-		
+		// Not used
 	}
 
 	@Override
@@ -242,8 +248,9 @@ public class BaseOrganization extends BaseAgent
 	}
 
 	@Override
+	@Deprecated
 	public void setEdmOrganizationScope(Map<String, String> edmOrganizationScope) {
-		// TODO Auto-generated method stub
+		// Not used
 		
 	}
 
@@ -254,8 +261,9 @@ public class BaseOrganization extends BaseAgent
 	}
 
 	@Override
+	@Deprecated
 	public void setEdmOrganizationDomain(Map<String, String> edmOrganizationDomain) {
-		// TODO Auto-generated method stub
+		// Not used
 		
 	}
 
@@ -266,38 +274,43 @@ public class BaseOrganization extends BaseAgent
 	}
 
 	@Override
+	@Deprecated
 	public void setEdmOrganizationSector(Map<String, String> edmOrganizationSector) {
-		// TODO Auto-generated method stub
+		// Not used
 		
 	}
 
 	@Override
 	public Map<String, String> getEdmGeographicLevel() {
-		// TODO Auto-generated method stub
-		return null;
+		return getGeographicLevel();
 	}
 
 	@Override
+	@Deprecated
 	public void setEdmGeorgraphicLevel(Map<String, String> edmGeographicLevel) {
-		// TODO Auto-generated method stub
+		// Not used
 		
 	}
 
 	@Override
 	public Map<String, String> getEdmCountry() {
-		// TODO Auto-generated method stub
-		return null;
+		if(countryMap == null) {
+		    countryMap = new HashMap<>();
+		    countryMap.put(TMP_KEY, country);
+		}
+		return countryMap;
 	}
 
 	@Override
+	@Deprecated
 	public void setEdmCountry(Map<String, String> edmCountry) {
-		// TODO Auto-generated method stub
-		
+		// Not used
 	}
 
 	@Override
+	@Deprecated
 	public void setFoafMbox(List<String> foafMbox) {
-		// TODO Auto-generated method stub
+		// Not used
 		
 	}
 
@@ -308,32 +321,31 @@ public class BaseOrganization extends BaseAgent
 	}
 
 	@Override
+	@Deprecated
 	public void setFoafPhone(List<String> foafPhone) {
-		// TODO Auto-generated method stub
-		
+		// Not used
 	}
 
 	@Override
 	public List<String> getFoafPhone() {
-		// TODO Auto-generated method stub
-		return null;
+		return getPhone();
 	}
 
 	@Override
+	@Deprecated
 	public void setDcDescription(Map<String, String> dcDescription) {
-		// TODO Auto-generated method stub
-		
+		// Not used
 	}
 
 	@Override
 	public Map<String, String> getDcDescription() {
-		// TODO Auto-generated method stub
-		return null;
+		return getDescription();
 	}
 
 	@Override
+	@Deprecated
 	public void setRdfType(String rdfType) {
-		// TODO Auto-generated method stub
+		// Not used
 		
 	}
 
@@ -344,32 +356,31 @@ public class BaseOrganization extends BaseAgent
 	}
 
 	@Override
+	@Deprecated
 	public void setFoafLogo(String foafLogo) {
-		// TODO Auto-generated method stub
-		
+		// Not used
 	}
 
 	@Override
 	public String getFoafLogo() {
-		// TODO Auto-generated method stub
-		return null;
+		return getLogo();
 	}
 
 	@Override
+	@Deprecated
 	public void setFoafHomepage(String foafHomePage) {
-		// TODO Auto-generated method stub
-		
+		// Not used
 	}
 
 	@Override
 	public String getFoafHomepage() {
-		// TODO Auto-generated method stub
-		return null;
+		return getHomepage();
 	}
 
 	@Override
+	@Deprecated
 	public void setEdmEuropeanaRole(Map<String, List<String>> edmEuropeanaRole) {
-		// TODO Auto-generated method stub
+		// Not used
 		
 	}
 
@@ -380,14 +391,42 @@ public class BaseOrganization extends BaseAgent
 	}
 
 	@Override
+	@Deprecated
 	public void setAddress(Address address) {
-		// TODO Auto-generated method stub
-		
+	    	// Not used
 	}
 
 	@Override
 	public Address getAddress() {
-		// TODO Auto-generated method stub
-		return null;
+	    	if(address == null) {
+	    	    address = new BaseAddress();
+	    	    address.setAbout(hasAddress);
+	    	    address.setVcardStreetAddress(streetAddress);
+	    	    address.setVcardPostalCode(postalCode);
+	    	    address.setVcardPostOfficeBox(postBox);
+	    	    address.setVcardLocality(locality);
+	    	    //region
+	    	    address.setVcardCountryName(countryName);
+	    	}
+		return this.address;
+	}
+
+	@Override
+	@Deprecated
+	public void setDcIdentifier(Map<String, List<String>> dcIdentifier) {
+	    // Not used
+	    
+	}
+
+	@Override
+	public Map<String, List<String>> getDcIdentifier() {
+		//if not available
+		if (getIdentifier() == null)
+			return null;
+		//if not transformed
+		if (tmpIdentifier == null) 
+			tmpIdentifier = fillTmpMap(Arrays.asList(getIdentifier()));
+
+		return tmpIdentifier;
 	}
 }

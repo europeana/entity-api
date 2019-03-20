@@ -59,7 +59,7 @@ public class EntityServiceImpl implements EntityService {
 			result = solrEntityService.searchByUrl(type, entityUri);
 		} catch (EntityRetrievalException e) {
 			throw new HttpException(e.getMessage(), I18nConstants.SERVER_ERROR_CANT_RETRIEVE_URI,
-					new String[] { entityUri }, HttpStatus.INTERNAL_SERVER_ERROR);
+					new String[] { entityUri }, HttpStatus.INTERNAL_SERVER_ERROR, e);
 		} catch (UnsupportedEntityTypeException e) {
 			throw new HttpException(null, I18nConstants.UNSUPPORTED_ENTITY_TYPE, new String[] { type },
 					HttpStatus.NOT_FOUND, null);

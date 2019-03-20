@@ -23,11 +23,19 @@ public class SolrOrganizationImpl extends BaseOrganization implements Organizati
 		super.setAbout(about);
 	}
 	
-	@Override
-	@Field(OrganizationSolrFields.DC_DESCRIPTION)
-	public void setDescription(Map<String, String> dcDescription) {
-		super.setDescription(dcDescription);
+//	@Override
+//	public void setDescription(Map<String, String> dcDescription) {
+//	    super.setDescription(dcDescription);
+//	}
+	
+//	@Override
+	@Field(OrganizationSolrFields.DC_DESCRIPTION_ALL)
+	public void setDescriptionsMap(Map<String, List<String>> dcDescription) {
+	    Map<String, String> normalizedDescription = SolrUtils.normalizeToStringMap(
+		    OrganizationSolrFields.DC_DESCRIPTION, dcDescription);
+	    super.setDescription(normalizedDescription);
 	}
+	
 	
 	@Override
 	@Field(OrganizationSolrFields.EDM_ACRONYM_ALL)

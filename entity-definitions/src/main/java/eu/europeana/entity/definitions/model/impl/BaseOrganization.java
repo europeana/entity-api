@@ -27,6 +27,7 @@ public class BaseOrganization extends BaseEntity
 	private Map<String, List<String>> organizationDomain;
 	private Map<String, String> geographicLevel;
 	private String country;
+	private Map<String, String> countryMap;
 	private Map<String, List<String>> tmpIdentifier;
 	
 	//address fields
@@ -237,7 +238,7 @@ public class BaseOrganization extends BaseEntity
 	@Override
 	@Deprecated
 	public void setEdmAcronym(Map<String, List<String>> edmAcronym) {
-		setAcronym(edmAcronym);
+		// Not used
 	}
 
 	@Override
@@ -249,7 +250,7 @@ public class BaseOrganization extends BaseEntity
 	@Override
 	@Deprecated
 	public void setEdmOrganizationScope(Map<String, String> edmOrganizationScope) {
-		// TODO Auto-generated method stub
+		// Not used
 		
 	}
 
@@ -262,7 +263,7 @@ public class BaseOrganization extends BaseEntity
 	@Override
 	@Deprecated
 	public void setEdmOrganizationDomain(Map<String, String> edmOrganizationDomain) {
-		// TODO Auto-generated method stub
+		// Not used
 		
 	}
 
@@ -275,7 +276,7 @@ public class BaseOrganization extends BaseEntity
 	@Override
 	@Deprecated
 	public void setEdmOrganizationSector(Map<String, String> edmOrganizationSector) {
-		// TODO Auto-generated method stub
+		// Not used
 		
 	}
 
@@ -287,28 +288,29 @@ public class BaseOrganization extends BaseEntity
 	@Override
 	@Deprecated
 	public void setEdmGeorgraphicLevel(Map<String, String> edmGeographicLevel) {
-		// TODO Auto-generated method stub
+		// Not used
 		
 	}
 
 	@Override
 	public Map<String, String> getEdmCountry() {
-		Map<String, String> newMap = new HashMap<>();
-		newMap.put(TMP_KEY, country);
-		return newMap;
+		if(countryMap == null) {
+		    countryMap = new HashMap<>();
+		    countryMap.put(TMP_KEY, country);
+		}
+		return countryMap;
 	}
 
 	@Override
+	@Deprecated
 	public void setEdmCountry(Map<String, String> edmCountry) {
-		if(edmCountry != null && edmCountry.containsKey(TMP_KEY)) {
-		    country = edmCountry.get(TMP_KEY);
-		}
+		// Not used
 	}
 
 	@Override
 	@Deprecated
 	public void setFoafMbox(List<String> foafMbox) {
-		// TODO Auto-generated method stub
+		// Not used
 		
 	}
 
@@ -321,7 +323,7 @@ public class BaseOrganization extends BaseEntity
 	@Override
 	@Deprecated
 	public void setFoafPhone(List<String> foafPhone) {
-		setPhone(foafPhone);
+		// Not used
 	}
 
 	@Override
@@ -332,7 +334,7 @@ public class BaseOrganization extends BaseEntity
 	@Override
 	@Deprecated
 	public void setDcDescription(Map<String, String> dcDescription) {
-		setDescription(dcDescription);
+		// Not used
 	}
 
 	@Override
@@ -343,7 +345,7 @@ public class BaseOrganization extends BaseEntity
 	@Override
 	@Deprecated
 	public void setRdfType(String rdfType) {
-		// TODO Auto-generated method stub
+		// Not used
 		
 	}
 
@@ -356,7 +358,7 @@ public class BaseOrganization extends BaseEntity
 	@Override
 	@Deprecated
 	public void setFoafLogo(String foafLogo) {
-		setLogo(foafLogo);
+		// Not used
 	}
 
 	@Override
@@ -367,7 +369,7 @@ public class BaseOrganization extends BaseEntity
 	@Override
 	@Deprecated
 	public void setFoafHomepage(String foafHomePage) {
-		setHomepage(foafHomePage);
+		// Not used
 	}
 
 	@Override
@@ -378,7 +380,7 @@ public class BaseOrganization extends BaseEntity
 	@Override
 	@Deprecated
 	public void setEdmEuropeanaRole(Map<String, List<String>> edmEuropeanaRole) {
-		// TODO Auto-generated method stub
+		// Not used
 		
 	}
 
@@ -389,18 +391,9 @@ public class BaseOrganization extends BaseEntity
 	}
 
 	@Override
+	@Deprecated
 	public void setAddress(Address address) {
-	    	if(address != null) {
-	    	    this.address = address;
-	    	    hasAddress = this.address.getAbout();
-	    	    streetAddress = this.address.getVcardStreetAddress();
-	    	    postalCode = this.address.getVcardPostalCode();
-	    	    postBox = this.address.getVcardPostOfficeBox();
-	    	    locality = this.address.getVcardLocality();
-	    	    //region
-	    	    countryName = this.address.getVcardCountryName();
-	    	    
-	    	}
+	    	// Not used
 	}
 
 	@Override
@@ -421,7 +414,7 @@ public class BaseOrganization extends BaseEntity
 	@Override
 	@Deprecated
 	public void setDcIdentifier(Map<String, List<String>> dcIdentifier) {
-	    // TODO Auto-generated method stub
+	    // Not used
 	    
 	}
 

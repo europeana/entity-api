@@ -11,8 +11,9 @@ import eu.europeana.corelib.definitions.edm.entity.Address;
 import eu.europeana.entity.definitions.model.Place;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityFields;
 
-public class BasePostalAddress extends BaseEntity implements eu.europeana.corelib.definitions.edm.entity.Address {
+public class BaseAddress implements eu.europeana.corelib.definitions.edm.entity.Address {
 
+    private String about;
     private String streetAddress;
     private String postalCode;
     private String postBox;
@@ -81,6 +82,16 @@ public class BasePostalAddress extends BaseEntity implements eu.europeana.coreli
     public String getVcardHasGeo() {
 	// TODO Auto-generated method stub
 	return null;
+    }
+
+    @Override
+    public void setAbout(String about) {
+	this.about = about;
+    }
+
+    @Override
+    public String getAbout() {
+	return about;
     }
 
 }

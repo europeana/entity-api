@@ -202,7 +202,7 @@ public class ConceptEntitySchemaMapTest {
 		    new String[] { TEST_ORGANIZATION_ENTITY_TYPE }, HttpStatus.NOT_FOUND, null);
 	}
 
-	eu.europeana.corelib.edm.model.schemaorg.Organization organizationObject = new eu.europeana.corelib.edm.model.schemaorg.Organization();
+	eu.europeana.corelib.edm.model.schemaorg.ContextualEntity organizationObject = new eu.europeana.corelib.edm.model.schemaorg.EdmOrganization();
 	SchemaOrgUtils.processEntity(organization, organizationObject);
 
 	JsonLdSerializer serializer = new JsonLdSerializer();

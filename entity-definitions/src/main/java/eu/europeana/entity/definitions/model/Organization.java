@@ -3,7 +3,7 @@ package eu.europeana.entity.definitions.model;
 import java.util.List;
 import java.util.Map;
 
-public interface Organization extends Agent {
+public interface Organization {
     
 	/**
 	 * Retrieves the acronym for an Organization Class (language,value)

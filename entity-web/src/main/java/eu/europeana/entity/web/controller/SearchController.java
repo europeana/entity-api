@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
+import eu.europeana.api.common.config.I18nConstants;
 import eu.europeana.api.common.config.swagger.SwaggerSelect;
-import eu.europeana.api.commons.config.i18n.I18nConstants;
 import eu.europeana.api.commons.definitions.search.Query;
 import eu.europeana.api.commons.definitions.search.ResultSet;
 import eu.europeana.api.commons.definitions.search.result.ResultsPage;
@@ -26,7 +26,9 @@ import eu.europeana.api.commons.web.http.HttpHeaders;
 import eu.europeana.entity.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.search.SearchProfiles;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
+import eu.europeana.entity.definitions.model.vocabulary.SuggestAlgorithmTypes;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
+import eu.europeana.entity.solr.exception.EntityRetrievalException;
 import eu.europeana.entity.web.exception.InternalServerException;
 import eu.europeana.entity.web.exception.ParamValidationException;
 import eu.europeana.entity.web.jsonld.SuggestionSetSerializer;
@@ -52,7 +54,8 @@ public class SearchController extends BaseRest {
 			@RequestParam(value = CommonApiConstants.QUERY_PARAM_LANGUAGE, defaultValue = WebEntityConstants.PARAM_LANGUAGE_EN) String language,
 			@RequestParam(value = WebEntityConstants.QUERY_PARAM_SCOPE, required = false) String scope,
 			@RequestParam(value = WebEntityConstants.QUERY_PARAM_TYPE, defaultValue = WebEntityConstants.PARAM_TYPE_ALL) String type,
-			@RequestParam(value = CommonApiConstants.QUERY_PARAM_ROWS, defaultValue = WebEntityConstants.PARAM_DEFAULT_ROWS) int rows)
+			@RequestParam(value = CommonApiConstants.QUERY_PARAM_ROWS, defaultValue = WebEntityConstants.PARAM_DEFAULT_ROWS) int rows,
+			@RequestParam(value = WebEntityConstants.ALGORITHM, required = false, defaultValue = WebEntityConstants.SUGGEST_ALGORITHM_DEFAULT) String algorithm)
 			throws HttpException {
 
 		try {
@@ -62,15 +65,21 @@ public class SearchController extends BaseRest {
 			// validate and convert type
 			EntityTypes[] entityTypes = getEntityTypesFromString(type);
 
+			// validate text parameter
+			validateTextParam(text);
+			
 			// validate scope parameter
 			validateScopeParam(scope);
 			
 			//past parguage list
 			String[] requestedLanguages = toArray(language);
 			
+			// validate algorithm parameter
+			SuggestAlgorithmTypes suggestType = validateAlgorithmParam(algorithm);
+			
 			// perform search
 			ResultSet<? extends EntityPreview> results = entityService.suggest(text, requestedLanguages, entityTypes, scope, null,
-					rows);
+					rows, suggestType);
 
 			// serialize results
 			SuggestionSetSerializer serializer = new SuggestionSetSerializer(results);
@@ -98,7 +107,8 @@ public class SearchController extends BaseRest {
 		}
 	}
 
-	@ApiOperation(value = "Search entitties for the given text query.", nickname = "search", response = java.lang.Void.class)
+	@ApiOperation(value = "Search entities for the given text query. By default the search will return all entity fields. "
+			+ "The facets profile and the facet param are available for including facets in the response. fl and lang params are used to reduce the amount of data included in the response", nickname = "search", response = java.lang.Void.class)
 	@RequestMapping(value = { "/entity/search", "/entity/search.jsonld" }, method = RequestMethod.GET, produces = {
 			HttpHeaders.CONTENT_TYPE_JSON_UTF8, HttpHeaders.CONTENT_TYPE_JSONLD_UTF8 })
 	public ResponseEntity<String> search(
@@ -141,7 +151,7 @@ public class SearchController extends BaseRest {
 			SearchProfiles searchProfile = null;
 			if(profile != null){
 				if(!SearchProfiles.contains(profile))
-					throw new ParamValidationException(WebEntityConstants.QUERY_PARAM_TYPE, profile);
+					throw new ParamValidationException(CommonApiConstants.QUERY_PARAM_PROFILE, profile);
 				else
 					searchProfile = SearchProfiles.valueOf(profile.toLowerCase());
 			} 
@@ -180,6 +190,9 @@ public class SearchController extends BaseRest {
 			// not found ..
 			// System.out.println(e);
 			throw new InternalServerException(e);
+		} catch (EntityRetrievalException e) {
+			throw new ParamValidationException(I18nConstants.INVALID_FIELD_NAME,
+					WebEntityConstants.QUERY_PARAM_FIELD, e.getMessage());
 		} catch (RuntimeException e) {
 			// not found ..
 			// System.out.println(e);

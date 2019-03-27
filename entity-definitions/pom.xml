@@ -18,7 +18,6 @@
 		<groupId>eu.europeana.entity</groupId>
 		<!-- <version>${version.annotationApiSnapshot}</version> -->
 		<version>${version.entityApi}</version>
-		<relativePath>../pom.xml</relativePath>
 	</parent>
 
 	<artifactId>entity-definitions</artifactId>
@@ -29,6 +28,28 @@
 	<url>http://www.europeanalabs.eu</url>
 
 	<dependencies>
+		
+		<dependency>
+			<groupId>eu.europeana.corelib</groupId>
+			<artifactId>corelib-definitions</artifactId>
+			<version>${version.corelib}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>eu.europeana.corelib</groupId>
+					<artifactId>corelib-utils</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.mongodb.morphia</groupId>
+					<artifactId>morphia</artifactId>
+				</exclusion>
+				<!--  
+				<exclusion>
+					<groupId>org.mongodb</groupId>
+					<artifactId>mongo-java-driver</artifactId>
+				</exclusion>
+				-->
+			</exclusions>
+		</dependency>
 		
 		<dependency>
 			<groupId>eu.europeana.api.commons</groupId>

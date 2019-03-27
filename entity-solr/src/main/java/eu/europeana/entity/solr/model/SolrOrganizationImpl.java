@@ -23,28 +23,42 @@ public class SolrOrganizationImpl extends BaseOrganization implements Organizati
 		super.setAbout(about);
 	}
 	
-	@Override
-	@Field(OrganizationSolrFields.DC_DESCRIPTION)
-	public void setDescription(Map<String, String> dcDescription) {
-		super.setDescription(dcDescription);
+//	@Override
+//	public void setDescription(Map<String, String> dcDescription) {
+//	    super.setDescription(dcDescription);
+//	}
+	
+//	@Override
+	@Field(OrganizationSolrFields.DC_DESCRIPTION_ALL)
+	public void setDescriptionsMap(Map<String, List<String>> dcDescription) {
+	    Map<String, String> normalizedDescription = SolrUtils.normalizeToStringMap(
+		    OrganizationSolrFields.DC_DESCRIPTION, dcDescription);
+	    super.setDescription(normalizedDescription);
 	}
+	
 	
 	@Override
 	@Field(OrganizationSolrFields.EDM_ACRONYM_ALL)
 	public void setAcronym(Map<String, List<String>>  acronym) {
-		super.setAcronym(acronym);		
+		Map<String, List<String>> normalizedAcronym = SolrUtils.normalizeStringListMap(
+				OrganizationSolrFields.EDM_ACRONYM, acronym);
+		super.setAcronym(normalizedAcronym);
 	}
 
 	@Override
 	@Field(ConceptSolrFields.PREF_LABEL_ALL)
-	public void setPrefLabel(Map<String, String> prefLabel) {
-		super.setPrefLabel(prefLabel);
+	public void setPrefLabelStringMap(Map<String, String> prefLabel) {
+		Map<String, String> normalizedPrefLabel = SolrUtils.normalizeStringMap(
+				ConceptSolrFields.PREF_LABEL, prefLabel);
+		super.setPrefLabelStringMap(normalizedPrefLabel);
 	}
 
 	@Override
 	@Field(ConceptSolrFields.ALT_LABEL_ALL)
 	public void setAltLabel(Map<String, List<String>> altLabel) {
-		super.setAltLabel(altLabel);
+		Map<String, List<String>> normalizedAltLabel = SolrUtils.normalizeStringListMap(
+				ConceptSolrFields.ALT_LABEL, altLabel);
+		super.setAltLabel(normalizedAltLabel);
 	}
 
 	@Override
@@ -69,19 +83,25 @@ public class SolrOrganizationImpl extends BaseOrganization implements Organizati
 	@Override
 	@Field(OrganizationSolrFields.GEOGRAPHIC_LEVEL_ALL)
 	public void setGeographicLevel(Map<String, String> geographicLevel) {
-		super.setGeographicLevel(geographicLevel);
+		Map<String, String> normalizedGeographicLevel = SolrUtils.normalizeStringMap(
+				OrganizationSolrFields.GEOGRAPHIC_LEVEL, geographicLevel);
+		super.setGeographicLevelStringMap(normalizedGeographicLevel);		
 	}
 
 	@Override
 	@Field(OrganizationSolrFields.ORGANIZATION_DOMAIN_ALL)
 	public void setOrganizationDomain(Map<String, List<String>> organizationDomain) {
-		super.setOrganizationDomain(organizationDomain);
+		Map<String, List<String>> normalizedOrganizationDomain = SolrUtils.normalizeStringListMap(
+				OrganizationSolrFields.ORGANIZATION_DOMAIN, organizationDomain);
+		super.setOrganizationDomain(normalizedOrganizationDomain);		
 	}
 
 	@Override
 	@Field(OrganizationSolrFields.EUROPEANA_ROLE_ALL)
 	public void setEuropeanaRole(Map<String, List<String>> europeanaRole) {
-		super.setEuropeanaRole(europeanaRole);
+		Map<String, List<String>> normalizedEuropeanaRole = SolrUtils.normalizeStringListMap(
+				OrganizationSolrFields.EUROPEANA_ROLE, europeanaRole);
+		super.setEuropeanaRole(normalizedEuropeanaRole);
 	}
 
 	@Override
@@ -94,6 +114,12 @@ public class SolrOrganizationImpl extends BaseOrganization implements Organizati
 	@Field(OrganizationSolrFields.FOAF_LOGO)
 	public void setLogo(String logo) {
 		super.setLogo(logo);
+	}
+	
+	@Override
+	@Field(ConceptSolrFields.DEPICTION)
+	public void setDepiction(String depiction) {
+		super.setDepiction(depiction);
 	}
 	
 	@Override
@@ -162,5 +188,13 @@ public class SolrOrganizationImpl extends BaseOrganization implements Organizati
 	public void setMbox(List<String> mbox) {
 		super.setMbox(mbox);
 	}
+
+	@Override
+	@Field(OrganizationSolrFields.VCARD_HAS_GEO)
+	public void setHasGeo(String hasGeo) {
+		super.setHasGeo(hasGeo);
+	}
+
+	
 
 }

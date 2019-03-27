@@ -34,11 +34,11 @@ public interface Agent extends Entity {
 
 	public void setDateOfDeath(String[] dateOfDeath);
 	
-	public String[] getBegin();
+	public String[] getBeginArray();
 
 	public void setBegin(String[] begin);
 
-	public String[] getEnd();
+	public String[] getEndArray();
 
 	public void setEnd(String[] end);
 
@@ -67,8 +67,8 @@ public interface Agent extends Entity {
 
 	public void setHasPart(String[] hasPart);
 
-	public String[] getIsPartOf();
+	public String[] getIsPartOfArray();
 
-	public void setIsPartOf(String[] isPartOf);
+	public void setIsPartOfArray(String[] isPartOf);
 
 }

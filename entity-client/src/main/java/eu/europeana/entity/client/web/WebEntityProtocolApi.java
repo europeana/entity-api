@@ -22,6 +22,30 @@ public interface WebEntityProtocolApi {
 	public ResponseEntity<String> retrieveEntity(String apiKey, String type, String namespace, String identifier);
 
 	/**
+	 * This method retrieves entity describing it in body JSON string and
+	 * providing it with associated wskey, type, namespace and identifier.
+	 * 
+	 * @param url
+	 * @return response entity containing body, headers and status code..
+	 */
+	public Entity retrieveEntityWithUrl(String url);
+	
+	/**
+	 * This search method returns entity depending on given text and
+	 * language.
+	 * 
+	 * @param apiKey
+	 * @param text
+	 * @param language
+	 * @param type
+	 * @param sort
+	 * @param page
+	 * @param pageSize
+	 * @return response entity containing body, headers and status code.
+	 */
+	public List<Entity> getSearch(String apiKey, String text, String language, String type, String sort, String page, String pageSize);
+	
+	/**
 	 * This method returns entity suggestions depending on given text and
 	 * language.
 	 * 

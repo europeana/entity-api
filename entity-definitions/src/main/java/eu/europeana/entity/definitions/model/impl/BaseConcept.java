@@ -67,11 +67,11 @@ public class BaseConcept extends BaseEntity implements Concept, RankedEntity {
 	public void setExactMatch(String[] exactMatch) {
 		this.exactMatch = exactMatch;
 	}
-	
+
 	public String[] getCoref() {
 		return coref;
 	}
-	
+
 	public void setCoref(String[] coref) {
 		this.coref = coref;
 	}
@@ -107,5 +107,4 @@ public class BaseConcept extends BaseEntity implements Concept, RankedEntity {
 	public void setNotation(Map<String, List<String>> notation) {
 		this.notation = notation;
 	}
-
 }

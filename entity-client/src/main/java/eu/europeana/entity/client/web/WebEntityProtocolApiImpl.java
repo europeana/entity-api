@@ -34,6 +34,38 @@ public class WebEntityProtocolApiImpl extends BaseEntityApi implements WebEntity
 	}
 
 	@Override
+	public Entity retrieveEntityWithUrl(String url) {
+		EntitySearchResults res;
+		try {
+			res = apiConnection.retrieveEntityWithUrl(url);
+			if (StringUtils.isNotEmpty(res.getError()))
+				throw new TechnicalRuntimeException(
+						"Authorisation failed", null);
+		} catch (IOException e) {
+			throw new TechnicalRuntimeException(
+					"Exception occured when invoking the EntityJsonApi retrieveEntityWithUrl method", e);
+		}
+		List<Entity> entities = res.getItems();
+		return (entities == null || entities.size() == 0 ? null : entities.get(0));
+	}
+	
+	@Override
+	public List<Entity> getSearch(String apiKey, String text, String language, String type, String sort, String page, String pageSize){
+		EntitySearchResults res;
+		try {
+			res = apiConnection.getSearch(apiKey, text, language, type, sort, page, pageSize);
+			if (StringUtils.isNotEmpty(res.getError()))
+				throw new TechnicalRuntimeException(
+						"Authorisation failed", null);
+		} catch (IOException e) {
+			throw new TechnicalRuntimeException(
+					"Exception occured when invoking the EntityJsonApi getSearch method", e);
+		}
+
+		return res.getItems();
+	}
+	
+	@Override
 	public List<Entity> getSuggestions(
 			String apiKey
 			, String text

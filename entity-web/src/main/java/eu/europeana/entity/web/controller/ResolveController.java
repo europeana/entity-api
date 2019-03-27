@@ -1,8 +1,10 @@
 package eu.europeana.entity.web.controller;
 
+import java.io.IOException;
 import java.util.Date;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,12 @@ import eu.europeana.api.common.config.swagger.SwaggerSelect;
 import eu.europeana.api.commons.definitions.vocabulary.CommonApiConstants;
 import eu.europeana.api.commons.web.exception.HttpException;
 import eu.europeana.api.commons.web.http.HttpHeaders;
+import eu.europeana.corelib.edm.model.schemaorg.ContextualEntity;
+import eu.europeana.corelib.edm.utils.JsonLdSerializer;
+import eu.europeana.corelib.edm.utils.SchemaOrgTypeFactory;
+import eu.europeana.corelib.edm.utils.SchemaOrgUtils;
+import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException;
+import eu.europeana.entity.definitions.formats.FormatTypes;
 import eu.europeana.entity.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.RankedEntity;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
@@ -36,33 +44,39 @@ public class ResolveController extends BaseRest {
 	EntityService entityService;
 
 	@ApiOperation(value = "Retrieve a known entity", nickname = "getEntity", response = java.lang.Void.class)
-	@RequestMapping(value = {"/entity/{type}/{namespace}/{identifier}", "/entity/{type}/{namespace}/{identifier}.jsonld"}, method = RequestMethod.GET, 
+	@RequestMapping(value = {"/entity/{type}/{namespace}/{identifier}", "/entity/{type}/{namespace}/{identifier}.jsonld", "/entity/{type}/{namespace}/{identifier}.schema.jsonld"}, method = RequestMethod.GET, 
 			produces = { HttpHeaders.CONTENT_TYPE_JSON_UTF8, HttpHeaders.CONTENT_TYPE_JSONLD_UTF8})
 	public ResponseEntity<String> getEntity(
 			@RequestParam(value = CommonApiConstants.PARAM_WSKEY, required=false) String wskey,
 			@PathVariable(value = WebEntityConstants.PATH_PARAM_TYPE) String type,
 			@PathVariable(value = WebEntityConstants.PATH_PARAM_NAMESPACE) String namespace,
-			@PathVariable(value = WebEntityConstants.PATH_PARAM_IDENTIFIER) String identifier
+			@PathVariable(value = WebEntityConstants.PATH_PARAM_IDENTIFIER) String identifier,
+			HttpServletRequest request
 			) throws HttpException  {
 
 		try {			
 			validateApiKey(wskey);
-		
+			
+			String extension = getExtension(request);
+			
+			//identify required format
+			FormatTypes outFormat = getFormatType(extension);		
+			
 			Entity entity = entityService.retrieveByUrl(type, namespace, identifier);
 			
-			EuropeanaEntityLd entityLd = new EuropeanaEntityLd(entity);
-			
-			String jsonLd = entityLd.toString(4);
+			String jsonLd = serialize(entity, outFormat);
 
 			Date timestamp = ((RankedEntity)entity).getTimestamp();
 			Date etagDate = (timestamp != null)? timestamp : new Date();
 			int etag = etagDate.hashCode(); 
 			
 			MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>(5);
-			headers.add(HttpHeaders.VARY, HttpHeaders.ACCEPT);
 			headers.add(HttpHeaders.ETAG, "" + etag);
-			headers.add(HttpHeaders.LINK, HttpHeaders.VALUE_LDP_RESOURCE);
 			headers.add(HttpHeaders.ALLOW, HttpHeaders.ALLOW_GET);
+			if(!outFormat.equals(FormatTypes.schema)) {
+				headers.add(HttpHeaders.VARY, HttpHeaders.ACCEPT);
+				headers.add(HttpHeaders.LINK, HttpHeaders.VALUE_LDP_RESOURCE);
+			}
 
 			ResponseEntity<String> response = new ResponseEntity<String>(jsonLd, headers, HttpStatus.OK);
 			
@@ -77,6 +91,72 @@ public class ResolveController extends BaseRest {
 		} catch (Exception e) {
 			throw new InternalServerException(e);
 		}				
+	}
+
+
+	/**
+	 * This method evaluates extension 
+	 * @param request The HTTP request
+	 * @return current extension
+	 */
+	private String getExtension(HttpServletRequest request) {
+		// identify required extension
+		String uri = request.getRequestURI();
+		int extensionBeginPos = uri.indexOf('.');
+		// set default extension
+		String extension = FormatTypes.jsonld.name();
+		// use extension if provided
+		if (extensionBeginPos != -1)
+			extension = uri.substring(extensionBeginPos+1);
+		return extension;
+	}
+
+
+	/**
+	 * This method selects serialization method according to provided format.
+	 * @param entity The entity
+	 * @param format The format extension
+	 * @return entity in jsonLd format
+	 * @throws UnsupportedEntityTypeException
+	 */
+	private String serialize(Entity entity, FormatTypes format) 
+			throws UnsupportedEntityTypeException {
+		
+		String jsonLd = null;
+		ContextualEntity thingObject = null;
+        
+        if(FormatTypes.jsonld.equals(format)) {
+        	EuropeanaEntityLd entityLd = new EuropeanaEntityLd(entity);		
+			return entityLd.toString(4);
+        } else if (FormatTypes.schema.equals(format)) {			
+			jsonLd = serializeSchema(entity, jsonLd, thingObject);	        
+		}
+		return jsonLd;
+	}
+
+
+	/**
+	 * This method serializes Entity object applying schema.org serialization.
+	 * @param entity The Entity object
+	 * @param entityType The type of the entity
+	 * @param jsonLd The resulting json-ld string
+	 * @param thingObject The object in corelib format
+	 * @return The serialized entity in json-ld string format
+	 * @throws UnsupportedEntityTypeException
+	 */
+	private String serializeSchema(Entity entity, String jsonLd, ContextualEntity thingObject)
+			throws UnsupportedEntityTypeException {
+		thingObject = SchemaOrgTypeFactory.createContextualEntity(entity);
+		
+		SchemaOrgUtils.processEntity(entity, thingObject);
+		JsonLdSerializer serializer = new JsonLdSerializer();
+		try {
+		    jsonLd = serializer.serialize(thingObject);
+		} catch (IOException e) {
+			throw new UnsupportedEntityTypeException(
+					"Serialization to schema.org failed for " + thingObject.getId() + e.getMessage());
+		}
+		return jsonLd;
 	}
 
 	

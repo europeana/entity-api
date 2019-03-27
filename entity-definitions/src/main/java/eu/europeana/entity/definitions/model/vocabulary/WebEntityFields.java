@@ -6,7 +6,6 @@ public interface WebEntityFields {
 	// LD fields
 	public static final String CONTEXT = "@context";
 	public static final String ENTITY_CONTEXT = "http://www.europeana.eu/schemas/context/entity.jsonld";
-
 	public static final String LANGUAGE_EN="en";
 	
 	// common fields
@@ -84,6 +83,7 @@ public interface WebEntityFields {
 	public static final String POSTAL_CODE = "postalCode";
 	public static final String COUNTRY_NAME = "countryName";
 	public static final String POST_OFFICE_BOX = "postOfficeBox";
+	public static final String HAS_GEO = "hasGeo";
 	public static final String HAS_ADDRESS = "hasAddress";
 	public static final String ADDRESS_TYPE = "Address";
 

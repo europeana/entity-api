@@ -1,16 +1,25 @@
 package eu.europeana.entity.solr.service.impl;
 
 import org.apache.solr.client.solrj.SolrQuery;
+import org.apache.solr.common.params.CommonParams;
+import org.apache.solr.common.params.HighlightParams;
+import org.apache.solr.common.params.SimpleParams;
 
 import eu.europeana.api.commons.definitions.search.Query;
+import eu.europeana.api.commons.definitions.vocabulary.CommonApiConstants;
 import eu.europeana.api.commons.search.util.QueryBuilder;
+import eu.europeana.entity.definitions.model.vocabulary.ConceptSolrFields;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
+import eu.europeana.entity.definitions.model.vocabulary.OrganizationSolrFields;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
 import eu.europeana.entity.solr.model.vocabulary.SuggestionFields;
 import eu.europeana.entity.solr.service.SolrEntityService;
 
 public class EntityQueryBuilder extends QueryBuilder{
 
+	public static final String DESC = "desc";
+	public static final String OR = " " + SimpleParams.OR_OPERATOR + " ";
+	public static final String AND = " "+ SimpleParams.AND_OPERATOR + " ";
 	
 	public SolrQuery toSolrQuery(Query searchQuery, String searchHandler, EntityTypes[] entityTypes, String scope) {
 		SolrQuery solrQuery = super.toSolrQuery(searchQuery, searchHandler);
@@ -31,6 +40,7 @@ public class EntityQueryBuilder extends QueryBuilder{
 	}
 	
 	private void addFiltersToSearchQuery(SolrQuery query, EntityTypes[] entityTypes, String scope) {
+		
 		if(hasScopeEuropeana(scope)) 
 			query.addFilterQuery("suggest_filters:"+ SuggestionFields.FILTER_IN_EUROPEANA);
 		
@@ -41,6 +51,7 @@ public class EntityQueryBuilder extends QueryBuilder{
 	}
 
 	private void addFiltersToSuggestQuery(SolrQuery query, EntityTypes[] entityTypes, String scope) {
+		
 		//build entityType filter
 		String entityTypeFilter = buildEntityTypeCondition(entityTypes);
 		
@@ -57,11 +68,54 @@ public class EntityQueryBuilder extends QueryBuilder{
 		
 		//append scope filter
 		if(scopeFilter != null){
-			filter = (filter == null)? scopeFilter: " AND " + scopeFilter; 		
+			filter = (filter == null)? scopeFilter: AND + scopeFilter; 		
 		} 
 		
 		if(filter != null)
 			query.add("suggest.cfq", filter);
+	}
+
+	/**
+	 * This method builds Solr query for suggest by label request method
+     *
+	 * @param text
+	 * @param entityTypes
+	 * @param scope
+	 * @param rows
+	 * @param snippets
+	 * @return Solr query
+	 */
+	public SolrQuery buildSuggestByLabelQuery(String text, EntityTypes[] entityTypes, String scope, 
+			int rows, int snippets) {
+		
+		String query = OrganizationSolrFields.LABEL + ":(" + text + "*)";
+		SolrQuery solrQuery = new SolrQuery(query);
+		
+		String[] fields;
+		
+		if(hasScopeEuropeana(scope)) 
+			solrQuery.addFilterQuery("suggest_filters:"+ SuggestionFields.FILTER_IN_EUROPEANA);
+		
+		String typeCondition = buildEntityTypeCondition(entityTypes);
+		if(typeCondition != null)
+			solrQuery.addFilterQuery("suggest_filters:"+ typeCondition);
+		
+		// ?q=label%3AMoz*&sort=derived_score+desc&rows=100&fl=payload%2C+id%2C+derived_score&wt=json&indent=true&hl=true&hl.fl=label&hl.q=Moz*&hl.method=unified&hl.tag.pre=%3Cb%3E&&hl.tag.post=%3C/b%3E
+		fields = new String[] { OrganizationSolrFields.ID, OrganizationSolrFields.PAYLOAD, OrganizationSolrFields.DERIVED_SCORE };
+		solrQuery.set(CommonParams.SORT,ConceptSolrFields.DERIVED_SCORE + " " + DESC);
+		solrQuery.set(CommonApiConstants.QUERY_PARAM_ROWS,Integer.toString(Math.min(rows, Query.DEFAULT_MAX_PAGE_SIZE)));
+		solrQuery.set(HighlightParams.HIGHLIGHT,"true");
+		solrQuery.set(HighlightParams.FIELDS,OrganizationSolrFields.LABEL);
+		solrQuery.set(HighlightParams.METHOD,"unified");
+		solrQuery.set(HighlightParams.TAG_PRE,WebEntityConstants.HIGHLIGHT_START_MARKER);
+		solrQuery.set(HighlightParams.TAG_POST,WebEntityConstants.HIGHLIGHT_END_MARKER);
+		if (snippets > 0) {
+			solrQuery.set(HighlightParams.SNIPPETS, snippets);
+		}		
+		solrQuery.set(HighlightParams.Q, query);
+		solrQuery.setFields(fields);
+		
+		return solrQuery;
 	}
 
 	private String buildEntityTypeCondition(EntityTypes[] entityTypes) {
@@ -71,7 +125,7 @@ public class EntityQueryBuilder extends QueryBuilder{
 		if(entityTypes.length == 1)
 				return entityTypes[0].getInternalType();
 		
-		String disjunction = String.join(" or ", EntityTypes.toStringArray(entityTypes));
+		String disjunction = String.join(OR, EntityTypes.toStringArray(entityTypes));
 		return "(" + disjunction + ")";
 		
 	}

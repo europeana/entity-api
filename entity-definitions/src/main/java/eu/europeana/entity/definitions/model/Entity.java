@@ -1,10 +1,12 @@
 package eu.europeana.entity.definitions.model;
 
-import eu.europeana.entity.definitions.core.CoreContextualClass;
+import java.util.Map;
+
+import eu.europeana.corelib.definitions.edm.entity.ContextualClass;
 
 //import eu.europeana.corelib.definitions.edm.entity.ContextualClass;
 
-public interface Entity extends CoreContextualClass {
+public interface Entity extends ContextualClass {
 
 	public String getContext();
 
@@ -30,4 +32,13 @@ public interface Entity extends CoreContextualClass {
 	
 	public void setDepiction(String depiction);
 
+
+	/**
+	 * Retrieves the preferable label for a contextual class (language,value)
+	 * 
+	 * @return A Map<String, String> for the preferable labels of a contextual class 
+	 *         (one per language)
+	 */
+	public Map<String, String> getPrefLabelStringMap();
+	
 }

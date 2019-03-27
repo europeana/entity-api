@@ -16,10 +16,9 @@ import eu.europeana.entity.definitions.model.Organization;
 import eu.europeana.entity.definitions.model.Place;
 import eu.europeana.entity.definitions.model.Timespan;
 import eu.europeana.entity.definitions.model.impl.BaseEntity;
-import eu.europeana.entity.definitions.model.vocabulary.AgentSolrFields;
-import eu.europeana.entity.definitions.model.vocabulary.ConceptSolrFields;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.definitions.model.vocabulary.OrganizationSolrFields;
+import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityFields;
 
 
@@ -55,10 +54,9 @@ public class EuropeanaEntityLd extends JsonLd {
 		}
 
 		//common SKOS_Properties
-//		putMapOfStringListProperty(WebEntityFields.PREF_LABEL, entity.getPrefLabel(), ConceptSolrFields.PREF_LABEL, jsonLdResource);
-		putMapOfStringProperty(WebEntityFields.PREF_LABEL, entity.getPrefLabel(), ConceptSolrFields.PREF_LABEL, ldResource);
-		putMapOfStringListProperty(WebEntityFields.ALT_LABEL, entity.getAltLabel(), ConceptSolrFields.ALT_LABEL, ldResource);
-		putMapOfStringListProperty(WebEntityFields.NOTE, entity.getNote(), ConceptSolrFields.NOTE, ldResource);
+		putMapOfStringProperty(WebEntityFields.PREF_LABEL, ((BaseEntity) entity).getPrefLabelStringMap(), "", ldResource);
+		putMapOfStringListProperty(WebEntityFields.ALT_LABEL, entity.getAltLabel(), "", ldResource);
+		putMapOfStringListProperty(WebEntityFields.NOTE, entity.getNote(), "", ldResource);
 
 		// specific properties (by entity type)
 		putSpecificProperties(entity, ldResource);
@@ -83,7 +81,7 @@ public class EuropeanaEntityLd extends JsonLd {
 	}
 
 	private void putConceptSpecificProperties(Concept entity, JsonLdResource jsonLdResource) {
-		putMapOfStringListProperty(WebEntityFields.NOTATION, entity.getNotation(), ConceptSolrFields.NOTATION, jsonLdResource);
+		putMapOfStringListProperty(WebEntityFields.NOTATION, entity.getNotation(), "", jsonLdResource);
 		putStringArrayProperty(WebEntityFields.RELATED, entity.getRelated(), jsonLdResource);
 		putStringArrayProperty(WebEntityFields.BROADER, entity.getBroader(), jsonLdResource);
 		putStringArrayProperty(WebEntityFields.NARROWER, entity.getNarrower(), jsonLdResource);
@@ -150,22 +148,22 @@ public class EuropeanaEntityLd extends JsonLd {
 		putBaseEntityProperties((BaseEntity)entity, jsonLdResource);
 		
 		//Agent Props
-		putMapOfStringProperty(WebEntityFields.NAME, entity.getName(), AgentSolrFields.NAME, jsonLdResource);
+		putMapOfStringProperty(WebEntityFields.NAME, entity.getName(), "", jsonLdResource);
 		putMapOfReferencesProperty(WebEntityFields.BIOGRAPHICAL_INFORMATION,
-					entity.getBiographicalInformation(), AgentSolrFields.BIOGRAPHICAL_INFORMATION, jsonLdResource);
+					entity.getBiographicalInformation(), "", jsonLdResource);
 		putMapOfReferencesProperty(WebEntityFields.PROFESSION_OR_OCCUPATION,
-				entity.getProfessionOrOccupation(), AgentSolrFields.PROFESSION_OR_OCCUPATION, jsonLdResource);
+				entity.getProfessionOrOccupation(), "", jsonLdResource);
 	
 		putStringArrayProperty(WebEntityFields.DATE_OF_DEATH, entity.getDateOfDeath(), jsonLdResource);
 		putStringArrayProperty(WebEntityFields.DATE_OF_BIRTH, entity.getDateOfBirth(), jsonLdResource);
-		putStringArrayProperty(WebEntityFields.BEGIN, entity.getBegin(), jsonLdResource);
-		putStringArrayProperty(WebEntityFields.END, entity.getEnd(), jsonLdResource);
+		putStringArrayProperty(WebEntityFields.BEGIN, entity.getBeginArray(), jsonLdResource);
+		putStringArrayProperty(WebEntityFields.END, entity.getEndArray(), jsonLdResource);
 
 		putMapOfReferencesProperty(WebEntityFields.PLACE_OF_BIRTH, entity.getPlaceOfBirth(), 
-				AgentSolrFields.PLACE_OF_BIRTH, jsonLdResource);
+				"", jsonLdResource);
 
 		putMapOfReferencesProperty(WebEntityFields.PLACE_OF_DEATH,
-					entity.getPlaceOfDeath(), AgentSolrFields.PLACE_OF_DEATH, jsonLdResource);
+					entity.getPlaceOfDeath(), "", jsonLdResource);
 
 	}
 
@@ -174,10 +172,9 @@ public class EuropeanaEntityLd extends JsonLd {
 		putBaseEntityProperties((BaseEntity)entity, jsonLdResource);
 		
 		// Organization properties
-		putMapOfStringProperty(WebEntityFields.DESCRIPTION, entity.getDescription(), OrganizationSolrFields.DC_DESCRIPTION, ldResource);
+		putMapOfStringProperty(WebEntityFields.DESCRIPTION, entity.getDescription(), "", ldResource);
 		
-		putMapOfStringListProperty(WebEntityFields.ACRONYM, entity.getAcronym(), 
-				OrganizationSolrFields.EDM_ACRONYM, ldResource);		
+		putMapOfStringListProperty(WebEntityFields.ACRONYM, entity.getAcronym(), "", ldResource);		
 		
 		if (!StringUtils.isEmpty(entity.getLogo())){ 			
 			ldResource.putProperty(createWikimediaResource(
@@ -194,20 +191,20 @@ public class EuropeanaEntityLd extends JsonLd {
 				
 		if(entity.getEuropeanaRole() != null){
 			//"en" is mandatory
-			List<String> europeanaRole = entity.getEuropeanaRole().get(OrganizationSolrFields.EUROPEANA_ROLE_EN);
+			List<String> europeanaRole = entity.getEuropeanaRole().get(WebEntityFields.LANGUAGE_EN);
 			putListProperty(WebEntityFields.EUROPEANA_ROLE, europeanaRole, ldResource);
 		}			
 		
 		if(entity.getOrganizationDomain() != null){
 			//"en" is mandatory
-			List<String> europeanaDomain = entity.getOrganizationDomain().get(OrganizationSolrFields.ORGANIZATION_DOMAIN_EN);
+			List<String> europeanaDomain = entity.getOrganizationDomain().get(WebEntityFields.LANGUAGE_EN);
 			putListProperty(WebEntityFields.ORGANIZATION_DOMAIN, 
 					europeanaDomain, ldResource);	
 		}
 		
 		if(entity.getGeographicLevel() != null){
 			//"en" is mandatory
-			String geoLevel = entity.getGeographicLevel().get(OrganizationSolrFields.GEOGRAPHIC_LEVEL_EN);
+			String geoLevel = entity.getGeographicLevel().get(WebEntityFields.LANGUAGE_EN);
 			ldResource.putProperty(WebEntityFields.GEOGRAPHIC_LEVEL, geoLevel);
 		}
 		
@@ -220,7 +217,8 @@ public class EuropeanaEntityLd extends JsonLd {
 
 	private void putAddressProperty(Organization entity, JsonLdResource ldResource) {
 		
-		if(StringUtils.isEmpty(entity.getLocality()))
+		//locality or geolocation is expected
+		if(StringUtils.isEmpty(entity.getLocality()) && StringUtils.isEmpty(entity.getHasGeo()))
 			return;
 		
 		//build address object (the (json) value of the hasAddress property)
@@ -248,14 +246,22 @@ public class EuropeanaEntityLd extends JsonLd {
 			vcardAddress.putProperty(
 					new JsonLdProperty(WebEntityFields.POST_OFFICE_BOX, entity.getPostBox()));
 		
+		if (!StringUtils.isEmpty(entity.getHasGeo())) 			
+			vcardAddress.putProperty(
+					new JsonLdProperty(WebEntityFields.HAS_GEO, getGeoUri(entity.getHasGeo())));
+		
 		JsonLdProperty hasAddress = new JsonLdProperty(WebEntityFields.HAS_ADDRESS);
 		hasAddress.addValue(vcardAddress);
 		ldResource.putProperty(hasAddress);
 	}
 
+	protected String getGeoUri(String latLon){
+		return WebEntityConstants.PROTOCOL_GEO + latLon;
+	}
+	
 	private void putBaseEntityProperties(BaseEntity entity, JsonLdResource jsonLdResource) {
 		// COMMON Entity PROPERTIES?
-		putStringArrayProperty(WebEntityFields.IS_PART_OF, entity.getIsPartOf(), jsonLdResource);
+		putStringArrayProperty(WebEntityFields.IS_PART_OF, entity.getIsPartOfArray(), jsonLdResource);
 		putStringArrayProperty(WebEntityFields.HAS_PART, entity.getHasPart(), jsonLdResource);
 	}
 

@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
@@ -15,28 +16,23 @@
 	</parent>
 
 	<dependencies>
-
-		<!-- for some reasons -->
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-core</artifactId>
-			<version>${version.log4j2}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-slf4j-impl</artifactId>
-			<version>${version.log4j2}</version>
-		</dependency>
 		<!-- entity projects -->
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
 			<version>18.0</version>
 		</dependency>
+
 		<dependency>
-			<groupId>eu.europeana.entity</groupId>
-			<artifactId>entity-utils</artifactId>
-			<version>${version.entityApi}</version>
+			<groupId>at.ac.ait.ngcms</groupId>
+			<artifactId>annotation-ld</artifactId>
+			<version>${version.annotationLd}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>eu.europeana.api.commons</groupId>
+			<artifactId>commons-web</artifactId>
+			<version>${version.commonsApi}</version>
 		</dependency>
 
 		<dependency>
@@ -47,15 +43,10 @@
 
 		<dependency>
 			<groupId>eu.europeana.entity</groupId>
-			<artifactId>entity-common</artifactId>
+			<artifactId>entity-utils</artifactId>
 			<version>${version.entityApi}</version>
 		</dependency>
 
-		<dependency>
-			<groupId>eu.europeana.api.commons</groupId>
-			<artifactId>commons-web</artifactId>
-			<version>${version.commonsApi}</version>
-		</dependency>
 		<dependency>
 			<groupId>eu.europeana.api.commons</groupId>
 			<artifactId>commons-oauth</artifactId>
@@ -65,6 +56,23 @@
 			<groupId>eu.europeana.api.commons</groupId>
 			<artifactId>commons-net</artifactId>
 			<version>${version.commonsApi}</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>eu.europeana.corelib</groupId>
+			<artifactId>corelib-schemaorg</artifactId>
+			<version>${version.corelib}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.mongodb.morphia</groupId>
+					<artifactId>morphia</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>eu.europeana.corelib</groupId>
+					<artifactId>corelib-storage</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<!-- spring -->

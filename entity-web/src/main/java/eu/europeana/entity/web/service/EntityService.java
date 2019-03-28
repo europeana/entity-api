@@ -5,9 +5,11 @@ import eu.europeana.api.commons.definitions.search.ResultSet;
 import eu.europeana.api.commons.definitions.search.result.ResultsPage;
 import eu.europeana.api.commons.web.exception.HttpException;
 import eu.europeana.entity.definitions.model.Entity;
+import eu.europeana.entity.definitions.model.ConceptScheme;
 import eu.europeana.entity.definitions.model.search.SearchProfiles;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.definitions.model.vocabulary.SuggestAlgorithmTypes;
+import eu.europeana.entity.web.exception.RequestBodyValidationException;
 import eu.europeana.entity.web.model.view.EntityPreview;
 
 public interface EntityService {
@@ -81,4 +83,28 @@ public interface EntityService {
 	 */
 	public <T extends Entity> ResultsPage<T> buildResultsPage(Query searchQuery, ResultSet<T> results,
 			StringBuffer requestUrl, String reqParams);
+	
+	/**
+	 * This methods converts ConceptScheme object from JsonLd string format to a ConceptScheme object
+	 * @param conceptSchemeJsonLdStr
+	 * @return a ConceptScheme object
+	 * @throws HttpException
+	 */
+	public ConceptScheme parseConceptSchemeLd(String conceptSchemeJsonLdStr) throws HttpException;	
+	
+	/**
+	 * This method stores ConceptScheme object in database and in Solr.
+	 * @param conceptScheme object
+	 * @return stored conceptScheme object
+	 */
+	public ConceptScheme storeConceptScheme(ConceptScheme conceptScheme);	
+	
+	/**
+	 * This method validates and processes the ConceptScheme description for format and mandatory fields
+     * if false responds with HTTP 400
+	 * @param webConceptScheme
+	 * @throws RequestBodyValidationException 
+	 * @throws eu.europeana.entity.web.exception.RequestBodyValidationException 
+	 */
+	public void validateWebConceptScheme(ConceptScheme webConceptScheme) throws RequestBodyValidationException;	
 }

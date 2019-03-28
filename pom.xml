@@ -65,7 +65,7 @@
 		<version.mapstruct>1.2.0.Final</version.mapstruct>
 		<version.log4j2>2.9.1</version.log4j2>
 		<httpclient.version>4.4.1</httpclient.version>
-			
+	
 	</properties>
 	<modules>
 		<module>entity-client</module>

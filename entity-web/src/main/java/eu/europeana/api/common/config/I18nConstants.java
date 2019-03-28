@@ -28,4 +28,16 @@ public interface I18nConstants extends eu.europeana.api.commons.config.i18n.I18n
 	//replaced by generic constant
 	//static final String SERVER_ERROR_UNEXPECTED =  "error.entity_server_unexpected_error";
 	
+	static final String CONCEPT_SCHEME_CANT_PARSE_BODY = "error.concept_scheme_cant_parse_body";	
+	
+	static final String UNSUPPORTED_TOKEN_TYPE = "error.entity_unsupported_token_type";
+	static final String INVALID_HEADER_FORMAT = "error.entity_invalid_header_format";
+	static final String BASE64_DECODING_FAIL = "error.entity_base64_encoding_fail";
+	static final String INVALID_TOKEN = "error.entity_invalid_token";
+	static final String USER_NOT_AUTHORIZED = "error.entity_user_not_authorized";	
+	static final String TEST_USER_FORBIDDEN = "error.entity_test_user_forbidden";
+	static final String ENTITY_VALIDATION_MANDATORY_PROPERTY = "error.entity_validation_mandatory_property";
+	static final String ENTITY_VALIDATION_PROPERTY_VALUE = "error.entity_validation_property_value";
+	
+	static final String INVALID_HEADER_VALUE = "error.entity_invalid_header_value";	
 }

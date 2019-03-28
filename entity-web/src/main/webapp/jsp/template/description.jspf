@@ -1,0 +1,7 @@
+					<!-- Box for the Service Description -->
+					<div class="">
+						<div class="left">
+							<img src="../../img/feather.png" height="64" />
+							<%=pageDescription%>
+						</div>
+					</div>

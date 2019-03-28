@@ -48,6 +48,18 @@
 		</dependency>
 
 		<dependency>
+			<groupId>eu.europeana.entity</groupId>
+			<artifactId>entity-mongo</artifactId>
+			<version>${version.entityApi}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>eu.europeana.entity</groupId>
+			<artifactId>entity-definitions</artifactId>
+			<version>${version.entityApi}</version>
+		</dependency>
+
+		<dependency>
 			<groupId>eu.europeana.api.commons</groupId>
 			<artifactId>commons-oauth</artifactId>
 			<version>${version.commonsApi}</version>
@@ -57,7 +69,6 @@
 			<artifactId>commons-net</artifactId>
 			<version>${version.commonsApi}</version>
 		</dependency>
-
 
 		<dependency>
 			<groupId>eu.europeana.corelib</groupId>

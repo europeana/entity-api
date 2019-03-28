@@ -7,6 +7,7 @@ public interface WebEntityFields {
 	public static final String CONTEXT = "@context";
 	public static final String ENTITY_CONTEXT = "http://www.europeana.eu/schemas/context/entity.jsonld";
 	public static final String LANGUAGE_EN="en";
+	public final static String BASE_CONCEPT_SCHEME_URL = "http://data.europeana.eu/scheme/";
 	
 	// common fields
 	public static final String ID = "id";
@@ -87,4 +88,22 @@ public interface WebEntityFields {
 	public static final String HAS_ADDRESS = "hasAddress";
 	public static final String ADDRESS_TYPE = "Address";
 
+    // Defaults
+	public static final String USER_ANONYMOUNS = "anonymous";
+	public static final String PROFILE_MINIMAL = "minimal";
+	
+	//
+	// Query Params
+	//
+	public static final String PARAM_WSKEY = "wskey";
+	public static final String USER_TOKEN = "userToken";
+	public static final String PROFILE = "profile";
+	
+	// Web application
+	public static final String CONCEPT_SCHEME_PROVIDER = "conceptScheme";	
+	public static final String CONCEPT_SCHEME_APPLICATION_NAME = "webConceptScheme";	
+
+	// Authentication
+	public static final String USER_ADMIN = "admin";	
+	
 }

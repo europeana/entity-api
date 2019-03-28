@@ -1,5 +1,6 @@
 package eu.europeana.entity.web.service.impl;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -8,6 +9,12 @@ import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
+
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonParser.Feature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import eu.europeana.api.common.config.I18nConstants;
 import eu.europeana.api.commons.definitions.search.Query;
@@ -18,22 +25,29 @@ import eu.europeana.api.commons.definitions.search.result.impl.ResultsPageImpl;
 import eu.europeana.api.commons.definitions.vocabulary.CommonApiConstants;
 import eu.europeana.api.commons.search.util.QueryBuilder;
 import eu.europeana.api.commons.web.exception.HttpException;
+import eu.europeana.entity.definitions.exceptions.GroupingAttributeInstantiationException;
+import eu.europeana.entity.definitions.exceptions.GroupingInstantiationException;
 import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException;
 import eu.europeana.entity.definitions.model.Entity;
+import eu.europeana.entity.definitions.model.ConceptScheme;
 import eu.europeana.entity.definitions.model.search.SearchProfiles;
 import eu.europeana.entity.definitions.model.vocabulary.ConceptSolrFields;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.definitions.model.vocabulary.SuggestAlgorithmTypes;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
+import eu.europeana.entity.definitions.model.vocabulary.fields.WebConceptSchemeModelFields;
 import eu.europeana.entity.solr.exception.EntityRetrievalException;
 import eu.europeana.entity.solr.exception.EntitySuggestionException;
 import eu.europeana.entity.solr.service.SolrEntityService;
 import eu.europeana.entity.web.exception.InternalServerException;
 import eu.europeana.entity.web.exception.ParamValidationException;
+import eu.europeana.entity.web.exception.RequestBodyValidationException;
+import eu.europeana.entity.web.model.WebConceptSchemeImpl;
 import eu.europeana.entity.web.model.view.EntityPreview;
 import eu.europeana.entity.web.service.EntityService;
+import ioinformarics.oss.jackson.module.jsonld.JsonldModule;
 
-public class EntityServiceImpl implements EntityService {
+public class EntityServiceImpl extends BaseEntityServiceImpl implements EntityService {
 	
 	public final String BASE_URL_DATA = "http://data.europeana.eu/";
 
@@ -277,4 +291,71 @@ public class EntityServiceImpl implements EntityService {
 		return tmp;
 	}
 
+	@Override
+	public ConceptScheme parseConceptSchemeLd(String groupingJsonLdStr)
+			throws	HttpException {
+
+		JsonParser parser;
+	    ObjectMapper mapper = new ObjectMapper();
+	    mapper.registerModule(new JsonldModule());
+	    mapper.configure(Feature.AUTO_CLOSE_SOURCE, true); 
+	    
+	    JsonFactory jsonFactory = mapper.getFactory();
+		
+		/**
+		 * parse JsonLd string using JsonLdParser
+		 */
+		try {			
+			parser = jsonFactory.createParser(groupingJsonLdStr);
+			ConceptScheme conceptScheme = mapper.readValue(parser, WebConceptSchemeImpl.class); 
+            return conceptScheme;
+		} catch (GroupingAttributeInstantiationException e) {
+			throw new RequestBodyValidationException(
+					I18nConstants.CONCEPT_SCHEME_CANT_PARSE_BODY, new String[]{e.getMessage()}, e);
+		} catch (JsonParseException e) {
+			throw new GroupingInstantiationException("Json formating exception! " + e.getMessage(), e);
+		} catch (IOException e) {
+			throw new GroupingInstantiationException("Json reading exception! " + e.getMessage(), e);
+		}
+	}
+	
+	@Override
+	public ConceptScheme storeConceptScheme(ConceptScheme newGrouping) {
+		
+		// store in mongo database
+		ConceptScheme res = getMongoPersistence().store(newGrouping);
+		return res;
+	}
+	
+	/* (non-Javadoc)
+	 * @see eu.europeana.entity.web.service.EntityService#validateWebConceptScheme(eu.europeana.entity.definitions.model.ConceptScheme)
+	 */
+	public void validateWebConceptScheme(ConceptScheme webConceptScheme) throws RequestBodyValidationException {
+
+		//validate type
+		if (webConceptScheme.getType() == null) {
+			throw new RequestBodyValidationException(I18nConstants.ENTITY_VALIDATION_MANDATORY_PROPERTY, 
+					new String[]{WebConceptSchemeModelFields.TYPE});
+		}
+		
+		//validate prefLabel
+		if (webConceptScheme.getPrefLabel() == null) {
+			throw new RequestBodyValidationException(I18nConstants.ENTITY_VALIDATION_MANDATORY_PROPERTY, 
+					new String[]{WebConceptSchemeModelFields.PREF_LABEL});
+		}
+		
+		//validate isDefinedBy
+		if (webConceptScheme.getIsDefinedBy() == null) {
+			throw new RequestBodyValidationException(I18nConstants.ENTITY_VALIDATION_MANDATORY_PROPERTY, 
+					new String[]{WebConceptSchemeModelFields.IS_DEFINED_BY});
+		}
+		
+		//validate context
+		if(webConceptScheme.getContext()!= null && 
+				!WebConceptSchemeModelFields.VALUE_CONTEXT_EUROPEANA_COLLECTION.equals(webConceptScheme.getContext())){
+			throw new RequestBodyValidationException(I18nConstants.ENTITY_VALIDATION_PROPERTY_VALUE, 
+					new String[]{WebConceptSchemeModelFields.AT_CONTEXT, webConceptScheme.getContext()});
+		}	
+	}
+		
 }

@@ -17,18 +17,23 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.dataformat.xml.JacksonXmlModule;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+
 import eu.europeana.api.common.config.I18nConstants;
 import eu.europeana.api.commons.web.exception.HttpException;
 import eu.europeana.corelib.definitions.edm.entity.Agent;
 import eu.europeana.corelib.edm.model.schemaorg.ContextualEntity;
 import eu.europeana.corelib.edm.model.schemaorg.Person;
 import eu.europeana.corelib.edm.model.schemaorg.Place;
-import eu.europeana.corelib.edm.model.schemaorg.Thing;
 import eu.europeana.corelib.edm.utils.JsonLdSerializer;
 import eu.europeana.corelib.edm.utils.SchemaOrgUtils;
 import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException;
 import eu.europeana.entity.definitions.model.Concept;
 import eu.europeana.entity.solr.exception.EntityRetrievalException;
+import eu.europeana.entity.solr.model.XmlConceptImpl;
 import eu.europeana.entity.solr.service.SolrEntityService;
 
 /**
@@ -43,7 +48,7 @@ public class ConceptEntitySchemaMapTest {
 
     // test URI's and types
     // mathematics
-    public final String TEST_CONCEPT_ENTITY_URI = "http://data.europeana.eu/concept/base/153";
+    public final String TEST_CONCEPT_ENTITY_URI = "http://data.europeana.eu/concept/base/153"; //"http://data.europeana.eu/concept/base/450";
     public final String TEST_CONCEPT_ENTITY_TYPE = "concept";
     // da vinci
     public final String TEST_AGENT_ENTITY_URI = "http://data.europeana.eu/agent/base/146741";
@@ -216,4 +221,48 @@ public class ConceptEntitySchemaMapTest {
 	FileUtils.writeStringToFile(new File("organization-output.txt"), output);
     }
 
+    /**
+     * This test investigates EDM entity Concept Jackson Xml serialization
+     * 
+     * @throws HttpException
+     * @throws IOException
+     */
+    @Test
+    public void testConceptJacksonXmlSerialization() throws HttpException, IOException {
+
+	String entityUri = TEST_CONCEPT_ENTITY_URI;
+	Concept concept;
+	String output = null;
+
+	try {
+	    concept = (Concept) solrEntityService.searchByUrl(TEST_CONCEPT_ENTITY_TYPE, entityUri);
+	} catch (EntityRetrievalException e) {
+	    throw new HttpException(e.getMessage(), I18nConstants.SERVER_ERROR_CANT_RETRIEVE_URI,
+		    new String[] { entityUri }, HttpStatus.INTERNAL_SERVER_ERROR);
+	} catch (UnsupportedEntityTypeException e) {
+	    throw new HttpException(null, I18nConstants.UNSUPPORTED_ENTITY_TYPE,
+		    new String[] { TEST_CONCEPT_ENTITY_TYPE }, HttpStatus.NOT_FOUND, null);
+	}
+
+	Map<String, List<String>> prefLabel = concept.getPrefLabel();
+	Assert.assertNotNull(prefLabel);
+
+	/*
+	 * Jackson implementation sample
+	 */
+	JacksonXmlModule xmlModule = new JacksonXmlModule();
+	xmlModule.setDefaultUseWrapper(true);
+	ObjectMapper objectMapper = new XmlMapper(xmlModule);
+	objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+	
+	XmlConceptImpl xmlConcept = new XmlConceptImpl(concept);
+	output = objectMapper.writeValueAsString(xmlConcept);
+	
+	output = xmlConcept.addingAdditionalXmlString(output);
+	
+	Assert.assertNotNull(output);
+	FileUtils.writeStringToFile(new File("concept-output.txt"), output);
+    }
+
+    
 }

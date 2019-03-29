@@ -33,7 +33,9 @@ import eu.europeana.corelib.edm.utils.SchemaOrgUtils;
 import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException;
 import eu.europeana.entity.definitions.model.Concept;
 import eu.europeana.entity.solr.exception.EntityRetrievalException;
+import eu.europeana.entity.solr.model.XmlAgentImpl;
 import eu.europeana.entity.solr.model.XmlConceptImpl;
+import eu.europeana.entity.solr.model.XmlPlaceImpl;
 import eu.europeana.entity.solr.service.SolrEntityService;
 
 /**
@@ -231,11 +233,11 @@ public class ConceptEntitySchemaMapTest {
     public void testConceptJacksonXmlSerialization() throws HttpException, IOException {
 
 	String entityUri = TEST_CONCEPT_ENTITY_URI;
-	Concept concept;
+	eu.europeana.entity.definitions.model.impl.BaseConcept concept;
 	String output = null;
 
 	try {
-	    concept = (Concept) solrEntityService.searchByUrl(TEST_CONCEPT_ENTITY_TYPE, entityUri);
+	    concept = (eu.europeana.entity.definitions.model.impl.BaseConcept) solrEntityService.searchByUrl(TEST_CONCEPT_ENTITY_TYPE, entityUri);
 	} catch (EntityRetrievalException e) {
 	    throw new HttpException(e.getMessage(), I18nConstants.SERVER_ERROR_CANT_RETRIEVE_URI,
 		    new String[] { entityUri }, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -247,9 +249,6 @@ public class ConceptEntitySchemaMapTest {
 	Map<String, List<String>> prefLabel = concept.getPrefLabel();
 	Assert.assertNotNull(prefLabel);
 
-	/*
-	 * Jackson implementation sample
-	 */
 	JacksonXmlModule xmlModule = new JacksonXmlModule();
 	xmlModule.setDefaultUseWrapper(true);
 	ObjectMapper objectMapper = new XmlMapper(xmlModule);
@@ -261,8 +260,82 @@ public class ConceptEntitySchemaMapTest {
 	output = xmlConcept.addingAdditionalXmlString(output);
 	
 	Assert.assertNotNull(output);
-	FileUtils.writeStringToFile(new File("concept-output.txt"), output);
+	FileUtils.writeStringToFile(new File("concept-jackson-output.xml"), output);
     }
 
+    /**
+     * This test investigates EDM entity Agent Jackson Xml serialization
+     * 
+     * @throws HttpException
+     * @throws IOException
+     */
+    @Test
+    public void testAgentJacksonXmlSerialization() throws HttpException, IOException {
+
+	String entityUri = TEST_AGENT_ENTITY_URI;
+	eu.europeana.entity.definitions.model.impl.BaseAgent agent;
+	String output = null;
+
+	try {
+	    agent = (eu.europeana.entity.definitions.model.impl.BaseAgent) solrEntityService.searchByUrl(TEST_AGENT_ENTITY_TYPE, entityUri);
+	} catch (EntityRetrievalException e) {
+	    throw new HttpException(e.getMessage(), I18nConstants.SERVER_ERROR_CANT_RETRIEVE_URI,
+		    new String[] { entityUri }, HttpStatus.INTERNAL_SERVER_ERROR);
+	} catch (UnsupportedEntityTypeException e) {
+	    throw new HttpException(null, I18nConstants.UNSUPPORTED_ENTITY_TYPE,
+		    new String[] { TEST_AGENT_ENTITY_TYPE }, HttpStatus.NOT_FOUND, null);
+	}
+
+	JacksonXmlModule xmlModule = new JacksonXmlModule();
+	xmlModule.setDefaultUseWrapper(true);
+	ObjectMapper objectMapper = new XmlMapper(xmlModule);
+	objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+	
+	XmlAgentImpl xmlAgent = new XmlAgentImpl(agent);
+	output = objectMapper.writeValueAsString(xmlAgent);
+	
+	output = xmlAgent.addingAdditionalXmlString(output);
+	
+	Assert.assertNotNull(output);
+	FileUtils.writeStringToFile(new File("agent-jackson-output.xml"), output);
+    }
+    
+    /**
+     * This test investigates EDM entity Place Jackson Xml serialization
+     * 
+     * @throws HttpException
+     * @throws IOException
+     */
+    @Test
+    public void testPlaceJacksonXmlSerialization() throws HttpException, IOException {
+
+	String entityUri = TEST_PLACE_ENTITY_URI;
+	eu.europeana.entity.definitions.model.impl.BasePlace place;
+	String output = null;
+
+	try {
+	    place = (eu.europeana.entity.definitions.model.impl.BasePlace) solrEntityService
+		    .searchByUrl(TEST_PLACE_ENTITY_TYPE, entityUri);
+	} catch (EntityRetrievalException e) {
+	    throw new HttpException(e.getMessage(), I18nConstants.SERVER_ERROR_CANT_RETRIEVE_URI,
+		    new String[] { entityUri }, HttpStatus.INTERNAL_SERVER_ERROR);
+	} catch (UnsupportedEntityTypeException e) {
+	    throw new HttpException(null, I18nConstants.UNSUPPORTED_ENTITY_TYPE,
+		    new String[] { TEST_PLACE_ENTITY_TYPE }, HttpStatus.NOT_FOUND, null);
+	}
+
+	JacksonXmlModule xmlModule = new JacksonXmlModule();
+	xmlModule.setDefaultUseWrapper(true);
+	ObjectMapper objectMapper = new XmlMapper(xmlModule);
+	objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+	
+	XmlPlaceImpl xmlPlace = new XmlPlaceImpl(place);
+	output = objectMapper.writeValueAsString(xmlPlace);
+	
+	output = xmlPlace.addingAdditionalXmlString(output);
+	
+	Assert.assertNotNull(output);
+	FileUtils.writeStringToFile(new File("place-jackson-output.xml"), output);
+    }
     
 }

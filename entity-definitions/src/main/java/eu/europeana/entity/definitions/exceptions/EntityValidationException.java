@@ -6,7 +6,7 @@ package eu.europeana.entity.definitions.exceptions;
  * @author GrafR 
  *
  */
-public class GroupingValidationException extends RuntimeException {
+public class EntityValidationException extends RuntimeException {
 
 	/**
 	 * 
@@ -18,11 +18,11 @@ public class GroupingValidationException extends RuntimeException {
 	public static final String ERROR_NULL_CREATOR = "Creator must not be null";
 	public static final String ERROR_INVALID_BODY = "Invalid values in grouping body!";
 
-	public GroupingValidationException(String message){
+	public EntityValidationException(String message){
 		super(message);
 	}
 	
-	public GroupingValidationException(String message, Throwable th){
+	public EntityValidationException(String message, Throwable th){
 		super(message, th);
 	}
 	

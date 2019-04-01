@@ -55,10 +55,8 @@ public interface ConceptScheme {
 	/**
 	 * @return The unique identifier of the grouping(s) which gather this entity.
 	 */
-//	public String[] getInScheme();
 	public List<String> getInScheme();
 
-//	public void setInScheme(String[] inScheme);	
 	public void setInScheme(List<String> inScheme);	
 	
 	/**

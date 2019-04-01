@@ -13,4 +13,5 @@ public interface EntityHttpHeaders extends HttpHeaders {
 	 * Response headers
 	 */
 	public static final String PREFERENCE_APPLIED = "Preference-Applied";	
+	public static final String ALLOW_GPD = "GET,PUT,DELETE";
 }

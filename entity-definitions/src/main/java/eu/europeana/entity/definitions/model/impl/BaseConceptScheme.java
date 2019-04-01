@@ -14,7 +14,8 @@ import eu.europeana.entity.definitions.model.ConceptScheme;
  */
 public class BaseConceptScheme implements ConceptScheme {
 	
-	private String id;
+//	private String id;
+	private String conceptSchemeId;
 	private String type;
 	private Map<String, String> prefLabel;	
 	private Map<String, String> definition;	
@@ -28,11 +29,13 @@ public class BaseConceptScheme implements ConceptScheme {
 	
 	
 	public String getConceptSchemeId() {
-		return this.id;
+//		return this.id;
+		return this.conceptSchemeId;
 	}
 	
 	public void setConceptSchemeId(String id) {
-		this.id = id;
+//		this.id = id;
+		this.conceptSchemeId = id;
 	}
 	
 	public String getType() {

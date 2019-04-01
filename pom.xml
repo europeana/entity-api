@@ -48,7 +48,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<version.java>1.8</version.java>
 		<version.junit>4.12</version.junit>
-		<version.corelib>2.8.6</version.corelib>
+		<version.corelib>2.8.5-SNAPSHOT</version.corelib>
 		<!-- 
 		<version.log4j>1.2.12</version.log4j>
 		-->

@@ -3,10 +3,11 @@ package eu.europeana.entity.mongo.service;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.mongodb.morphia.query.Query;
 import org.springframework.stereotype.Component;
 
 import eu.europeana.api.commons.nosql.service.impl.AbstractNoSqlServiceImpl;
-import eu.europeana.entity.definitions.exceptions.GroupingValidationException;
+import eu.europeana.entity.definitions.exceptions.EntityValidationException;
 import eu.europeana.entity.definitions.model.ConceptScheme;
 import eu.europeana.entity.definitions.model.ConceptSchemeId;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityFields;
@@ -30,18 +31,6 @@ public class PersistentEntityServiceImpl extends AbstractNoSqlServiceImpl<Persis
 
 	protected final Logger logger = LogManager.getLogger(this.getClass());
 	
-//	@Resource
-//	private EntityConfiguration configuration;
-//
-//	public EntityConfiguration getConfiguration() {
-//		return configuration;
-//	}
-//
-//	public void setConfiguration(EntityConfiguration configuration) {
-//		this.configuration = configuration;
-//	}
-	
-	
 	/**
 	 * This method validates persistent user set and generates ID if
 	 * genarateId=true.
@@ -56,7 +45,7 @@ public class PersistentEntityServiceImpl extends AbstractNoSqlServiceImpl<Persis
 		// validate user set ID
 		if (StringUtils.isBlank(object.getConceptSchemeId()) 
 				|| ConceptSchemeId.NOT_INITIALIZED_LONG_ID.equals(object.getConceptSchemeId()))
-				throw new GroupingValidationException(
+				throw new EntityValidationException(
 						"Entity.GroupingId.identifier must be a valid alpha-numeric value or a positive number!");
 	}
 
@@ -69,6 +58,9 @@ public class PersistentEntityServiceImpl extends AbstractNoSqlServiceImpl<Persis
 		return getEntityDao().generateNextGroupingId(collection);
 	}
 
+	/* (non-Javadoc)
+	 * @see eu.europeana.entity.mongo.service.PersistentEntityService#store(eu.europeana.entity.definitions.model.ConceptScheme)
+	 */
 	@Override
 	public ConceptScheme store(ConceptScheme grouping) {
 		
@@ -84,8 +76,36 @@ public class PersistentEntityServiceImpl extends AbstractNoSqlServiceImpl<Persis
 		return this.store(persistentObject);
 	}
 
+	/**
+	 * @return
+	 */
 	protected PersistentEntityDao<PersistentConceptScheme, String> getEntityDao() {
 		return (PersistentEntityDao<PersistentConceptScheme, String>) getDao();
 	}
 
+	/* (non-Javadoc)
+	 * @see eu.europeana.entity.mongo.service.PersistentEntityService#getByIdentifier(java.lang.String)
+	 */
+	public PersistentConceptScheme getByIdentifier(String identifier) {
+		Query<PersistentConceptScheme> query = getEntityDao().createQuery();
+		query.filter(PersistentConceptScheme.FIELD_IDENTIFIER, identifier);
+	
+		return getEntityDao().findOne(query);
+	}
+
+	/* (non-Javadoc)
+	 * @see eu.europeana.entity.mongo.service.PersistentEntityService#deleteByIdentifier(java.lang.String)
+	 */
+	public void deleteByIdentifier(String identifier) {
+		PersistentConceptScheme storedConceptScheme = getByIdentifier(identifier);
+		getEntityDao().delete(storedConceptScheme);
+	}
+
+	/* (non-Javadoc)
+	 * @see eu.europeana.entity.mongo.service.PersistentEntityService#update(eu.europeana.grouping.mongo.model.internal.PersistentConceptScheme)
+	 */
+	@Override
+	public PersistentConceptScheme update(PersistentConceptScheme conceptScheme) throws EntityValidationException {
+		return store(conceptScheme);
+	}	
 }

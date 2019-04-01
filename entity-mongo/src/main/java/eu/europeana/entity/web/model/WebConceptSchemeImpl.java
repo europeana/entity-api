@@ -18,6 +18,11 @@ import ioinformarics.oss.jackson.module.jsonld.annotation.JsonldProperty;
 @JsonInclude(value = JsonInclude.Include.NON_EMPTY)
 public class WebConceptSchemeImpl extends PersistentConceptSchemeImpl {
 		
+//	@JsonldProperty("conceptSchemeId")
+//	public void setConceptSchemeId(String conceptSchemeId) {
+//		super.setConceptSchemeId(conceptSchemeId);
+//	}
+	
 	@JsonIgnore
 	public String getConceptSchemeId() {
 		return super.getConceptSchemeId();

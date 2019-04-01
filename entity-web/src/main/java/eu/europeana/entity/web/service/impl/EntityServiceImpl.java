@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -25,8 +26,8 @@ import eu.europeana.api.commons.definitions.search.result.impl.ResultsPageImpl;
 import eu.europeana.api.commons.definitions.vocabulary.CommonApiConstants;
 import eu.europeana.api.commons.search.util.QueryBuilder;
 import eu.europeana.api.commons.web.exception.HttpException;
-import eu.europeana.entity.definitions.exceptions.GroupingAttributeInstantiationException;
-import eu.europeana.entity.definitions.exceptions.GroupingInstantiationException;
+import eu.europeana.entity.definitions.exceptions.EntityAttributeInstantiationException;
+import eu.europeana.entity.definitions.exceptions.EntityInstantiationException;
 import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException;
 import eu.europeana.entity.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.ConceptScheme;
@@ -42,9 +43,11 @@ import eu.europeana.entity.solr.service.SolrEntityService;
 import eu.europeana.entity.web.exception.InternalServerException;
 import eu.europeana.entity.web.exception.ParamValidationException;
 import eu.europeana.entity.web.exception.RequestBodyValidationException;
+import eu.europeana.entity.web.exception.response.ConceptSchemeNotFoundException;
 import eu.europeana.entity.web.model.WebConceptSchemeImpl;
 import eu.europeana.entity.web.model.view.EntityPreview;
 import eu.europeana.entity.web.service.EntityService;
+import eu.europeana.grouping.mongo.model.internal.PersistentConceptScheme;
 import ioinformarics.oss.jackson.module.jsonld.JsonldModule;
 
 public class EntityServiceImpl extends BaseEntityServiceImpl implements EntityService {
@@ -309,13 +312,13 @@ public class EntityServiceImpl extends BaseEntityServiceImpl implements EntitySe
 			parser = jsonFactory.createParser(groupingJsonLdStr);
 			ConceptScheme conceptScheme = mapper.readValue(parser, WebConceptSchemeImpl.class); 
             return conceptScheme;
-		} catch (GroupingAttributeInstantiationException e) {
+		} catch (EntityAttributeInstantiationException e) {
 			throw new RequestBodyValidationException(
 					I18nConstants.CONCEPT_SCHEME_CANT_PARSE_BODY, new String[]{e.getMessage()}, e);
 		} catch (JsonParseException e) {
-			throw new GroupingInstantiationException("Json formating exception! " + e.getMessage(), e);
+			throw new EntityInstantiationException("Json formating exception! " + e.getMessage(), e);
 		} catch (IOException e) {
-			throw new GroupingInstantiationException("Json reading exception! " + e.getMessage(), e);
+			throw new EntityInstantiationException("Json reading exception! " + e.getMessage(), e);
 		}
 	}
 	
@@ -358,4 +361,82 @@ public class EntityServiceImpl extends BaseEntityServiceImpl implements EntitySe
 		}	
 	}
 		
+	/* (non-Javadoc)
+	 * @see eu.europeana.entity.web.service.EntityService#getConceptSchemeById(java.lang.String)
+	 */
+	@Override
+	public ConceptScheme getConceptSchemeById(String conceptSchemeId) throws ConceptSchemeNotFoundException {
+		ConceptScheme res = getMongoPersistence().getByIdentifier(conceptSchemeId);
+		if (res == null) {
+			throw new ConceptSchemeNotFoundException(I18nConstants.ENTITY_NOT_FOUND, 
+					I18nConstants.ENTITY_NOT_FOUND, new String[] {conceptSchemeId});
+		}
+		return res; 
+	}
+	
+	/* (non-Javadoc)
+	 * @see eu.europeana.entity.web.service.EntityService#deleteConceptScheme(java.lang.String)
+	 */
+	public void deleteConceptScheme(String conceptSchemeId) throws ConceptSchemeNotFoundException {
+
+		getMongoPersistence().deleteByIdentifier(conceptSchemeId);
+	}	
+	
+	/* (non-Javadoc)
+	 * @see eu.europeana.entity.web.service.EntityService#updateConceptScheme(eu.europeana.grouping.mongo.model.internal.PersistentConceptScheme, eu.europeana.entity.definitions.model.ConceptScheme)
+	 */
+	@Override
+	public ConceptScheme updateConceptScheme(PersistentConceptScheme persistentConceptScheme, ConceptScheme webConceptScheme) {
+		mergeConceptSchemeProperties(persistentConceptScheme, webConceptScheme);
+//		updateConceptSchemePagination(persistentConceptScheme);
+		
+		ConceptScheme res = getMongoPersistence().update(persistentConceptScheme);
+		return res;
+	}
+	
+	/**
+	 * @deprecated check if the update test must merge the properties or if it simply overwrites it
+	 * @param ConceptScheme
+	 * @param updatedWebConceptScheme
+	 */
+	private void mergeConceptSchemeProperties(PersistentConceptScheme conceptScheme, ConceptScheme updatedWebConceptScheme) {
+		if (updatedWebConceptScheme != null) {
+			if (updatedWebConceptScheme.getContext() != null) {
+				conceptScheme.setContext(updatedWebConceptScheme.getContext());
+			}
+			
+			if (updatedWebConceptScheme.getType() != null) {
+				conceptScheme.setType(updatedWebConceptScheme.getType());
+			}
+		
+			if (updatedWebConceptScheme.getIsDefinedBy() != null) {
+				conceptScheme.setIsDefinedBy(updatedWebConceptScheme.getIsDefinedBy());
+			}
+		
+			if (updatedWebConceptScheme.getInScheme() != null) {
+				conceptScheme.setInScheme(updatedWebConceptScheme.getInScheme());
+			}
+		
+			if (updatedWebConceptScheme.getDefinition() != null) {
+				if (conceptScheme.getDefinition() != null) {
+					for (Map.Entry<String, String> entry : updatedWebConceptScheme.getDefinition().entrySet()) {
+						conceptScheme.getDefinition().put(entry.getKey(), entry.getValue());
+					}
+				} else {
+					conceptScheme.setDefinition(updatedWebConceptScheme.getDefinition());
+				}
+			}
+
+			if (updatedWebConceptScheme.getPrefLabel() != null) {
+				if (conceptScheme.getPrefLabel() != null) {
+					for (Map.Entry<String, String> entry : updatedWebConceptScheme.getPrefLabel().entrySet()) {
+						conceptScheme.getPrefLabel().put(entry.getKey(), entry.getValue());
+					}
+				} else {
+					conceptScheme.setPrefLabel(updatedWebConceptScheme.getPrefLabel());
+				}
+			}
+		}
+	}
+	
 }

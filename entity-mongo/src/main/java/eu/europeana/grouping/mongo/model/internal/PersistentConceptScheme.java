@@ -23,8 +23,8 @@ public interface PersistentConceptScheme extends ConceptScheme, NoSqlEntity {
 //		public static final String FIELD_SET_TYPE = "setType";
 		
 	public abstract ObjectId getObjectId();		
-//		public abstract String getIdentifier();		
-//		public abstract void setIdentifier(String sequenceIdentifier);
+//	public abstract String getIdentifier();		
+//	public abstract void setIdentifier(String sequenceIdentifier);
 	public abstract String getType();
 	public abstract void setType(String type);
 	public abstract String getConceptSchemeId();		
@@ -37,8 +37,6 @@ public interface PersistentConceptScheme extends ConceptScheme, NoSqlEntity {
 	public abstract void setIsDefinedBy(String query);
 	public abstract String getSameAs();
 	public abstract void setSameAs(String sameAs);
-//	public abstract String[] getInScheme();
-//	public abstract void setInScheme(String[] inScheme);	
 	public abstract List<String> getInScheme();
 	public abstract void setInScheme(List<String> inScheme);	
 }

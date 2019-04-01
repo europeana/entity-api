@@ -38,6 +38,7 @@ import eu.europeana.entity.definitions.model.vocabulary.WebEntityFields;
 import eu.europeana.entity.utils.serialize.ConceptSchemeLdSerializer;
 import eu.europeana.entity.web.exception.ParamValidationException;
 import eu.europeana.entity.web.exception.authentication.EntityAuthenticationException;
+import eu.europeana.entity.web.exception.authorization.OperationAuthorizationException;
 import eu.europeana.entity.web.http.EntityHttpHeaders;
 import eu.europeana.entity.web.jsonld.EntityResultsPageSerializer;
 import eu.europeana.entity.web.service.EntityService;
@@ -440,4 +441,24 @@ public abstract class BaseRest {
 		return resMap;
 	}
 
+	/**
+	 * This method checks that only the admins and the owners of the user sets
+	 * are allowed to delete the user set. in the case of regular users (not
+	 * admins), the autorization method must check if the users that calls the
+	 * deletion (i.e. identified by provided user token) is the same user as the
+	 * creator of the user set
+	 * 
+	 * @param conceptScheme
+	 * @param wsKey
+	 * @param queryUser
+	 * @throws ApplicationAuthenticationException
+	 */
+	public void hasModifyRights(ConceptScheme conceptScheme, String wsKey, String queryUser)
+			throws OperationAuthorizationException {
+
+//		if (!(isAdmin(wsKey, queryUser) || userSet.getCreator().getName().equals(queryUser))) {
+//			throw new OperationAuthorizationException(I18nConstants.USER_NOT_AUTHORIZED,
+//					I18nConstants.USER_NOT_AUTHORIZED, new String[] { "User ID: " + queryUser }, HttpStatus.FORBIDDEN);
+//		}
+	}	
 }

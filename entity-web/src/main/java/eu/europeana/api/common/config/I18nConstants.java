@@ -40,4 +40,6 @@ public interface I18nConstants extends eu.europeana.api.commons.config.i18n.I18n
 	static final String ENTITY_VALIDATION_PROPERTY_VALUE = "error.entity_validation_property_value";
 	
 	static final String INVALID_HEADER_VALUE = "error.entity_invalid_header_value";	
+	static final String ENTITY_NOT_FOUND = "error.entity_not_found";	
+
 }

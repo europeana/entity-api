@@ -5,7 +5,7 @@ package eu.europeana.entity.definitions.exceptions;
  * @author Roman Graf
  *
  */
-public class GroupingAttributeInstantiationException extends RuntimeException{
+public class EntityAttributeInstantiationException extends RuntimeException{
 
 	/**
 	 * 
@@ -21,19 +21,19 @@ public class GroupingAttributeInstantiationException extends RuntimeException{
 	String propertyName;
 	String propertyValue;
 	
-	public GroupingAttributeInstantiationException(String propertyName){
+	public EntityAttributeInstantiationException(String propertyName){
 		this(propertyName, DEFAULT_MESSAGE);
 	}
 	
-	public GroupingAttributeInstantiationException(String propertyName, String message){
+	public EntityAttributeInstantiationException(String propertyName, String message){
 		this(propertyName, null, message);
 	}
 	
-	public GroupingAttributeInstantiationException(String propertyName, String propertyValue, String message){
+	public EntityAttributeInstantiationException(String propertyName, String propertyValue, String message){
 		this(propertyName, propertyValue, message, null);
 	}
 	
-	public GroupingAttributeInstantiationException(String propertyName, String propertyValue, String message, Throwable th){
+	public EntityAttributeInstantiationException(String propertyName, String propertyValue, String message, Throwable th){
 		super(message + propertyName, th);
 		this.propertyName = propertyName;
 		this.propertyValue = propertyValue;

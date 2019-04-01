@@ -10,7 +10,9 @@ import eu.europeana.entity.definitions.model.search.SearchProfiles;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.definitions.model.vocabulary.SuggestAlgorithmTypes;
 import eu.europeana.entity.web.exception.RequestBodyValidationException;
+import eu.europeana.entity.web.exception.response.ConceptSchemeNotFoundException;
 import eu.europeana.entity.web.model.view.EntityPreview;
+import eu.europeana.grouping.mongo.model.internal.PersistentConceptScheme;
 
 public interface EntityService {
 
@@ -107,4 +109,30 @@ public interface EntityService {
 	 * @throws eu.europeana.entity.web.exception.RequestBodyValidationException 
 	 */
 	public void validateWebConceptScheme(ConceptScheme webConceptScheme) throws RequestBodyValidationException;	
+	
+	/**
+	 * This method returns ConceptScheme object for given concept scheme identifier.
+	 * @param concept scheme identifier
+	 * @return ConceptScheme object
+	 */
+	public ConceptScheme getConceptSchemeById(String conceptSchemeId) throws ConceptSchemeNotFoundException; 
+			
+	
+	/**
+	 * This method deletes concept scheme by concept scheme Id value.
+	 * @param conceptSchemeId The id of the user set
+	 * @throws ConceptSchemeNotFoundException 
+	 */
+	public void deleteConceptScheme(String conceptSchemeId) throws ConceptSchemeNotFoundException;	
+	
+	/**
+	 * update (stored) <code>persistentConceptScheme</code> with values from <code>webConceptScheme</code>
+	 * @param persistentConceptScheme
+	 * @param webConceptScheme
+	 * @return
+	 */
+	public ConceptScheme updateConceptScheme(
+			PersistentConceptScheme persistentConceptScheme, ConceptScheme webConceptScheme);
+	
+	
 }

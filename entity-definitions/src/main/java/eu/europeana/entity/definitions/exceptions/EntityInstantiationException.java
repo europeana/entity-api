@@ -6,7 +6,7 @@ package eu.europeana.entity.definitions.exceptions;
  * @author GrafR 
  *
  */
-public class GroupingInstantiationException extends RuntimeException{
+public class EntityInstantiationException extends RuntimeException{
 
 	/**
 	 * 
@@ -18,11 +18,11 @@ public class GroupingInstantiationException extends RuntimeException{
 	 */
 	public static final String DEFAULT_MESSAGE = "Cannot instantiate grouping attribute: ";
 	
-	public GroupingInstantiationException(String attributeName){
+	public EntityInstantiationException(String attributeName){
 		this(attributeName, null);
 	}
 	
-	public GroupingInstantiationException(String attributeName , Throwable th){
+	public EntityInstantiationException(String attributeName , Throwable th){
 		super(DEFAULT_MESSAGE + attributeName, th);
 	}
 	

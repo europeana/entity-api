@@ -1,4 +1,4 @@
-package eu.europeana.entity.solr.model;
+package eu.europeana.entity.web.xml.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,7 @@ public class XmlMultilingualString {
     }
     
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    @JacksonXmlProperty(isAttribute=true, localName="xml:lang")
+    @JacksonXmlProperty(isAttribute=true, localName=XmlConstants.XML_LANG)
     public String getLanguage() {
 	return language;
     }

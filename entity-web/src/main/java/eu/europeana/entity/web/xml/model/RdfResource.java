@@ -1,4 +1,4 @@
-package eu.europeana.entity.solr.model;
+package eu.europeana.entity.web.xml.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +15,7 @@ public class RdfResource {
 	this.value = value;
     }
     
-    @JacksonXmlProperty(isAttribute=true, localName="rdf:resource")
+    @JacksonXmlProperty(isAttribute=true, localName=XmlConstants.XML_RDF_RESOURCE)
     public String toString() {
 	return value;
     }

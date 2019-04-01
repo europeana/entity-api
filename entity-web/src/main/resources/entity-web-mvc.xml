@@ -25,7 +25,10 @@
 					<list>
 						<value>application/json;charset=utf-8</value>
 						<value>application/ld+json;charset=utf-8</value>
-						<value>text/plain;charset=utf-8</value>					
+						<value>text/plain;charset=utf-8</value>
+						<value>application/xml</value>
+						<value>application/rdf+xml</value>
+						<value>rdf/xml</value>		
 				 	</list>
 				 </property>
 				 <property name="writeAcceptCharset" value="false"/>

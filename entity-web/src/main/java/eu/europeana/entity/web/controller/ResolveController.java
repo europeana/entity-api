@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.LinkedMultiValueMap;
@@ -15,6 +16,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.dataformat.xml.JacksonXmlModule;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
 import eu.europeana.api.common.config.swagger.SwaggerSelect;
 import eu.europeana.api.commons.definitions.vocabulary.CommonApiConstants;
@@ -29,9 +36,16 @@ import eu.europeana.entity.definitions.formats.FormatTypes;
 import eu.europeana.entity.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.RankedEntity;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
+import eu.europeana.entity.solr.model.SolrAgentImpl;
+import eu.europeana.entity.solr.model.SolrConceptImpl;
+import eu.europeana.entity.solr.model.SolrPlaceImpl;
 import eu.europeana.entity.utils.jsonld.EuropeanaEntityLd;
 import eu.europeana.entity.web.exception.InternalServerException;
 import eu.europeana.entity.web.service.EntityService;
+import eu.europeana.entity.web.xml.model.XmlAgentImpl;
+import eu.europeana.entity.web.xml.model.XmlBase;
+import eu.europeana.entity.web.xml.model.XmlConceptImpl;
+import eu.europeana.entity.web.xml.model.XmlPlaceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -43,9 +57,11 @@ public class ResolveController extends BaseRest {
 	@Resource 
 	EntityService entityService;
 
-	@ApiOperation(value = "Retrieve a known entity", nickname = "getEntity", response = java.lang.Void.class)
-	@RequestMapping(value = {"/entity/{type}/{namespace}/{identifier}", "/entity/{type}/{namespace}/{identifier}.jsonld", "/entity/{type}/{namespace}/{identifier}.schema.jsonld"}, method = RequestMethod.GET, 
-			produces = { HttpHeaders.CONTENT_TYPE_JSON_UTF8, HttpHeaders.CONTENT_TYPE_JSONLD_UTF8})
+	@ApiOperation(value = "Retrieve a known entity using json based formats", nickname = "getEntity", response = java.lang.Void.class)
+	@RequestMapping(value = {"/entity/{type}/{namespace}/{identifier}", "/entity/{type}/{namespace}/{identifier}.jsonld", "/entity/{type}/{namespace}/{identifier}.schema.jsonld",
+			"/entity/{type}/{namespace}/{identifier}.xml"}, method = RequestMethod.GET,
+			produces = {HttpHeaders.CONTENT_TYPE_JSON_UTF8, HttpHeaders.CONTENT_TYPE_JSONLD_UTF8, MediaType.APPLICATION_XML_VALUE,
+				"application/rdf+xml", "rdf/xml"})
 	public ResponseEntity<String> getEntity(
 			@RequestParam(value = CommonApiConstants.PARAM_WSKEY, required=false) String wskey,
 			@PathVariable(value = WebEntityConstants.PATH_PARAM_TYPE) String type,
@@ -54,46 +70,46 @@ public class ResolveController extends BaseRest {
 			HttpServletRequest request
 			) throws HttpException  {
 
-		try {			
-			validateApiKey(wskey);
-			
-			String extension = getExtension(request);
-			
-			//identify required format
-			FormatTypes outFormat = getFormatType(extension);		
-			
-			Entity entity = entityService.retrieveByUrl(type, namespace, identifier);
-			
-			String jsonLd = serialize(entity, outFormat);
+	    try {			
+	    	validateApiKey(wskey);
+	    	
+	    	String extension = getExtension(request);
+	    	
+	    	//identify required format
+	    	FormatTypes outFormat = getFormatType(extension);		
+	    	
+	    	Entity entity = entityService.retrieveByUrl(type, namespace, identifier);
+	    	
+	    	String jsonLd = serialize(entity, outFormat);
 
-			Date timestamp = ((RankedEntity)entity).getTimestamp();
-			Date etagDate = (timestamp != null)? timestamp : new Date();
-			int etag = etagDate.hashCode(); 
-			
-			MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>(5);
-			headers.add(HttpHeaders.ETAG, "" + etag);
-			headers.add(HttpHeaders.ALLOW, HttpHeaders.ALLOW_GET);
-			if(!outFormat.equals(FormatTypes.schema)) {
-				headers.add(HttpHeaders.VARY, HttpHeaders.ACCEPT);
-				headers.add(HttpHeaders.LINK, HttpHeaders.VALUE_LDP_RESOURCE);
-			}
+	    	Date timestamp = ((RankedEntity)entity).getTimestamp();
+	    	Date etagDate = (timestamp != null)? timestamp : new Date();
+	    	int etag = etagDate.hashCode(); 
+	    	
+	    	MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>(5);
+	    	headers.add(HttpHeaders.ETAG, "" + etag);
+	    	headers.add(HttpHeaders.ALLOW, HttpHeaders.ALLOW_GET);
+	    	if(!outFormat.equals(FormatTypes.schema)) {
+	    		headers.add(HttpHeaders.VARY, HttpHeaders.ACCEPT);
+	    		headers.add(HttpHeaders.LINK, HttpHeaders.VALUE_LDP_RESOURCE);
+	    	}
 
-			ResponseEntity<String> response = new ResponseEntity<String>(jsonLd, headers, HttpStatus.OK);
-			
-			return response;
-	
-		} catch (RuntimeException e) {
-			//not found .. 
-			throw new InternalServerException(e);
-		} catch (HttpException e) {
-			//avoid wrapping http exception
-			throw e;
-		} catch (Exception e) {
-			throw new InternalServerException(e);
-		}				
+	    	ResponseEntity<String> response = new ResponseEntity<String>(jsonLd, headers, HttpStatus.OK);
+	    	
+	    	return response;
+
+	    } catch (RuntimeException e) {
+	    	//not found .. 
+	    	throw new InternalServerException(e);
+	    } catch (HttpException e) {
+	    	//avoid wrapping http exception
+	    	throw e;
+	    } catch (Exception e) {
+	    	throw new InternalServerException(e);
+	    }			
 	}
 
-
+	
 	/**
 	 * This method evaluates extension 
 	 * @param request The HTTP request
@@ -125,11 +141,13 @@ public class ResolveController extends BaseRest {
 		String jsonLd = null;
 		ContextualEntity thingObject = null;
         
-        if(FormatTypes.jsonld.equals(format)) {
-        	EuropeanaEntityLd entityLd = new EuropeanaEntityLd(entity);		
+		if(FormatTypes.jsonld.equals(format)) {
+		    	EuropeanaEntityLd entityLd = new EuropeanaEntityLd(entity);		
 			return entityLd.toString(4);
-        } else if (FormatTypes.schema.equals(format)) {			
+		} else if (FormatTypes.schema.equals(format)) {			
 			jsonLd = serializeSchema(entity, jsonLd, thingObject);	        
+		} else if(FormatTypes.xml.equals(format)) {
+		    	jsonLd = serializeXml(entity);
 		}
 		return jsonLd;
 	}
@@ -158,6 +176,41 @@ public class ResolveController extends BaseRest {
 		}
 		return jsonLd;
 	}
+	
+	/**
+	 * This method serializes Entity object to xml formats.
+	 * @param entity The Entity object
+	 * @return The serialized entity in xml string format
+	 * @throws JsonProcessingException, UnsupportedEntityTypeException
+	 */
+	public String serializeXml(Entity entity) throws UnsupportedEntityTypeException {
+		JacksonXmlModule xmlModule = new JacksonXmlModule();
+		xmlModule.setDefaultUseWrapper(true);
+		ObjectMapper objectMapper = new XmlMapper(xmlModule);
+		objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+
+		XmlBase xmlElement = null;
+		if(entity instanceof SolrConceptImpl)
+		    xmlElement = new XmlConceptImpl((SolrConceptImpl) entity);
+		else if(entity instanceof SolrAgentImpl)
+		    xmlElement = new XmlAgentImpl((SolrAgentImpl) entity);
+		else if(entity instanceof SolrPlaceImpl)
+		    xmlElement = new XmlPlaceImpl((SolrPlaceImpl) entity);
+		else {
+		    throw new UnsupportedEntityTypeException("Serialization to xml failed for " + entity.getAbout());
+		}
+		
+		String output = "";
+		
+		try {
+		    output = objectMapper.writeValueAsString(xmlElement);
+		    output = xmlElement.addingAdditionalXmlString(output);
+		} catch (JsonProcessingException e) {
+		    throw new UnsupportedEntityTypeException("Serialization to xml failed for " + entity.getAbout() + e.getMessage());
+		}
+		    
+		return output;
+	    }
 
 	
 	@ApiOperation(value = "Performs a lookup for the entity in all 4 datasets", nickname = "resolveEntity", response = java.lang.Void.class)

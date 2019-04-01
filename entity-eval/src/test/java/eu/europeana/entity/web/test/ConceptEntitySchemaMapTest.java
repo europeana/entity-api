@@ -33,10 +33,10 @@ import eu.europeana.corelib.edm.utils.SchemaOrgUtils;
 import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException;
 import eu.europeana.entity.definitions.model.Concept;
 import eu.europeana.entity.solr.exception.EntityRetrievalException;
-import eu.europeana.entity.solr.model.XmlAgentImpl;
-import eu.europeana.entity.solr.model.XmlConceptImpl;
-import eu.europeana.entity.solr.model.XmlPlaceImpl;
 import eu.europeana.entity.solr.service.SolrEntityService;
+import eu.europeana.entity.web.xml.model.XmlAgentImpl;
+import eu.europeana.entity.web.xml.model.XmlConceptImpl;
+import eu.europeana.entity.web.xml.model.XmlPlaceImpl;
 
 /**
  * This class investigates best way to implement Schema.org mapping

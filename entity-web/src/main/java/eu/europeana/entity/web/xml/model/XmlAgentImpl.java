@@ -1,4 +1,4 @@
-package eu.europeana.entity.solr.model;
+package eu.europeana.entity.web.xml.model;
 
 import java.util.List;
 
@@ -9,14 +9,16 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-@JacksonXmlRootElement(localName= "edm:Agent")
+@JacksonXmlRootElement(localName = XmlConstants.XML_EDM_AGENT)
 @JsonInclude(value = JsonInclude.Include.NON_EMPTY)
-@JsonPropertyOrder({"skos:prefLabel", "skos:altLabel", "skos:note", "dc:date", "dc:identifier", "dcterms:hasPart",
-    	"dcterms:isPartOf", "edm:begin", "edm:end", "edm:hasMet", "edm:isRelatedTo", "foaf:name",
-    	"rdaGr2:biographicalInformation", "rdaGr2:dateOfBirth", "rdaGr2:dateOfDeath", "rdaGr2:dateOfEstablishment",
-    	"rdaGr2:dateOfTermination", "rdaGr2:gender", "rdaGr2:placeOfBirth", "rdaGr2:placeOfDeath",
-    	"rdaGr2:professionOrOccupation", "owl:sameAs"})
-public class XmlAgentImpl {
+@JsonPropertyOrder({XmlConstants.XML_SKOS_PREF_LABEL, XmlConstants.XML_SKOS_ALT_LABEL, XmlConstants.XML_SKOS_NOTE, XmlConstants.XML_DC_DATE,
+    	XmlConstants.XML_DC_IDENTIFIER, XmlConstants.XML_DCTERMS_HAS_PART, XmlConstants.XML_DCTERMS_IS_PART_OF, XmlConstants.XML_EDM_BEGIN,
+    	XmlConstants.XML_EDM_END, XmlConstants.XML_EDM_HASMET, XmlConstants.XML_EDM_IS_RELATED_TO, XmlConstants.XML_FOAF_NAME, 
+    	XmlConstants.XML_RDAGR2_BIOGRAPHICAL_INFORMATION, XmlConstants.XML_RDAGR2_DATE_OF_BIRTH, XmlConstants.XML_RDAGR2_DATE_OF_DEATH,
+    	XmlConstants.XML_RDAGR2_DATE_OF_ESTABLISHMENT, XmlConstants.XML_RDAGR2_DATE_OF_TERMINATION, XmlConstants.XML_RDAGR2_GENDER,
+    	XmlConstants.XML_RDAGR2_PLACE_OF_BIRTH, XmlConstants.XML_RDAGR2_PLACE_OF_DEATH, XmlConstants.XML_RDAGR2_PROFESSION_OR_OCCUPATION,
+    	XmlConstants.XML_OWL_SAME_AS})
+public class XmlAgentImpl implements XmlBase {
     	@JsonIgnore
     	private eu.europeana.entity.definitions.model.impl.BaseAgent agent;
     
@@ -42,31 +44,31 @@ public class XmlAgentImpl {
 	    return strBuilder.toString();
 	}
     	
-	@JacksonXmlProperty(isAttribute= true, localName = "rdf:about")
+	@JacksonXmlProperty(isAttribute= true, localName = XmlConstants.XML_RDF_ABOUT)
 	public String getAbout() {
 		return agent.getAbout();
 	}
 	
 	@JacksonXmlElementWrapper(useWrapping=false)
-	@JacksonXmlProperty(localName = "skos:altLabel")
+	@JacksonXmlProperty(localName = XmlConstants.XML_SKOS_ALT_LABEL)
 	public List<XmlMultilingualString> getAltLabel() {
 		return XmlMultilingualString.convertToXmlMultilingualString(agent.getAltLabel());
 	}
 	
 	@JacksonXmlElementWrapper(useWrapping=false)
-	@JacksonXmlProperty(localName = "skos:note")
+	@JacksonXmlProperty(localName = XmlConstants.XML_SKOS_NOTE)
 	public List<XmlMultilingualString> getNote() {
 		return XmlMultilingualString.convertToXmlMultilingualString(agent.getNote());
 	}
 	
 	@JacksonXmlElementWrapper(useWrapping=false)
-	@JacksonXmlProperty(localName = "skos:prefLabel")
+	@JacksonXmlProperty(localName = XmlConstants.XML_SKOS_PREF_LABEL)
 	public List<XmlMultilingualString> getPrefLabel() {		
 		return XmlMultilingualString.convertToXmlMultilingualString(agent.getPrefLabel());
 	}
     	
 	@JacksonXmlElementWrapper(useWrapping=false)
-	@JacksonXmlProperty(localName = "dc:date")
+	@JacksonXmlProperty(localName = XmlConstants.XML_DC_DATE)
 	public List<Object> getDcDate() {
 	    	// TODO: GetDcDate from Agent currently not implemented
 	    	return null;
@@ -74,37 +76,37 @@ public class XmlAgentImpl {
 	}
 	
 	@JacksonXmlElementWrapper(useWrapping=false)
-	@JacksonXmlProperty(localName = "dc:identifier")
+	@JacksonXmlProperty(localName = XmlConstants.XML_DC_IDENTIFIER)
 	public String[] getIdentifier() {
 	    	return agent.getIdentifier();
 	}
 	
 	@JacksonXmlElementWrapper(useWrapping=false)
-	@JacksonXmlProperty(localName = "dcterms:hasPart")
+	@JacksonXmlProperty(localName = XmlConstants.XML_DCTERMS_HAS_PART)
 	public List<RdfResource> getHasPart() {
 	    	return RdfResource.convertToRdfResource(agent.getHasPart());
 	}
 
 	@JacksonXmlElementWrapper(useWrapping=false)
-	@JacksonXmlProperty(localName = "dcterms:isPartOf")
+	@JacksonXmlProperty(localName = XmlConstants.XML_DCTERMS_IS_PART_OF)
 	public List<RdfResource> getIsPartOf() {
 	    	return RdfResource.convertToRdfResource(agent.getIsPartOfArray());
 	}
 	
 	@JacksonXmlElementWrapper(useWrapping=false)
-	@JacksonXmlProperty(localName = "edm:begin")
+	@JacksonXmlProperty(localName = XmlConstants.XML_EDM_BEGIN)
 	public String[] getBegin() {
 	    	return agent.getBeginArray();
 	}
 
 	@JacksonXmlElementWrapper(useWrapping=false)
-	@JacksonXmlProperty(localName = "edm:end")
+	@JacksonXmlProperty(localName = XmlConstants.XML_EDM_END)
 	public String[] getEnd() {
 	    	return agent.getEndArray();
 	}
 	
 	@JacksonXmlElementWrapper(useWrapping=false)
-	@JacksonXmlProperty(localName = "edm:hasMet")
+	@JacksonXmlProperty(localName = XmlConstants.XML_EDM_HASMET)
 	public RdfResource getHasMet() {
 	    	if(agent.getHasMet() == null)
 	    	    return null;
@@ -112,73 +114,73 @@ public class XmlAgentImpl {
 	}
 	
 	@JacksonXmlElementWrapper(useWrapping=false)
-	@JacksonXmlProperty(localName = "edm:isRelatedTo")
+	@JacksonXmlProperty(localName = XmlConstants.XML_EDM_IS_RELATED_TO)
 	public List<RdfResource> getIsRelatedTo() {
 	    	return RdfResource.convertToRdfResource(agent.getIsRelatedTo());
 	}
 	
 	@JacksonXmlElementWrapper(useWrapping=false)
-	@JacksonXmlProperty(localName = "foaf:name")
+	@JacksonXmlProperty(localName = XmlConstants.XML_FOAF_NAME)
 	public List<XmlMultilingualString> getName(){
 	    	return XmlMultilingualString.convertMapToXmlMultilingualString(agent.getName());
 	}
 	
 	@JacksonXmlElementWrapper(useWrapping=false)
-	@JacksonXmlProperty(localName = "rdaGr2:biographicalInformation")
+	@JacksonXmlProperty(localName = XmlConstants.XML_RDAGR2_BIOGRAPHICAL_INFORMATION)
 	public List<XmlMultilingualString> getBiographicalInformation(){
 	    	return XmlMultilingualString.convertToXmlMultilingualString(agent.getBiographicalInformation());
 	}
 	
 	@JacksonXmlElementWrapper(useWrapping=false)
-	@JacksonXmlProperty(localName = "rdaGr2:dateOfBirth")
+	@JacksonXmlProperty(localName = XmlConstants.XML_RDAGR2_DATE_OF_BIRTH)
 	public String[] getDateOfBirth() {
 	    	return agent.getDateOfBirth();
 	}
 	
 	@JacksonXmlElementWrapper(useWrapping=false)
-	@JacksonXmlProperty(localName = "rdaGr2:dateOfDeath")
+	@JacksonXmlProperty(localName = XmlConstants.XML_RDAGR2_DATE_OF_DEATH)
 	public String[] getDateOfDeath() {
 	    	return agent.getDateOfDeath();
 	}
 	
 	@JacksonXmlElementWrapper(useWrapping=false)
-	@JacksonXmlProperty(localName = "rdaGr2:dateOfEstablishment")
+	@JacksonXmlProperty(localName = XmlConstants.XML_RDAGR2_DATE_OF_ESTABLISHMENT)
 	public String getDateOfEstablishment() {
 	    	return agent.getDateOfEstablishment();
 	}
 	
 	@JacksonXmlElementWrapper(useWrapping=false)
-	@JacksonXmlProperty(localName = "rdaGr2:dateOfTermination")
+	@JacksonXmlProperty(localName = XmlConstants.XML_RDAGR2_DATE_OF_TERMINATION)
 	public String getDateOfTermination() {
 	    	return agent.getDateOfTermination();
 	}
 	
 	@JacksonXmlElementWrapper(useWrapping=false)
-	@JacksonXmlProperty(localName = "rdaGr2:gender")
+	@JacksonXmlProperty(localName = XmlConstants.XML_RDAGR2_GENDER)
 	public String getGender() {
 	    	return agent.getGender();
 	}
 	
 	@JacksonXmlElementWrapper(useWrapping=false)
-	@JacksonXmlProperty(localName = "rdaGr2:placeOfBirth")
+	@JacksonXmlProperty(localName = XmlConstants.XML_RDAGR2_PLACE_OF_BIRTH)
 	public List<Object> getPlaceOfBirth(){
 	    	return XmlMultilingualString.convertToXmlMultilingualStringOrRdfResource(agent.getPlaceOfBirth());
 	}
 	
 	@JacksonXmlElementWrapper(useWrapping=false)
-	@JacksonXmlProperty(localName = "rdaGr2:placeOfDeath")
+	@JacksonXmlProperty(localName = XmlConstants.XML_RDAGR2_PLACE_OF_DEATH)
 	public List<Object> getPlaceOfDeath(){
 	    	return XmlMultilingualString.convertToXmlMultilingualStringOrRdfResource(agent.getPlaceOfDeath());
 	}
 	
 	@JacksonXmlElementWrapper(useWrapping=false)
-	@JacksonXmlProperty(localName = "rdaGr2:professionOrOccupation")
+	@JacksonXmlProperty(localName = XmlConstants.XML_RDAGR2_PROFESSION_OR_OCCUPATION)
 	public List<Object> getProfessionOrOccupation(){
 	    	return XmlMultilingualString.convertToXmlMultilingualStringOrRdfResource(agent.getProfessionOrOccupation());
 	}
 	
 	@JacksonXmlElementWrapper(useWrapping=false)
-	@JacksonXmlProperty(localName = "owl:sameAs")
+	@JacksonXmlProperty(localName = XmlConstants.XML_OWL_SAME_AS)
 	public List<RdfResource> getSameAs(){
 	    	return RdfResource.convertToRdfResource(agent.getSameAs());
 	}

@@ -1,4 +1,4 @@
-package eu.europeana.entity.solr.model;
+package eu.europeana.entity.web.xml.model;
 
 import java.util.List;
 
@@ -9,12 +9,12 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-@JacksonXmlRootElement(localName= "edm:Place")
+@JacksonXmlRootElement(localName = XmlConstants.XML_EDM_PLACE)
 @JsonInclude(value = JsonInclude.Include.NON_EMPTY)
-@JsonPropertyOrder({"wgs84_pos:lat", "wgs84_pos:long", "wgs84_pos:alt", "skos:prefLabel",
-	"skos:altLabel", "skos:note", "dcterms:hasPart", "dcterms:isPartOf",
-	"edm:isNextInSequence", "owl:sameAs"})
-public class XmlPlaceImpl {
+@JsonPropertyOrder({XmlConstants.XML_WGS84_POS_LAT, XmlConstants.XML_WGS84_POS_LONG, XmlConstants.XML_WGS84_POS_ALT, XmlConstants.XML_SKOS_PREF_LABEL,
+    	XmlConstants.XML_SKOS_ALT_LABEL, XmlConstants.XML_SKOS_NOTE, XmlConstants.XML_DCTERMS_HAS_PART, XmlConstants.XML_DCTERMS_IS_PART_OF,
+    	XmlConstants.XML_EDM_IS_NEXT_IN_SEQUENCE, XmlConstants.XML_OWL_SAME_AS})
+public class XmlPlaceImpl implements XmlBase {
     
     	@JsonIgnore
     	private eu.europeana.entity.definitions.model.impl.BasePlace place;
@@ -39,64 +39,64 @@ public class XmlPlaceImpl {
 	    return strBuilder.toString();
 	}
 
-	@JacksonXmlProperty(isAttribute= true, localName = "rdf:about")
+	@JacksonXmlProperty(isAttribute= true, localName = XmlConstants.XML_RDF_ABOUT)
 	public String getAbout() {
 		return place.getAbout();
 	}
 	
-	@JacksonXmlProperty(localName = "wgs84_pos:lat")
+	@JacksonXmlProperty(localName = XmlConstants.XML_WGS84_POS_LAT)
 	public Float getLatitude() {
 		return place.getLatitude();
 	}
 
-	@JacksonXmlProperty(localName = "wgs84_pos:long")
+	@JacksonXmlProperty(localName = XmlConstants.XML_WGS84_POS_LONG)
 	public Float getLongitude() {
 		return place.getLongitude();
 	}
 
-	@JacksonXmlProperty(localName = "wgs84_pos:alt")
+	@JacksonXmlProperty(localName = XmlConstants.XML_WGS84_POS_ALT)
 	public Float getAltitude() {
 		return place.getAltitude();
 	}
 	
 	@JacksonXmlElementWrapper(useWrapping=false)
-	@JacksonXmlProperty(localName = "skos:prefLabel")
+	@JacksonXmlProperty(localName = XmlConstants.XML_SKOS_PREF_LABEL)
 	public List<XmlMultilingualString> getPrefLabel() {		
 		return XmlMultilingualString.convertToXmlMultilingualString(place.getPrefLabel());
 	}
 	
 	@JacksonXmlElementWrapper(useWrapping=false)
-	@JacksonXmlProperty(localName = "skos:altLabel")
+	@JacksonXmlProperty(localName = XmlConstants.XML_SKOS_ALT_LABEL)
 	public List<XmlMultilingualString> getAltLabel() {
 		return XmlMultilingualString.convertToXmlMultilingualString(place.getAltLabel());
 	}
 	
 	@JacksonXmlElementWrapper(useWrapping=false)
-	@JacksonXmlProperty(localName = "skos:note")
+	@JacksonXmlProperty(localName = XmlConstants.XML_SKOS_NOTE)
 	public List<XmlMultilingualString> getNote() {
 		return XmlMultilingualString.convertToXmlMultilingualString(place.getNote());
 	}
 	
 	@JacksonXmlElementWrapper(useWrapping=false)
-	@JacksonXmlProperty(localName = "dcterms:hasPart")
+	@JacksonXmlProperty(localName = XmlConstants.XML_DCTERMS_HAS_PART)
 	public List<RdfResource> getHasPart() {
 	    	return RdfResource.convertToRdfResource(place.getHasPart());
 	}
 
 	@JacksonXmlElementWrapper(useWrapping=false)
-	@JacksonXmlProperty(localName = "dcterms:isPartOf")
+	@JacksonXmlProperty(localName  = XmlConstants.XML_DCTERMS_IS_PART_OF)
 	public List<RdfResource> getIsPartOf() {
 	    	return RdfResource.convertToRdfResource(place.getIsPartOfArray());
 	}
 	
 	@JacksonXmlElementWrapper(useWrapping=false)
-	@JacksonXmlProperty(localName = "edm:isNextInSequence")
+	@JacksonXmlProperty(localName = XmlConstants.XML_EDM_IS_NEXT_IN_SEQUENCE)
 	public List<RdfResource> getIsNextInSequence() {
 		return RdfResource.convertToRdfResource(place.getIsNextInSequence());
 	}
 	
 	@JacksonXmlElementWrapper(useWrapping=false)
-	@JacksonXmlProperty(localName = "owl:sameAs")
+	@JacksonXmlProperty(localName = XmlConstants.XML_OWL_SAME_AS)
 	public List<RdfResource> getSameAs(){
 	    	return RdfResource.convertToRdfResource(place.getSameAs());
 	}

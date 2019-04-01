@@ -9,6 +9,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlText;
 
+import eu.europeana.corelib.utils.EuropeanaUriUtils;
+
 public class XmlMultilingualString {
 
     @JsonIgnore
@@ -54,7 +56,7 @@ public class XmlMultilingualString {
 	for (String language : values.keySet()) {
 	    List<String> entryValues = values.get(language);
 	    for (String entryValue : entryValues) {
-		if(entryValue.startsWith("http"))
+		if(EuropeanaUriUtils.isUri(entryValue))
 		    res.add(new RdfResource(entryValue));
 		else
 		    res.add(new XmlMultilingualString(entryValue, language));

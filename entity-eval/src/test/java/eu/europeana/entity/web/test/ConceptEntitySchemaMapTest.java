@@ -1,13 +1,18 @@
 package eu.europeana.entity.web.test;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Assert;
@@ -61,6 +66,11 @@ public class ConceptEntitySchemaMapTest {
     // bnf
     public final String TEST_ORGANIZATION_ENTITY_URI = "http://data.europeana.eu/organization/1482250000002112001";
     public final String TEST_ORGANIZATION_ENTITY_TYPE = "organization";
+    
+    // Jackson
+    public final String TEST_XML_CONCEPT_FILE = "/datasets/concept-jackson.xml";
+    public final String TEST_XML_AGENT_FILE = "/datasets/agent-jackson.xml";
+    public final String TEST_XML_PLACE_FILE = "/datasets/place-jackson.xml";
 
     @Resource
     SolrEntityService solrEntityService;
@@ -260,7 +270,12 @@ public class ConceptEntitySchemaMapTest {
 	output = xmlConcept.addingAdditionalXmlString(output);
 	
 	Assert.assertNotNull(output);
-	FileUtils.writeStringToFile(new File("concept-jackson-output.xml"), output);
+	
+	InputStream stream = getClass().getResourceAsStream(TEST_XML_CONCEPT_FILE);
+        String expectedOutput = IOUtils.toString(stream, StandardCharsets.UTF_8);
+        assertEquals(expectedOutput.length(), output.length());
+	
+	//FileUtils.writeStringToFile(new File("concept-jackson-output.xml"), output);
     }
 
     /**
@@ -297,7 +312,12 @@ public class ConceptEntitySchemaMapTest {
 	output = xmlAgent.addingAdditionalXmlString(output);
 	
 	Assert.assertNotNull(output);
-	FileUtils.writeStringToFile(new File("agent-jackson-output.xml"), output);
+	
+	InputStream stream = getClass().getResourceAsStream(TEST_XML_AGENT_FILE);
+        String expectedOutput = IOUtils.toString(stream, StandardCharsets.UTF_8);
+        assertEquals(expectedOutput.length(), output.length());
+	
+	//FileUtils.writeStringToFile(new File("agent-jackson-output.xml"), output);
     }
     
     /**
@@ -335,7 +355,11 @@ public class ConceptEntitySchemaMapTest {
 	output = xmlPlace.addingAdditionalXmlString(output);
 	
 	Assert.assertNotNull(output);
-	FileUtils.writeStringToFile(new File("place-jackson-output.xml"), output);
+	InputStream stream = getClass().getResourceAsStream(TEST_XML_PLACE_FILE);
+        String expectedOutput = IOUtils.toString(stream, StandardCharsets.UTF_8);
+        assertEquals(expectedOutput.length(), output.length());
+	
+	//FileUtils.writeStringToFile(new File("place-jackson-output.xml"), output);
     }
     
 }

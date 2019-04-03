@@ -10,7 +10,7 @@ import eu.europeana.entity.definitions.exceptions.ConceptSchemeProfileValidation
  */
 public enum LdProfiles implements ProfileKeyword {
 
-	MINIMAL(VALUE_LD_MINIMAL, VALUE_PREFER_MINIMAL), STANDARD(VALUE_LD_CONTAINEDIRIS, VALUE_PREFER_CONTAINEDIRIS);
+	MINIMAL(VALUE_LD_MINIMAL, VALUE_PREFER_MINIMAL), STANDARD(VALUE_LD_CONTAINEDIRIS, VALUE_PREFER_CONTAINEDIRIS), FULL(VALUE_LD_FULL, VALUE_PREFER_FULL);
 	
 	private String headerValue;
 	private String preferHeaderValue;

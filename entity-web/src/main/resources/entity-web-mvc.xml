@@ -38,10 +38,10 @@
 	<mvc:cors>
 		<mvc:mapping path="/api-docs" allowed-origins="*" exposed-headers="Access-Control-Allow-Origin"/>
 		<mvc:mapping path="/api-docs/**" allowed-origins="*" exposed-headers="Access-Control-Allow-Origin"/>
-		<mvc:mapping path="/entity/resolve" allowed-origins="*" allowed-methods="GET" exposed-headers="Location,Allow" max-age="600"/>
-		<mvc:mapping path="/entity/suggest" allowed-origins="*" allowed-methods="GET" exposed-headers="Allow" max-age="600"/>
-		<mvc:mapping path="/entity/search" allowed-origins="*" allowed-methods="GET" exposed-headers="Allow" max-age="600"/>
-		<mvc:mapping path="/entity/*/*/*" allowed-origins="*" allowed-methods="GET" allowed-headers="If-Match" exposed-headers="Allow, Vary,Link,ETag" max-age="600"/>
+		<mvc:mapping path="/entity/resolve" allowed-origins="*" allowed-methods="GET" exposed-headers="Location,Allow" max-age="600" allow-credentials="true"/>
+		<mvc:mapping path="/entity/suggest" allowed-origins="*" allowed-methods="GET" exposed-headers="Allow" max-age="600" allow-credentials="true"/>
+		<mvc:mapping path="/entity/search" allowed-origins="*" allowed-methods="GET" exposed-headers="Allow" max-age="600" allow-credentials="true"/>
+		<mvc:mapping path="/entity/*/*/*" allowed-origins="*" allowed-methods="GET" allowed-headers="If-Match" exposed-headers="Allow, Vary,Link,ETag" max-age="600" allow-credentials="true"/>
 	</mvc:cors>
 
 	<bean class="eu.europeana.api.common.config.swagger.SwaggerConfig">

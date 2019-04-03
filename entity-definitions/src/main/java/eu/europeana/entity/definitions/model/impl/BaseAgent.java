@@ -9,6 +9,7 @@ import eu.europeana.entity.definitions.model.Agent;
 
 public class BaseAgent extends BaseEntity implements Agent, eu.europeana.corelib.definitions.edm.entity.Agent {
 
+    //TODO: fix cardinality, change to list 
 	private Date date; // format "YYYY"
 	private String[] begin; // format "YYYY-MM-DD"
 	private String[] end; // format "YYYY-MM-DD"
@@ -269,7 +270,7 @@ public class BaseAgent extends BaseEntity implements Agent, eu.europeana.corelib
 
 	@Override
 	public Map<String, List<String>> getDcDate() {
-		return getDcDate();
+		return null;
 	}
 
 	@Override

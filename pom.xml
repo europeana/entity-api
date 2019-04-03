@@ -49,7 +49,7 @@
 		<version.java>1.8</version.java>
 		<version.junit>4.12</version.junit>
 		<version.corelib>2.8.6</version.corelib>
-		<version.entityApi>0.0.5-SNAPSHOT</version.entityApi>
+		<version.entityApi>0.5</version.entityApi>
 		<version.annotationLd>1.1.4-RELEASE</version.annotationLd>
 		<version.commonsLang3>3.0</version.commonsLang3>
 		<version.spring>5.0.7.RELEASE</version.spring>

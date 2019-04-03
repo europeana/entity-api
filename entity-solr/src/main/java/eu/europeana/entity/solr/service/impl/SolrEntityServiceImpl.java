@@ -17,6 +17,7 @@ import org.apache.logging.log4j.Logger;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
+import org.apache.solr.client.solrj.impl.HttpSolrClient.RemoteSolrException;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
@@ -33,6 +34,7 @@ import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
 import eu.europeana.entity.solr.exception.EntityRetrievalException;
 import eu.europeana.entity.solr.exception.EntityRuntimeException;
 import eu.europeana.entity.solr.exception.EntitySuggestionException;
+import eu.europeana.entity.solr.exception.InvalidSearchQueryException;
 import eu.europeana.entity.solr.model.factory.EntityObjectFactory;
 import eu.europeana.entity.solr.model.vocabulary.SuggestionFields;
 import eu.europeana.entity.solr.service.SolrEntityService;
@@ -113,20 +115,40 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 				entityTypes, scope);
 
 		try {
-			getLogger().debug("invoke suggest handler: " + SolrEntityService.HANDLER_SELECT);
-			getLogger().debug("search query: " + query);
-
-			QueryResponse rsp = solrServer.query(query);
-			res = buildResultSet(rsp, outLanguage);
-
-			getLogger().debug("search obj res size: " + res.getResultSize());
+		    getLogger().debug("invoke suggest handler: " + SolrEntityService.HANDLER_SELECT);
+		    getLogger().debug("search query: " + query);
+		    QueryResponse rsp = solrServer.query(query);
+		    res = buildResultSet(rsp, outLanguage);
+		    getLogger().debug("search obj res size: " + res.getResultSize());
+		} catch (RemoteSolrException e) {
+		    RuntimeException ex = handleRemoteSolrException(searchQuery, e);
+		    throw ex;
 		} catch (IOException | SolrServerException | RuntimeException e) {
 			throw new EntityRetrievalException(
-					"Unexpected exception occured when searching entities: " + searchQuery.toString() + "" , e);
+					"An error occured exception occured when searching entities: " + searchQuery.toString() + "" , e);
 		} 
-		
-
 		return res;
+	}
+
+	private RuntimeException handleRemoteSolrException(Query searchQuery, RemoteSolrException e) {
+		String remoteMessage = e.getMessage();
+		String UNDEFINED_FIELD = "undefined field";
+		RuntimeException ex;
+		if (remoteMessage.contains(UNDEFINED_FIELD)) {
+			// invalid search field
+			int startPos = remoteMessage.indexOf(UNDEFINED_FIELD) + UNDEFINED_FIELD.length();
+			String fieldName = remoteMessage.substring(startPos);
+			ex = new InvalidSearchQueryException(fieldName, e);
+		} else {
+			int separatorPos = remoteMessage.lastIndexOf(':');
+			if (separatorPos > 0) {
+				// remove server url from remote message
+				remoteMessage = remoteMessage.substring(separatorPos + 1);
+			}
+			ex = new EntityRetrievalException("An error occured when searching entities: " + searchQuery.toString()
+					+ ", remote message: " + remoteMessage, e);
+		}
+		return ex;
 	}
 
 	public Logger getLogger() {

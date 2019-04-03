@@ -16,7 +16,7 @@ public class InternalServerException extends HttpException{
 	private static final long serialVersionUID = 1L;
 	
 	public InternalServerException(String message, Throwable th){
-		super(message, null, null, HttpStatus.INTERNAL_SERVER_ERROR, th);
+		super(message, I18nConstants.SERVER_ERROR_UNEXPECTED, null, HttpStatus.INTERNAL_SERVER_ERROR, th);
 	}
 
 	public InternalServerException(Throwable th){

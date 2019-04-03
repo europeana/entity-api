@@ -35,7 +35,7 @@ import eu.europeana.entity.web.service.EntityService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
-//@Controller
+@Controller
 @SwaggerSelect
 @Api(tags = "Entity retrieval", description=" ")
 public class ResolveController extends BaseRest {

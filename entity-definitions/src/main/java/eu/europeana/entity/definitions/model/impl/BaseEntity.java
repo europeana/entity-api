@@ -2,6 +2,7 @@ package eu.europeana.entity.definitions.model.impl;
 
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -270,11 +271,8 @@ public class BaseEntity implements Entity, RankedEntity {
 	 */
 	protected Map<String, List<String>> fillTmpMap(List<String> list) {
 		
-		Map<String, List<String>> tmpMap = null;	
-		tmpMap = list.stream().collect(Collectors.toMap(
-			entry -> TMP_KEY, 
-			entry -> Collections.singletonList(entry))
-		);	
+		Map<String, List<String>> tmpMap = new HashMap<String, List<String>>();
+		tmpMap.put(TMP_KEY, list);
 		return tmpMap;
 	}
 

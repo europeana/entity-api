@@ -1,5 +1,6 @@
 package eu.europeana.entity.definitions.model;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -65,5 +66,35 @@ public interface ConceptScheme {
 	public String getContext();
 	
 	public void setContext(String context);
+	
+	
+	/**
+	 * @return
+	 */
+	boolean isDisabled();
+
+	void setDisabled(boolean disabled);
+	
+
+	/**
+	 * @return
+	 */
+	int getTotal();
+
+	void setTotal(int total);
 		
+
+	/**
+	 * @return
+	 */
+	Date getCreated();
+
+	void setCreated(Date created);
+
+	/**
+	 * @return
+	 */
+	Date getModified();
+
+	void setModified(Date modified);	
 }

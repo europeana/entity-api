@@ -133,6 +133,12 @@ public interface EntityService {
 	 */
 	public ConceptScheme updateConceptScheme(
 			PersistentConceptScheme persistentConceptScheme, ConceptScheme webConceptScheme);
-	
-	
+		
+	/**
+	 * This method disables concept scheme in database
+	 * @param existingConceptScheme
+	 * @return disabled ConceptScheme
+	 */
+	public ConceptScheme disableConceptScheme(ConceptScheme existingConceptScheme);					 
+		
 }

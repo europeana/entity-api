@@ -1,5 +1,6 @@
 package eu.europeana.entity.definitions.model.impl;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -14,27 +15,37 @@ import eu.europeana.entity.definitions.model.ConceptScheme;
  */
 public class BaseConceptScheme implements ConceptScheme {
 	
-//	private String id;
 	private String conceptSchemeId;
 	private String type;
 	private Map<String, String> prefLabel;	
 	private Map<String, String> definition;	
 	private String isDefinedBy;
 	private String sameAs;
-//	private String[] inScheme;
 	private List<String> inScheme;
 
 	// web context
 	private String context;
+
+    // Indicates whether the set is disabled in database
+    private boolean disabled;
+
+	// A non-negative integer specifying the total number of items that are contained within a grouping
+	private int total = 0;    
+
+	// The time at which the Set was created by the user. The value must be a literal expressed 
+	// as xsd:dateTime with the UTC timezone expressed as "Z".
+	private Date created;
+
+	// The time at which the Set was modified, after creation. The value must be a literal expressed 
+	// as xsd:dateTime with the UTC timezone expressed as "Z".
+	private Date modified;
 	
 	
 	public String getConceptSchemeId() {
-//		return this.id;
 		return this.conceptSchemeId;
 	}
 	
 	public void setConceptSchemeId(String id) {
-//		this.id = id;
 		this.conceptSchemeId = id;
 	}
 	
@@ -78,12 +89,10 @@ public class BaseConceptScheme implements ConceptScheme {
 		this.sameAs = sameAs;
 	}
 	
-//	public String[] getInScheme() {
 	public List<String> getInScheme() {
 		return this.inScheme;
 	}
 
-//	public void setInScheme(String[] inScheme) {
 	public void setInScheme(List<String> inScheme) {
 		this.inScheme = inScheme;
 	}
@@ -96,7 +105,47 @@ public class BaseConceptScheme implements ConceptScheme {
 		this.context = context;
 	}	
 		
-//	@Override
+	@Override
+	public boolean isDisabled() {
+		return disabled;
+	}
+
+	@Override
+	public void setDisabled(boolean disabled) {
+		this.disabled = disabled;		
+	}
+	
+	@Override
+	public Date getCreated() {
+		return created;
+	}
+
+	@Override
+	public void setCreated(Date created) {
+		this.created = created;
+	}
+
+	@Override
+	public Date getModified() {
+		return modified;
+	}
+
+	@Override
+	public void setModified(Date modified) {
+		this.modified = modified;
+	}
+
+	@Override
+	public int getTotal() {
+		return total;
+	}
+	
+	@Override
+	public void setTotal(int total) {
+		this.total = total;
+	}
+
+	//	@Override
 //	public String[] getDcTitle() {
 //		// TODO Auto-generated method stub
 //		return null;

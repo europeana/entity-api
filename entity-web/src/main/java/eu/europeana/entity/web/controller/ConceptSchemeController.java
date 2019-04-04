@@ -113,15 +113,16 @@ public class ConceptSchemeController extends BaseRest {
 //			String serializedConceptSchemeJsonLdStr = serializeConceptScheme(profile, storedConceptScheme); 
 			String serializedConceptSchemeJsonLdStr = serializeConceptScheme(ldProfile, storedConceptScheme); 
 						
-			Date etagDate = new Date();
-			int etag = etagDate.hashCode(); 
+//			Date etagDate = new Date();
+//			int etag = etagDate.hashCode(); 
 			
 			// build response
 			MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>(6);
 			headers.add(HttpHeaders.AUTHORIZATION, HttpHeaders.PREFER);
 			headers.add(HttpHeaders.LINK, HttpHeaders.VALUE_LDP_CONTAINER);
 			headers.add(HttpHeaders.LINK, HttpHeaders.VALUE_LDP_RESOURCE);
-			headers.add(HttpHeaders.ETAG, "" + etag);
+//			headers.add(HttpHeaders.ETAG, "" + etag);
+			headers.add(HttpHeaders.ETAG, "" + storedConceptScheme.getModified().hashCode());
 			headers.add(HttpHeaders.ALLOW, HttpHeaders.ALLOW_POST);
 			headers.add(EntityHttpHeaders.PREFERENCE_APPLIED, ldProfile.getPreferHeaderValue());
 //			headers.add(EntityHttpHeaders.PREFERENCE_APPLIED, profile);
@@ -261,7 +262,7 @@ public class ConceptSchemeController extends BaseRest {
 						
 			// if the user set is disabled and the user is not an admin, respond with HTTP 410
 			HttpStatus httpStatus = null;
-//			if (existingConceptScheme.isDisabled()) {
+			if (existingConceptScheme.isDisabled()) {
 //				if (!isAdmin(wsKey, userToken)) { 
 //					// if the user is the owner, the response should be 410
 //					if (isOwner(existingUserSet, userToken)) {
@@ -280,21 +281,21 @@ public class ConceptSchemeController extends BaseRest {
 			getEntityService().deleteConceptScheme(existingConceptScheme.getConceptSchemeId());
 					httpStatus = HttpStatus.NO_CONTENT;
 //				}
-//			} else {			
+			} else {			
 //				// if the user is an Administrator then permanently remove item 
 //				// (and all items that are members of the user set)
-//				 httpStatus = HttpStatus.NO_CONTENT;
+				 httpStatus = HttpStatus.NO_CONTENT;
 //				 if (isAdmin(wsKey, userToken)) {
 //					 getUserSetService().deleteUserSet(existingUserSet.getIdentifier());
 //				 } else { // otherwise flag it as disabled
 //  					 if (isOwner(existingUserSet, userToken)) {
-//  						 getUserSetService().disableUserSet(existingUserSet);
+  						 getEntityService().disableConceptScheme(existingConceptScheme);
 //  					 } else {
 // 						// if the user is a registered user but not the owner, the response should be 401 (unathorized)
 // 						httpStatus = HttpStatus.UNAUTHORIZED;					
 //  					 }
 //				 }
-//			}			
+			}			
 			
 			Date etagDate = new Date();
 			int etag = etagDate.hashCode(); 
@@ -305,7 +306,7 @@ public class ConceptSchemeController extends BaseRest {
 			headers.add(HttpHeaders.LINK, HttpHeaders.VALUE_LDP_CONTAINER);
 			headers.add(HttpHeaders.LINK, HttpHeaders.VALUE_LDP_RESOURCE);
 			headers.add(HttpHeaders.ETAG, "" + etag);
-//			headers.add(HttpHeaders.ALLOW, HttpHeaders.ALLOW_GPPD);
+			headers.add(HttpHeaders.ALLOW, EntityHttpHeaders.ALLOW_GPPD);
 			headers.add(EntityHttpHeaders.PREFERENCE_APPLIED, ldProfile.getPreferHeaderValue());
 
 			ResponseEntity<String> response = new ResponseEntity<String>(

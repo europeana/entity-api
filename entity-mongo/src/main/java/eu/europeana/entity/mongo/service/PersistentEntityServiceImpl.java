@@ -1,5 +1,7 @@
 package eu.europeana.entity.mongo.service;
 
+import java.util.Date;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -39,6 +41,17 @@ public class PersistentEntityServiceImpl extends AbstractNoSqlServiceImpl<Persis
 	 */
 	private void validatePersistentEntity(PersistentConceptScheme object) {
 
+		if (object.getCreated() == null) {
+			Date now = new Date();
+			object.setCreated(now);
+		}
+
+		if (object.getModified() == null) {
+			Date now = new Date();
+			object.setModified(now);
+		}
+
+		
 		long sequenceId = generateEntityId(WebEntityFields.CONCEPT_SCHEME_PROVIDER); 
 		object.setConceptSchemeId("" + sequenceId);
 

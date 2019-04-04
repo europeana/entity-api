@@ -3,6 +3,7 @@ package eu.europeana.entity.web.service.impl;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -311,6 +312,10 @@ public class EntityServiceImpl extends BaseEntityServiceImpl implements EntitySe
 		try {			
 			parser = jsonFactory.createParser(groupingJsonLdStr);
 			ConceptScheme conceptScheme = mapper.readValue(parser, WebConceptSchemeImpl.class); 
+			if (conceptScheme.getModified() == null) {
+				Date now = new Date();				
+				conceptScheme.setModified(now);
+			}
             return conceptScheme;
 		} catch (EntityAttributeInstantiationException e) {
 			throw new RequestBodyValidationException(
@@ -436,7 +441,20 @@ public class EntityServiceImpl extends BaseEntityServiceImpl implements EntitySe
 					conceptScheme.setPrefLabel(updatedWebConceptScheme.getPrefLabel());
 				}
 			}
+
+			if (updatedWebConceptScheme.getCreated() != null) {
+				conceptScheme.setCreated(updatedWebConceptScheme.getCreated());
+			}
+	
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see eu.europeana.entity.web.service.EntityService#disableConceptScheme(eu.europeana.entity.definitions.model.ConceptScheme)
+	 */
+	public ConceptScheme disableConceptScheme(ConceptScheme existingConceptScheme) { 					 
+		existingConceptScheme.setDisabled(true);
+	 	return updateConceptScheme((PersistentConceptScheme) existingConceptScheme, existingConceptScheme);
+	}
+		
 }

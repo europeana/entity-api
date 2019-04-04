@@ -14,7 +14,7 @@ import eu.europeana.entity.definitions.model.vocabulary.WebEntityFields;
 import eu.europeana.entity.mongo.model.PersistentConceptSchemeImpl;
 import ioinformarics.oss.jackson.module.jsonld.annotation.JsonldProperty;
 
-@JsonPropertyOrder({ "id", "type", "prefLabel", "definition" })
+@JsonPropertyOrder({ "id", "type", "prefLabel", "definition", "isDefinedBy", "sameAs", "created", "modified", "total" })
 @JsonInclude(value = JsonInclude.Include.NON_EMPTY)
 public class WebConceptSchemeImpl extends PersistentConceptSchemeImpl {
 		
@@ -49,6 +49,16 @@ public class WebConceptSchemeImpl extends PersistentConceptSchemeImpl {
 		return super.getContext();
 	}
 	
+	@JsonldProperty("isDefinedBy")	
+	public String getIsDefinedBy() {
+		return super.getIsDefinedBy();
+	}
+	
+	@JsonldProperty("sameAs")	
+	public String getSameAs() {
+		return super.getSameAs();
+	}
+	
 	@JsonProperty("@context")
 	@Override
 	public void setContext(String context) {
@@ -67,6 +77,17 @@ public class WebConceptSchemeImpl extends PersistentConceptSchemeImpl {
         urlBuilder.append(WebEntityFields.BASE_CONCEPT_SCHEME_URL); 
         urlBuilder.append(super.getConceptSchemeId()); 
         return urlBuilder.toString();
+	}
+	
+	@JsonldProperty("total")
+	@JsonInclude(value = JsonInclude.Include.ALWAYS)
+	public int getTotal() {
+		return super.getTotal();
+	}		
+		
+	@JsonIgnore
+	public boolean isDisabled() {
+		return super.isDisabled();		
 	}
 	
 	public String toString() {

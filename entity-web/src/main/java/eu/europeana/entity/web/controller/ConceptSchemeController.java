@@ -363,11 +363,11 @@ public class ConceptSchemeController extends BaseRest {
 			HttpStatus httpStatus = null;
 			int modifiedStr = 0;
 			String serializedConceptSchemeJsonLdStr = "";
-//			if (existingConceptScheme.isDisabled()) { 
-//				httpStatus = HttpStatus.GONE;
-//			} else {			
+			if (existingConceptScheme.isDisabled()) { 
+				httpStatus = HttpStatus.GONE;
+			} else {			
 				// parse fields of the new user set to an object
-			ConceptScheme newConceptScheme = getEntityService().parseConceptSchemeLd(conceptScheme);
+				ConceptScheme newConceptScheme = getEntityService().parseConceptSchemeLd(conceptScheme);
 				
 				// validate and process the Set description for format and mandatory fields
 				// if false respond with HTTP 400
@@ -381,18 +381,15 @@ public class ConceptSchemeController extends BaseRest {
 	            // update an existing user set. merge user sets - insert new fields in existing object
 				// update pagination
 				// generate and add a created and modified timestamp to the Set;
-//				existingConceptScheme.setModified(newConceptScheme.getModified());
+				existingConceptScheme.setModified(newConceptScheme.getModified());
 				ConceptScheme updatedConceptScheme = getEntityService().updateConceptScheme(
 						(PersistentConceptScheme) existingConceptScheme, newConceptScheme);
 				
-//				modifiedStr = updatedUserSet.getModified().hashCode();			
+				modifiedStr = updatedConceptScheme.getModified().hashCode();			
 		        httpStatus = HttpStatus.OK;
 
 				serializedConceptSchemeJsonLdStr = serializeConceptScheme(ldProfile, updatedConceptScheme); 
-							
-				Date etagDate = new Date();
-				int etag = etagDate.hashCode(); 
-				
+			}
 			
 			// build response entity with headers
 			MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>(5);

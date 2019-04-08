@@ -111,7 +111,7 @@ public class SearchController extends BaseRest {
 	@ApiOperation(value = "Search entities for the given text query. By default the search will return all entity fields. "
 			+ "The facets profile and the facet param are available for including facets in the response. fl and lang params are used to reduce the amount of data included in the response", nickname = "search", response = java.lang.Void.class)
 	@RequestMapping(value = { "/entity/search", "/entity/search.jsonld" }, method = RequestMethod.GET, produces = {
-			HttpHeaders.CONTENT_TYPE_JSON_UTF8, HttpHeaders.CONTENT_TYPE_JSONLD_UTF8 })
+			HttpHeaders.CONTENT_TYPE_JSONLD_UTF8, HttpHeaders.CONTENT_TYPE_JSON_UTF8, })
 	public ResponseEntity<String> search(
 			@RequestParam(value = CommonApiConstants.PARAM_WSKEY, required = false) String wskey,
 			@RequestParam(value = CommonApiConstants.QUERY_PARAM_QUERY) String queryString,

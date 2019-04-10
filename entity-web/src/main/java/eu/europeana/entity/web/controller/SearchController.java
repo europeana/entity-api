@@ -29,6 +29,7 @@ import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.definitions.model.vocabulary.SuggestAlgorithmTypes;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
 import eu.europeana.entity.solr.exception.EntityRetrievalException;
+import eu.europeana.entity.solr.exception.InvalidSearchQueryException;
 import eu.europeana.entity.web.exception.InternalServerException;
 import eu.europeana.entity.web.exception.ParamValidationException;
 import eu.europeana.entity.web.jsonld.SuggestionSetSerializer;
@@ -47,7 +48,7 @@ public class SearchController extends BaseRest {
 
 	@ApiOperation(value = "Suggest entities for the given text query. Suported values for type: Agent, Place, Concept, Timespan, All. Supported values for scope: europeana", nickname = "getSuggestion", response = java.lang.Void.class)
 	@RequestMapping(value = { "/entity/suggest", "/entity/suggest.jsonld" }, method = RequestMethod.GET, produces = {
-			HttpHeaders.CONTENT_TYPE_JSON_UTF8, HttpHeaders.CONTENT_TYPE_JSONLD_UTF8 })
+			HttpHeaders.CONTENT_TYPE_JSONLD_UTF8, HttpHeaders.CONTENT_TYPE_JSON_UTF8 })
 	public ResponseEntity<String> getSuggestion(
 			@RequestParam(value = CommonApiConstants.PARAM_WSKEY, required = false) String wskey,
 			@RequestParam(value = CommonApiConstants.QUERY_PARAM_TEXT) String text,
@@ -110,7 +111,7 @@ public class SearchController extends BaseRest {
 	@ApiOperation(value = "Search entities for the given text query. By default the search will return all entity fields. "
 			+ "The facets profile and the facet param are available for including facets in the response. fl and lang params are used to reduce the amount of data included in the response", nickname = "search", response = java.lang.Void.class)
 	@RequestMapping(value = { "/entity/search", "/entity/search.jsonld" }, method = RequestMethod.GET, produces = {
-			HttpHeaders.CONTENT_TYPE_JSON_UTF8, HttpHeaders.CONTENT_TYPE_JSONLD_UTF8 })
+			HttpHeaders.CONTENT_TYPE_JSONLD_UTF8, HttpHeaders.CONTENT_TYPE_JSON_UTF8, })
 	public ResponseEntity<String> search(
 			@RequestParam(value = CommonApiConstants.PARAM_WSKEY, required = false) String wskey,
 			@RequestParam(value = CommonApiConstants.QUERY_PARAM_QUERY) String queryString,
@@ -190,9 +191,11 @@ public class SearchController extends BaseRest {
 			// not found ..
 			// System.out.println(e);
 			throw new InternalServerException(e);
+		} catch (InvalidSearchQueryException e) {
+		    	throw new ParamValidationException(I18nConstants.INVALID_PARAM_VALUE,
+		    		CommonApiConstants.QUERY_PARAM_QUERY, e.getMessage());
 		} catch (EntityRetrievalException e) {
-			throw new ParamValidationException(I18nConstants.INVALID_FIELD_NAME,
-					WebEntityConstants.QUERY_PARAM_FIELD, e.getMessage());
+		    	throw new InternalServerException(e.getMessage(), e);
 		} catch (RuntimeException e) {
 			// not found ..
 			// System.out.println(e);

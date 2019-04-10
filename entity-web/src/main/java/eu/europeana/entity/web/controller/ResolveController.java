@@ -57,12 +57,12 @@ public class ResolveController extends BaseRest {
 	@Resource 
 	EntityService entityService;
 
-	@ApiOperation(value = "Retrieve a known entity using json based formats", nickname = "getEntity", response = java.lang.Void.class)
+	@ApiOperation(value = "Retrieve a known entity", nickname = "getEntity", response = java.lang.Void.class)
 	@RequestMapping(value = {"/entity/{type}/{namespace}/{identifier}", "/entity/{type}/{namespace}/{identifier}.jsonld", "/entity/{type}/{namespace}/{identifier}.schema.jsonld",
 			"/entity/{type}/{namespace}/{identifier}.xml"}, method = RequestMethod.GET,
-			produces = {HttpHeaders.CONTENT_TYPE_JSON_UTF8, HttpHeaders.CONTENT_TYPE_JSONLD_UTF8, MediaType.APPLICATION_XML_VALUE,
-				HttpHeaders.CONTENT_TYPE_APPLICATION_RDF_XML, HttpHeaders.CONTENT_TYPE_RDF_XML})
-	public ResponseEntity<String> getEntity(
+			produces = {HttpHeaders.CONTENT_TYPE_JSONLD_UTF8, HttpHeaders.CONTENT_TYPE_JSON_UTF8, 
+				HttpHeaders.CONTENT_TYPE_APPLICATION_RDF_XML, HttpHeaders.CONTENT_TYPE_RDF_XML, MediaType.APPLICATION_XML_VALUE})
+  public ResponseEntity<String> getEntity(
 			@RequestParam(value = CommonApiConstants.PARAM_WSKEY, required=false) String wskey,
 			@PathVariable(value = WebEntityConstants.PATH_PARAM_TYPE) String type,
 			@PathVariable(value = WebEntityConstants.PATH_PARAM_NAMESPACE) String namespace,

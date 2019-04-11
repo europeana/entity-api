@@ -17,12 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.dataformat.xml.JacksonXmlModule;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-
 import eu.europeana.api.common.config.swagger.SwaggerSelect;
 import eu.europeana.api.commons.definitions.vocabulary.CommonApiConstants;
 import eu.europeana.api.commons.web.exception.HttpException;
@@ -36,16 +30,10 @@ import eu.europeana.entity.definitions.formats.FormatTypes;
 import eu.europeana.entity.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.RankedEntity;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
-import eu.europeana.entity.solr.model.SolrAgentImpl;
-import eu.europeana.entity.solr.model.SolrConceptImpl;
-import eu.europeana.entity.solr.model.SolrPlaceImpl;
 import eu.europeana.entity.utils.jsonld.EuropeanaEntityLd;
 import eu.europeana.entity.web.exception.InternalServerException;
 import eu.europeana.entity.web.service.EntityService;
-import eu.europeana.entity.web.xml.model.XmlAgentImpl;
-import eu.europeana.entity.web.xml.model.XmlBase;
-import eu.europeana.entity.web.xml.model.XmlConceptImpl;
-import eu.europeana.entity.web.xml.model.XmlPlaceImpl;
+import eu.europeana.entity.web.xml.EntityXmlSerializer;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -56,6 +44,8 @@ public class ResolveController extends BaseRest {
 	
 	@Resource 
 	EntityService entityService;
+	@Resource
+	EntityXmlSerializer entityXmlSerializer;
 
 	@ApiOperation(value = "Retrieve a known entity", nickname = "getEntity", response = java.lang.Void.class)
 	@RequestMapping(value = {"/entity/{type}/{namespace}/{identifier}", "/entity/{type}/{namespace}/{identifier}.jsonld", "/entity/{type}/{namespace}/{identifier}.schema.jsonld",
@@ -138,18 +128,18 @@ public class ResolveController extends BaseRest {
 	private String serialize(Entity entity, FormatTypes format) 
 			throws UnsupportedEntityTypeException {
 		
-		String jsonLd = null;
+		String responseBody = null;
 		ContextualEntity thingObject = null;
         
 		if(FormatTypes.jsonld.equals(format)) {
 		    	EuropeanaEntityLd entityLd = new EuropeanaEntityLd(entity);		
 			return entityLd.toString(4);
 		} else if (FormatTypes.schema.equals(format)) {			
-			jsonLd = serializeSchema(entity, jsonLd, thingObject);	        
+		    	responseBody = serializeSchema(entity, responseBody, thingObject);	        
 		} else if(FormatTypes.xml.equals(format)) {
-		    	jsonLd = serializeXml(entity);
+		    	responseBody = entityXmlSerializer.serializeXml(entity);
 		}
-		return jsonLd;
+		return responseBody;
 	}
 
 
@@ -176,41 +166,6 @@ public class ResolveController extends BaseRest {
 		}
 		return jsonLd;
 	}
-	
-	/**
-	 * This method serializes Entity object to xml formats.
-	 * @param entity The Entity object
-	 * @return The serialized entity in xml string format
-	 * @throws JsonProcessingException, UnsupportedEntityTypeException
-	 */
-	public String serializeXml(Entity entity) throws UnsupportedEntityTypeException {
-		JacksonXmlModule xmlModule = new JacksonXmlModule();
-		xmlModule.setDefaultUseWrapper(true);
-		ObjectMapper objectMapper = new XmlMapper(xmlModule);
-		objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-
-		XmlBase xmlElement = null;
-		if(entity instanceof SolrConceptImpl)
-		    xmlElement = new XmlConceptImpl((SolrConceptImpl) entity);
-		else if(entity instanceof SolrAgentImpl)
-		    xmlElement = new XmlAgentImpl((SolrAgentImpl) entity);
-		else if(entity instanceof SolrPlaceImpl)
-		    xmlElement = new XmlPlaceImpl((SolrPlaceImpl) entity);
-		else {
-		    throw new UnsupportedEntityTypeException("Serialization to xml failed for " + entity.getAbout());
-		}
-		
-		String output = "";
-		
-		try {
-		    output = objectMapper.writeValueAsString(xmlElement);
-		    output = xmlElement.addingAdditionalXmlString(output);
-		} catch (JsonProcessingException e) {
-		    throw new UnsupportedEntityTypeException("Serialization to xml failed for " + entity.getAbout() + e.getMessage());
-		}
-		    
-		return output;
-	    }
 
 	
 	@ApiOperation(value = "Performs a lookup for the entity in all 4 datasets", nickname = "resolveEntity", response = java.lang.Void.class)

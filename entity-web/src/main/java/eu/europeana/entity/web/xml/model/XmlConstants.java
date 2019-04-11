@@ -7,8 +7,10 @@ public final class XmlConstants {
     public static final String XML_LANG = "xml:lang";
     
     public static final String XML_SKOS_CONCEPT = "skos:Concept";
+    public static final String XML_FOAF_DEPICTION = "foaf:depiction";
     public static final String XML_SKOS_PREF_LABEL = "skos:prefLabel";
     public static final String XML_SKOS_ALT_LABEL = "skos:altLabel";
+    public static final String XML_SKOS_HIDDEN_LABEL = "skos:hiddenLabel";
     public static final String XML_SKOS_BROADER = "skos:broader";
     public static final String XML_SKOS_NARROWER = "skos:narrower";
     public static final String XML_SKOS_RELATED = "skos:related";
@@ -19,6 +21,7 @@ public final class XmlConstants {
     public static final String XML_SKOS_CLOSE_MATCH = "skos:closeMatch";
     public static final String XML_SKOS_NOTE = "skos:note";
     public static final String XML_SKOS_NOTATION = "skos:notation";
+    public static final String XML_SKOS_IN_SCHEMA = "skos:inSchema";
     
     public static final String XML_EDM_AGENT = "edm:Agent";
     public static final String XML_DC_DATE = "dc:date";

@@ -15,7 +15,7 @@ public class BaseAgent extends BaseEntity implements Agent, eu.europeana.corelib
 	private String[] end; // format "YYYY-MM-DD"
 	private String[] dateOfBirth; // format "YYYY-MM-DD"
 	private String[] dateOfDeath; // format "YYYY"
-	private String hasMet;
+	private String[] hasMet;
 	private Map<String, String> name;
 	private Map<String, List<String>> biographicalInformation;
 	private Map<String, List<String>> professionOrOccupation;
@@ -63,11 +63,11 @@ public class BaseAgent extends BaseEntity implements Agent, eu.europeana.corelib
 		this.end = end;
 	}
 
-	public String getHasMet() {
+	public String[] getHasMet() {
 		return hasMet;
 	}
 
-	public void setHasMet(String hasMet) {
+	public void setHasMet(String[] hasMet) {
 		this.hasMet = hasMet;
 	}
 

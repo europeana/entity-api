@@ -22,26 +22,24 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.dataformat.xml.JacksonXmlModule;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-
 import eu.europeana.api.common.config.I18nConstants;
 import eu.europeana.api.commons.web.exception.HttpException;
 import eu.europeana.corelib.definitions.edm.entity.Agent;
+import eu.europeana.corelib.definitions.edm.entity.Organization;
 import eu.europeana.corelib.edm.model.schemaorg.ContextualEntity;
+import eu.europeana.corelib.edm.model.schemaorg.EdmOrganization;
 import eu.europeana.corelib.edm.model.schemaorg.Person;
 import eu.europeana.corelib.edm.model.schemaorg.Place;
 import eu.europeana.corelib.edm.utils.JsonLdSerializer;
 import eu.europeana.corelib.edm.utils.SchemaOrgUtils;
 import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException;
 import eu.europeana.entity.definitions.model.Concept;
+import eu.europeana.entity.definitions.model.impl.BaseAgent;
+import eu.europeana.entity.definitions.model.impl.BaseConcept;
+import eu.europeana.entity.definitions.model.impl.BasePlace;
 import eu.europeana.entity.solr.exception.EntityRetrievalException;
 import eu.europeana.entity.solr.service.SolrEntityService;
-import eu.europeana.entity.web.xml.model.XmlAgentImpl;
-import eu.europeana.entity.web.xml.model.XmlConceptImpl;
-import eu.europeana.entity.web.xml.model.XmlPlaceImpl;
+import eu.europeana.entity.web.xml.EntityXmlSerializer;
 
 /**
  * This class investigates best way to implement Schema.org mapping
@@ -205,11 +203,11 @@ public class ConceptEntitySchemaMapTest {
     public void testOrganizationMappingToSchemaOrg() throws HttpException, IOException {
 
 	String entityUri = TEST_ORGANIZATION_ENTITY_URI;
-	eu.europeana.corelib.definitions.edm.entity.Organization organization;
+	Organization organization;
 	String output = null;
 
 	try {
-	    organization = (eu.europeana.corelib.definitions.edm.entity.Organization) solrEntityService
+	    organization = (Organization) solrEntityService
 		    .searchByUrl(TEST_ORGANIZATION_ENTITY_TYPE, entityUri);
 	} catch (EntityRetrievalException e) {
 	    throw new HttpException(e.getMessage(), I18nConstants.SERVER_ERROR_CANT_RETRIEVE_URI,
@@ -219,7 +217,7 @@ public class ConceptEntitySchemaMapTest {
 		    new String[] { TEST_ORGANIZATION_ENTITY_TYPE }, HttpStatus.NOT_FOUND, null);
 	}
 
-	eu.europeana.corelib.edm.model.schemaorg.ContextualEntity organizationObject = new eu.europeana.corelib.edm.model.schemaorg.EdmOrganization();
+	ContextualEntity organizationObject = new EdmOrganization();
 	SchemaOrgUtils.processEntity(organization, organizationObject);
 
 	JsonLdSerializer serializer = new JsonLdSerializer();
@@ -240,34 +238,19 @@ public class ConceptEntitySchemaMapTest {
      * @throws IOException
      */
     @Test
-    public void testConceptJacksonXmlSerialization() throws HttpException, IOException {
+    public void testConceptJacksonXmlSerialization() throws HttpException, IOException, 
+    	EntityRetrievalException, UnsupportedEntityTypeException {
 
 	String entityUri = TEST_CONCEPT_ENTITY_URI;
-	eu.europeana.entity.definitions.model.impl.BaseConcept concept;
 	String output = null;
 
-	try {
-	    concept = (eu.europeana.entity.definitions.model.impl.BaseConcept) solrEntityService.searchByUrl(TEST_CONCEPT_ENTITY_TYPE, entityUri);
-	} catch (EntityRetrievalException e) {
-	    throw new HttpException(e.getMessage(), I18nConstants.SERVER_ERROR_CANT_RETRIEVE_URI,
-		    new String[] { entityUri }, HttpStatus.INTERNAL_SERVER_ERROR);
-	} catch (UnsupportedEntityTypeException e) {
-	    throw new HttpException(null, I18nConstants.UNSUPPORTED_ENTITY_TYPE,
-		    new String[] { TEST_CONCEPT_ENTITY_TYPE }, HttpStatus.NOT_FOUND, null);
-	}
+	BaseConcept concept = (BaseConcept) solrEntityService.searchByUrl(TEST_CONCEPT_ENTITY_TYPE, entityUri);
 
 	Map<String, List<String>> prefLabel = concept.getPrefLabel();
 	Assert.assertNotNull(prefLabel);
 
-	JacksonXmlModule xmlModule = new JacksonXmlModule();
-	xmlModule.setDefaultUseWrapper(true);
-	ObjectMapper objectMapper = new XmlMapper(xmlModule);
-	objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-	
-	XmlConceptImpl xmlConcept = new XmlConceptImpl(concept);
-	output = objectMapper.writeValueAsString(xmlConcept);
-	
-	output = xmlConcept.addingAdditionalXmlString(output);
+	EntityXmlSerializer entityXmlSerializer = new EntityXmlSerializer();
+	output = entityXmlSerializer.serializeXml(concept);
 	
 	Assert.assertNotNull(output);
 	
@@ -285,31 +268,16 @@ public class ConceptEntitySchemaMapTest {
      * @throws IOException
      */
     @Test
-    public void testAgentJacksonXmlSerialization() throws HttpException, IOException {
+    public void testAgentJacksonXmlSerialization() throws HttpException, IOException, 
+	EntityRetrievalException, UnsupportedEntityTypeException {
 
 	String entityUri = TEST_AGENT_ENTITY_URI;
-	eu.europeana.entity.definitions.model.impl.BaseAgent agent;
 	String output = null;
 
-	try {
-	    agent = (eu.europeana.entity.definitions.model.impl.BaseAgent) solrEntityService.searchByUrl(TEST_AGENT_ENTITY_TYPE, entityUri);
-	} catch (EntityRetrievalException e) {
-	    throw new HttpException(e.getMessage(), I18nConstants.SERVER_ERROR_CANT_RETRIEVE_URI,
-		    new String[] { entityUri }, HttpStatus.INTERNAL_SERVER_ERROR);
-	} catch (UnsupportedEntityTypeException e) {
-	    throw new HttpException(null, I18nConstants.UNSUPPORTED_ENTITY_TYPE,
-		    new String[] { TEST_AGENT_ENTITY_TYPE }, HttpStatus.NOT_FOUND, null);
-	}
+	BaseAgent agent = (BaseAgent) solrEntityService.searchByUrl(TEST_AGENT_ENTITY_TYPE, entityUri);
 
-	JacksonXmlModule xmlModule = new JacksonXmlModule();
-	xmlModule.setDefaultUseWrapper(true);
-	ObjectMapper objectMapper = new XmlMapper(xmlModule);
-	objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-	
-	XmlAgentImpl xmlAgent = new XmlAgentImpl(agent);
-	output = objectMapper.writeValueAsString(xmlAgent);
-	
-	output = xmlAgent.addingAdditionalXmlString(output);
+	EntityXmlSerializer entityXmlSerializer = new EntityXmlSerializer();
+	output = entityXmlSerializer.serializeXml(agent);
 	
 	Assert.assertNotNull(output);
 	
@@ -327,32 +295,17 @@ public class ConceptEntitySchemaMapTest {
      * @throws IOException
      */
     @Test
-    public void testPlaceJacksonXmlSerialization() throws HttpException, IOException {
+    public void testPlaceJacksonXmlSerialization() throws HttpException, IOException, 
+	EntityRetrievalException, UnsupportedEntityTypeException {
 
 	String entityUri = TEST_PLACE_ENTITY_URI;
-	eu.europeana.entity.definitions.model.impl.BasePlace place;
 	String output = null;
 
-	try {
-	    place = (eu.europeana.entity.definitions.model.impl.BasePlace) solrEntityService
+	BasePlace place = (BasePlace) solrEntityService
 		    .searchByUrl(TEST_PLACE_ENTITY_TYPE, entityUri);
-	} catch (EntityRetrievalException e) {
-	    throw new HttpException(e.getMessage(), I18nConstants.SERVER_ERROR_CANT_RETRIEVE_URI,
-		    new String[] { entityUri }, HttpStatus.INTERNAL_SERVER_ERROR);
-	} catch (UnsupportedEntityTypeException e) {
-	    throw new HttpException(null, I18nConstants.UNSUPPORTED_ENTITY_TYPE,
-		    new String[] { TEST_PLACE_ENTITY_TYPE }, HttpStatus.NOT_FOUND, null);
-	}
 
-	JacksonXmlModule xmlModule = new JacksonXmlModule();
-	xmlModule.setDefaultUseWrapper(true);
-	ObjectMapper objectMapper = new XmlMapper(xmlModule);
-	objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-	
-	XmlPlaceImpl xmlPlace = new XmlPlaceImpl(place);
-	output = objectMapper.writeValueAsString(xmlPlace);
-	
-	output = xmlPlace.addingAdditionalXmlString(output);
+	EntityXmlSerializer entityXmlSerializer = new EntityXmlSerializer();
+	output = entityXmlSerializer.serializeXml(place);
 	
 	Assert.assertNotNull(output);
 	InputStream stream = getClass().getResourceAsStream(TEST_XML_PLACE_FILE);

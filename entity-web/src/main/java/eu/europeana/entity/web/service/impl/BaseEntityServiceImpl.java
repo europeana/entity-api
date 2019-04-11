@@ -6,12 +6,16 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import eu.europeana.entity.mongo.service.PersistentEntityService;
+import eu.europeana.entity.solr.service.SolrEntityService;
 
 public abstract class BaseEntityServiceImpl {
 
 	@Resource
 	PersistentEntityService mongoPersistance;
 
+	@Resource
+	SolrEntityService solrService;
+	
 	Logger logger = LogManager.getLogger(getClass());
 
 
@@ -33,6 +37,14 @@ public abstract class BaseEntityServiceImpl {
 
 	public PersistentEntityService getMongoPersistance() {
 		return mongoPersistance;
+	}
+
+	public SolrEntityService getSolrService() {
+		return solrService;
+	}
+
+	public void setSolrService(SolrEntityService solrService) {
+		this.solrService = solrService;
 	}
 
 }

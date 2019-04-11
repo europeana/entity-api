@@ -1,34 +1,18 @@
 package eu.europeana.entity.definitions.model;
 
-import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 //import eu.europeana.corelib.definitions.edm.entity.ConceptScheme;
 
-public interface ConceptScheme {
+public interface ConceptScheme extends Entity{
 	
-	/**
-	 * @return The unique identifier of the grouping, defined under "http://data.europeana.eu/scheme/".
-	 */
-	public String getConceptSchemeId();
-	
-	void setConceptSchemeId(String id);
 	
 	/**
 	 * @return skos:ConceptScheme
 	 */
 	String getType();
 	
-	void setType(String type);
 	
-	/**
-	 * @return Name given to the grouping.
-	 */
-	public Map<String, String> getPrefLabel();
-	
-	public void setPrefLabel(Map<String, String> prefLabel);
-
 	/**
 	 * @return A summary of the general topics shared by the contextual entities that are part of the grouping.
 	 */
@@ -44,36 +28,14 @@ public interface ConceptScheme {
 	String getIsDefinedBy();
 	
 	void setIsDefinedBy(String query);
-
-	/**
-	 * @return A reference to a Linked Data resource (e.g. Wikidata) 
-	 * that can be used to enrich the metadata for the grouping.
-	 */
-	public String getSameAs();
-
-	public void setSameAs(String sameAs);
-	
-	/**
-	 * @return The unique identifier of the grouping(s) which gather this entity.
-	 */
-	public List<String> getInScheme();
-
-	public void setInScheme(List<String> inScheme);	
-	
-	/**
-	 * @return
-	 */
-	public String getContext();
-	
-	public void setContext(String context);
 	
 	
 	/**
 	 * @return
 	 */
-	boolean isDisabled();
-
-	void setDisabled(boolean disabled);
+//	boolean isDisabled();
+//
+//	void setDisabled(boolean disabled);
 	
 
 	/**
@@ -82,19 +44,9 @@ public interface ConceptScheme {
 	int getTotal();
 
 	void setTotal(int total);
+	
+	public void setInternalType(String internalType);
+	
+	public void setPrefLabelStringMap(Map<String, String> prefLabel);
 		
-
-	/**
-	 * @return
-	 */
-	Date getCreated();
-
-	void setCreated(Date created);
-
-	/**
-	 * @return
-	 */
-	Date getModified();
-
-	void setModified(Date modified);	
 }

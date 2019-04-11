@@ -9,6 +9,7 @@ public enum EntityTypes implements EntityKeyword{
 	Agent("edm", "Agent", "http://www.europeana.eu/schemas/edm/Agent"), 
 	Place("edm", "Place", "http://www.europeana.eu/schemas/edm/Place"), 
 	Timespan("edm", "Timespan", "http://www.europeana.eu/schemas/edm/Timespan"), 
+	ConceptScheme("edm", "ConceptScheme", "http://www.europeana.eu/schemas/edm/ConceptScheme"), 
 	All("*", "All", "http://www.europeana.eu/schemas/edm/Entity");
 	
 	

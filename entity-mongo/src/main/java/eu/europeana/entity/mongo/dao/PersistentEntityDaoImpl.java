@@ -2,10 +2,6 @@ package eu.europeana.entity.mongo.dao;
 
 import java.io.Serializable;
 
-import javax.annotation.Resource;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.query.Query;
 import org.mongodb.morphia.query.UpdateOperations;

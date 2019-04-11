@@ -17,11 +17,6 @@ import eu.europeana.entity.definitions.model.vocabulary.OrganizationSolrFields;
  */
 public class SolrOrganizationImpl extends BaseOrganization implements Organization {
 
-	@Override
-	@Field(ConceptSolrFields.RDF_ABOUT)
-	public void setAbout(String about) {
-		super.setAbout(about);
-	}
 	
 //	@Override
 //	public void setDescription(Map<String, String> dcDescription) {

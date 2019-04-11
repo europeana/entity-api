@@ -30,7 +30,7 @@ The json-ld serialization available in the following box is a valid input to be 
      "en": "Genres of Photography"
   },
   "isDefinedBy": "https://www.europeana.eu/api/entities/search.json?wskey=apidemo&pageSize=100&query=skos_broader:(*/106+OR+*/1719+OR+*/1683)",
-  "sameAs": "http://www.wikidata.org/entity/Q3100808"
+  "sameAs": ["http://www.wikidata.org/entity/Q3100808"]
 }
 </textarea>
 

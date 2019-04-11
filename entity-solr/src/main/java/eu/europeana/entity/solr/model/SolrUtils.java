@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import eu.europeana.entity.definitions.model.vocabulary.OrganizationSolrFields;
-
 /**
  * This class implements supporting methods for Solr*Impl classes e.g. normalization of the content
  * to match to the required output format.
@@ -108,5 +106,5 @@ public class SolrUtils {
 		itemArr = itemList.toArray(itemArr);
 		return itemArr;
 	}
-
+	
 }

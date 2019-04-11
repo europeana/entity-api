@@ -3,6 +3,7 @@ package eu.europeana.entity.solr.model.factory;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.solr.view.AgentPreviewImpl;
 import eu.europeana.entity.solr.view.ConceptPreviewImpl;
+import eu.europeana.entity.solr.view.ConceptSchemePreviewImpl;
 import eu.europeana.entity.solr.view.OrganizationPreviewImpl;
 import eu.europeana.entity.solr.view.PlacePreviewImpl;
 import eu.europeana.entity.solr.view.TimeSpanPreviewImpl;
@@ -60,6 +61,8 @@ public class EntityPreviewObjectFactory extends AbstractModelObjectFactory<Entit
 			break;
 		case Timespan:
 			ret = TimeSpanPreviewImpl.class;
+		case ConceptScheme:
+			ret = ConceptSchemePreviewImpl.class;
 		default:
 			throw new RuntimeException(
 					"The given type is not supported by the web model");

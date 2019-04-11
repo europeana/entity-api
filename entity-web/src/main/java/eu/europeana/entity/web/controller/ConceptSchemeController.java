@@ -5,7 +5,6 @@ import java.util.Date;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -26,14 +25,11 @@ import eu.europeana.entity.definitions.exceptions.EntityValidationException;
 import eu.europeana.entity.definitions.model.ConceptScheme;
 import eu.europeana.entity.definitions.model.vocabulary.LdProfiles;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityFields;
-import eu.europeana.entity.definitions.model.vocabulary.fields.WebConceptSchemeModelFields;
 import eu.europeana.entity.web.exception.InternalServerException;
 import eu.europeana.entity.web.exception.RequestBodyValidationException;
 import eu.europeana.entity.web.http.EntityHttpHeaders;
 import eu.europeana.entity.web.http.SwaggerConstants;
-import eu.europeana.entity.web.model.vocabulary.Operations;
 import eu.europeana.entity.web.service.EntityService;
-import eu.europeana.grouping.mongo.model.internal.PersistentConceptScheme;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -100,9 +96,6 @@ public class ConceptSchemeController extends BaseRest {
 
 			// validate and process the Set description for format and mandatory fields
 			// if false respond with HTTP 400
-			getEntityService().validateWebConceptScheme(webConceptScheme);
-			if(StringUtils.isEmpty(webConceptScheme.getContext()))
-				webConceptScheme.setContext(WebConceptSchemeModelFields.VALUE_CONTEXT_EUROPEANA_COLLECTION);
 			
 			// store the new ConceptScheme with its respective id, together with all the containing items 
 			// following the order given by the list
@@ -262,6 +255,7 @@ public class ConceptSchemeController extends BaseRest {
 						
 			// if the user set is disabled and the user is not an admin, respond with HTTP 410
 			HttpStatus httpStatus = null;
+			/*
 			if (existingConceptScheme.isDisabled()) {
 //				if (!isAdmin(wsKey, userToken)) { 
 //					// if the user is the owner, the response should be 410
@@ -296,7 +290,7 @@ public class ConceptSchemeController extends BaseRest {
 //  					 }
 //				 }
 			}			
-			
+			*/
 			Date etagDate = new Date();
 			int etag = etagDate.hashCode(); 
 			
@@ -363,6 +357,7 @@ public class ConceptSchemeController extends BaseRest {
 			HttpStatus httpStatus = null;
 			int modifiedStr = 0;
 			String serializedConceptSchemeJsonLdStr = "";
+			/*
 			if (existingConceptScheme.isDisabled()) { 
 				httpStatus = HttpStatus.GONE;
 			} else {			
@@ -390,7 +385,7 @@ public class ConceptSchemeController extends BaseRest {
 
 				serializedConceptSchemeJsonLdStr = serializeConceptScheme(ldProfile, updatedConceptScheme); 
 			}
-			
+			*/
 			// build response entity with headers
 			MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>(5);
 			headers.add(HttpHeaders.LINK, EntityHttpHeaders.VALUE_LDP_CONTAINER);

@@ -18,6 +18,7 @@ import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.client.solrj.response.UpdateResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.util.SimpleOrderedMap;
@@ -26,13 +27,16 @@ import eu.europeana.api.commons.definitions.search.Query;
 import eu.europeana.api.commons.definitions.search.ResultSet;
 import eu.europeana.entity.config.EntityConfiguration;
 import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException;
+import eu.europeana.entity.definitions.model.ConceptScheme;
 import eu.europeana.entity.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.vocabulary.ConceptSolrFields;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
 import eu.europeana.entity.solr.exception.EntityRetrievalException;
 import eu.europeana.entity.solr.exception.EntityRuntimeException;
+import eu.europeana.entity.solr.exception.EntityServiceException;
 import eu.europeana.entity.solr.exception.EntitySuggestionException;
+import eu.europeana.entity.solr.model.SolrConceptSchemeImpl;
 import eu.europeana.entity.solr.model.factory.EntityObjectFactory;
 import eu.europeana.entity.solr.model.vocabulary.SuggestionFields;
 import eu.europeana.entity.solr.service.SolrEntityService;
@@ -404,4 +408,39 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 		return null;
 	}
 
+	@Override
+	public void store(ConceptScheme conceptScheme) throws EntityServiceException {
+	    this.store(conceptScheme, true);
+	}
+
+	@Override
+	public void store(ConceptScheme conceptScheme, boolean doCommit) throws EntityServiceException {
+		try {
+			getLogger().debug("store: " + conceptScheme.toString());
+			SolrConceptSchemeImpl indexedConceptScheme = null;
+			
+			if (conceptScheme instanceof SolrConceptSchemeImpl) {
+				indexedConceptScheme = (SolrConceptSchemeImpl) conceptScheme;
+			} else {
+				indexedConceptScheme = new SolrConceptSchemeImpl(conceptScheme);
+			}
+			
+			UpdateResponse rsp = solrServer.addBean(indexedConceptScheme);
+			getLogger().info("store response: " + rsp.toString());
+			if (doCommit) {
+				solrServer.commit();
+			}
+		} catch (SolrServerException ex) {
+			throw new EntityServiceException(
+				"Unexpected Solr server exception occured when storing concept scheme for: " + 
+					conceptScheme.getEntityId(),
+				ex);
+		} catch (IOException ex) {
+			throw new EntityServiceException(
+				"Unexpected IO exception occured when storing concept scheme for: " + 
+				conceptScheme.getEntityId(), ex);
+		}
+		
+	}
+	
 }

@@ -98,6 +98,8 @@ public abstract class BaseEntityService{
 			case Organization:
 				 processSpecificLanguageMaps((Organization) entity, outLanguage);
 				 break;
+			case ConceptScheme:
+				 break; //has only common language maps
 			case All:
 				break; //actually not possible at this stage
 			default:

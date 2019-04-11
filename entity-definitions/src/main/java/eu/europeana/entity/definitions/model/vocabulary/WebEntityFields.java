@@ -22,6 +22,11 @@ public interface WebEntityFields {
 	public static final String NOTE = "note";
 	public static final String DEPICTION = "depiction";
 	public static final String SOURCE = "source";
+	
+	//common administrative information
+	public static final String CREATED = "created";
+	public static final String MODIFIED = "modified"; 
+	
 
 	// concept fields
 	public static final String NOTATION = "notation";
@@ -87,7 +92,13 @@ public interface WebEntityFields {
 	public static final String HAS_GEO = "hasGeo";
 	public static final String HAS_ADDRESS = "hasAddress";
 	public static final String ADDRESS_TYPE = "Address";
-
+	
+	// ConceptScheme fields
+	public static final String IS_DEFINED_BY = "isDefinedBy";
+	public static final String DEFINITION = "definition"; 
+	public static final String TOTAL = "total";
+	
+	
     // Defaults
 	public static final String USER_ANONYMOUNS = "anonymous";
 	public static final String PROFILE_MINIMAL = "minimal";
@@ -101,7 +112,7 @@ public interface WebEntityFields {
 	public static final String PATH_PARAM_CONCEPT_SCHEME_ID = "identifier";
 	
 	// Web application
-	public static final String CONCEPT_SCHEME_PROVIDER = "conceptScheme";	
+	public static final String CONCEPT_SCHEME = "conceptScheme";	
 	public static final String CONCEPT_SCHEME_APPLICATION_NAME = "webConceptScheme";	
 
 	// Authentication

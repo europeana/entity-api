@@ -35,6 +35,7 @@ import eu.europeana.entity.definitions.model.vocabulary.LdProfiles;
 import eu.europeana.entity.definitions.model.vocabulary.SuggestAlgorithmTypes;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityFields;
+import eu.europeana.entity.utils.jsonld.EuropeanaEntityLd;
 import eu.europeana.entity.utils.serialize.ConceptSchemeLdSerializer;
 import eu.europeana.entity.web.exception.ParamValidationException;
 import eu.europeana.entity.web.exception.authentication.EntityAuthenticationException;
@@ -302,15 +303,19 @@ public abstract class BaseRest {
 	 * @param storedConceptScheme
 	 * @return serialized user set as a JsonLd string
 	 * @throws IOException
+	 * @throws UnsupportedEntityTypeException 
 	 */
 //	protected String serializeConceptScheme(String profile, ConceptScheme storedConceptScheme) throws IOException {
-	protected String serializeConceptScheme(LdProfiles profile, ConceptScheme storedConceptScheme) throws IOException {
+	protected String serializeConceptScheme(LdProfiles profile, ConceptScheme storedConceptScheme) 
+		throws IOException, UnsupportedEntityTypeException {
 		// apply linked data profile from header
 		ConceptScheme resConceptScheme = applyProfile(storedConceptScheme, profile);
 
 		// serialize ConceptScheme description in JSON-LD and respond with HTTP 201 if successful
-		ConceptSchemeLdSerializer serializer = new ConceptSchemeLdSerializer();
-		String serializedConceptSchemeJsonLdStr = serializer.serialize(resConceptScheme);
+//		ConceptSchemeLdSerializer serializer = new ConceptSchemeLdSerializer();
+		EuropeanaEntityLd serializer = new EuropeanaEntityLd(resConceptScheme);
+		String serializedConceptSchemeJsonLdStr = serializer.toString(4);
+//		String serializedConceptSchemeJsonLdStr = serializer.serialize(resConceptScheme);
 		return serializedConceptSchemeJsonLdStr;
 	}
 

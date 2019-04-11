@@ -76,17 +76,11 @@ public class SolrConceptImpl extends BaseConcept implements Concept{
 		super.setInScheme(inScheme);
 	}
 	
-	@Override
-	@Field(ConceptSolrFields.RDF_ABOUT)
-	public void setAbout(String about) {
-		super.setAbout(about);
-	}
-	
-	@Override
-	@Field(ConceptSolrFields.DEFINITION)
-	public void setDefinition(String definition) {
-		setDefinition(definition);
-	}
+//	@Override
+//	@Field(ConceptSolrFields.RDF_ABOUT)
+//	public void setAbout(String about) {
+//		super.setAbout(about);
+//	}
 	
 	@Override
 	@Field(ConceptSolrFields.PREF_LABEL_ALL)

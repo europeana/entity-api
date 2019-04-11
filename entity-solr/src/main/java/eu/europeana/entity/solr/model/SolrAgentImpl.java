@@ -66,12 +66,6 @@ public class SolrAgentImpl extends BaseAgent implements Agent {
 	}
 
 	@Override
-	@Field(ConceptSolrFields.DEFINITION)
-	public void setDefinition(String definition) {
-		setDefinition(definition);
-	}
-
-	@Override
 	@Field(ConceptSolrFields.PREF_LABEL_ALL)
 	public void setPrefLabelStringMap(Map<String, String> prefLabel) {
 		Map<String, String> normalizedPrefLabel = SolrUtils.normalizeStringMap(

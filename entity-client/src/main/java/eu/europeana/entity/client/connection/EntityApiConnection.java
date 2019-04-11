@@ -215,8 +215,7 @@ public class EntityApiConnection extends BaseApiConnection {
 	                	BaseEntity entityObject = new BaseEntity();
 			        	entityObject.setEntityId(jsonObj.getString(WebEntityFields.ID));
 //			        	entityObject.setEntityId(jsonObj.getString("@id"));
-			        	entityObject.setDefinition(""+jsonObj.getJSONObject(WebEntityFields.PREF_LABEL));
-						entityList.add(entityObject);
+//			        	entityList.add(entityObject);
 //				    }
 				    asr.setItems(entityList);
 //				}

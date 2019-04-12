@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.LinkedMultiValueMap;
@@ -32,6 +33,7 @@ import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
 import eu.europeana.entity.utils.jsonld.EuropeanaEntityLd;
 import eu.europeana.entity.web.exception.InternalServerException;
 import eu.europeana.entity.web.service.EntityService;
+import eu.europeana.entity.web.xml.EntityXmlSerializer;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -42,11 +44,15 @@ public class ResolveController extends BaseRest {
 	
 	@Resource 
 	EntityService entityService;
+	@Resource
+	EntityXmlSerializer entityXmlSerializer;
 
 	@ApiOperation(value = "Retrieve a known entity", nickname = "getEntity", response = java.lang.Void.class)
-	@RequestMapping(value = {"/entity/{type}/{namespace}/{identifier}", "/entity/{type}/{namespace}/{identifier}.jsonld", "/entity/{type}/{namespace}/{identifier}.schema.jsonld"}, method = RequestMethod.GET, 
-			produces = {HttpHeaders.CONTENT_TYPE_JSONLD_UTF8, HttpHeaders.CONTENT_TYPE_JSON_UTF8})
-	public ResponseEntity<String> getEntity(
+	@RequestMapping(value = {"/entity/{type}/{namespace}/{identifier}", "/entity/{type}/{namespace}/{identifier}.jsonld", "/entity/{type}/{namespace}/{identifier}.schema.jsonld",
+			"/entity/{type}/{namespace}/{identifier}.xml"}, method = RequestMethod.GET,
+			produces = {HttpHeaders.CONTENT_TYPE_JSONLD_UTF8, HttpHeaders.CONTENT_TYPE_JSON_UTF8, 
+				HttpHeaders.CONTENT_TYPE_APPLICATION_RDF_XML, HttpHeaders.CONTENT_TYPE_RDF_XML, MediaType.APPLICATION_XML_VALUE})
+  public ResponseEntity<String> getEntity(
 			@RequestParam(value = CommonApiConstants.PARAM_WSKEY, required=false) String wskey,
 			@PathVariable(value = WebEntityConstants.PATH_PARAM_TYPE) String type,
 			@PathVariable(value = WebEntityConstants.PATH_PARAM_NAMESPACE) String namespace,
@@ -54,46 +60,46 @@ public class ResolveController extends BaseRest {
 			HttpServletRequest request
 			) throws HttpException  {
 
-		try {			
-			validateApiKey(wskey);
-			
-			String extension = getExtension(request);
-			
-			//identify required format
-			FormatTypes outFormat = getFormatType(extension);		
-			
-			Entity entity = entityService.retrieveByUrl(type, namespace, identifier);
-			
-			String jsonLd = serialize(entity, outFormat);
+	    try {			
+	    	validateApiKey(wskey);
+	    	
+	    	String extension = getExtension(request);
+	    	
+	    	//identify required format
+	    	FormatTypes outFormat = getFormatType(extension);		
+	    	
+	    	Entity entity = entityService.retrieveByUrl(type, namespace, identifier);
+	    	
+	    	String jsonLd = serialize(entity, outFormat);
 
-			Date timestamp = ((RankedEntity)entity).getTimestamp();
-			Date etagDate = (timestamp != null)? timestamp : new Date();
-			int etag = etagDate.hashCode(); 
-			
-			MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>(5);
-			headers.add(HttpHeaders.ETAG, "" + etag);
-			headers.add(HttpHeaders.ALLOW, HttpHeaders.ALLOW_GET);
-			if(!outFormat.equals(FormatTypes.schema)) {
-				headers.add(HttpHeaders.VARY, HttpHeaders.ACCEPT);
-				headers.add(HttpHeaders.LINK, HttpHeaders.VALUE_LDP_RESOURCE);
-			}
+	    	Date timestamp = ((RankedEntity)entity).getTimestamp();
+	    	Date etagDate = (timestamp != null)? timestamp : new Date();
+	    	int etag = etagDate.hashCode(); 
+	    	
+	    	MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>(5);
+	    	headers.add(HttpHeaders.ETAG, "" + etag);
+	    	headers.add(HttpHeaders.ALLOW, HttpHeaders.ALLOW_GET);
+	    	if(!outFormat.equals(FormatTypes.schema)) {
+	    		headers.add(HttpHeaders.VARY, HttpHeaders.ACCEPT);
+	    		headers.add(HttpHeaders.LINK, HttpHeaders.VALUE_LDP_RESOURCE);
+	    	}
 
-			ResponseEntity<String> response = new ResponseEntity<String>(jsonLd, headers, HttpStatus.OK);
-			
-			return response;
-	
-		} catch (RuntimeException e) {
-			//not found .. 
-			throw new InternalServerException(e);
-		} catch (HttpException e) {
-			//avoid wrapping http exception
-			throw e;
-		} catch (Exception e) {
-			throw new InternalServerException(e);
-		}				
+	    	ResponseEntity<String> response = new ResponseEntity<String>(jsonLd, headers, HttpStatus.OK);
+	    	
+	    	return response;
+
+	    } catch (RuntimeException e) {
+	    	//not found .. 
+	    	throw new InternalServerException(e);
+	    } catch (HttpException e) {
+	    	//avoid wrapping http exception
+	    	throw e;
+	    } catch (Exception e) {
+	    	throw new InternalServerException(e);
+	    }			
 	}
 
-
+	
 	/**
 	 * This method evaluates extension 
 	 * @param request The HTTP request
@@ -122,16 +128,18 @@ public class ResolveController extends BaseRest {
 	private String serialize(Entity entity, FormatTypes format) 
 			throws UnsupportedEntityTypeException {
 		
-		String jsonLd = null;
+		String responseBody = null;
 		ContextualEntity thingObject = null;
         
-        if(FormatTypes.jsonld.equals(format)) {
-        	EuropeanaEntityLd entityLd = new EuropeanaEntityLd(entity);		
+		if(FormatTypes.jsonld.equals(format)) {
+		    	EuropeanaEntityLd entityLd = new EuropeanaEntityLd(entity);		
 			return entityLd.toString(4);
-        } else if (FormatTypes.schema.equals(format)) {			
-			jsonLd = serializeSchema(entity, jsonLd, thingObject);	        
+		} else if (FormatTypes.schema.equals(format)) {			
+		    	responseBody = serializeSchema(entity, responseBody, thingObject);	        
+		} else if(FormatTypes.xml.equals(format)) {
+		    	responseBody = entityXmlSerializer.serializeXml(entity);
 		}
-		return jsonLd;
+		return responseBody;
 	}
 
 

@@ -9,19 +9,19 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-import eu.europeana.entity.definitions.model.impl.BasePlace;
+import eu.europeana.entity.definitions.model.Place;
 
 @JacksonXmlRootElement(localName = XmlConstants.XML_EDM_PLACE)
 @JsonInclude(value = JsonInclude.Include.NON_EMPTY)
 @JsonPropertyOrder({XmlConstants.XML_FOAF_DEPICTION, XmlConstants.XML_SKOS_PREF_LABEL, XmlConstants.XML_SKOS_ALT_LABEL, XmlConstants.XML_SKOS_HIDDEN_LABEL,
     	XmlConstants.XML_WGS84_POS_LAT, XmlConstants.XML_WGS84_POS_LONG, XmlConstants.XML_WGS84_POS_ALT, XmlConstants.XML_SKOS_NOTE, 
     	XmlConstants.XML_DCTERMS_HAS_PART, XmlConstants.XML_DCTERMS_IS_PART_OF, XmlConstants.XML_EDM_IS_NEXT_IN_SEQUENCE, XmlConstants.XML_OWL_SAME_AS})
-public class XmlPlaceImpl implements XmlBase {
+public class XmlPlaceImpl {
     
     	@JsonIgnore
-    	private BasePlace place;
+    	private Place place;
     
-    	public XmlPlaceImpl(BasePlace place) {
+    	public XmlPlaceImpl(Place place) {
     	    	this.place = place;
     	}
 

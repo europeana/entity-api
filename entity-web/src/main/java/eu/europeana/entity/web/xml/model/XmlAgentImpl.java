@@ -9,7 +9,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-import eu.europeana.entity.definitions.model.impl.BaseAgent;
+import eu.europeana.entity.definitions.model.Agent;
 
 @JacksonXmlRootElement(localName = XmlConstants.XML_EDM_AGENT)
 @JsonInclude(value = JsonInclude.Include.NON_EMPTY)
@@ -20,11 +20,11 @@ import eu.europeana.entity.definitions.model.impl.BaseAgent;
     	XmlConstants.XML_RDAGR2_PROFESSION_OR_OCCUPATION, XmlConstants.XML_RDAGR2_BIOGRAPHICAL_INFORMATION, XmlConstants.XML_SKOS_NOTE,
     	XmlConstants.XML_DCTERMS_HAS_PART, XmlConstants.XML_DCTERMS_IS_PART_OF, XmlConstants.XML_EDM_HASMET, XmlConstants.XML_EDM_IS_RELATED_TO,
     	XmlConstants.XML_DC_IDENTIFIER, XmlConstants.XML_OWL_SAME_AS})
-public class XmlAgentImpl implements XmlBase {
+public class XmlAgentImpl {
     	@JsonIgnore
-    	private BaseAgent agent;
+    	private Agent agent;
     
-    	public XmlAgentImpl(BaseAgent agent) {
+    	public XmlAgentImpl(Agent agent) {
     	    	this.agent = agent;
     	}
     	

@@ -9,7 +9,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-import eu.europeana.entity.definitions.model.impl.BaseConcept;
+import eu.europeana.entity.definitions.model.Concept;
 
 @JacksonXmlRootElement(localName= XmlConstants.XML_SKOS_CONCEPT)
 @JsonInclude(value = JsonInclude.Include.NON_EMPTY)
@@ -17,12 +17,12 @@ import eu.europeana.entity.definitions.model.impl.BaseConcept;
     	XmlConstants.XML_SKOS_NOTE, XmlConstants.XML_SKOS_NOTATION, XmlConstants.XML_SKOS_BROADER, XmlConstants.XML_SKOS_NARROWER, XmlConstants.XML_SKOS_RELATED,
     	XmlConstants.XML_SKOS_BROAD_MATCH, XmlConstants.XML_SKOS_NARROW_MATCH, XmlConstants.XML_SKOS_RELATED_MATCH, XmlConstants.XML_SKOS_CLOSE_MATCH,
     	XmlConstants.XML_SKOS_EXACT_MATCH, XmlConstants.XML_SKOS_IN_SCHEMA})
-public class XmlConceptImpl implements XmlBase {
+public class XmlConceptImpl {
 
     	@JsonIgnore
-    	private BaseConcept concept;
+    	private Concept concept;
     
-    	public XmlConceptImpl(BaseConcept concept) {
+    	public XmlConceptImpl(Concept concept) {
     	    this.concept = concept;
     	}
 	

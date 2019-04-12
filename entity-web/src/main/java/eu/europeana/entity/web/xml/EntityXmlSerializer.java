@@ -12,7 +12,6 @@ import eu.europeana.entity.solr.model.SolrAgentImpl;
 import eu.europeana.entity.solr.model.SolrConceptImpl;
 import eu.europeana.entity.solr.model.SolrPlaceImpl;
 import eu.europeana.entity.web.xml.model.XmlAgentImpl;
-import eu.europeana.entity.web.xml.model.XmlBase;
 import eu.europeana.entity.web.xml.model.XmlConceptImpl;
 import eu.europeana.entity.web.xml.model.XmlPlaceImpl;
 
@@ -56,27 +55,26 @@ public class EntityXmlSerializer {
 		objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
 
 		String outputHeader;
-		XmlBase xmlElement;
-		if(entity instanceof SolrConceptImpl) {
-		    xmlElement = new XmlConceptImpl((SolrConceptImpl) entity);
-		    outputHeader = XML_HEADER_TAG_CONCEPT;
-		}
-		else if(entity instanceof SolrAgentImpl) {
-		    xmlElement = new XmlAgentImpl((SolrAgentImpl) entity);
-		    outputHeader = XML_HEADER_TAG_AGENT;
-		}
-		else if(entity instanceof SolrPlaceImpl) {
-		    xmlElement = new XmlPlaceImpl((SolrPlaceImpl) entity);
-		    outputHeader = XML_HEADER_TAG_PLACE;
-		}
-		else {
-		    throw new UnsupportedEntityTypeException("Serialization to xml failed for " + entity.getAbout());
-		}
-		
 		String output = "";
-		
 		try {
-		    output = objectMapper.writeValueAsString(xmlElement);
+    		    if(entity instanceof SolrConceptImpl) {
+    			XmlConceptImpl xmlElement = new XmlConceptImpl((SolrConceptImpl) entity);
+    			output = objectMapper.writeValueAsString(xmlElement);
+    			outputHeader = XML_HEADER_TAG_CONCEPT;
+    		    }
+    		    else if(entity instanceof SolrAgentImpl) {
+    			XmlAgentImpl xmlElement = new XmlAgentImpl((SolrAgentImpl) entity);
+    			output = objectMapper.writeValueAsString(xmlElement);
+    			outputHeader = XML_HEADER_TAG_AGENT;
+    		    }
+    		    else if(entity instanceof SolrPlaceImpl) {
+    			XmlPlaceImpl xmlElement = new XmlPlaceImpl((SolrPlaceImpl) entity);
+    			output = objectMapper.writeValueAsString(xmlElement);
+    			outputHeader = XML_HEADER_TAG_PLACE;
+    		    }
+    		    else {
+    			throw new UnsupportedEntityTypeException("Serialization to xml failed for " + entity.getAbout());
+    		    }
 		    StringBuilder strBuilder = new StringBuilder();
 		    strBuilder.append(outputHeader);
 		    strBuilder.append(output);

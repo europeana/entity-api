@@ -23,11 +23,11 @@
 				<constructor-arg value="utf-8" />
 				<property name="supportedMediaTypes">
 					<list>
-						<value>application/json;charset=utf-8</value>
 						<value>application/ld+json;charset=utf-8</value>
-						<value>application/xml</value>
+						<value>application/json;charset=utf-8</value>
 						<value>application/rdf+xml</value>
 						<value>rdf/xml</value>
+						<value>application/xml</value>
 						<value>text/plain;charset=utf-8</value>
 				 	</list>
 				 </property>

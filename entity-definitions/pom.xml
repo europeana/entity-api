@@ -16,7 +16,6 @@
 	<parent>
 		<artifactId>entity-api</artifactId>
 		<groupId>eu.europeana.entity</groupId>
-		<!-- <version>${version.annotationApiSnapshot}</version> -->
 		<version>${version.entityApi}</version>
 	</parent>
 

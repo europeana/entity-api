@@ -7,7 +7,8 @@ public interface I18nConstants extends eu.europeana.api.commons.config.i18n.I18n
 	//static final String INVALID_APIKEY = "error.entity_invalid_apikey";
 
 	//400
-	static final String INVALID_FIELD_NAME = "error.invalid_field_name";
+//	#static final String INVALID_FIELD_NAME = "error.invalid_field_name";
+    	static final String BAD_HEADER_REQUEST = "error.extension_and_accept";
 	
 	//401
 	//replaced by generic error message
@@ -22,6 +23,10 @@ public interface I18nConstants extends eu.europeana.api.commons.config.i18n.I18n
 	static final String UNSUPPORTED_ENTITY_TYPE = "erorr.entity_unsupported_type";
 	static final String UNSUPPORTED_ALGORITHM_TYPE = "erorr.algorithm_unsupported_type";
 	static final String MESSAGE_NOT_ACCESSIBLE = "error.entity_not_accessible";
+	
+	//406
+	static final String INVLAID_HEADER_REQUEST = "error.invalid_header_value";
+
 	
 	//500
 	static final String SERVER_ERROR_CANT_RETRIEVE_URI = "error.entity_server_cannot_retrieve_uri";

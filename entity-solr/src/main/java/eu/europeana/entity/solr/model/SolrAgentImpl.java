@@ -119,7 +119,7 @@ public class SolrAgentImpl extends BaseAgent implements Agent {
 
 	@Override
 	@Field(AgentSolrFields.HAS_MET)
-	public void setHasMet(String hasMet) {
+	public void setHasMet(String[] hasMet) {
 		super.setHasMet(hasMet);
 	}
 	@Override

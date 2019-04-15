@@ -23,9 +23,12 @@
 				<constructor-arg value="utf-8" />
 				<property name="supportedMediaTypes">
 					<list>
-						<value>application/json;charset=utf-8</value>
 						<value>application/ld+json;charset=utf-8</value>
-						<value>text/plain;charset=utf-8</value>					
+						<value>application/json;charset=utf-8</value>
+						<value>application/rdf+xml</value>
+						<value>rdf/xml</value>
+						<value>application/xml</value>
+						<value>text/plain;charset=utf-8</value>
 				 	</list>
 				 </property>
 				 <property name="writeAcceptCharset" value="false"/>
@@ -48,6 +51,9 @@
 	</bean>
 
 	<bean class="springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper">
+	</bean>
+
+	<bean id="entityXmlSerializer" class="eu.europeana.entity.web.xml.EntityXmlSerializer">
 	</bean>
 
 	<import resource="./entity-web-context.xml" />

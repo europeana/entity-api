@@ -115,11 +115,16 @@ public abstract class BaseEntityService{
 		Set<String> keys = languageMap.keySet();
 		String language;
 		String[] parts;
-		List<String> invalidKeys = new ArrayList<String>(outLanguage.length); 
+		List<String> invalidKeys = new ArrayList<String>(outLanguage.length + 1); 
 		//identify invalid keys
 		for (String key : keys) {
-			parts = StringUtils.split(key, '.');//might have problems with skos_prefLabel.
-			language = parts[parts.length-1];//last part
+			language = key;
+			//TODO: remove if, the language maps should not contain filenames anymore 
+			if(key.indexOf('.') > 0) {
+				parts = StringUtils.split(key, '.');//might have problems with skos_prefLabel.
+				language = parts[parts.length-1];//last part
+			}
+			
 			if(!ArrayUtils.contains(outLanguage, language))
 				invalidKeys.add(key);			
 		}

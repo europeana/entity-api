@@ -106,5 +106,18 @@ public interface SolrEntityService {
 	 * @param doCommit commit
 	 */
 	public void store(ConceptScheme conceptScheme, boolean doCommit) throws EntityServiceException;	
-		
+
+	/**
+	 * @param entityUrl
+	 * @throws EntityServiceException
+	 */
+	public void delete(String entityUrl) throws EntityServiceException;
+
+	/**
+	 * @param conceptScheme
+	 * @return
+	 * @throws EntityServiceException
+	 */
+	public void update(ConceptScheme conceptScheme) throws EntityServiceException;
+
 }

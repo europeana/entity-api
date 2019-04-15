@@ -23,13 +23,18 @@ import eu.europeana.api.commons.web.http.HttpHeaders;
 import eu.europeana.entity.definitions.exceptions.EntityInstantiationException;
 import eu.europeana.entity.definitions.exceptions.EntityValidationException;
 import eu.europeana.entity.definitions.model.ConceptScheme;
+import eu.europeana.entity.definitions.model.vocabulary.EntityStates;
 import eu.europeana.entity.definitions.model.vocabulary.LdProfiles;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityFields;
+import eu.europeana.entity.web.exception.EntityStateException;
 import eu.europeana.entity.web.exception.InternalServerException;
 import eu.europeana.entity.web.exception.RequestBodyValidationException;
+import eu.europeana.entity.web.exception.authentication.EntityAuthenticationException;
 import eu.europeana.entity.web.http.EntityHttpHeaders;
 import eu.europeana.entity.web.http.SwaggerConstants;
+import eu.europeana.entity.web.model.WebConceptSchemeImpl;
 import eu.europeana.entity.web.service.EntityService;
+import eu.europeana.grouping.mongo.model.internal.PersistentConceptScheme;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -69,16 +74,6 @@ public class ConceptSchemeController extends BaseRest {
 			HttpServletRequest request)
 					throws HttpException {
 					
-		/*
-		Check user credentials (from either userToken parameter or Authorization header), if invalid respond back with HTTP 401 or if unauthorized respond with HTTP 403;
-		Validate and process the Set description for format and mandatory fields (ie. “title”), if false respond with HTTP 400;
-		Generate an identifier (in sequence) for the Set;
-		Generate and add a created and modified timestamp to the Set;
-		Generate “ETag”;
-		Store the new Set with its respective id, together with all the containing items following the order given by the list;
-		Serialize Set description in JSON-LD  following the requested profile (indicated in the “Prefer” header, otherwise assume the default, ie. minimal) as defined in Section 4.1 and respond with HTTP 201.
-		*/
-		
 		try {
 			// validate user - check user credentials (all registered users can create) 
 			// if invalid respond with HTTP 401 or if unauthorized respond with HTTP 403;
@@ -102,7 +97,6 @@ public class ConceptSchemeController extends BaseRest {
 			// generate an identifier (in sequence) for the Set
 			ConceptScheme storedConceptScheme = getEntityService().storeConceptScheme(webConceptScheme);
 
-//			String serializedConceptSchemeJsonLdStr = null; 
 //			String serializedConceptSchemeJsonLdStr = serializeConceptScheme(profile, storedConceptScheme); 
 			String serializedConceptSchemeJsonLdStr = serializeConceptScheme(ldProfile, storedConceptScheme); 
 						
@@ -173,11 +167,19 @@ public class ConceptSchemeController extends BaseRest {
 //			getAuthorizationService().authorizeUser(userToken, wskey, null, Operations.CREATE);			
 			
 			// retrieve a concept scheme based on its identifier - process query
-			// if the Set doesn’t exist, respond with HTTP 404
-			// if the Set is disabled respond with HTTP 410
+			// if the concept scheme doesn’t exist, respond with HTTP 404
+			// if the entity is disabled respond with HTTP 410
+			String serializedConceptSchemeJsonLdStr = "";
 			ConceptScheme storedConceptScheme = getEntityService().getConceptSchemeById(identifier);
-			String serializedConceptSchemeJsonLdStr = serializeConceptScheme(ldProfile, storedConceptScheme); 
-						
+			if (((WebConceptSchemeImpl) storedConceptScheme).isDisabled()) {
+				throw new EntityStateException(
+					I18nConstants.MESSAGE_NOT_ACCESSIBLE, I18nConstants.MESSAGE_NOT_ACCESSIBLE
+					, new String[] { EntityStates.DISABLED.toString() });
+				
+			} else {			
+			    serializedConceptSchemeJsonLdStr = serializeConceptScheme(ldProfile, storedConceptScheme); 
+			}
+			
 			Date etagDate = new Date();
 			int etag = etagDate.hashCode(); 
 			
@@ -255,8 +257,8 @@ public class ConceptSchemeController extends BaseRest {
 						
 			// if the user set is disabled and the user is not an admin, respond with HTTP 410
 			HttpStatus httpStatus = null;
-			/*
-			if (existingConceptScheme.isDisabled()) {
+			
+			if (((WebConceptSchemeImpl) existingConceptScheme).isDisabled()) {
 //				if (!isAdmin(wsKey, userToken)) { 
 //					// if the user is the owner, the response should be 410
 //					if (isOwner(existingUserSet, userToken)) {
@@ -272,25 +274,25 @@ public class ConceptSchemeController extends BaseRest {
 //					}
 //				} else {
 					// if the user is admin, the set should be permanently deleted and 204 should be returned
-			getEntityService().deleteConceptScheme(existingConceptScheme.getConceptSchemeId());
-					httpStatus = HttpStatus.NO_CONTENT;
+			    getEntityService().deleteConceptScheme(existingConceptScheme.getEntityIdentifier());
+			    httpStatus = HttpStatus.NO_CONTENT;
 //				}
 			} else {			
-//				// if the user is an Administrator then permanently remove item 
-//				// (and all items that are members of the user set)
-				 httpStatus = HttpStatus.NO_CONTENT;
+   			    // if the user is an Administrator then permanently remove item 
+//			    // (and all items that are members of the user set)
+			    httpStatus = HttpStatus.NO_CONTENT;
 //				 if (isAdmin(wsKey, userToken)) {
 //					 getUserSetService().deleteUserSet(existingUserSet.getIdentifier());
 //				 } else { // otherwise flag it as disabled
 //  					 if (isOwner(existingUserSet, userToken)) {
-  						 getEntityService().disableConceptScheme(existingConceptScheme);
+  			    getEntityService().disableConceptScheme(existingConceptScheme);
 //  					 } else {
 // 						// if the user is a registered user but not the owner, the response should be 401 (unathorized)
 // 						httpStatus = HttpStatus.UNAUTHORIZED;					
 //  					 }
 //				 }
 			}			
-			*/
+			
 			Date etagDate = new Date();
 			int etag = etagDate.hashCode(); 
 			
@@ -357,8 +359,8 @@ public class ConceptSchemeController extends BaseRest {
 			HttpStatus httpStatus = null;
 			int modifiedStr = 0;
 			String serializedConceptSchemeJsonLdStr = "";
-			/*
-			if (existingConceptScheme.isDisabled()) { 
+			
+			if (((WebConceptSchemeImpl) existingConceptScheme).isDisabled()) { 
 				httpStatus = HttpStatus.GONE;
 			} else {			
 				// parse fields of the new user set to an object
@@ -373,19 +375,19 @@ public class ConceptSchemeController extends BaseRest {
 //				getEntityService().removeItemDuplicates(newConceptScheme);
 				
 				// Respond with HTTP 200
-	            // update an existing user set. merge user sets - insert new fields in existing object
-				// update pagination
-				// generate and add a created and modified timestamp to the Set;
-				existingConceptScheme.setModified(newConceptScheme.getModified());
+				// update an existing concept scheme. merge concept schemas 
+				// insert new fields in existing object
+				// generate and add a created and modified timestamp to the concept sheme
+//				existingConceptScheme.setModified(newConceptScheme.getModified());
 				ConceptScheme updatedConceptScheme = getEntityService().updateConceptScheme(
 						(PersistentConceptScheme) existingConceptScheme, newConceptScheme);
 				
 				modifiedStr = updatedConceptScheme.getModified().hashCode();			
-		        httpStatus = HttpStatus.OK;
+				httpStatus = HttpStatus.OK;
 
 				serializedConceptSchemeJsonLdStr = serializeConceptScheme(ldProfile, updatedConceptScheme); 
 			}
-			*/
+			
 			// build response entity with headers
 			MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>(5);
 			headers.add(HttpHeaders.LINK, EntityHttpHeaders.VALUE_LDP_CONTAINER);

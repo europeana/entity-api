@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -40,6 +41,7 @@ import eu.europeana.entity.definitions.model.vocabulary.WebEntityFields;
 import eu.europeana.entity.solr.exception.EntityRetrievalException;
 import eu.europeana.entity.solr.exception.EntitySuggestionException;
 import eu.europeana.entity.solr.service.SolrEntityService;
+import eu.europeana.entity.web.controller.exception.EntityIndexingException;
 import eu.europeana.entity.web.exception.InternalServerException;
 import eu.europeana.entity.web.exception.ParamValidationException;
 import eu.europeana.entity.web.exception.RequestBodyValidationException;
@@ -341,10 +343,10 @@ public class EntityServiceImpl extends BaseEntityServiceImpl implements EntitySe
     private void updateTechnicalFields(ConceptScheme conceptScheme) {
 	Date now = new Date();
 	conceptScheme.setModified(now);
-	//if create
-	if(conceptScheme.getCreated() == null)
+	// if create
+	if (conceptScheme.getCreated() == null)
 	    conceptScheme.setCreated(now);
-	
+
 	conceptScheme.setInternalType(EntityTypes.ConceptScheme.getInternalType());
     }
 
@@ -410,51 +412,66 @@ public class EntityServiceImpl extends BaseEntityServiceImpl implements EntitySe
     public ConceptScheme updateConceptScheme(PersistentConceptScheme persistentConceptScheme,
 	    ConceptScheme webConceptScheme) {
 	mergeConceptSchemeProperties(persistentConceptScheme, webConceptScheme);
-	// updateConceptSchemePagination(persistentConceptScheme);
+
+	Date now = new Date();
+	persistentConceptScheme.setModified(now);
 
 	ConceptScheme res = getMongoPersistence().update(persistentConceptScheme);
+
+	// reindex concept scheme
+	try {
+	    // index concept scheme only if not disabled
+	    if (!((WebConceptSchemeImpl) res).isDisabled()) {
+	        reindexConceptScheme(res, res.getModified());
+	    }
+	} catch (EntityIndexingException e) {
+	    getLogger().warn("The concept scheme could not be reindexed successfully: " + res.getEntityIdentifier(), e);
+	}
+
 	return res;
     }
 
     /**
-     * @deprecated check if the update test must merge the properties or if it
-     *             simply overwrites it
+     * Returns true by successful reindexing.
+     * 
+     * @param res
+     * @return reindexing success status
+     * @throws EntityIndexingException
+     */
+    protected boolean reindexConceptScheme(ConceptScheme res, Date lastIndexing) throws EntityIndexingException {
+	boolean success = false;
+
+	try {
+	    getSolrService().update(res);
+	    success = true;
+	} catch (Exception e) {
+	    throw new EntityIndexingException("cannot reindex concept scheme with ID: " + res.getEntityIdentifier(), e);
+	}
+
+	return success;
+    }
+
+    /**
+     * check if the update test must merge the properties or if it simply overwrites it
      * @param ConceptScheme
      * @param updatedWebConceptScheme
      */
     private void mergeConceptSchemeProperties(PersistentConceptScheme conceptScheme,
 	    ConceptScheme updatedWebConceptScheme) {
-	/*
-	 * if (updatedWebConceptScheme != null) { if
-	 * (updatedWebConceptScheme.getContext() != null) {
-	 * conceptScheme.setContext(updatedWebConceptScheme.getContext()); }
-	 * 
-	 * if (updatedWebConceptScheme.getType() != null) {
-	 * conceptScheme.setType(updatedWebConceptScheme.getType()); }
-	 * 
-	 * if (updatedWebConceptScheme.getIsDefinedBy() != null) {
-	 * conceptScheme.setIsDefinedBy(updatedWebConceptScheme.getIsDefinedBy()); }
-	 * 
-	 * if (updatedWebConceptScheme.getInScheme() != null) {
-	 * conceptScheme.setInScheme(updatedWebConceptScheme.getInScheme()); }
-	 * 
-	 * if (updatedWebConceptScheme.getDefinition() != null) { if
-	 * (conceptScheme.getDefinition() != null) { for (Map.Entry<String, String>
-	 * entry : updatedWebConceptScheme.getDefinition().entrySet()) {
-	 * conceptScheme.getDefinition().put(entry.getKey(), entry.getValue()); } } else
-	 * { conceptScheme.setDefinition(updatedWebConceptScheme.getDefinition()); } }
-	 * 
-	 * if (updatedWebConceptScheme.getPrefLabel() != null) { if
-	 * (conceptScheme.getPrefLabel() != null) { for (Map.Entry<String, String> entry
-	 * : updatedWebConceptScheme.getPrefLabel().entrySet()) {
-	 * conceptScheme.getPrefLabel().put(entry.getKey(), entry.getValue()); } } else
-	 * { conceptScheme.setPrefLabel(updatedWebConceptScheme.getPrefLabel()); } }
-	 * 
-	 * if (updatedWebConceptScheme.getCreated() != null) {
-	 * conceptScheme.setCreated(updatedWebConceptScheme.getCreated()); }
-	 * 
-	 * }
-	 */
+
+	if (updatedWebConceptScheme != null) {
+	   
+	    if (updatedWebConceptScheme.getIsDefinedBy() != null) {
+		conceptScheme.setIsDefinedBy(updatedWebConceptScheme.getIsDefinedBy());
+	    }
+
+	    if (updatedWebConceptScheme.getDefinition() != null) {
+		conceptScheme.setDefinition(updatedWebConceptScheme.getDefinition());
+	    }
+
+	    conceptScheme.setPrefLabelStringMap(updatedWebConceptScheme.getPrefLabelStringMap());
+	}
+
     }
 
     /*
@@ -465,6 +482,13 @@ public class EntityServiceImpl extends BaseEntityServiceImpl implements EntitySe
      */
     public ConceptScheme disableConceptScheme(ConceptScheme existingConceptScheme) {
 	((WebConceptSchemeImpl) existingConceptScheme).setDisabled(true);
+	try {
+	    getSolrService().delete(existingConceptScheme.getEntityId());
+	} catch (Exception e) {
+	    getLogger().error(
+		"Cannot remove concept scheme from solr index: " + existingConceptScheme.getEntityId(), e);
+	}
+
 	return updateConceptScheme((PersistentConceptScheme) existingConceptScheme, existingConceptScheme);
     }
 

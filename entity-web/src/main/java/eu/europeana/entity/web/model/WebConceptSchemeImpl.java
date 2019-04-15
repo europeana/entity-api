@@ -14,11 +14,7 @@ import eu.europeana.entity.definitions.model.vocabulary.WebEntityFields;
 import eu.europeana.entity.mongo.model.PersistentConceptSchemeImpl;
 import ioinformarics.oss.jackson.module.jsonld.annotation.JsonldProperty;
 
-//@JsonPropertyOrder({ WebConceptSchemeModelFields.ID, WebConceptSchemeModelFields.TYPE, 
-//    WebConceptSchemeModelFields.PREF_LABEL, WebConceptSchemeModelFields.DEFINITION, 
-//    WebConceptSchemeModelFields.IS_DEFINED_BY, WebConceptSchemeModelFields.SAME_AS, 
-//    WebConceptSchemeModelFields.CREATED, WebConceptSchemeModelFields.MODIFIED, 
-//    WebConceptSchemeModelFields.TOTAL })
+
 @JsonInclude(value = JsonInclude.Include.NON_EMPTY)
 @JsonIgnoreProperties(value = {WebEntityFields.CONTEXT, WebEntityFields.TYPE, WebEntityFields.ID})
 public class WebConceptSchemeImpl extends PersistentConceptSchemeImpl {
@@ -43,8 +39,7 @@ public class WebConceptSchemeImpl extends PersistentConceptSchemeImpl {
     @Override
     @JsonIgnore
     public void setPrefLabel(Map<String, List<String>> prefLabel) {
-        // TODO Auto-generated method stub
-        //super.setPrefLabel(prefLabel);
+//        super.setPrefLabel(prefLabel);
     }
 
     @JsonldProperty(WebEntityFields.DEFINITION)

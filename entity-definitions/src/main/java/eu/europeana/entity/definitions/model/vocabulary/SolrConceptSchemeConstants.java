@@ -6,6 +6,7 @@ public interface SolrConceptSchemeConstants extends EntitySolrFields {
 	public static final String IS_DEFINED_BY = "isDefinedBy";
 	public static final String TOTAL = "total";
 	public static final String DEFINITION = "skos_definition";
+	public static final String DEFINITION_ALL = DEFINITION + ".*";
 	
 	
 }

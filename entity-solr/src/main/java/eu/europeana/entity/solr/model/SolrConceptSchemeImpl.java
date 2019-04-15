@@ -21,26 +21,29 @@ public class SolrConceptSchemeImpl extends BaseConceptScheme {
      * Constructor
      */
     public SolrConceptSchemeImpl(ConceptScheme conceptScheme) {
-	 this.setCreated(conceptScheme.getCreated());
-	 this.setModified(conceptScheme.getModified());
+	this.setCreated(conceptScheme.getCreated());
+	this.setModified(conceptScheme.getModified());
 	this.setSameAs(conceptScheme.getSameAs());
 	this.setInternalType(conceptScheme.getType());
 	this.setPrefLabelStringMap(conceptScheme.getPrefLabelStringMap());
 	this.setDefinition(conceptScheme.getDefinition());
 	this.setEntityId(conceptScheme.getEntityId());
-
     }
 
     @Override
-    @Field(SolrConceptSchemeConstants.PREF_LABEL)
+    @Field(SolrConceptSchemeConstants.PREF_LABEL_ALL)
     public void setPrefLabelStringMap(Map<String, String> prefLabel) {
-	super.setPrefLabelStringMap(prefLabel);
+	Map<String, String> normalizedPrefLabel = SolrUtils.normalizeStringMapByAddingPrefix(
+		SolrConceptSchemeConstants.PREF_LABEL+".",
+		prefLabel);
+	super.setPrefLabelStringMap(normalizedPrefLabel);
     }
 
     @Override
-    @Field(SolrConceptSchemeConstants.DEFINITION)
+    @Field(SolrConceptSchemeConstants.DEFINITION_ALL)
     public void setDefinition(Map<String, String> definition) {
-	Map<String, String> normalizedDefinition = SolrUtils.normalizeStringMap(SolrConceptSchemeConstants.DEFINITION,
+	Map<String, String> normalizedDefinition = SolrUtils.normalizeStringMapByAddingPrefix(
+		SolrConceptSchemeConstants.DEFINITION+".",
 		definition);
 	super.setDefinition(normalizedDefinition);
     }

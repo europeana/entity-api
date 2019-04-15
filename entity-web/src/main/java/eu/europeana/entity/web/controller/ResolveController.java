@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import eu.europeana.api.common.config.I18nConstants;
 import eu.europeana.api.common.config.swagger.SwaggerSelect;
 import eu.europeana.api.commons.definitions.vocabulary.CommonApiConstants;
 import eu.europeana.api.commons.web.exception.HttpException;
@@ -32,6 +33,7 @@ import eu.europeana.entity.definitions.model.RankedEntity;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
 import eu.europeana.entity.utils.jsonld.EuropeanaEntityLd;
 import eu.europeana.entity.web.exception.InternalServerException;
+import eu.europeana.entity.web.exception.ParamValidationException;
 import eu.europeana.entity.web.service.EntityService;
 import eu.europeana.entity.web.xml.EntityXmlSerializer;
 import io.swagger.annotations.Api;
@@ -63,10 +65,7 @@ public class ResolveController extends BaseRest {
 	    try {			
 	    	validateApiKey(wskey);
 	    	
-	    	String extension = getExtension(request);
-	    	
-	    	//identify required format
-	    	FormatTypes outFormat = getFormatType(extension);		
+	    	FormatTypes outFormat = getFormatType(request);		
 	    	
 	    	Entity entity = entityService.retrieveByUrl(type, namespace, identifier);
 	    	
@@ -99,6 +98,42 @@ public class ResolveController extends BaseRest {
 	    }			
 	}
 
+
+	private FormatTypes getFormatType(HttpServletRequest request) throws ParamValidationException {
+	    String extension = getExtension(request);
+	    String accept = getAcceptedHeader(request);
+	    if(extension == null && accept == null)
+		extension = FormatTypes.jsonld.name(); // default
+	    else if(extension == null && accept != null)
+		extension = accept;
+	    else if(accept != null && (!extension.equals(accept))) {
+		throw new ParamValidationException(I18nConstants.BAD_HEADER_REQUEST, extension, accept, 
+			HttpStatus.BAD_REQUEST, null);
+	    }
+	    //identify required format
+	    FormatTypes outFormat = getFormatType(extension);
+	    return outFormat;
+	}
+
+	private String getAcceptedHeader(HttpServletRequest request) throws ParamValidationException {
+	    String accept = request.getHeader(HttpHeaders.ACCEPT);
+	    if(accept == null || accept.equals("*/*")){
+		return null;
+	    }
+	    if(accept.startsWith(HttpHeaders.CONTENT_TYPE_RDF_XML) || accept.startsWith(HttpHeaders.CONTENT_TYPE_APPLICATION_RDF_XML)
+		    || accept.startsWith(MediaType.APPLICATION_XML_VALUE))
+		accept = FormatTypes.xml.name();
+	    else if(accept.startsWith(HttpHeaders.CONTENT_TYPE_JSONLD_UTF8) || accept.startsWith(HttpHeaders.CONTENT_TYPE_JSON_UTF8)
+		    || accept.startsWith(MediaType.APPLICATION_JSON_VALUE)) {
+		accept = FormatTypes.jsonld.name();
+	    }  else {
+		throw new ParamValidationException(I18nConstants.INVLAID_HEADER_REQUEST, HttpHeaders.ACCEPT, accept, 
+			HttpStatus.NOT_ACCEPTABLE, null);
+	    }
+	    
+	    return accept;
+	}
+	
 	
 	/**
 	 * This method evaluates extension 
@@ -110,7 +145,7 @@ public class ResolveController extends BaseRest {
 		String uri = request.getRequestURI();
 		int extensionBeginPos = uri.indexOf('.');
 		// set default extension
-		String extension = FormatTypes.jsonld.name();
+		String extension = null;// = FormatTypes.jsonld.name();
 		// use extension if provided
 		if (extensionBeginPos != -1)
 			extension = uri.substring(extensionBeginPos+1);

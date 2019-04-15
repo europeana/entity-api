@@ -85,7 +85,13 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-
+		
+		<dependency>
+			<groupId>eu.europeana.corelib</groupId>
+			<artifactId>corelib-utils</artifactId>
+			<version>${version.corelib}</version>
+		</dependency>
+		
 		<!-- spring -->
 		<dependency>
 			<groupId>io.springfox</groupId>

@@ -155,12 +155,7 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 		return ex;
 	}
 
-	public Logger getLogger() {
-		return log;
-	}
-
-	return res;
-    }
+	
 
     public Logger getLogger() {
 	return log;

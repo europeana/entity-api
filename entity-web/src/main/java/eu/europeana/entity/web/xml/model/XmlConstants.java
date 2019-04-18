@@ -44,7 +44,7 @@ public final class XmlConstants {
     public static final String XML_RDAGR2_PROFESSION_OR_OCCUPATION = "rdaGr2:professionOrOccupation";
     public static final String XML_OWL_SAME_AS = "owl:sameAs";
     
-    public static final String XML_EDM_PLACE = "edm:place";
+    public static final String XML_EDM_PLACE = "edm:Place";
     public static final String XML_WGS84_POS_LAT = "wgs84_pos:lat";
     public static final String XML_WGS84_POS_LONG = "wgs84_pos:long";
     public static final String XML_WGS84_POS_ALT = "wgs84_pos:alt";

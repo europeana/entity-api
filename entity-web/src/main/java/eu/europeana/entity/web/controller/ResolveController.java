@@ -120,11 +120,11 @@ public class ResolveController extends BaseRest {
 	    if(accept == null || accept.equals("*/*")){
 		return null;
 	    }
-	    if(accept.startsWith(HttpHeaders.CONTENT_TYPE_RDF_XML) || accept.startsWith(HttpHeaders.CONTENT_TYPE_APPLICATION_RDF_XML)
-		    || accept.startsWith(MediaType.APPLICATION_XML_VALUE))
+	    if(accept.toLowerCase().contains(HttpHeaders.CONTENT_TYPE_RDF_XML) || accept.toLowerCase().contains(HttpHeaders.CONTENT_TYPE_APPLICATION_RDF_XML)
+		    || accept.toLowerCase().contains(MediaType.APPLICATION_XML_VALUE))
 		accept = FormatTypes.xml.name();
-	    else if(accept.startsWith(HttpHeaders.CONTENT_TYPE_JSONLD_UTF8) || accept.startsWith(HttpHeaders.CONTENT_TYPE_JSON_UTF8)
-		    || accept.startsWith(MediaType.APPLICATION_JSON_VALUE)) {
+	    else if(accept.toLowerCase().contains(HttpHeaders.CONTENT_TYPE_JSONLD_UTF8) || accept.toLowerCase().contains(HttpHeaders.CONTENT_TYPE_JSON_UTF8)
+		    || accept.toLowerCase().contains(MediaType.APPLICATION_JSON_VALUE)) {
 		accept = FormatTypes.jsonld.name();
 	    }  else {
 		throw new ParamValidationException(I18nConstants.INVLAID_HEADER_REQUEST, HttpHeaders.ACCEPT, accept, 

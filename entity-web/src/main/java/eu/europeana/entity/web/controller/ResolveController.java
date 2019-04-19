@@ -73,7 +73,7 @@ public class ResolveController extends BaseRest {
 
 	    	Date timestamp = ((RankedEntity)entity).getTimestamp();
 	    	Date etagDate = (timestamp != null)? timestamp : new Date();
-	    	int etag = etagDate.hashCode(); 
+	    	int etag = etagDate.hashCode() + outFormat.hashCode(); 
 	    	
 	    	MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>(5);
 	    	headers.add(HttpHeaders.ETAG, "" + etag);

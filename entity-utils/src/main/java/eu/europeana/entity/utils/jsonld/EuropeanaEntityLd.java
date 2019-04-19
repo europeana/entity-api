@@ -20,6 +20,7 @@ import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.definitions.model.vocabulary.OrganizationSolrFields;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityFields;
+import eu.europeana.entity.utils.EntityUtils;
 
 
 public class EuropeanaEntityLd extends JsonLd {
@@ -65,15 +66,14 @@ public class EuropeanaEntityLd extends JsonLd {
 		
 		return ldResource;
 	}
-
+	
 	private JsonLdProperty createWikimediaResource(String wikimediaCommonsId, String field) {
 		
 		JsonLdProperty depictionProperty = new JsonLdProperty(field);
 		JsonLdPropertyValue depictionValue = new JsonLdPropertyValue();
 		
 		depictionValue.putProperty(new JsonLdProperty(WebEntityFields.ID, wikimediaCommonsId));
-		assert wikimediaCommonsId.contains("Special:FilePath/");
-		String sourceValue = wikimediaCommonsId.replace("Special:FilePath/", "File:");
+		String sourceValue = EntityUtils.createWikimediaResourceString(wikimediaCommonsId);
 		depictionValue.putProperty(new JsonLdProperty(WebEntityFields.SOURCE, sourceValue));
 		
 		depictionProperty.addValue(depictionValue);		

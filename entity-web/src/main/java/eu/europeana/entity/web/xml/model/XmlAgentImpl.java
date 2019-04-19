@@ -34,10 +34,10 @@ public class XmlAgentImpl {
 	}
 	
 	@JacksonXmlProperty(localName = XmlConstants.XML_FOAF_DEPICTION)
-	public RdfResource getDepiction() {
+	public RdfDescription getDepiction() {
 	    	if(agent.getDepiction() == null)
 	    	    return null;
-		return new RdfResource(agent.getDepiction());
+		return new RdfDescription(agent.getDepiction());
 	}
 	
 	@JacksonXmlElementWrapper(useWrapping=false)

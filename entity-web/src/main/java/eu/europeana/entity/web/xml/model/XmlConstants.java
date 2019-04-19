@@ -5,6 +5,8 @@ public final class XmlConstants {
     public static final String XML_RDF_ABOUT = "rdf:about";
     public static final String XML_RDF_RESOURCE = "rdf:resource";
     public static final String XML_LANG = "xml:lang";
+    public static final String XML_RDF_DESCRIPTION = "rdf:Description";
+    public static final String XML_DC_SOURCE = "dc:source";
     
     public static final String XML_SKOS_CONCEPT = "skos:Concept";
     public static final String XML_FOAF_DEPICTION = "foaf:depiction";

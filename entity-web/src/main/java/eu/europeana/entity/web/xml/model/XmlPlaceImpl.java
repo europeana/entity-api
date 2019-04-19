@@ -31,10 +31,10 @@ public class XmlPlaceImpl {
 	}
 	
 	@JacksonXmlProperty(localName = XmlConstants.XML_FOAF_DEPICTION)
-	public RdfDescription getDepiction() {
+	public EdmWebResource getDepiction() {
 	    	if(place.getDepiction() == null)
 	    	    return null;
-		return new RdfDescription(place.getDepiction());
+		return new EdmWebResource(place.getDepiction());
 	}
 	
 	@JacksonXmlProperty(localName = XmlConstants.XML_WGS84_POS_LAT)

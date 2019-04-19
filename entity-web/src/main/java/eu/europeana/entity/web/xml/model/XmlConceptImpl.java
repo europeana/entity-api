@@ -32,10 +32,10 @@ public class XmlConceptImpl {
 	}
     	
 	@JacksonXmlProperty(localName = XmlConstants.XML_FOAF_DEPICTION)
-	public RdfDescription getDepiction() {
+	public EdmWebResource getDepiction() {
 	    	if(concept.getDepiction() == null)
 	    	    return null;
-		return new RdfDescription(concept.getDepiction());
+		return new EdmWebResource(concept.getDepiction());
 	}
 	
 	@JacksonXmlElementWrapper(useWrapping=false)

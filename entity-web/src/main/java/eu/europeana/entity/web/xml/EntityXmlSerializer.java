@@ -20,6 +20,8 @@ public class EntityXmlSerializer {
 	private final String XML_HEADER_TAG_CONCEPT = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" + 
     	    	" <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\r\n" +  
     	    	"          xmlns:foaf=\"http://xmlns.com/foaf/0.1/\"\r\n" + 
+    	    	"         xmlns:dc=\"http://purl.org/dc/elements/1.1/\"\r\n" + 
+    	    	"         xmlns:edm=\"http://www.europeana.eu/schemas/edm/\"\r\n" + 
     	    	"          xmlns:skos=\"http://www.w3.org/2004/02/skos/core#\"\r\n >";
     	private final String XML_HEADER_TAG_AGENT = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" + 
 		    	" <rdf:RDF xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\r\n" + 

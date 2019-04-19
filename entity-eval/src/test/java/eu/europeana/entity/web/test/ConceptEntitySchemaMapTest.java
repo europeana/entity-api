@@ -258,7 +258,7 @@ public class ConceptEntitySchemaMapTest {
         String expectedOutput = IOUtils.toString(stream, StandardCharsets.UTF_8);
         assertEquals(expectedOutput.length(), output.length());
 	
-	//FileUtils.writeStringToFile(new File("concept-jackson-output.xml"), output);
+	FileUtils.writeStringToFile(new File("concept-jackson-output.xml"), output);
     }
 
     /**
@@ -285,7 +285,7 @@ public class ConceptEntitySchemaMapTest {
         String expectedOutput = IOUtils.toString(stream, StandardCharsets.UTF_8);
         assertEquals(expectedOutput.length(), output.length());
 	
-	//FileUtils.writeStringToFile(new File("agent-jackson-output.xml"), output);
+	FileUtils.writeStringToFile(new File("agent-jackson-output.xml"), output);
     }
     
     /**
@@ -312,7 +312,7 @@ public class ConceptEntitySchemaMapTest {
         String expectedOutput = IOUtils.toString(stream, StandardCharsets.UTF_8);
         assertEquals(expectedOutput.length(), output.length());
 	
-	//FileUtils.writeStringToFile(new File("place-jackson-output.xml"), output);
+	FileUtils.writeStringToFile(new File("place-jackson-output.xml"), output);
     }
     
 }

@@ -1,7 +1,5 @@
 package eu.europeana.entity.web.controller;
 
-import java.util.Date;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
@@ -18,18 +16,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import eu.europeana.api.common.config.I18nConstants;
 import eu.europeana.api.common.config.swagger.SwaggerSelect;
+import eu.europeana.api.commons.definitions.vocabulary.CommonApiConstants;
 import eu.europeana.api.commons.web.exception.HttpException;
 import eu.europeana.api.commons.web.http.HttpHeaders;
 import eu.europeana.entity.definitions.exceptions.EntityInstantiationException;
 import eu.europeana.entity.definitions.exceptions.EntityValidationException;
 import eu.europeana.entity.definitions.model.ConceptScheme;
-import eu.europeana.entity.definitions.model.vocabulary.EntityStates;
 import eu.europeana.entity.definitions.model.vocabulary.LdProfiles;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityFields;
 import eu.europeana.entity.web.exception.EntityStateException;
 import eu.europeana.entity.web.exception.InternalServerException;
 import eu.europeana.entity.web.exception.RequestBodyValidationException;
-import eu.europeana.entity.web.exception.authentication.EntityAuthenticationException;
 import eu.europeana.entity.web.http.EntityHttpHeaders;
 import eu.europeana.entity.web.http.SwaggerConstants;
 import eu.europeana.entity.web.model.WebConceptSchemeImpl;
@@ -67,7 +64,7 @@ public class ConceptSchemeController extends BaseRest {
 			produces = {HttpHeaders.CONTENT_TYPE_JSONLD_UTF8, HttpHeaders.CONTENT_TYPE_JSON_UTF8})
 	@ApiOperation(notes = SwaggerConstants.SAMPLES_JSONLD, value = "Create concept scheme", nickname = "create", response = java.lang.Void.class)
 	public ResponseEntity<String> createConceptScheme(
-			@RequestParam(value = WebEntityFields.PARAM_WSKEY, required = false) String wskey,
+			@RequestParam(value = CommonApiConstants.PARAM_WSKEY, required = false) String wskey,
 			@RequestBody String conceptScheme,
 			@RequestParam(value = WebEntityFields.USER_TOKEN, required = false, defaultValue = WebEntityFields.USER_ANONYMOUNS) String userToken,			
 			@RequestParam(value = WebEntityFields.PROFILE, required = false) String profile,
@@ -100,16 +97,12 @@ public class ConceptSchemeController extends BaseRest {
 //			String serializedConceptSchemeJsonLdStr = serializeConceptScheme(profile, storedConceptScheme); 
 			String serializedConceptSchemeJsonLdStr = serializeConceptScheme(ldProfile, storedConceptScheme); 
 						
-//			Date etagDate = new Date();
-//			int etag = etagDate.hashCode(); 
-			
 			// build response
 			MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>(6);
 			headers.add(HttpHeaders.AUTHORIZATION, HttpHeaders.PREFER);
 			headers.add(HttpHeaders.LINK, HttpHeaders.VALUE_LDP_CONTAINER);
 			headers.add(HttpHeaders.LINK, HttpHeaders.VALUE_LDP_RESOURCE);
-//			headers.add(HttpHeaders.ETAG, "" + etag);
-			headers.add(HttpHeaders.ETAG, "" + storedConceptScheme.getModified().hashCode());
+			headers.add(HttpHeaders.ETAG, generateETag(storedConceptScheme.getModified().hashCode()));
 			headers.add(HttpHeaders.ALLOW, HttpHeaders.ALLOW_POST);
 			headers.add(EntityHttpHeaders.PREFERENCE_APPLIED, ldProfile.getPreferHeaderValue());
 //			headers.add(EntityHttpHeaders.PREFERENCE_APPLIED, profile);
@@ -147,7 +140,7 @@ public class ConceptSchemeController extends BaseRest {
 			)
 	@ApiOperation(notes = SwaggerConstants.SAMPLES_JSONLD, value = "Retrieve concept scheme", nickname = "retrieve", response = java.lang.Void.class)
 	public ResponseEntity<String> getConceptScheme(
-			@RequestParam(value = WebEntityFields.PARAM_WSKEY, required = false) String wskey,
+			@RequestParam(value = CommonApiConstants.PARAM_WSKEY, required = false) String wskey,
 			@PathVariable(value = WebEntityFields.PATH_PARAM_CONCEPT_SCHEME_ID) String identifier,
 			@RequestParam(value = WebEntityFields.USER_TOKEN, required = false, defaultValue = WebEntityFields.USER_ANONYMOUNS) String userToken,			
 			@RequestParam(value = WebEntityFields.PROFILE, required = false) String profile,
@@ -174,21 +167,18 @@ public class ConceptSchemeController extends BaseRest {
 			if (((WebConceptSchemeImpl) storedConceptScheme).isDisabled()) {
 				throw new EntityStateException(
 					I18nConstants.MESSAGE_NOT_ACCESSIBLE, I18nConstants.MESSAGE_NOT_ACCESSIBLE
-					, new String[] { EntityStates.DISABLED.toString() });
+					, new String[] { "disabled" });
 				
 			} else {			
 			    serializedConceptSchemeJsonLdStr = serializeConceptScheme(ldProfile, storedConceptScheme); 
 			}
-			
-			Date etagDate = new Date();
-			int etag = etagDate.hashCode(); 
 			
 			// build response
 			MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>(6);
 			headers.add(HttpHeaders.AUTHORIZATION, HttpHeaders.PREFER);
 			headers.add(HttpHeaders.LINK, HttpHeaders.VALUE_LDP_CONTAINER);
 			headers.add(HttpHeaders.LINK, HttpHeaders.VALUE_LDP_RESOURCE);
-			headers.add(HttpHeaders.ETAG, "" + etag);
+			headers.add(HttpHeaders.ETAG, generateETag(0));
 			headers.add(HttpHeaders.ALLOW, HttpHeaders.ALLOW_POST);
 			headers.add(EntityHttpHeaders.PREFERENCE_APPLIED, ldProfile.getPreferHeaderValue());
 
@@ -222,7 +212,7 @@ public class ConceptSchemeController extends BaseRest {
 	@RequestMapping(value = { "/scheme/{identifier}" }, method = {RequestMethod.DELETE})
 	@ApiOperation(value = "Delete an existing concept scheme", nickname = "delete", response = java.lang.Void.class)
 	public ResponseEntity<String> deleteConceptScheme(
-			@RequestParam(value = WebEntityFields.PARAM_WSKEY, required = false) String wskey,
+			@RequestParam(value = CommonApiConstants.PARAM_WSKEY, required = false) String wskey,
 			@PathVariable(value = WebEntityFields.PATH_PARAM_CONCEPT_SCHEME_ID) String identifier,
 			@RequestParam(value = WebEntityFields.USER_TOKEN, required = false, defaultValue = WebEntityFields.USER_ANONYMOUNS) String userToken,			
 			@RequestParam(value = WebEntityFields.PROFILE, required = false) String profile,
@@ -293,15 +283,12 @@ public class ConceptSchemeController extends BaseRest {
 //				 }
 			}			
 			
-			Date etagDate = new Date();
-			int etag = etagDate.hashCode(); 
-			
 			// build response
 			MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>(6);
 			headers.add(HttpHeaders.AUTHORIZATION, HttpHeaders.PREFER);
 			headers.add(HttpHeaders.LINK, HttpHeaders.VALUE_LDP_CONTAINER);
 			headers.add(HttpHeaders.LINK, HttpHeaders.VALUE_LDP_RESOURCE);
-			headers.add(HttpHeaders.ETAG, "" + etag);
+			headers.add(HttpHeaders.ETAG, generateETag(0));
 			headers.add(HttpHeaders.ALLOW, EntityHttpHeaders.ALLOW_GPPD);
 			headers.add(EntityHttpHeaders.PREFERENCE_APPLIED, ldProfile.getPreferHeaderValue());
 
@@ -325,7 +312,7 @@ public class ConceptSchemeController extends BaseRest {
 	@RequestMapping(value = {"/scheme/{identifier}"}, method = RequestMethod.PUT, 
 			produces = {HttpHeaders.CONTENT_TYPE_JSONLD_UTF8, HttpHeaders.CONTENT_TYPE_JSON_UTF8})
 	@ApiOperation(notes = SwaggerConstants.UPDATE_SAMPLES_JSONLD, value = "Update an existing concept scheme", nickname = "update", response = java.lang.Void.class)
-	public ResponseEntity<String> updateUserSet(@RequestParam(value = WebEntityFields.PARAM_WSKEY, required = false) String wskey,
+	public ResponseEntity<String> updateUserSet(@RequestParam(value = CommonApiConstants.PARAM_WSKEY, required = false) String wskey,
 			@PathVariable(value = WebEntityFields.PATH_PARAM_CONCEPT_SCHEME_ID) String identifier,
 			@RequestBody String conceptScheme,
 			@RequestParam(value = WebEntityFields.USER_TOKEN, required = false, defaultValue = WebEntityFields.USER_ANONYMOUNS) String userToken,
@@ -357,7 +344,7 @@ public class ConceptSchemeController extends BaseRest {
 
 			// check if the Set is disabled, respond with HTTP 410
 			HttpStatus httpStatus = null;
-			int modifiedStr = 0;
+			int modifiedDate = 0;
 			String serializedConceptSchemeJsonLdStr = "";
 			
 			if (((WebConceptSchemeImpl) existingConceptScheme).isDisabled()) { 
@@ -382,7 +369,7 @@ public class ConceptSchemeController extends BaseRest {
 				ConceptScheme updatedConceptScheme = getEntityService().updateConceptScheme(
 						(PersistentConceptScheme) existingConceptScheme, newConceptScheme);
 				
-				modifiedStr = updatedConceptScheme.getModified().hashCode();			
+				modifiedDate = updatedConceptScheme.getModified().hashCode();			
 				httpStatus = HttpStatus.OK;
 
 				serializedConceptSchemeJsonLdStr = serializeConceptScheme(ldProfile, updatedConceptScheme); 
@@ -395,8 +382,7 @@ public class ConceptSchemeController extends BaseRest {
 			headers.add(HttpHeaders.ALLOW, EntityHttpHeaders.ALLOW_GPD);
 			headers.add(HttpHeaders.VARY, EntityHttpHeaders.PREFER);
 			headers.add(EntityHttpHeaders.PREFERENCE_APPLIED, ldProfile.getPreferHeaderValue());
-			// generate “ETag”;
-			headers.add(HttpHeaders.ETAG, "" + modifiedStr);
+			headers.add(HttpHeaders.ETAG, generateETag(modifiedDate));
 
 			ResponseEntity<String> response = new ResponseEntity<String>(
 					serializedConceptSchemeJsonLdStr, headers, httpStatus);

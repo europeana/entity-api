@@ -1,6 +1,5 @@
 package eu.europeana.entity.definitions.model.impl;
 
-import java.util.List;
 import java.util.Map;
 
 import eu.europeana.entity.definitions.model.ConceptScheme;
@@ -37,17 +36,6 @@ public class BaseConceptScheme extends BaseEntity implements ConceptScheme {
 	public void setDefinition(Map<String, String> definition) {
 		this.definition = definition;
 	}
-
-		
-//	@Override
-//	public boolean isDisabled() {
-//		return disabled;
-//	}
-
-//	@Override
-//	public void setDisabled(boolean disabled) {
-//		this.disabled = disabled;		
-//	}
 	
 	@Override
 	public int getTotal() {
@@ -63,6 +51,5 @@ public class BaseConceptScheme extends BaseEntity implements ConceptScheme {
 	public String getType() {
 	    return getInternalType();
 	}
-
 	
 }

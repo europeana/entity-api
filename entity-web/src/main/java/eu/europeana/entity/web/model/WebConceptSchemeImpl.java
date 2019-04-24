@@ -3,7 +3,6 @@ package eu.europeana.entity.web.model;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
 import org.bson.types.ObjectId;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;

@@ -1,6 +1,7 @@
 package eu.europeana.entity.web.controller;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -463,4 +464,23 @@ public abstract class BaseRest {
 //					I18nConstants.USER_NOT_AUTHORIZED, new String[] { "User ID: " + queryUser }, HttpStatus.FORBIDDEN);
 //		}
 	}	
+	
+	/**
+	 * This method generates etag for response header.
+	 * @param modifiedDate The date of the last modification of entity
+	 * @return etag value
+	 */
+    public String generateETag(int modifiedDate) {
+	String res = "";
+
+	if (modifiedDate > 0) {
+	    res = "" + modifiedDate;
+	} else {
+	    Date etagDate = new Date();
+	    int etag = etagDate.hashCode();
+	    res = "" + etag;
+	}
+	return res;
+    }
+	
 }

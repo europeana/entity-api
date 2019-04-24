@@ -106,7 +106,6 @@ public interface WebEntityFields {
 	//
 	// Query Params
 	//
-	public static final String PARAM_WSKEY = "wskey";
 	public static final String USER_TOKEN = "userToken";
 	public static final String PROFILE = "profile";
 	public static final String PATH_PARAM_CONCEPT_SCHEME_ID = "identifier";

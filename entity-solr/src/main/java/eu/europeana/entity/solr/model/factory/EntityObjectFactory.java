@@ -62,7 +62,7 @@ public class EntityObjectFactory extends AbstractModelObjectFactory<Entity, Enti
 			ret = SolrPlaceImpl.class;
 			break;
 		case ConceptScheme:
-//			ret = SolrConceptSchemeImpl.class;
+			ret = SolrConceptSchemeImpl.class;
 			break;
 		default:
 			throw new RuntimeException(

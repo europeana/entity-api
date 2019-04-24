@@ -36,5 +36,5 @@ public interface SuggestionFields {
 //	public static final String COUNTRY =  WebEntityFields.COUNTRY;
 	public static final String IS_PART_OF = WebEntityFields.IS_PART_OF;
 	
-	
+	public static final String ALL_TYPES_EXCLUDING_CONCEPT_SCHEME = "!type:ConceptScheme";
 }

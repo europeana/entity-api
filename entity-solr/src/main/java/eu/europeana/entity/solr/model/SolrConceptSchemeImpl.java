@@ -30,6 +30,8 @@ public class SolrConceptSchemeImpl extends BaseConceptScheme {
 	this.setEntityId(conceptScheme.getEntityId());
     }
 
+    public SolrConceptSchemeImpl() {}
+
     @Override
     @Field(SolrConceptSchemeConstants.PREF_LABEL_ALL)
     public void setPrefLabelStringMap(Map<String, String> prefLabel) {

@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import eu.europeana.entity.definitions.model.vocabulary.SolrConceptSchemeConstants;
+
 /**
  * This class implements supporting methods for Solr*Impl classes e.g. normalization of the content
  * to match to the required output format.
@@ -40,14 +42,17 @@ public class SolrUtils {
 	 * @param languageMap e.g. prefLabel
 	 * @return normalized content in format Map<String, String>  
 	 */
-	public static Map<String, String> normalizeStringMapByAddingPrefix(String fieldNamePrefix, Map<String, String> languageMap) {
-	    Map<String, String> res;
-		res = languageMap.entrySet().stream().collect(Collectors.toMap(
-				entry -> fieldNamePrefix + entry.getKey(), 
-				entry -> entry.getValue())
-		);	
-	    return res;
+    public static Map<String, String> normalizeStringMapByAddingPrefix(String fieldNamePrefix,
+	    Map<String, String> languageMap) {
+	Map<String, String> res;
+	if (!languageMap.keySet().iterator().next().contains(fieldNamePrefix)) {
+	    res = languageMap.entrySet().stream()
+		    .collect(Collectors.toMap(entry -> fieldNamePrefix + entry.getKey(), entry -> entry.getValue()));
+	} else {
+	    res = languageMap;
 	}
+	return res;
+    }
 	
 	/**
 	 * This method removes unnecessary prefixes from the fields in format Map<String, List<String>> 

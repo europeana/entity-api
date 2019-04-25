@@ -70,10 +70,8 @@
 		<module>entity-definitions</module>
 		<module>entity-utils</module>
 		<module>entity-solr</module>
-		<module>entity-web</module>
-		<!-- 
 		<module>entity-mongo</module>
-		-->
+		<module>entity-web</module>
 	</modules>
 	<build>
 		<!-- configure source and output locations -->

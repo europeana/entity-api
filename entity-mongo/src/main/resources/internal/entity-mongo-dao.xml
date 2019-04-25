@@ -27,7 +27,7 @@
 	">
 			
 	<!-- grouping dao bean (concrete instance) -->
-	<bean id="entity_db_conceptSchemeDao" class="eu.europeana.entity.mongo.dao.ConceptSchemeIdImpl">
+	<bean id="entity_db_conceptSchemeDao" class="eu.europeana.entity.mongo.dao.ConceptSchemeDaoImpl">
 		<constructor-arg type="java.lang.Class" value="eu.europeana.entity.web.model.WebConceptSchemeImpl" />
 		<constructor-arg ref="entity_db_morphia_datastore_conceptScheme" name="datastore"/>
 	</bean>

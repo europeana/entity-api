@@ -10,10 +10,10 @@ import eu.europeana.api.commons.nosql.dao.impl.NosqlDaoImpl;
 import eu.europeana.grouping.mongo.model.internal.GeneratedGroupingIdImpl;
 import eu.europeana.grouping.mongo.model.internal.PersistentConceptScheme;
 
-public class ConceptSchemeIdImpl <E extends PersistentConceptScheme, T extends Serializable>
-		extends NosqlDaoImpl<E, T> implements ConceptSchemeId<E, T>{
+public class ConceptSchemeDaoImpl <E extends PersistentConceptScheme, T extends Serializable>
+		extends NosqlDaoImpl<E, T> implements ConceptSchemeDao<E, T>{
 
-	public ConceptSchemeIdImpl(Class<E> clazz, Datastore datastore) {
+	public ConceptSchemeDaoImpl(Class<E> clazz, Datastore datastore) {
 		super(datastore, clazz);
 	}
 

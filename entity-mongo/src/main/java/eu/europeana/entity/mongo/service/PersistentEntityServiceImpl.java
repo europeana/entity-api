@@ -9,7 +9,7 @@ import eu.europeana.api.commons.nosql.service.impl.AbstractNoSqlServiceImpl;
 import eu.europeana.entity.definitions.exceptions.EntityValidationException;
 import eu.europeana.entity.definitions.model.ConceptScheme;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
-import eu.europeana.entity.mongo.dao.ConceptSchemeId;
+import eu.europeana.entity.mongo.dao.ConceptSchemeDao;
 import eu.europeana.entity.mongo.model.PersistentConceptSchemeImpl;
 import eu.europeana.grouping.mongo.model.internal.PersistentConceptScheme;
 
@@ -75,8 +75,8 @@ public class PersistentEntityServiceImpl extends AbstractNoSqlServiceImpl<Persis
     /**
      * @return
      */
-    protected ConceptSchemeId<PersistentConceptScheme, String> getEntityDao() {
-	return (ConceptSchemeId<PersistentConceptScheme, String>) getDao();
+    protected ConceptSchemeDao<PersistentConceptScheme, String> getEntityDao() {
+	return (ConceptSchemeDao<PersistentConceptScheme, String>) getDao();
     }
 
     /*

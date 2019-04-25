@@ -4,6 +4,7 @@ import eu.europeana.entity.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.solr.model.SolrAgentImpl;
 import eu.europeana.entity.solr.model.SolrConceptImpl;
+import eu.europeana.entity.solr.model.SolrConceptSchemeImpl;
 import eu.europeana.entity.solr.model.SolrOrganizationImpl;
 import eu.europeana.entity.solr.model.SolrPlaceImpl;
 
@@ -59,6 +60,9 @@ public class EntityObjectFactory extends AbstractModelObjectFactory<Entity, Enti
 			break;
 		case Timespan:
 			ret = SolrPlaceImpl.class;
+			break;
+		case ConceptScheme:
+			ret = SolrConceptSchemeImpl.class;
 			break;
 		default:
 			throw new RuntimeException(

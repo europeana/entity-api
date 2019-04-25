@@ -26,6 +26,15 @@ entity.environment=development
 # Url Format: socks://username:password@socks_proxy_server:1080 
 socks.proxy.url =
 
+#Format: "mongodb://<USER>:<PASSWORD>@<HOST>:<PORT>/<DATABASE>"
+#USER, PASSWORD are optional (in local environment) 
+mongodb.entity.connectionUrl=mongodb://127.0.0.1:27017/annotation_test
+#SSL truststore
+#the name of the truststore. Must be available in the classpath in the /config folder
+mongodb.entity.truststore=
+#password required to access the truststore
+mongodb.entity.truststorepass=
+
 # solr connection settings
 # core search (default) 
 solr.entity.url = http://localhost:8282/solr/entity

@@ -5,10 +5,14 @@ import eu.europeana.api.commons.definitions.search.ResultSet;
 import eu.europeana.api.commons.definitions.search.result.ResultsPage;
 import eu.europeana.api.commons.web.exception.HttpException;
 import eu.europeana.entity.definitions.model.Entity;
+import eu.europeana.entity.definitions.model.ConceptScheme;
 import eu.europeana.entity.definitions.model.search.SearchProfiles;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.definitions.model.vocabulary.SuggestAlgorithmTypes;
+import eu.europeana.entity.web.exception.RequestBodyValidationException;
+import eu.europeana.entity.web.exception.response.ConceptSchemeNotFoundException;
 import eu.europeana.entity.web.model.view.EntityPreview;
+import eu.europeana.grouping.mongo.model.internal.PersistentConceptScheme;
 
 public interface EntityService {
 
@@ -81,4 +85,60 @@ public interface EntityService {
 	 */
 	public <T extends Entity> ResultsPage<T> buildResultsPage(Query searchQuery, ResultSet<T> results,
 			StringBuffer requestUrl, String reqParams);
+	
+	/**
+	 * This methods converts ConceptScheme object from JsonLd string format to a ConceptScheme object
+	 * @param conceptSchemeJsonLdStr
+	 * @return a ConceptScheme object
+	 * @throws HttpException
+	 */
+	public ConceptScheme parseConceptSchemeLd(String conceptSchemeJsonLdStr) throws HttpException;	
+	
+	/**
+	 * This method stores ConceptScheme object in database and in Solr.
+	 * @param conceptScheme object
+	 * @return stored conceptScheme object
+	 */
+	public ConceptScheme storeConceptScheme(ConceptScheme conceptScheme);	
+	
+	/**
+	 * This method validates and processes the ConceptScheme description for format and mandatory fields
+     * if false responds with HTTP 400
+	 * @param webConceptScheme
+	 * @throws RequestBodyValidationException 
+	 * @throws eu.europeana.entity.web.exception.RequestBodyValidationException 
+	 */
+	public void validateWebConceptScheme(ConceptScheme webConceptScheme) throws RequestBodyValidationException;	
+	
+	/**
+	 * This method returns ConceptScheme object for given concept scheme identifier.
+	 * @param concept scheme identifier
+	 * @return ConceptScheme object
+	 */
+	public ConceptScheme getConceptSchemeById(String conceptSchemeId) throws ConceptSchemeNotFoundException; 
+			
+	
+	/**
+	 * This method deletes concept scheme by concept scheme Id value.
+	 * @param conceptSchemeId The id of the user set
+	 * @throws ConceptSchemeNotFoundException 
+	 */
+	public void deleteConceptScheme(String conceptSchemeId) throws ConceptSchemeNotFoundException;	
+	
+	/**
+	 * update (stored) <code>persistentConceptScheme</code> with values from <code>webConceptScheme</code>
+	 * @param persistentConceptScheme
+	 * @param webConceptScheme
+	 * @return
+	 */
+	public ConceptScheme updateConceptScheme(
+			PersistentConceptScheme persistentConceptScheme, ConceptScheme webConceptScheme);
+		
+	/**
+	 * This method disables concept scheme in database
+	 * @param existingConceptScheme
+	 * @return disabled ConceptScheme
+	 */
+	public ConceptScheme disableConceptScheme(ConceptScheme existingConceptScheme);					 
+		
 }

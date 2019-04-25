@@ -45,9 +45,8 @@ public class EntityQueryBuilder extends QueryBuilder{
 			query.addFilterQuery("suggest_filters:"+ SuggestionFields.FILTER_IN_EUROPEANA);
 		
 		String typeCondition = buildEntityTypeCondition(entityTypes);
-		if(typeCondition != null)
+		if(typeCondition != null) 
 			query.addFilterQuery("suggest_filters:"+ typeCondition);
-		
 	}
 
 	private void addFiltersToSuggestQuery(SolrQuery query, EntityTypes[] entityTypes, String scope) {
@@ -61,7 +60,8 @@ public class EntityQueryBuilder extends QueryBuilder{
 		//add filters to query
 		String filter = null;
 		if(entityTypeFilter == null && scopeFilter == null)
-			return;
+		        filter = SuggestionFields.CONCEPT_SCHEME;
+		
 		//append entity type filter
 		if(entityTypeFilter != null)
 			filter = entityTypeFilter;
@@ -97,8 +97,11 @@ public class EntityQueryBuilder extends QueryBuilder{
 			solrQuery.addFilterQuery("suggest_filters:"+ SuggestionFields.FILTER_IN_EUROPEANA);
 		
 		String typeCondition = buildEntityTypeCondition(entityTypes);
-		if(typeCondition != null)
+		if(typeCondition != null) {
 			solrQuery.addFilterQuery("suggest_filters:"+ typeCondition);
+		} else { // that means return all types except ConceptScheme
+			solrQuery.addFilterQuery(SuggestionFields.ALL_TYPES_EXCLUDING_CONCEPT_SCHEME);
+		}
 		
 		// ?q=label%3AMoz*&sort=derived_score+desc&rows=100&fl=payload%2C+id%2C+derived_score&wt=json&indent=true&hl=true&hl.fl=label&hl.q=Moz*&hl.method=unified&hl.tag.pre=%3Cb%3E&&hl.tag.post=%3C/b%3E
 		fields = new String[] { OrganizationSolrFields.ID, OrganizationSolrFields.PAYLOAD, OrganizationSolrFields.DERIVED_SCORE };
@@ -118,6 +121,11 @@ public class EntityQueryBuilder extends QueryBuilder{
 		return solrQuery;
 	}
 
+	/**
+	 * This method selects supported entity types, which should be included in the response
+	 * @param entityTypes
+	 * @return Solr query filter for entity types
+	 */
 	private String buildEntityTypeCondition(EntityTypes[] entityTypes) {
 		if(entityTypes == null || entityTypes.length == 0 || EntityTypes.arrayHasValue(entityTypes, EntityTypes.All))
 			return null;

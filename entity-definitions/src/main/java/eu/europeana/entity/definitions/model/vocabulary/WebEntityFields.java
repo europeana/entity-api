@@ -21,6 +21,11 @@ public interface WebEntityFields {
 	public static final String NOTE = "note";
 	public static final String DEPICTION = "depiction";
 	public static final String SOURCE = "source";
+	
+	//common administrative information
+	public static final String CREATED = "created";
+	public static final String MODIFIED = "modified"; 
+	
 
 	// concept fields
 	public static final String NOTATION = "notation";
@@ -86,5 +91,13 @@ public interface WebEntityFields {
 	public static final String HAS_GEO = "hasGeo";
 	public static final String HAS_ADDRESS = "hasAddress";
 	public static final String ADDRESS_TYPE = "Address";
+	
+	// ConceptScheme fields
+	public static final String IS_DEFINED_BY = "isDefinedBy";
+	public static final String DEFINITION = "definition"; 
+	public static final String TOTAL = "total";	
 
+	// Authentication
+	public static final String USER_ADMIN = "admin";	
+	
 }

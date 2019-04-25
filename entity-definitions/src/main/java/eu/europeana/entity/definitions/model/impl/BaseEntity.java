@@ -17,16 +17,16 @@ public class BaseEntity implements Entity, RankedEntity {
 	protected String TMP_KEY = "def";
 	
 	// common functional fields
-//	private String about;
 	private String internalType;
 	private String entityId;
+	// depiction
+	private String depiction;
 	private Map<String, List<String>> note;
 	private Map<String, String> prefLabel;
 	private Map<String, List<String>> altLabel;
 	private Map<String, List<String>> hiddenLabel;
 	private Map<String, List<String>> tmpPrefLabel;
 	
-	private String definition;
 	private String identifier[];
 	private String[] sameAs;
 	private String[] isRelatedTo;
@@ -42,11 +42,13 @@ public class BaseEntity implements Entity, RankedEntity {
 	private int europeanaDocCount;
 	private float derivedScore;
 
-	// other derived technical fields?
-	private String context;
+	// The time at which the Set was created by the user. 
+	private Date created;
+
+	// The time at which the Set was modified, after creation. 
+	private Date modified;
 	
-	// depiction
-	private String depiction;
+
 
 	public Map<String, String> getPrefLabelStringMap() {
 		return prefLabel;
@@ -78,14 +80,6 @@ public class BaseEntity implements Entity, RankedEntity {
 
 	public void setNote(Map<String, List<String>> note) {
 		this.note = note;
-	}
-
-	public String getDefinition() {
-		return definition;
-	}
-
-	public void setDefinition(String definition) {
-		this.definition = definition;
 	}
 
 	public String getInternalType() {
@@ -166,14 +160,6 @@ public class BaseEntity implements Entity, RankedEntity {
 	@Override
 	public void setDerivedScore(float derivedScore) {
 		this.derivedScore = derivedScore;
-	}
-
-	public String getContext() {
-		return context;
-	}
-
-	public void setContext(String context) {
-		this.context = context;
 	}
 
 	public String[] getIsRelatedTo() {
@@ -311,6 +297,27 @@ public class BaseEntity implements Entity, RankedEntity {
 	public String getEntityIdentifier() {
 		String[] splitArray = this.getAbout().split("/");
 		return splitArray[splitArray.length-1];
+	}
+
+	
+	@Override
+	public Date getCreated() {
+		return created;
+	}
+
+	@Override
+	public void setCreated(Date created) {
+		this.created = created;
+	}
+
+	@Override
+	public Date getModified() {
+		return modified;
+	}
+
+	@Override
+	public void setModified(Date modified) {
+		this.modified = modified;
 	}
 
 }

@@ -11,6 +11,7 @@ import org.apache.stanbol.commons.jsonld.JsonLdResource;
 import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException;
 import eu.europeana.entity.definitions.model.Agent;
 import eu.europeana.entity.definitions.model.Concept;
+import eu.europeana.entity.definitions.model.ConceptScheme;
 import eu.europeana.entity.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.Organization;
 import eu.europeana.entity.definitions.model.Place;
@@ -117,6 +118,10 @@ public class EuropeanaEntityLd extends JsonLd {
 			putTimespanSpecificProperties((Timespan) entity, jsonLdResource);
 			break;
 			
+		case ConceptScheme:
+			putConceptSchemeSpecificProperties((ConceptScheme) entity, jsonLdResource);
+			break;
+			
 		default:
 			break;
 		}
@@ -128,6 +133,13 @@ public class EuropeanaEntityLd extends JsonLd {
 		putStringArrayProperty(WebEntityFields.BEGIN, entity.getBegin(), jsonLdResource);
 		putStringArrayProperty(WebEntityFields.END, entity.getEnd(), jsonLdResource);
 		
+	}
+
+	private void putConceptSchemeSpecificProperties(ConceptScheme entity, JsonLdResource jsonLdResource) {
+		putMapOfStringProperty(WebEntityFields.DEFINITION, entity.getDefinition(), "", ldResource);
+		putStringProperty(WebEntityFields.IS_DEFINED_BY, entity.getIsDefinedBy(), jsonLdResource);
+		putStringProperty(WebEntityFields.CREATED, entity.getCreated().toString(), jsonLdResource);
+		putStringProperty(WebEntityFields.MODIFIED, entity.getModified().toString(), jsonLdResource);
 	}
 
 	private void putPlaceSpecificProperties(Place entity, JsonLdResource jsonLdResource) {

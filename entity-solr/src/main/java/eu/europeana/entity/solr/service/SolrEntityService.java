@@ -3,10 +3,12 @@ package eu.europeana.entity.solr.service;
 import eu.europeana.api.commons.definitions.search.Query;
 import eu.europeana.api.commons.definitions.search.ResultSet;
 import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException;
+import eu.europeana.entity.definitions.model.ConceptScheme;
 import eu.europeana.entity.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.vocabulary.ConceptSolrFields;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.solr.exception.EntityRetrievalException;
+import eu.europeana.entity.solr.exception.EntityServiceException;
 import eu.europeana.entity.solr.exception.EntitySuggestionException;
 import eu.europeana.entity.web.model.view.EntityPreview;
 
@@ -91,5 +93,31 @@ public interface SolrEntityService {
 	 */
 	public String searchByCoref(String uri) throws EntityRetrievalException;
 	
+	/**
+	 * This method stores a ConceptScheme object in SOLR.
+	 * @param conceptScheme
+	 * @return result of the store method - true if successful
+	 */
+	public void store(ConceptScheme conceptScheme) throws EntityServiceException;
+
+	/**
+	 * This method stores a ConceptScheme object in SOLR.
+	 * @param conceptScheme
+	 * @param doCommit commit
+	 */
+	public void store(ConceptScheme conceptScheme, boolean doCommit) throws EntityServiceException;	
+
+	/**
+	 * @param entityUrl
+	 * @throws EntityServiceException
+	 */
+	public void delete(String entityUrl) throws EntityServiceException;
+
+	/**
+	 * @param conceptScheme
+	 * @return
+	 * @throws EntityServiceException
+	 */
+	public void update(ConceptScheme conceptScheme) throws EntityServiceException;
 
 }

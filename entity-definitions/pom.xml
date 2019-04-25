@@ -62,6 +62,5 @@
 			<artifactId>commons-lang3</artifactId>
 			<version>${version.commonsLang3}</version>
 		</dependency>
-		
 	</dependencies>
 </project>

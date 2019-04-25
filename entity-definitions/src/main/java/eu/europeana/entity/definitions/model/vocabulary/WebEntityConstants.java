@@ -78,5 +78,13 @@ public interface WebEntityConstants extends WebEntityFields{
 	public static final String HIGHLIGHT_END_MARKER = "</b>";
 	public static final String ROWS = "rows";
 
-	
+	// Defaults
+	public static final String USER_ANONYMOUNS = "anonymous";
+	public static final String PROFILE_MINIMAL = "minimal";	
+	public final static String BASE_CONCEPT_SCHEME_URL = "http://data.europeana.eu/scheme/";
+	public static final String USER_TOKEN = "userToken";
+		
+	// Web application
+	public static final String CONCEPT_SCHEME = "conceptScheme";	
+	public static final String CONCEPT_SCHEME_APPLICATION_NAME = "webConceptScheme";	
 }

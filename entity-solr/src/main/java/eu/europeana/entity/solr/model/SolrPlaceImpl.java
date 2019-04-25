@@ -17,12 +17,6 @@ public class SolrPlaceImpl extends BasePlace implements Place {
 	// Need to annotate concept fields as well as this class doesn't extend the
 	// SolrConceptImpl
 	@Override
-	@Field(ConceptSolrFields.RDF_ABOUT)
-	public void setAbout(String about) {
-		super.setAbout(about);
-	}
-
-	@Override
 	@Field(AgentSolrFields.SAME_AS)
 	public void setSameAs(String[] sameAs) {
 		super.setSameAs(sameAs);

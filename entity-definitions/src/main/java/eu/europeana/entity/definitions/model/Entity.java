@@ -1,5 +1,6 @@
 package eu.europeana.entity.definitions.model;
 
+import java.util.Date;
 import java.util.Map;
 
 import eu.europeana.corelib.definitions.edm.entity.ContextualClass;
@@ -7,10 +8,6 @@ import eu.europeana.corelib.definitions.edm.entity.ContextualClass;
 //import eu.europeana.corelib.definitions.edm.entity.ContextualClass;
 
 public interface Entity extends ContextualClass {
-
-	public String getContext();
-
-	public void setContext(String context);
 
 	public String[] getIdentifier();
 
@@ -41,4 +38,17 @@ public interface Entity extends ContextualClass {
 	 */
 	public Map<String, String> getPrefLabelStringMap();
 	
+	/**
+	 * @return
+	 */
+	Date getCreated();
+
+	void setCreated(Date created);
+
+	/**
+	 * @return
+	 */
+	Date getModified();
+
+	void setModified(Date modified);
 }

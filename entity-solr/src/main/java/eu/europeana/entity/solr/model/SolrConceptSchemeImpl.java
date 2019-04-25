@@ -17,6 +17,8 @@ import eu.europeana.entity.definitions.model.vocabulary.SolrConceptSchemeConstan
  */
 public class SolrConceptSchemeImpl extends BaseConceptScheme {
 
+    private String[] suggestFilters = {"ConceptScheme"};
+    
     /**
      * Constructor
      */
@@ -78,6 +80,15 @@ public class SolrConceptSchemeImpl extends BaseConceptScheme {
     @Field(SolrConceptSchemeConstants.MODIFIED)
     public void setModified(Date modified) {
 	super.setModified(modified);
+    }
+
+    public String[] getSuggestFilters() {
+        return suggestFilters;
+    }
+
+    @Field(SolrConceptSchemeConstants.SUGGEST_FILTERS)
+    public void setSuggestFilters(String[] suggestFilters) {
+        this.suggestFilters = suggestFilters;
     }
 
 }

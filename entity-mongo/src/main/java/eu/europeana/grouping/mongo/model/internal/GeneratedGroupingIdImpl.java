@@ -10,7 +10,7 @@ import org.mongodb.morphia.annotations.Id;
  * @author GrafR
  *
  */
-@Entity(value="groupingIdGenerator", noClassnameStored=true)
+@Entity(value="sequenceGenerator", noClassnameStored=true)
 public class GeneratedGroupingIdImpl {
 
 	/**

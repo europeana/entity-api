@@ -18,7 +18,6 @@ import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
 import eu.europeana.entity.utils.jsonld.EntityJsonComparator;
 import eu.europeana.entity.web.model.view.AgentPreview;
-import eu.europeana.entity.web.model.view.ConceptSchemePreview;
 import eu.europeana.entity.web.model.view.EntityPreview;
 import eu.europeana.entity.web.model.view.OrganizationPreview;
 import eu.europeana.entity.web.model.view.PlacePreview;
@@ -165,7 +164,6 @@ public class SuggestionSetSerializer extends JsonLd {
 				break;
 
 			case ConceptScheme:
-				putConceptSchemeSpecificProperties((ConceptSchemePreview) entityPreview, entityPreviewPropValue);
 				break;
 
 			default:
@@ -185,21 +183,6 @@ public class SuggestionSetSerializer extends JsonLd {
 
 		if (entityPreview.getEnd() != null)
 			entityPreviewPropValue.putProperty(new JsonLdProperty(WebEntityConstants.END, entityPreview.getEnd()));
-	}
-
-	private void putConceptSchemeSpecificProperties(ConceptSchemePreview entityPreview,
-			JsonLdPropertyValue entityPreviewPropValue) {
-
-		// TODO
-		
-		if (entityPreview.getPrefLabel() != null) {
-			JsonLdProperty prefLabelProp;
-			prefLabelProp = buildMapOfStringsProperty(WebEntityConstants.PREF_LABEL, entityPreview.getPrefLabel(), "");
-			entityPreviewPropValue.putProperty(prefLabelProp);
-		}
-		
-		if (entityPreview.getIsDefinedBy() != null) 
-			entityPreviewPropValue.putProperty(new JsonLdProperty(WebEntityConstants.IS_DEFINED_BY, entityPreview.getIsDefinedBy()));
 	}
 
 	private void putPlaceSpecificProperties(PlacePreview entityPreview, JsonLdPropertyValue entityPreviewPropValue) {

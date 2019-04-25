@@ -10,35 +10,22 @@ import eu.europeana.api.commons.nosql.dao.impl.NosqlDaoImpl;
 import eu.europeana.grouping.mongo.model.internal.GeneratedGroupingIdImpl;
 import eu.europeana.grouping.mongo.model.internal.PersistentConceptScheme;
 
-public class PersistentEntityDaoImpl <E extends PersistentConceptScheme, T extends Serializable>
-		extends NosqlDaoImpl<E, T> implements PersistentEntityDao<E, T>{
+public class ConceptSchemeIdImpl <E extends PersistentConceptScheme, T extends Serializable>
+		extends NosqlDaoImpl<E, T> implements ConceptSchemeId<E, T>{
 
-//	@Resource
-//	private EntityConfiguration configuration;
-//	
-//	protected final Logger logger = LogManager.getLogger(this.getClass());
-//	
-//	public EntityConfiguration getConfiguration() {
-//		return configuration;
-//	}
-//
-//	public void setConfiguration(EntityConfiguration configuration) {
-//		this.configuration = configuration;
-//	}
-	
-	public PersistentEntityDaoImpl(Class<E> clazz, Datastore datastore) {
+	public ConceptSchemeIdImpl(Class<E> clazz, Datastore datastore) {
 		super(datastore, clazz);
 	}
 
 	@SuppressWarnings("deprecation")
-	public long generateNextGroupingId(String provider) {
+	public long generateNextSequenceNumber(String objectType) {
 
 		GeneratedGroupingIdImpl nextGroupingId = null;
 
-		synchronized ((Object) provider) {
+		synchronized ((Object) objectType) {
 
 			Query<GeneratedGroupingIdImpl> q = getDatastore().createQuery(GeneratedGroupingIdImpl.class);
-			q.filter("_id", provider);
+			q.filter("_id", objectType);
 			
 			UpdateOperations<GeneratedGroupingIdImpl> uOps = getDatastore()
 					.createUpdateOperations(GeneratedGroupingIdImpl.class)
@@ -48,7 +35,7 @@ public class PersistentEntityDaoImpl <E extends PersistentConceptScheme, T exten
 			
 			if (nextGroupingId == null) {
 				nextGroupingId = new GeneratedGroupingIdImpl( 
-						provider, ""+1L);
+					objectType, ""+1L);
 				ds.save(nextGroupingId);
 			}
 		}

@@ -18,6 +18,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 
 import eu.europeana.api.common.config.I18nConstants;
 import eu.europeana.api.commons.definitions.search.result.ResultsPage;
+import eu.europeana.api.commons.definitions.vocabulary.CommonApiConstants;
 import eu.europeana.api.commons.definitions.vocabulary.CommonLdConstants;
 import eu.europeana.api.commons.definitions.vocabulary.ContextTypes;
 import eu.europeana.api.commons.utils.ResultsPageSerializer;
@@ -35,7 +36,6 @@ import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.definitions.model.vocabulary.LdProfiles;
 import eu.europeana.entity.definitions.model.vocabulary.SuggestAlgorithmTypes;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
-import eu.europeana.entity.definitions.model.vocabulary.WebEntityFields;
 import eu.europeana.entity.utils.jsonld.EuropeanaEntityLd;
 import eu.europeana.entity.web.exception.ParamValidationException;
 import eu.europeana.entity.web.exception.authentication.EntityAuthenticationException;
@@ -305,7 +305,6 @@ public abstract class BaseRest {
 	 * @throws IOException
 	 * @throws UnsupportedEntityTypeException 
 	 */
-//	protected String serializeConceptScheme(String profile, ConceptScheme storedConceptScheme) throws IOException {
 	protected String serializeConceptScheme(LdProfiles profile, ConceptScheme storedConceptScheme) 
 		throws IOException, UnsupportedEntityTypeException {
 		// apply linked data profile from header
@@ -326,20 +325,7 @@ public abstract class BaseRest {
 	 *            Provided Linked Data profile
 	 * @return profiled user set value
 	 */
-//	public ConceptScheme applyProfile(ConceptScheme conceptScheme, String profile) {
 	public ConceptScheme applyProfile(ConceptScheme conceptScheme, LdProfiles profile) {
-
-		// check that not more then maximal allowed number of items are
-		// presented
-//		if (profile != LdProfiles.MINIMAL && userSet.getItems() != null) {
-//			int itemsCount = userSet.getItems().size();
-//			if (itemsCount > WebEntityFields.MAX_ITEMS_TO_PRESENT) {
-//				List<String> itemsPage = userSet.getItems().subList(0, WebUserSetFields.MAX_ITEMS_TO_PRESENT);
-//				userSet.setItems(itemsPage);
-//				profile = LdProfiles.MINIMAL;
-//				getLogger().debug("Profile switched to minimal, due to set size!");
-//			}
-//		}
 
 		// set unnecessary fields to null - the empty fields will not be
 		// presented
@@ -349,7 +335,6 @@ public abstract class BaseRest {
 			break;
 		case MINIMAL:
 		default:
-//			userSet.setItems(null);
 			break;
 		}
 
@@ -383,7 +368,7 @@ public abstract class BaseRest {
 				profile = LdProfiles.getByName(paramProfile);
 			} catch (ConceptSchemeProfileValidationException e) {
 				throw new ParamValidationException(I18nConstants.INVALID_PARAM_VALUE, I18nConstants.INVALID_PARAM_VALUE,
-						new String[] { WebEntityFields.PROFILE, paramProfile }, HttpStatus.BAD_REQUEST, e);
+						new String[] { CommonApiConstants.QUERY_PARAM_PROFILE, paramProfile }, HttpStatus.BAD_REQUEST, e);
 			}
 		}
 		return profile;
@@ -397,6 +382,7 @@ public abstract class BaseRest {
 	 * @return profile value
 	 * @throws HttpException
 	 */
+	// TODO have generic implementation in API-Commons
 	LdProfiles getProfile(String preferHeader) throws HttpException {
 		LdProfiles ldProfile = null;
 		String ldPreferHeaderStr = null;
@@ -428,6 +414,7 @@ public abstract class BaseRest {
 	 * @param preferHeader
 	 * @return map of prefer header keys and values
 	 */
+	// TODO: move this method to API-Commons
 	public Map<String, String> parsePreferHeader(String preferHeader) {
 		String[] headerParts = null;
 		String[] contentParts = null;
@@ -458,11 +445,6 @@ public abstract class BaseRest {
 	 */
 	public void hasModifyRights(ConceptScheme conceptScheme, String wsKey, String queryUser)
 			throws OperationAuthorizationException {
-
-//		if (!(isAdmin(wsKey, queryUser) || userSet.getCreator().getName().equals(queryUser))) {
-//			throw new OperationAuthorizationException(I18nConstants.USER_NOT_AUTHORIZED,
-//					I18nConstants.USER_NOT_AUTHORIZED, new String[] { "User ID: " + queryUser }, HttpStatus.FORBIDDEN);
-//		}
 	}	
 	
 	/**

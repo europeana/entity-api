@@ -7,7 +7,6 @@ public interface WebEntityFields {
 	public static final String CONTEXT = "@context";
 	public static final String ENTITY_CONTEXT = "http://www.europeana.eu/schemas/context/entity.jsonld";
 	public static final String LANGUAGE_EN="en";
-	public final static String BASE_CONCEPT_SCHEME_URL = "http://data.europeana.eu/scheme/";
 	
 	// common fields
 	public static final String ID = "id";
@@ -96,23 +95,7 @@ public interface WebEntityFields {
 	// ConceptScheme fields
 	public static final String IS_DEFINED_BY = "isDefinedBy";
 	public static final String DEFINITION = "definition"; 
-	public static final String TOTAL = "total";
-	
-	
-    // Defaults
-	public static final String USER_ANONYMOUNS = "anonymous";
-	public static final String PROFILE_MINIMAL = "minimal";
-	
-	//
-	// Query Params
-	//
-	public static final String USER_TOKEN = "userToken";
-	public static final String PROFILE = "profile";
-	public static final String PATH_PARAM_CONCEPT_SCHEME_ID = "identifier";
-	
-	// Web application
-	public static final String CONCEPT_SCHEME = "conceptScheme";	
-	public static final String CONCEPT_SCHEME_APPLICATION_NAME = "webConceptScheme";	
+	public static final String TOTAL = "total";	
 
 	// Authentication
 	public static final String USER_ADMIN = "admin";	

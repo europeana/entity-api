@@ -136,7 +136,7 @@ public class EuropeanaEntityLd extends JsonLd {
 	}
 
 	private void putConceptSchemeSpecificProperties(ConceptScheme entity, JsonLdResource jsonLdResource) {
-		putMapOfStringProperty(WebEntityFields.DEFINITION, entity.getPrefLabelStringMap(), "", ldResource);
+		putMapOfStringProperty(WebEntityFields.DEFINITION, entity.getDefinition(), "", ldResource);
 		putStringProperty(WebEntityFields.IS_DEFINED_BY, entity.getIsDefinedBy(), jsonLdResource);
 		putStringProperty(WebEntityFields.CREATED, entity.getCreated().toString(), jsonLdResource);
 		putStringProperty(WebEntityFields.MODIFIED, entity.getModified().toString(), jsonLdResource);

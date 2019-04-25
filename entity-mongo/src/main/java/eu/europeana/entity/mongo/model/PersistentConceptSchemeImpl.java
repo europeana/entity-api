@@ -12,7 +12,7 @@ import org.mongodb.morphia.annotations.Property;
 import eu.europeana.entity.definitions.model.impl.BaseConceptScheme;
 import eu.europeana.grouping.mongo.model.internal.PersistentConceptScheme;
 
-@Entity("grouping")
+@Entity("concept_scheme")
 @Indexes(@Index(fields = {@Field(PersistentConceptScheme.GENERATED_IDENTIFIER)}, options = @IndexOptions(unique = true)))
 public class PersistentConceptSchemeImpl extends BaseConceptScheme implements PersistentConceptScheme {
 

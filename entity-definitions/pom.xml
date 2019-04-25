@@ -62,11 +62,5 @@
 			<artifactId>commons-lang3</artifactId>
 			<version>${version.commonsLang3}</version>
 		</dependency>
-		
-		<dependency>
-		    <groupId>com.io-informatics.oss</groupId>
-		    <artifactId>jackson-jsonld</artifactId>
-		    <version>0.1.1</version>
-		</dependency>		
 	</dependencies>
 </project>

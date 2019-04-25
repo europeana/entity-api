@@ -1,7 +1,5 @@
 package eu.europeana.entity.mongo.service;
 
-import java.util.Date;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.mongodb.morphia.query.Query;
@@ -10,8 +8,8 @@ import org.springframework.stereotype.Component;
 import eu.europeana.api.commons.nosql.service.impl.AbstractNoSqlServiceImpl;
 import eu.europeana.entity.definitions.exceptions.EntityValidationException;
 import eu.europeana.entity.definitions.model.ConceptScheme;
-import eu.europeana.entity.definitions.model.vocabulary.WebEntityFields;
-import eu.europeana.entity.mongo.dao.PersistentEntityDao;
+import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
+import eu.europeana.entity.mongo.dao.ConceptSchemeId;
 import eu.europeana.entity.mongo.model.PersistentConceptSchemeImpl;
 import eu.europeana.grouping.mongo.model.internal.PersistentConceptScheme;
 
@@ -25,7 +23,7 @@ import eu.europeana.grouping.mongo.model.internal.PersistentConceptScheme;
 public class PersistentEntityServiceImpl extends AbstractNoSqlServiceImpl<PersistentConceptScheme, String>
 	implements PersistentEntityService {
 
-    final String NOT_PERSISTENT_OBJECT = "User set object in not an instance of persistent user set.";
+    final String NOT_PERSISTENT_OBJECT = "Concept scheme object in not an instance of persistent concept scheme.";
 
     protected final Logger logger = LogManager.getLogger(this.getClass());
 
@@ -35,10 +33,10 @@ public class PersistentEntityServiceImpl extends AbstractNoSqlServiceImpl<Persis
      * 
      * @param object
      */
-    private void updateTechnicalFields(PersistentConceptScheme object) {
-	Long sequenceId = generateEntityId(WebEntityFields.CONCEPT_SCHEME);
+    private void setEntityId(PersistentConceptScheme object) {
+	Long sequenceId = generateEntityId(WebEntityConstants.CONCEPT_SCHEME);
 	object.setGeneratedIdentifier(sequenceId.toString());
-	object.setEntityId(WebEntityFields.BASE_CONCEPT_SCHEME_URL + sequenceId);
+	object.setEntityId(WebEntityConstants.BASE_CONCEPT_SCHEME_URL + sequenceId);
     }
 
     /**
@@ -49,7 +47,7 @@ public class PersistentEntityServiceImpl extends AbstractNoSqlServiceImpl<Persis
      * @return next sequence number
      */
     public long generateEntityId(String collection) {
-	return getEntityDao().generateNextGroupingId(collection);
+	return getEntityDao().generateNextSequenceNumber(collection);
     }
 
     /*
@@ -70,15 +68,15 @@ public class PersistentEntityServiceImpl extends AbstractNoSqlServiceImpl<Persis
 	    throw new IllegalArgumentException(NOT_PERSISTENT_OBJECT);
 	}
 
-	updateTechnicalFields(persistentObject);
+	setEntityId(persistentObject);
 	return this.store(persistentObject);
     }
 
     /**
      * @return
      */
-    protected PersistentEntityDao<PersistentConceptScheme, String> getEntityDao() {
-	return (PersistentEntityDao<PersistentConceptScheme, String>) getDao();
+    protected ConceptSchemeId<PersistentConceptScheme, String> getEntityDao() {
+	return (ConceptSchemeId<PersistentConceptScheme, String>) getDao();
     }
 
     /*

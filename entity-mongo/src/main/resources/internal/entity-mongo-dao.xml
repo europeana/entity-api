@@ -25,17 +25,9 @@
 		http://www.springframework.org/schema/beans
 		http://www.springframework.org/schema/beans/spring-beans.xsd
 	">
-
-	<!-- MONGO DB -->
- 	<!--  abstract dao, reusing the common api abstract implementation -->
- 	<!--  
-	<bean id="db_nosql_grouping_dao" abstract="true" class="eu.europeana.api.commons.nosql.dao.impl.NosqlDaoImpl">
-		<constructor-arg ref="grouping_db_morphia_datastore_grouping" name="datastore"/>
-	</bean>
-	-->
-
+			
 	<!-- grouping dao bean (concrete instance) -->
-	<bean id="entity_db_conceptSchemeDao" class="eu.europeana.entity.mongo.dao.PersistentEntityDaoImpl">
+	<bean id="entity_db_conceptSchemeDao" class="eu.europeana.entity.mongo.dao.ConceptSchemeIdImpl">
 		<constructor-arg type="java.lang.Class" value="eu.europeana.entity.web.model.WebConceptSchemeImpl" />
 		<constructor-arg ref="entity_db_morphia_datastore_conceptScheme" name="datastore"/>
 	</bean>

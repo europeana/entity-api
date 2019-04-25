@@ -23,7 +23,7 @@ import eu.europeana.entity.definitions.exceptions.EntityInstantiationException;
 import eu.europeana.entity.definitions.exceptions.EntityValidationException;
 import eu.europeana.entity.definitions.model.ConceptScheme;
 import eu.europeana.entity.definitions.model.vocabulary.LdProfiles;
-import eu.europeana.entity.definitions.model.vocabulary.WebEntityFields;
+import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
 import eu.europeana.entity.web.exception.EntityStateException;
 import eu.europeana.entity.web.exception.InternalServerException;
 import eu.europeana.entity.web.exception.RequestBodyValidationException;
@@ -66,8 +66,8 @@ public class ConceptSchemeController extends BaseRest {
 	public ResponseEntity<String> createConceptScheme(
 			@RequestParam(value = CommonApiConstants.PARAM_WSKEY, required = false) String wskey,
 			@RequestBody String conceptScheme,
-			@RequestParam(value = WebEntityFields.USER_TOKEN, required = false, defaultValue = WebEntityFields.USER_ANONYMOUNS) String userToken,			
-			@RequestParam(value = WebEntityFields.PROFILE, required = false) String profile,
+			@RequestParam(value = WebEntityConstants.USER_TOKEN, required = false, defaultValue = WebEntityConstants.USER_ANONYMOUNS) String userToken,			
+			@RequestParam(value = CommonApiConstants.QUERY_PARAM_PROFILE, required = false) String profile,
 			HttpServletRequest request)
 					throws HttpException {
 					
@@ -141,9 +141,9 @@ public class ConceptSchemeController extends BaseRest {
 	@ApiOperation(notes = SwaggerConstants.SAMPLES_JSONLD, value = "Retrieve concept scheme", nickname = "retrieve", response = java.lang.Void.class)
 	public ResponseEntity<String> getConceptScheme(
 			@RequestParam(value = CommonApiConstants.PARAM_WSKEY, required = false) String wskey,
-			@PathVariable(value = WebEntityFields.PATH_PARAM_CONCEPT_SCHEME_ID) String identifier,
-			@RequestParam(value = WebEntityFields.USER_TOKEN, required = false, defaultValue = WebEntityFields.USER_ANONYMOUNS) String userToken,			
-			@RequestParam(value = WebEntityFields.PROFILE, required = false) String profile,
+			@PathVariable(value = WebEntityConstants.PATH_PARAM_IDENTIFIER) String identifier,
+			@RequestParam(value = WebEntityConstants.USER_TOKEN, required = false, defaultValue = WebEntityConstants.USER_ANONYMOUNS) String userToken,			
+			@RequestParam(value = CommonApiConstants.QUERY_PARAM_PROFILE, required = false) String profile,
 			HttpServletRequest request)
 					throws HttpException {
 					
@@ -213,9 +213,9 @@ public class ConceptSchemeController extends BaseRest {
 	@ApiOperation(value = "Delete an existing concept scheme", nickname = "delete", response = java.lang.Void.class)
 	public ResponseEntity<String> deleteConceptScheme(
 			@RequestParam(value = CommonApiConstants.PARAM_WSKEY, required = false) String wskey,
-			@PathVariable(value = WebEntityFields.PATH_PARAM_CONCEPT_SCHEME_ID) String identifier,
-			@RequestParam(value = WebEntityFields.USER_TOKEN, required = false, defaultValue = WebEntityFields.USER_ANONYMOUNS) String userToken,			
-			@RequestParam(value = WebEntityFields.PROFILE, required = false) String profile,
+			@PathVariable(value = WebEntityConstants.PATH_PARAM_IDENTIFIER) String identifier,
+			@RequestParam(value = WebEntityConstants.USER_TOKEN, required = false, defaultValue = WebEntityConstants.USER_ANONYMOUNS) String userToken,			
+			@RequestParam(value = CommonApiConstants.QUERY_PARAM_PROFILE, required = false) String profile,
 			HttpServletRequest request)
 					throws HttpException {
 					
@@ -313,10 +313,10 @@ public class ConceptSchemeController extends BaseRest {
 			produces = {HttpHeaders.CONTENT_TYPE_JSONLD_UTF8, HttpHeaders.CONTENT_TYPE_JSON_UTF8})
 	@ApiOperation(notes = SwaggerConstants.UPDATE_SAMPLES_JSONLD, value = "Update an existing concept scheme", nickname = "update", response = java.lang.Void.class)
 	public ResponseEntity<String> updateUserSet(@RequestParam(value = CommonApiConstants.PARAM_WSKEY, required = false) String wskey,
-			@PathVariable(value = WebEntityFields.PATH_PARAM_CONCEPT_SCHEME_ID) String identifier,
+			@PathVariable(value = WebEntityConstants.PATH_PARAM_IDENTIFIER) String identifier,
 			@RequestBody String conceptScheme,
-			@RequestParam(value = WebEntityFields.USER_TOKEN, required = false, defaultValue = WebEntityFields.USER_ANONYMOUNS) String userToken,
-			@RequestParam(value = WebEntityFields.PROFILE, required = false, defaultValue = WebEntityFields.PROFILE_MINIMAL) String profile,			
+			@RequestParam(value = WebEntityConstants.USER_TOKEN, required = false, defaultValue = WebEntityConstants.USER_ANONYMOUNS) String userToken,
+			@RequestParam(value = CommonApiConstants.QUERY_PARAM_PROFILE, required = false, defaultValue = WebEntityConstants.PROFILE_MINIMAL) String profile,			
 			HttpServletRequest request
 			) throws HttpException {
 		

@@ -17,9 +17,9 @@ import eu.europeana.api.commons.web.exception.ApplicationAuthenticationException
 import eu.europeana.entity.config.EntityConfiguration;
 import eu.europeana.entity.definitions.model.Agent;
 import eu.europeana.entity.definitions.model.authentication.Application;
+import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityFields;
 import eu.europeana.entity.web.exception.authorization.UserAuthorizationException;
-import eu.europeana.entity.web.model.vocabulary.Roles;
 import eu.europeana.entity.web.service.authentication.AuthenticationService;
 import eu.europeana.entity.web.service.authentication.model.ClientApplicationImpl;
 
@@ -142,7 +142,7 @@ public class MockAuthenticationServiceImpl implements AuthenticationService, Res
 
 	private Agent getUserByToken(String userToken, Application application) {
 		Agent user;
-		if (WebEntityFields.USER_ANONYMOUNS.equals(userToken))
+		if (WebEntityConstants.USER_ANONYMOUNS.equals(userToken))
 			user = application.getAnonymousUser();
 		else if (WebEntityFields.USER_ADMIN.equals(userToken))
 			user = application.getAdminUser();
@@ -157,7 +157,6 @@ public class MockAuthenticationServiceImpl implements AuthenticationService, Res
 		Application app = null;
 
 		if (getCachedClients().isEmpty()) {
-			createMockClientApplication(apiKey, WebEntityFields.CONCEPT_SCHEME_APPLICATION_NAME);
 		}
 
 		app = getCachedClients().get(apiKey);

@@ -7,6 +7,6 @@ public interface SolrConceptSchemeConstants extends EntitySolrFields {
 	public static final String TOTAL = "total";
 	public static final String DEFINITION = "skos_definition";
 	public static final String DEFINITION_ALL = DEFINITION + ".*";
-	
+	public static final String SUGGEST_FILTERS = "suggest_filters";
 	
 }

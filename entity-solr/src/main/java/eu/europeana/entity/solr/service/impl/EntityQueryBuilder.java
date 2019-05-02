@@ -44,7 +44,7 @@ public class EntityQueryBuilder extends QueryBuilder{
 		if(hasScopeEuropeana(scope)) 
 			query.addFilterQuery("suggest_filters:"+ SuggestionFields.FILTER_IN_EUROPEANA);
 		
-		String typeCondition = buildEntityTypeCondition(entityTypes);
+		String typeCondition = buildEntityTypeCondition(entityTypes, false);
 		if(typeCondition != null) 
 			query.addFilterQuery("suggest_filters:"+ typeCondition);
 	}
@@ -52,15 +52,16 @@ public class EntityQueryBuilder extends QueryBuilder{
 	private void addFiltersToSuggestQuery(SolrQuery query, EntityTypes[] entityTypes, String scope) {
 		
 		//build entityType filter
-		String entityTypeFilter = buildEntityTypeCondition(entityTypes);
+		String entityTypeFilter = buildEntityTypeCondition(entityTypes, true);
 		
 		//build scopeFilter
 		String scopeFilter = hasScopeEuropeana(scope)? SuggestionFields.FILTER_IN_EUROPEANA : null;
 				
 		//add filters to query
 		String filter = null;
-		if(entityTypeFilter == null && scopeFilter == null)
-		        filter = SuggestionFields.CONCEPT_SCHEME;
+		//NOTE entityTypeFilter is never null until suggestions for concept schemes are supported  
+		if(entityTypeFilter == null && scopeFilter == null)			
+		        filter = SuggestionFields.ALL_TYPES_EXCLUDING_CONCEPT_SCHEME;
 		
 		//append entity type filter
 		if(entityTypeFilter != null)
@@ -96,13 +97,11 @@ public class EntityQueryBuilder extends QueryBuilder{
 		if(hasScopeEuropeana(scope)) 
 			solrQuery.addFilterQuery("suggest_filters:"+ SuggestionFields.FILTER_IN_EUROPEANA);
 		
-		String typeCondition = buildEntityTypeCondition(entityTypes);
+		String typeCondition = buildEntityTypeCondition(entityTypes, true);
 		if(typeCondition != null) {
 			solrQuery.addFilterQuery("suggest_filters:"+ typeCondition);
-		} else { // that means return all types except ConceptScheme
-			solrQuery.addFilterQuery(SuggestionFields.ALL_TYPES_EXCLUDING_CONCEPT_SCHEME);
 		}
-		
+
 		// ?q=label%3AMoz*&sort=derived_score+desc&rows=100&fl=payload%2C+id%2C+derived_score&wt=json&indent=true&hl=true&hl.fl=label&hl.q=Moz*&hl.method=unified&hl.tag.pre=%3Cb%3E&&hl.tag.post=%3C/b%3E
 		fields = new String[] { OrganizationSolrFields.ID, OrganizationSolrFields.PAYLOAD, OrganizationSolrFields.DERIVED_SCORE };
 		solrQuery.set(CommonParams.SORT,ConceptSolrFields.DERIVED_SCORE + " " + DESC);
@@ -126,10 +125,16 @@ public class EntityQueryBuilder extends QueryBuilder{
 	 * @param entityTypes
 	 * @return Solr query filter for entity types
 	 */
-	private String buildEntityTypeCondition(EntityTypes[] entityTypes) {
-		if(entityTypes == null || entityTypes.length == 0 || EntityTypes.arrayHasValue(entityTypes, EntityTypes.All))
-			return null;
-		
+	private String buildEntityTypeCondition(EntityTypes[] entityTypes, boolean suggest) {
+		if(entityTypes == null || entityTypes.length == 0 || EntityTypes.arrayHasValue(entityTypes, EntityTypes.All)) {
+			if(suggest) {
+				//ConceptSchemes must not appear in suggestions
+				return SuggestionFields.ALL_TYPES_EXCLUDING_CONCEPT_SCHEME;
+			}else {
+				return null;
+			}
+		}
+			
 		if(entityTypes.length == 1)
 				return entityTypes[0].getInternalType();
 		

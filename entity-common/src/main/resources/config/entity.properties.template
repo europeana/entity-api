@@ -28,7 +28,7 @@ socks.proxy.url =
 
 #Format: "mongodb://<USER>:<PASSWORD>@<HOST>:<PORT>/<DATABASE>"
 #USER, PASSWORD are optional (in local environment) 
-mongodb.entity.connectionUrl=mongodb://127.0.0.1:27017/annotation_test
+mongodb.entity.connectionUrl=mongodb://127.0.0.1:27017/entity_test
 #SSL truststore
 #the name of the truststore. Must be available in the classpath in the /config folder
 mongodb.entity.truststore=

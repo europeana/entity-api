@@ -106,10 +106,6 @@ public class ResolveController extends BaseRest {
 		extension = FormatTypes.jsonld.name(); // default
 	    else if(extension == null && accept != null)
 		extension = accept;
-	    else if(accept != null && (!extension.equals(accept))) {
-		throw new ParamValidationException(I18nConstants.BAD_HEADER_REQUEST, extension, accept, 
-			HttpStatus.BAD_REQUEST, null);
-	    }
 	    //identify required format
 	    FormatTypes outFormat = getFormatType(extension);
 	    return outFormat;

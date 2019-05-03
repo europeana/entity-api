@@ -101,11 +101,11 @@ public class ResolveController extends BaseRest {
 
 	private FormatTypes getFormatType(HttpServletRequest request) throws ParamValidationException {
 	    String extension = getExtension(request);
-	    String accept = getAcceptedHeader(request);
-	    if(extension == null && accept == null)
+	    if(extension == null)
+		extension = getAcceptedHeader(request);
+	    if(extension == null)
 		extension = FormatTypes.jsonld.name(); // default
-	    else if(extension == null && accept != null)
-		extension = accept;
+	    
 	    //identify required format
 	    FormatTypes outFormat = getFormatType(extension);
 	    return outFormat;
@@ -116,13 +116,13 @@ public class ResolveController extends BaseRest {
 	    if(accept == null || accept.equals("*/*")){
 		return null;
 	    }
-	    if(accept.toLowerCase().contains(HttpHeaders.CONTENT_TYPE_RDF_XML) || accept.toLowerCase().contains(HttpHeaders.CONTENT_TYPE_APPLICATION_RDF_XML)
+	    if(accept.toLowerCase().contains(HttpHeaders.CONTENT_TYPE_JSONLD_UTF8) || accept.toLowerCase().contains(HttpHeaders.CONTENT_TYPE_JSON_UTF8)
+		    || accept.toLowerCase().contains(MediaType.APPLICATION_JSON_VALUE)) 
+		accept = FormatTypes.jsonld.name();
+	    else if(accept.toLowerCase().contains(HttpHeaders.CONTENT_TYPE_RDF_XML) || accept.toLowerCase().contains(HttpHeaders.CONTENT_TYPE_APPLICATION_RDF_XML)
 		    || accept.toLowerCase().contains(MediaType.APPLICATION_XML_VALUE))
 		accept = FormatTypes.xml.name();
-	    else if(accept.toLowerCase().contains(HttpHeaders.CONTENT_TYPE_JSONLD_UTF8) || accept.toLowerCase().contains(HttpHeaders.CONTENT_TYPE_JSON_UTF8)
-		    || accept.toLowerCase().contains(MediaType.APPLICATION_JSON_VALUE)) {
-		accept = FormatTypes.jsonld.name();
-	    }  else {
+	    else {
 		throw new ParamValidationException(I18nConstants.INVLAID_HEADER_REQUEST, HttpHeaders.ACCEPT, accept, 
 			HttpStatus.NOT_ACCEPTABLE, null);
 	    }

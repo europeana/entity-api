@@ -192,7 +192,7 @@ public abstract class BaseRest {
 			return FormatTypes.getByExtention(extension);
 		} catch (UnsupportedFormatTypeException e) {
 			throw new ParamValidationException(I18nConstants.INVALID_PARAM_VALUE, WebEntityConstants.QUERY_PARAM_FORMAT,
-					extension);
+					extension,  HttpStatus.NOT_FOUND, null);
 		}
 
 	}

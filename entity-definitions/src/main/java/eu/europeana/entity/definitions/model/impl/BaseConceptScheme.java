@@ -17,8 +17,8 @@ public class BaseConceptScheme extends BaseEntity implements ConceptScheme {
 	// A non-negative integer specifying the total number of items that are contained within a grouping
 	private int total = 0;
 	private Map<String, String> definition;
-
 	
+
 	@Override
 	public String getIsDefinedBy() {
 		return this.isDefinedBy;

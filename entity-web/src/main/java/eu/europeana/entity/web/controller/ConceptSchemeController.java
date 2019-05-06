@@ -400,4 +400,75 @@ public class ConceptSchemeController extends BaseRest {
 			throw new InternalServerException(e);
 		}
 	}	
+	
+	/**
+	 * This method updates an existing concept scheme identified by given identifier with groupings.	 
+	 * @param wskey The API key
+	 * @param request HTTP request
+	 * @return response entity that comprises response body, headers and status code
+	 * @throws HttpException
+	 */
+	@RequestMapping(value = { "/scheme/{identifier}/concepts", "/scheme/{identifier}/concepts.jsonld" }, 
+			method = {RequestMethod.PUT},
+			produces = { HttpHeaders.CONTENT_TYPE_JSONLD_UTF8, HttpHeaders.CONTENT_TYPE_JSON_UTF8 }
+			)
+	@ApiOperation(notes = SwaggerConstants.SAMPLES_JSONLD, value = "Update entities with groupings", nickname = "update with groupings", response = java.lang.Void.class)
+	public ResponseEntity<String> updateEntitiesWithGroupings(
+			@RequestParam(value = CommonApiConstants.PARAM_WSKEY, required = false) String wskey,
+			@PathVariable(value = WebEntityConstants.PATH_PARAM_IDENTIFIER) String identifier,
+			HttpServletRequest request)
+					throws HttpException {
+					
+		try {
+			// validate user - check user credentials (all registered users can create) 
+			// if invalid respond with HTTP 401 or if unauthorized respond with HTTP 403;
+			// Check client access (a valid "wskey" must be provided)
+			validateApiKey(wskey);
+			
+			// retrieve a concept scheme based on its identifier - process query
+			// if the concept scheme doesn’t exist, respond with HTTP 404
+			// if the entity is disabled respond with HTTP 410
+			String serializedConceptSchemeJsonLdStr = "";
+			ConceptScheme storedConceptScheme = getEntityService().getConceptSchemeById(identifier);
+			if (((WebConceptSchemeImpl) storedConceptScheme).isDisabled()) {
+				throw new EntityStateException(
+					I18nConstants.MESSAGE_NOT_ACCESSIBLE, I18nConstants.MESSAGE_NOT_ACCESSIBLE
+					, new String[] { "disabled" });
+				
+			} else {			
+			    serializedConceptSchemeJsonLdStr = serializeConceptScheme(
+				    LdProfiles.STANDARD, storedConceptScheme); 
+			}
+			
+			// retrieve URL from field isDefinedBy
+			// perform search for entity IDs with provided URL
+			// for found IDs perform atomic update for Entity field inScheme
+			// use modifier "set"
+			
+			// build response
+			MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>(6);
+			headers.add(HttpHeaders.AUTHORIZATION, HttpHeaders.PREFER);
+			headers.add(HttpHeaders.LINK, HttpHeaders.VALUE_LDP_CONTAINER);
+			headers.add(HttpHeaders.LINK, HttpHeaders.VALUE_LDP_RESOURCE);
+			headers.add(HttpHeaders.ETAG, generateETag(0));
+			headers.add(HttpHeaders.ALLOW, HttpHeaders.ALLOW_POST);
+			headers.add(EntityHttpHeaders.PREFERENCE_APPLIED, LdProfiles.STANDARD.getPreferHeaderValue());
+
+			ResponseEntity<String> response = new ResponseEntity<String>(
+					serializedConceptSchemeJsonLdStr, headers, HttpStatus.OK);
+
+			return response;
+
+		} catch (HttpException e) {
+			// avoid wrapping http exception
+			throw e;
+		} catch (RuntimeException e) {
+			// not found ..
+			// System.out.println(e);
+			throw new InternalServerException(e);
+		} catch (Exception e) {
+			throw new InternalServerException(e);
+		}
+	}
+
 }

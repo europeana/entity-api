@@ -30,7 +30,6 @@ public class WebConceptSchemeImpl extends PersistentConceptSchemeImpl {
     }
     
     @Override
-    @JsonldProperty(WebEntityFields.PREF_LABEL)
     public void setPrefLabelStringMap(Map<String, String> prefLabel) {
         super.setPrefLabelStringMap(prefLabel);
     }

@@ -46,7 +46,5 @@ public interface ConceptScheme extends Entity{
 	void setTotal(int total);
 	
 	public void setInternalType(String internalType);
-	
-	public void setPrefLabelStringMap(Map<String, String> prefLabel);
-		
+				
 }

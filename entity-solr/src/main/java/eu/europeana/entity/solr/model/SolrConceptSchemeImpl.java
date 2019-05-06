@@ -15,10 +15,12 @@ import eu.europeana.entity.definitions.model.vocabulary.SolrConceptSchemeConstan
  * @author GrafR
  *
  */
-public class SolrConceptSchemeImpl extends BaseConceptScheme {
+public class SolrConceptSchemeImpl extends BaseConceptScheme implements SolrConceptScheme{
 
     private String[] suggestFilters = {"ConceptScheme"};
-    
+    private Map<String, String> prefixedDefinition;
+    private Map<String, String> prefixedPrefLabel;
+
     /**
      * Constructor
      */
@@ -27,8 +29,8 @@ public class SolrConceptSchemeImpl extends BaseConceptScheme {
 	this.setModified(conceptScheme.getModified());
 	this.setSameAs(conceptScheme.getSameAs());
 	this.setInternalType(conceptScheme.getType());
-	this.setPrefLabelStringMap(conceptScheme.getPrefLabelStringMap());
-	this.setDefinition(conceptScheme.getDefinition());
+	this.setPrefixedPrefLabel(conceptScheme.getPrefLabelStringMap());
+	this.setPrefixedDefinition(conceptScheme.getDefinition());
 	this.setEntityId(conceptScheme.getEntityId());
     }
 
@@ -36,21 +38,57 @@ public class SolrConceptSchemeImpl extends BaseConceptScheme {
 
     @Override
     @Field(SolrConceptSchemeConstants.PREF_LABEL_ALL)
-    public void setPrefLabelStringMap(Map<String, String> prefLabel) {
+    public void setPrefixedPrefLabel(Map<String, String> prefLabel) {
 	Map<String, String> normalizedPrefLabel = SolrUtils.normalizeStringMapByAddingPrefix(
 		SolrConceptSchemeConstants.PREF_LABEL+".",
 		prefLabel);
-	super.setPrefLabelStringMap(normalizedPrefLabel);
+	prefixedPrefLabel = normalizedPrefLabel;
     }
 
     @Override
+    public Map<String, String> getPrefixedPrefLabel() {
+	return prefixedPrefLabel; 
+    }    
+    
+
+    @Override
+    public Map<String, String> getPrefLabelStringMap() {
+	if(super.getPrefLabelStringMap() == null) {
+	    //extract prefLabelStringMap (web representation) from prefixedPrefLabel (solr representation)
+	    Map<String, String> prefLabel = SolrUtils.normalizeStringMap(SolrConceptSchemeConstants.PREF_LABEL, getPrefixedPrefLabel());
+	    super.setPrefLabelStringMap(prefLabel);
+	}
+	    
+	return super.getPrefLabelStringMap();
+    }    
+    
+    
+    @Override
     @Field(SolrConceptSchemeConstants.DEFINITION_ALL)
-    public void setDefinition(Map<String, String> definition) {
+    public void setPrefixedDefinition(Map<String, String> definition) {
+	//ensure the prefix exists (solr representation)
 	Map<String, String> normalizedDefinition = SolrUtils.normalizeStringMapByAddingPrefix(
 		SolrConceptSchemeConstants.DEFINITION+".",
 		definition);
-	super.setDefinition(normalizedDefinition);
+	prefixedDefinition = normalizedDefinition;
     }
+
+    @Override
+    public Map<String, String> getPrefixedDefinition() {
+	return prefixedDefinition;
+    }   
+    
+    
+    @Override
+    public Map<String, String> getDefinition() {
+	if(super.getDefinition() == null) {
+	    //extract definition (web representation) from prefixedDefinition (solr representation)
+	    Map<String, String> definition = SolrUtils.normalizeStringMap(SolrConceptSchemeConstants.DEFINITION, getPrefixedDefinition());
+	    super.setDefinition(definition);
+	}
+	    
+	return super.getDefinition();
+    }    
 
     @Override
     @Field(SolrConceptSchemeConstants.INTERNAL_TYPE)

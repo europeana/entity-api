@@ -1,5 +1,7 @@
 package eu.europeana.grouping.mongo.model.internal;
 
+import java.util.Map;
+
 import org.bson.types.ObjectId;
 
 import eu.europeana.api.commons.nosql.entity.NoSqlEntity;
@@ -22,4 +24,6 @@ public interface PersistentConceptScheme extends ConceptScheme, NoSqlEntity {
     public String getGeneratedIdentifier();
 
     public void setGeneratedIdentifier(String generatedIdentifier);
+
+    public abstract void setPrefLabelStringMap(Map<String, String> prefLabelStringMap);
 }

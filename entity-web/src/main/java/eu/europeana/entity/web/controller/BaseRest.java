@@ -37,6 +37,7 @@ import eu.europeana.entity.definitions.model.vocabulary.LdProfiles;
 import eu.europeana.entity.definitions.model.vocabulary.SuggestAlgorithmTypes;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
 import eu.europeana.entity.utils.jsonld.EuropeanaEntityLd;
+import eu.europeana.entity.web.exception.HeaderValidationException;
 import eu.europeana.entity.web.exception.ParamValidationException;
 import eu.europeana.entity.web.exception.authentication.EntityAuthenticationException;
 import eu.europeana.entity.web.exception.authorization.OperationAuthorizationException;
@@ -78,6 +79,7 @@ public abstract class BaseRest {
 	public Logger getLogger() {
 		return logger;
 	}
+	
 	/**
 	 * This method is used for validation of the provided api key
 	 * 
@@ -95,6 +97,13 @@ public abstract class BaseRest {
 			throw new EntityAuthenticationException(null, I18nConstants.INVALID_APIKEY, new String[] { wsKey });
 	}
 
+	/**
+	 * @return
+	 */
+	protected String getDefaultUserToken() {
+	    return getAuthorizationService().getConfiguration().getUserToken();
+	}
+	
 	/**
 	 * This method returns the json-ld serialization for the given results page,
 	 * according to the specifications of the provided search profile
@@ -235,6 +244,19 @@ public abstract class BaseRest {
 	}
 	
 	/**
+	 * @param paramUserToken
+	 * @throws ApplicationAuthenticationException
+	 */
+	public void checkUserToken(String paramUserToken)
+		throws ApplicationAuthenticationException {
+	    String defaultUserToken = getDefaultUserToken();
+	    if (!paramUserToken.equals(defaultUserToken)) {
+		throw new ApplicationAuthenticationException(I18nConstants.UNSUPPORTED_TOKEN_TYPE,
+			I18nConstants.UNSUPPORTED_TOKEN_TYPE, new String[] { paramUserToken });
+	    }
+	}
+
+	/**
 	 * This method takes user token from a HTTP header if it exists or from the
 	 * passed request parameter.
 	 * 
@@ -363,6 +385,8 @@ public abstract class BaseRest {
 			profile = getProfile(preferHeader);
 			getLogger().debug("Profile identified by prefer header: " + profile.name());
 		} else {
+		        if (paramProfile == null)
+		            return profile.MINIMAL;
 			// get profile from param
 			try {
 				profile = LdProfiles.getByName(paramProfile);
@@ -371,7 +395,33 @@ public abstract class BaseRest {
 						new String[] { CommonApiConstants.QUERY_PARAM_PROFILE, paramProfile }, HttpStatus.BAD_REQUEST, e);
 			}
 		}
+		String ifMatchHeader = request.getHeader(EntityHttpHeaders.IF_MATCH);
+		if (ifMatchHeader != null) {
+		    
+		}
 		return profile;
+	}
+	
+	/**
+	 * This method compares If-Match header with the current etag value.
+	 * @param etag The current etag value
+	 * @param request The request containing If-Match header
+	 * @throws HttpException 
+	 */
+	public void checkIfMatchHeader(int etag, HttpServletRequest request) throws HttpException {
+
+		String ifMatchHeader = request.getHeader(EntityHttpHeaders.IF_MATCH);
+		if (ifMatchHeader != null) {
+		    try {
+        		    int ifMatchValue = Integer.parseInt(ifMatchHeader);
+        		    if (etag != ifMatchValue) {
+        			throw new HeaderValidationException(I18nConstants.INVALID_PARAM_VALUE, ifMatchHeader);
+        		    }
+		    }
+        	    catch (NumberFormatException e) {
+			throw new HeaderValidationException(I18nConstants.INVALID_PARAM_VALUE, ifMatchHeader);        		
+        	    }
+		}
 	}
 	
 	/**

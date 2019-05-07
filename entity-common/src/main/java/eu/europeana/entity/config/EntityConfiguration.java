@@ -11,6 +11,8 @@ public interface EntityConfiguration {
 
 	public static final String KEY_ENTITY_SUGGESTER_SNIPPETS = "entity.suggester.snippets";
 	
+	public static final String DEFAULT_USER_TOKEN = "default.user.token";
+
 	public String getComponentName();
 	
 	
@@ -26,5 +28,6 @@ public interface EntityConfiguration {
 	
 	public int getSuggesterSnippets();
 	
+	public String getUserToken();
 	
 }

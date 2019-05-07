@@ -8,6 +8,7 @@ import org.apache.stanbol.commons.jsonld.JsonLdProperty;
 import org.apache.stanbol.commons.jsonld.JsonLdPropertyValue;
 import org.apache.stanbol.commons.jsonld.JsonLdResource;
 
+import eu.europeana.api.commons.definitions.utils.DateUtils;
 import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException;
 import eu.europeana.entity.definitions.model.Agent;
 import eu.europeana.entity.definitions.model.Concept;
@@ -18,7 +19,6 @@ import eu.europeana.entity.definitions.model.Place;
 import eu.europeana.entity.definitions.model.Timespan;
 import eu.europeana.entity.definitions.model.impl.BaseEntity;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
-import eu.europeana.entity.definitions.model.vocabulary.OrganizationSolrFields;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityFields;
 import eu.europeana.entity.utils.EntityUtils;
@@ -138,8 +138,8 @@ public class EuropeanaEntityLd extends JsonLd {
 	private void putConceptSchemeSpecificProperties(ConceptScheme entity, JsonLdResource jsonLdResource) {
 		putMapOfStringProperty(WebEntityFields.DEFINITION, entity.getDefinition(), "", ldResource);
 		putStringProperty(WebEntityFields.IS_DEFINED_BY, entity.getIsDefinedBy(), jsonLdResource);
-		putStringProperty(WebEntityFields.CREATED, entity.getCreated().toString(), jsonLdResource);
-		putStringProperty(WebEntityFields.MODIFIED, entity.getModified().toString(), jsonLdResource);
+		putStringProperty(WebEntityFields.CREATED, DateUtils.convertDateToStr(entity.getCreated()), jsonLdResource);
+		putStringProperty(WebEntityFields.MODIFIED, DateUtils.convertDateToStr(entity.getModified()), jsonLdResource);
 	}
 
 	private void putPlaceSpecificProperties(Place entity, JsonLdResource jsonLdResource) {

@@ -14,7 +14,6 @@ import eu.europeana.entity.definitions.model.authentication.Application;
 import eu.europeana.entity.web.exception.authorization.OperationAuthorizationException;
 import eu.europeana.entity.web.exception.authorization.UserAuthorizationException;
 import eu.europeana.entity.web.model.vocabulary.Operations;
-import eu.europeana.entity.web.model.vocabulary.Roles;
 import eu.europeana.entity.web.service.authentication.AuthenticationService;
 
 

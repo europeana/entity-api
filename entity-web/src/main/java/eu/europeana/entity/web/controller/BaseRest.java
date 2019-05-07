@@ -78,6 +78,7 @@ public abstract class BaseRest {
 	public Logger getLogger() {
 		return logger;
 	}
+	
 	/**
 	 * This method is used for validation of the provided api key
 	 * 
@@ -95,6 +96,13 @@ public abstract class BaseRest {
 			throw new EntityAuthenticationException(null, I18nConstants.INVALID_APIKEY, new String[] { wsKey });
 	}
 
+	/**
+	 * @return
+	 */
+	protected String getDefaultUserToken() {
+	    return getAuthorizationService().getConfiguration().getUserToken();
+	}
+	
 	/**
 	 * This method returns the json-ld serialization for the given results page,
 	 * according to the specifications of the provided search profile
@@ -235,6 +243,19 @@ public abstract class BaseRest {
 	}
 	
 	/**
+	 * @param paramUserToken
+	 * @throws ApplicationAuthenticationException
+	 */
+	public void checkUserToken(String paramUserToken)
+		throws ApplicationAuthenticationException {
+	    String defaultUserToken = getDefaultUserToken();
+	    if (!paramUserToken.equals(defaultUserToken)) {
+		throw new ApplicationAuthenticationException(I18nConstants.UNSUPPORTED_TOKEN_TYPE,
+			I18nConstants.UNSUPPORTED_TOKEN_TYPE, new String[] { paramUserToken });
+	    }
+	}
+
+	/**
 	 * This method takes user token from a HTTP header if it exists or from the
 	 * passed request parameter.
 	 * 
@@ -363,6 +384,8 @@ public abstract class BaseRest {
 			profile = getProfile(preferHeader);
 			getLogger().debug("Profile identified by prefer header: " + profile.name());
 		} else {
+		        if (paramProfile == null)
+		            return profile.MINIMAL;
 			// get profile from param
 			try {
 				profile = LdProfiles.getByName(paramProfile);

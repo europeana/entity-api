@@ -23,18 +23,37 @@
 				<constructor-arg value="utf-8" />
 				<property name="supportedMediaTypes">
 					<list>
-						<value>application/ld+json;charset=utf-8</value>
-						<value>application/json;charset=utf-8</value>
+						<value>application/ld+json</value>
+						<value>application/json</value>
 						<value>application/rdf+xml</value>
 						<value>rdf/xml</value>
 						<value>application/xml</value>
-						<value>text/plain;charset=utf-8</value>
+						<value>text/plain</value>
 				 	</list>
 				 </property>
 				 <property name="writeAcceptCharset" value="false"/>
 			</bean>
 		</mvc:message-converters>
 	</mvc:annotation-driven>
+	
+	<bean id="contentNegotiationManager"
+	  class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+	    <property name="favorPathExtension" value="true" />
+	    <property name="ignoreAcceptHeader" value="false" />
+	    <property name="defaultContentType" value="application/ld+json" />
+	    <property name="useJaf" value="false" />
+	    
+	    <property name="mediaTypes">
+        	<map>
+	            <entry key="ld+json" value="application/ld+json" />
+	            <entry key="json" value="application/json" />
+	            <entry key="rdf+xml" value="application/rdf+xml" />
+	            <entry key="rdf/xml" value="rdf/xml" />
+	            <entry key="xml" value="application/xml" />
+        	</map>
+    	</property>
+	    
+	</bean>
 	
 	<mvc:default-servlet-handler />
 	

@@ -129,6 +129,11 @@ public class XmlOrganizationImpl {
 	    	return RdfXmlUtils.convertToRdfResource(organization.getSameAs());
 	}
 
+	/*
+	 *  ElementWrapper works only on lists and maps.
+	 *  This conversion is needed, because we have a two level object 
+	 *  <vcard:hasAddress><vcard:Address>....</vcard:hasAddress></vcard:Address>
+	 */
 	@JacksonXmlElementWrapper(localName = XmlConstants.XML_VCARD_HAS_ADDRESS)
 	@JacksonXmlProperty(localName = XmlConstants.XML_VCARD_ADDRESS)
 	public XmlAddressImpl[] getHasAddress() {

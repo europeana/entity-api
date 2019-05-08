@@ -272,8 +272,8 @@ public class ConceptSchemeController extends BaseRest {
 
                         checkUserToken(userToken);
 			LdProfiles ldProfile = getProfile(profile, request);
-						
 			// check if the concept scheme exists, if not respond with HTTP 404
+
 			// retrieve an existing concept scheme based on its identifier
 			ConceptScheme existingConceptScheme = getEntityService().getConceptSchemeById(identifier);
 

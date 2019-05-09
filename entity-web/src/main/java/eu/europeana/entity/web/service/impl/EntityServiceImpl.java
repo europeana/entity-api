@@ -113,7 +113,7 @@ public class EntityServiceImpl extends BaseEntityServiceImpl implements EntitySe
      * @see eu.europeana.entity.web.service.EntityService#
      */
     @Override
-    public ResultSet<? extends EntityPreview> suggest(String text, String[] language, EntityTypes[] internalEntityTypes,
+    public ResultSet<? extends EntityPreview> suggest(String text, String[] language, List<EntityTypes> entityTypes,
 	    String scope, String namespace, int rows, SuggestAlgorithmTypes algorithm)
 	    throws InternalServerException, ParamValidationException {
 
@@ -123,10 +123,10 @@ public class EntityServiceImpl extends BaseEntityServiceImpl implements EntitySe
 	    switch (algorithm) {
 	    case suggest:
 		query = buildSearchQuery(text, null, rows);
-		res = solrEntityService.suggest(query, language, internalEntityTypes, scope, rows);
+		res = solrEntityService.suggest(query, language, entityTypes, scope, rows);
 		break;
 	    case suggestByLabel:
-		res = solrEntityService.suggestByLabel(text, language, internalEntityTypes, scope, rows);
+		res = solrEntityService.suggestByLabel(text, language, entityTypes, scope, rows);
 		break;
 	    default:
 		throw new ParamValidationException(WebEntityConstants.ALGORITHM, "" + algorithm);
@@ -157,10 +157,10 @@ public class EntityServiceImpl extends BaseEntityServiceImpl implements EntitySe
     }
 
     @Override
-    public ResultSet<? extends Entity> search(Query query, String[] outLanguage, EntityTypes[] internalEntityTypes,
+    public ResultSet<? extends Entity> search(Query query, String[] outLanguage, List<EntityTypes> entityTypes,
 	    String scope) throws HttpException {
 
-	return solrEntityService.search(query, outLanguage, internalEntityTypes, scope);
+	return solrEntityService.search(query, outLanguage, entityTypes, scope);
     }
 
     /**

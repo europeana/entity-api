@@ -1,8 +1,10 @@
 package eu.europeana.entity.web.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -120,10 +122,10 @@ public abstract class BaseRest {
 	 * @return Entity types string list
 	 * @throws ParamValidationException
 	 */
-	protected EntityTypes[] getEntityTypesFromString(String commaSepEntityTypes) throws ParamValidationException {
+	protected List<EntityTypes> getEntityTypesFromString(String commaSepEntityTypes) throws ParamValidationException {
 
 		String[] splittedEntityTypes = commaSepEntityTypes.split(",");
-		EntityTypes[] entityTypes = new EntityTypes[splittedEntityTypes.length];
+		List<EntityTypes> entityTypes = new ArrayList<EntityTypes>();
 
 		EntityTypes entityType = null;
 		String typeAsString = null;
@@ -132,7 +134,7 @@ public abstract class BaseRest {
 			for (int i = 0; i < splittedEntityTypes.length; i++) {
 				typeAsString = splittedEntityTypes[i].trim();
 				entityType = EntityTypes.getByInternalType(typeAsString);
-				entityTypes[i] = entityType;
+				entityTypes.add(entityType);
 			}
 		} catch (UnsupportedEntityTypeException e) {
 			throw new ParamValidationException(I18nConstants.INVALID_PARAM_VALUE, WebEntityConstants.QUERY_PARAM_TYPE,

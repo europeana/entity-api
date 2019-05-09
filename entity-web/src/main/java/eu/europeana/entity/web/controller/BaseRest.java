@@ -395,10 +395,6 @@ public abstract class BaseRest {
 						new String[] { CommonApiConstants.QUERY_PARAM_PROFILE, paramProfile }, HttpStatus.BAD_REQUEST, e);
 			}
 		}
-		String ifMatchHeader = request.getHeader(EntityHttpHeaders.IF_MATCH);
-		if (ifMatchHeader != null) {
-		    
-		}
 		return profile;
 	}
 	

@@ -52,4 +52,26 @@ public final class XmlConstants {
     public static final String XML_WGS84_POS_ALT = "wgs84_pos:alt";
     public static final String XML_EDM_IS_NEXT_IN_SEQUENCE = "edm:isNextInSequence";
     
+    public static final String XML_EDM_ORGANIZATION = "edm:Organization";
+    public static final String XML_EDM_ACRONYM = "edm:acronym";
+    public static final String XML_DC_DESCRIPTION = "dc:description";
+    public static final String XML_FOAF_LOGO = "foaf:logo";
+    public static final String XML_EDM_EUROPEANA_ROLE = "edm:europeanaRole";
+    public static final String XML_EDM_ORGANIZATION_DOMAIN = "edm:organizationDomain";
+    public static final String XML_EDM_GEOGRAPHIC_LEVEL = "edm:geographicLevel";
+    public static final String XML_EDM_COUNTRY = "edm:country";
+    public static final String XML_FOAF_HOMEPAGE = "foaf:homepage";
+    public static final String XML_FOAF_PHONE = "foaf:phone";
+    public static final String XML_FOAF_MBOX = "foaf:mbox";
+    public static final String XML_VCARD_HAS_ADDRESS = "vcard:hasAddress";
+    
+    public static final String XML_VCARD_ADDRESS = "vcard:Address";
+    public static final String XML_VCARD_STREET_ADDRESS = "vcard:street-address";
+    public static final String XML_VCARD_POSTAL_CODE = "vcard:postal-code";
+    public static final String XML_VCARD_POST_OFFICE_BOX = "vcard:post-office-box";
+    public static final String XML_VCARD_LOCALITY = "vcard:locality";
+    public static final String XML_VCARD_REGION = "vcard:region";
+    public static final String XML_VCARD_COUNTRY_NAME = "vcard:country-name";
+    public static final String XML_VCARD_HAS_GEO = "vcard:hasGeo";
+    
 }

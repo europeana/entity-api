@@ -18,4 +18,6 @@ public interface EntityHttpHeaders extends HttpHeaders {
 	public static final String VALUE_LDP_BASIC_CONTAINER = "<http://www.w3.org/ns/ldp#BasicContainer>; rel=\"type\"";
 
 	public static final String IF_MATCH= "If-Match";
+	public static final String CACHE_CONTROL = "Cache-Control";	
+	public static final String VALUE_CACHE_CONTROL = "no-cache, no-store, must-revalidate";
 }

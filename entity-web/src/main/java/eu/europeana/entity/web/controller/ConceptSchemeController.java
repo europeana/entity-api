@@ -77,11 +77,12 @@ public class ConceptSchemeController extends BaseRest {
 			// Check client access (a valid "wskey" must be provided)
 			validateApiKey(wskey);
 
-			userToken = getUserToken(userToken, request);
+                        checkUserToken(userToken);
 			LdProfiles ldProfile = getProfile(profile, request);
 
 			// parse concept scheme
 			ConceptScheme webConceptScheme = getEntityService().parseConceptSchemeLd(conceptScheme);
+			getEntityService().validateWebConceptScheme(webConceptScheme);
 
 			// store the new ConceptScheme with its respective id, together with all the containing items 
 			// following the order given by the list
@@ -93,11 +94,12 @@ public class ConceptSchemeController extends BaseRest {
 			// build response
 			MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>(6);
 			headers.add(HttpHeaders.AUTHORIZATION, HttpHeaders.PREFER);
-			headers.add(HttpHeaders.LINK, HttpHeaders.VALUE_LDP_CONTAINER);
+			headers.add(HttpHeaders.LINK, EntityHttpHeaders.VALUE_LDP_BASIC_CONTAINER);
 			headers.add(HttpHeaders.LINK, HttpHeaders.VALUE_LDP_RESOURCE);
 			headers.add(HttpHeaders.ETAG, generateETag(storedConceptScheme.getModified().hashCode()));
 			headers.add(HttpHeaders.ALLOW, HttpHeaders.ALLOW_POST);
 			headers.add(EntityHttpHeaders.PREFERENCE_APPLIED, ldProfile.getPreferHeaderValue());
+			headers.add(EntityHttpHeaders.CACHE_CONTROL, EntityHttpHeaders.VALUE_CACHE_CONTROL);
 
 			ResponseEntity<String> response = new ResponseEntity<String>(
 					serializedConceptSchemeJsonLdStr, headers, HttpStatus.OK);
@@ -293,7 +295,7 @@ public class ConceptSchemeController extends BaseRest {
 				// parse fields of the new user set to an object
 				ConceptScheme newConceptScheme = getEntityService().parseConceptSchemeLd(conceptScheme);
 				
-				// validate and process the Set description for format and mandatory fields
+				// validate and process the concept scheme description for format and mandatory fields
 				// if false respond with HTTP 400
 				getEntityService().validateWebConceptScheme(newConceptScheme);
 

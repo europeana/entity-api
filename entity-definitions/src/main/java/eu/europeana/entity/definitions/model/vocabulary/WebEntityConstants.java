@@ -86,5 +86,6 @@ public interface WebEntityConstants extends WebEntityFields{
 		
 	// Web application
 	public static final String CONCEPT_SCHEME = "conceptScheme";	
-	public static final String CONCEPT_SCHEME_APPLICATION_NAME = "webConceptScheme";	
+	public static final String CONCEPT_SCHEME_APPLICATION_NAME = "webConceptScheme";
+	
 }

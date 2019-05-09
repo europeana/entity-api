@@ -77,35 +77,29 @@ public class ConceptSchemeController extends BaseRest {
 			// Check client access (a valid "wskey" must be provided)
 			validateApiKey(wskey);
 
-			userToken = getUserToken(userToken, request);
+                        checkUserToken(userToken);
 			LdProfiles ldProfile = getProfile(profile, request);
 
-			// authorize user
-//			getAuthorizationService().authorizeUser(userToken, wskey, null, Operations.CREATE);			
-			
 			// parse concept scheme
 			ConceptScheme webConceptScheme = getEntityService().parseConceptSchemeLd(conceptScheme);
+			getEntityService().validateWebConceptScheme(webConceptScheme);
 
-			// validate and process the Set description for format and mandatory fields
-			// if false respond with HTTP 400
-			
 			// store the new ConceptScheme with its respective id, together with all the containing items 
 			// following the order given by the list
 			// generate an identifier (in sequence) for the Set
 			ConceptScheme storedConceptScheme = getEntityService().storeConceptScheme(webConceptScheme);
 
-//			String serializedConceptSchemeJsonLdStr = serializeConceptScheme(profile, storedConceptScheme); 
 			String serializedConceptSchemeJsonLdStr = serializeConceptScheme(ldProfile, storedConceptScheme); 
 						
 			// build response
 			MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>(6);
 			headers.add(HttpHeaders.AUTHORIZATION, HttpHeaders.PREFER);
-			headers.add(HttpHeaders.LINK, HttpHeaders.VALUE_LDP_CONTAINER);
+			headers.add(HttpHeaders.LINK, EntityHttpHeaders.VALUE_LDP_BASIC_CONTAINER);
 			headers.add(HttpHeaders.LINK, HttpHeaders.VALUE_LDP_RESOURCE);
 			headers.add(HttpHeaders.ETAG, generateETag(storedConceptScheme.getModified().hashCode()));
 			headers.add(HttpHeaders.ALLOW, HttpHeaders.ALLOW_POST);
 			headers.add(EntityHttpHeaders.PREFERENCE_APPLIED, ldProfile.getPreferHeaderValue());
-//			headers.add(EntityHttpHeaders.PREFERENCE_APPLIED, profile);
+			headers.add(EntityHttpHeaders.CACHE_CONTROL, EntityHttpHeaders.VALUE_CACHE_CONTROL);
 
 			ResponseEntity<String> response = new ResponseEntity<String>(
 					serializedConceptSchemeJsonLdStr, headers, HttpStatus.OK);
@@ -128,7 +122,6 @@ public class ConceptSchemeController extends BaseRest {
 	 * This method retrieves an existing concept scheme identified by given identifier, which is
 	 * a number in string format.	 
 	 * @param wskey The API key
-	 * @param userToken The user identifier
 	 * @param profile The profile definition
 	 * @param request HTTP request
 	 * @return response entity that comprises response body, headers and status code
@@ -142,7 +135,6 @@ public class ConceptSchemeController extends BaseRest {
 	public ResponseEntity<String> getConceptScheme(
 			@RequestParam(value = CommonApiConstants.PARAM_WSKEY, required = false) String wskey,
 			@PathVariable(value = WebEntityConstants.PATH_PARAM_IDENTIFIER) String identifier,
-			@RequestParam(value = WebEntityConstants.USER_TOKEN, required = false, defaultValue = WebEntityConstants.USER_ANONYMOUNS) String userToken,			
 			@RequestParam(value = CommonApiConstants.QUERY_PARAM_PROFILE, required = false) String profile,
 			HttpServletRequest request)
 					throws HttpException {
@@ -153,12 +145,8 @@ public class ConceptSchemeController extends BaseRest {
 			// Check client access (a valid "wskey" must be provided)
 			validateApiKey(wskey);
 
-			userToken = getUserToken(userToken, request);
 			LdProfiles ldProfile = getProfile(profile, request);
 
-			// authorize user
-//			getAuthorizationService().authorizeUser(userToken, wskey, null, Operations.CREATE);			
-			
 			// retrieve a concept scheme based on its identifier - process query
 			// if the concept scheme doesn’t exist, respond with HTTP 404
 			// if the entity is disabled respond with HTTP 410
@@ -175,11 +163,11 @@ public class ConceptSchemeController extends BaseRest {
 			
 			// build response
 			MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>(6);
-			headers.add(HttpHeaders.AUTHORIZATION, HttpHeaders.PREFER);
-			headers.add(HttpHeaders.LINK, HttpHeaders.VALUE_LDP_CONTAINER);
+			headers.add(HttpHeaders.VARY, HttpHeaders.PREFER);
+			headers.add(HttpHeaders.LINK, EntityHttpHeaders.VALUE_LDP_BASIC_CONTAINER);
 			headers.add(HttpHeaders.LINK, HttpHeaders.VALUE_LDP_RESOURCE);
 			headers.add(HttpHeaders.ETAG, generateETag(0));
-			headers.add(HttpHeaders.ALLOW, HttpHeaders.ALLOW_POST);
+			headers.add(HttpHeaders.ALLOW, HttpHeaders.ALLOW_GPuD);
 			headers.add(EntityHttpHeaders.PREFERENCE_APPLIED, ldProfile.getPreferHeaderValue());
 
 			ResponseEntity<String> response = new ResponseEntity<String>(
@@ -204,7 +192,6 @@ public class ConceptSchemeController extends BaseRest {
 	 * @param wskey
 	 * @param identifier
 	 * @param userToken
-	 * @param profile
 	 * @param request
 	 * @return
 	 * @throws HttpException
@@ -214,8 +201,7 @@ public class ConceptSchemeController extends BaseRest {
 	public ResponseEntity<String> deleteConceptScheme(
 			@RequestParam(value = CommonApiConstants.PARAM_WSKEY, required = false) String wskey,
 			@PathVariable(value = WebEntityConstants.PATH_PARAM_IDENTIFIER) String identifier,
-			@RequestParam(value = WebEntityConstants.USER_TOKEN, required = false, defaultValue = WebEntityConstants.USER_ANONYMOUNS) String userToken,			
-			@RequestParam(value = CommonApiConstants.QUERY_PARAM_PROFILE, required = false) String profile,
+			@RequestParam(value = WebEntityConstants.USER_TOKEN, required = false, defaultValue = WebEntityConstants.USER_ANONYMOUNS) String userToken,
 			HttpServletRequest request)
 					throws HttpException {
 					
@@ -224,63 +210,26 @@ public class ConceptSchemeController extends BaseRest {
 			// if invalid respond with HTTP 401 or if unauthorized respond with HTTP 403;
 			// Check client access (a valid "wskey" must be provided)
 			validateApiKey(wskey);
-
-			userToken = getUserToken(userToken, request);
-			LdProfiles ldProfile = getProfile(profile, request);
-
-			// authorize user
-//			getAuthorizationService().authorizeUser(userToken, wskey, null, Operations.CREATE);			
 			
+                        checkUserToken(userToken);
+
 			// retrieve a concept scheme based on its identifier - process query
 			// if the Set doesn’t exist, respond with HTTP 404
 			// if the Set is disabled respond with HTTP 410
 			ConceptScheme existingConceptScheme = getEntityService().getConceptSchemeById(identifier);
+			checkIfMatchHeader(existingConceptScheme.getModified().hashCode(), request);
 						
-			// check that only the admins and the owners of the user sets are allowed to delete the user set. 
-			// in the case of regular users (not admins), the autorization method must check if the users 
-			// that calls the deletion (i.e. identified by provided user token) is the same user as the creator 
-			// of the concept scheme
 			hasModifyRights(existingConceptScheme, wskey, userToken);
 
-			// check timestamp if provided within the "If-Match" HTTP header, if false respond with HTTP 412
-//			checkHeaderTimestamp(request, existingConceptScheme);
-						
 			// if the user set is disabled and the user is not an admin, respond with HTTP 410
 			HttpStatus httpStatus = null;
 			
 			if (((WebConceptSchemeImpl) existingConceptScheme).isDisabled()) {
-//				if (!isAdmin(wsKey, userToken)) { 
-//					// if the user is the owner, the response should be 410
-//					if (isOwner(existingUserSet, userToken)) {
-////						httpStatus = HttpStatus.GONE;	
-//						throw new OperationAuthorizationException(I18nConstants.USERSET_ALREADY_DISABLED, 
-//								I18nConstants.USERSET_ALREADY_DISABLED, 
-//								new String[]{existingUserSet.getIdentifier()},
-//								HttpStatus.GONE);
-//						
-//					} else {
-//						// if the user is a registered user but not the owner, the response should be 401 (unathorized)
-//						httpStatus = HttpStatus.UNAUTHORIZED;					
-//					}
-//				} else {
-					// if the user is admin, the set should be permanently deleted and 204 should be returned
 			    getEntityService().deleteConceptScheme(existingConceptScheme.getEntityIdentifier());
 			    httpStatus = HttpStatus.NO_CONTENT;
-//				}
 			} else {			
-   			    // if the user is an Administrator then permanently remove item 
-//			    // (and all items that are members of the user set)
 			    httpStatus = HttpStatus.NO_CONTENT;
-//				 if (isAdmin(wsKey, userToken)) {
-//					 getUserSetService().deleteUserSet(existingUserSet.getIdentifier());
-//				 } else { // otherwise flag it as disabled
-//  					 if (isOwner(existingUserSet, userToken)) {
   			    getEntityService().disableConceptScheme(existingConceptScheme);
-//  					 } else {
-// 						// if the user is a registered user but not the owner, the response should be 401 (unathorized)
-// 						httpStatus = HttpStatus.UNAUTHORIZED;					
-//  					 }
-//				 }
 			}			
 			
 			// build response
@@ -290,7 +239,6 @@ public class ConceptSchemeController extends BaseRest {
 			headers.add(HttpHeaders.LINK, HttpHeaders.VALUE_LDP_RESOURCE);
 			headers.add(HttpHeaders.ETAG, generateETag(0));
 			headers.add(HttpHeaders.ALLOW, EntityHttpHeaders.ALLOW_GPPD);
-			headers.add(EntityHttpHeaders.PREFERENCE_APPLIED, ldProfile.getPreferHeaderValue());
 
 			ResponseEntity<String> response = new ResponseEntity<String>(
 					identifier, headers, httpStatus);
@@ -302,7 +250,6 @@ public class ConceptSchemeController extends BaseRest {
 			throw e;
 		} catch (RuntimeException e) {
 			// not found ..
-			// System.out.println(e);
 			throw new InternalServerException(e);
 		} catch (Exception e) {
 			throw new InternalServerException(e);
@@ -312,7 +259,7 @@ public class ConceptSchemeController extends BaseRest {
 	@RequestMapping(value = {"/scheme/{identifier}"}, method = RequestMethod.PUT, 
 			produces = {HttpHeaders.CONTENT_TYPE_JSONLD_UTF8, HttpHeaders.CONTENT_TYPE_JSON_UTF8})
 	@ApiOperation(notes = SwaggerConstants.UPDATE_SAMPLES_JSONLD, value = "Update an existing concept scheme", nickname = "update", response = java.lang.Void.class)
-	public ResponseEntity<String> updateUserSet(@RequestParam(value = CommonApiConstants.PARAM_WSKEY, required = false) String wskey,
+	public ResponseEntity<String> updateConceptScheme(@RequestParam(value = CommonApiConstants.PARAM_WSKEY, required = false) String wskey,
 			@PathVariable(value = WebEntityConstants.PATH_PARAM_IDENTIFIER) String identifier,
 			@RequestBody String conceptScheme,
 			@RequestParam(value = WebEntityConstants.USER_TOKEN, required = false, defaultValue = WebEntityConstants.USER_ANONYMOUNS) String userToken,
@@ -323,25 +270,20 @@ public class ConceptSchemeController extends BaseRest {
 		try {
 			// check user credentials, if invalid respond with HTTP 401,
 			// check client access (a valid "wskey" must be provided)
-			// Check client access (a valid "wskey" must be provided)
 			validateApiKey(wskey);
 
-			userToken = getUserToken(userToken, request);
+                        checkUserToken(userToken);
 			LdProfiles ldProfile = getProfile(profile, request);
-			
-			// authorize user
-//			getAuthorizationService().authorizeUser(userToken, wskey, identifier, Operations.UPDATE);
+			// check if the concept scheme exists, if not respond with HTTP 404
 
-			// check if the Set exists, if not respond with HTTP 404
 			// retrieve an existing concept scheme based on its identifier
 			ConceptScheme existingConceptScheme = getEntityService().getConceptSchemeById(identifier);
 
+			checkIfMatchHeader(existingConceptScheme.getModified().hashCode(), request);
+			
 			// check if the user is the owner of the set or admin, otherwise respond with 403
 			hasModifyRights(existingConceptScheme, wskey, userToken);
 			
-			// check timestamp if provided within the “If-Match” HTTP header, if false respond with HTTP 412
-//			checkHeaderTimestamp(request, existingConceptScheme);
-
 			// check if the Set is disabled, respond with HTTP 410
 			HttpStatus httpStatus = null;
 			int modifiedDate = 0;
@@ -353,19 +295,14 @@ public class ConceptSchemeController extends BaseRest {
 				// parse fields of the new user set to an object
 				ConceptScheme newConceptScheme = getEntityService().parseConceptSchemeLd(conceptScheme);
 				
-				// validate and process the Set description for format and mandatory fields
+				// validate and process the concept scheme description for format and mandatory fields
 				// if false respond with HTTP 400
 				getEntityService().validateWebConceptScheme(newConceptScheme);
-				//validate items 
-//				validateUpdateItemsByProfile(existingConceptScheme, newConceptScheme, profile);
-				//remove duplicated items
-//				getEntityService().removeItemDuplicates(newConceptScheme);
-				
+
 				// Respond with HTTP 200
 				// update an existing concept scheme. merge concept schemas 
 				// insert new fields in existing object
 				// generate and add a created and modified timestamp to the concept sheme
-//				existingConceptScheme.setModified(newConceptScheme.getModified());
 				ConceptScheme updatedConceptScheme = getEntityService().updateConceptScheme(
 						(PersistentConceptScheme) existingConceptScheme, newConceptScheme);
 				
@@ -377,7 +314,7 @@ public class ConceptSchemeController extends BaseRest {
 			
 			// build response entity with headers
 			MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>(5);
-			headers.add(HttpHeaders.LINK, EntityHttpHeaders.VALUE_LDP_CONTAINER);
+			headers.add(HttpHeaders.LINK, EntityHttpHeaders.VALUE_LDP_BASIC_CONTAINER);
 			headers.add(HttpHeaders.LINK, EntityHttpHeaders.VALUE_LDP_RESOURCE);
 			headers.add(HttpHeaders.ALLOW, EntityHttpHeaders.ALLOW_GPD);
 			headers.add(HttpHeaders.VARY, EntityHttpHeaders.PREFER);
@@ -439,11 +376,6 @@ public class ConceptSchemeController extends BaseRest {
 			    serializedConceptSchemeJsonLdStr = serializeConceptScheme(
 				    LdProfiles.STANDARD, storedConceptScheme); 
 			}
-			
-			// retrieve URL from field isDefinedBy
-			// perform search for entity IDs with provided URL
-			// for found IDs perform atomic update for Entity field inScheme
-			// use modifier "set"
 			
 			// build response
 			MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>(6);

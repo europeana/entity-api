@@ -22,6 +22,9 @@
 #string value indicating if the application runs in "production", "test", "development" environment 
 entity.environment=development
 
+#string value indicating default user token
+default.user.token=tester1
+
 #Socks proxy configuration. If provided it will be used for all http connections (e.g. solr.entity.url)
 # Url Format: socks://username:password@socks_proxy_server:1080 
 socks.proxy.url =

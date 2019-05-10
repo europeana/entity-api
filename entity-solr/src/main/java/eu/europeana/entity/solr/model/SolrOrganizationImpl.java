@@ -1,5 +1,6 @@
 package eu.europeana.entity.solr.model;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -41,7 +42,7 @@ public class SolrOrganizationImpl extends BaseOrganization implements Organizati
 	}
 
 	@Override
-	@Field(ConceptSolrFields.PREF_LABEL_ALL)
+	@Field(OrganizationSolrFields.PREF_LABEL_ALL)
 	public void setPrefLabelStringMap(Map<String, String> prefLabel) {
 		Map<String, String> normalizedPrefLabel = SolrUtils.normalizeStringMap(
 				ConceptSolrFields.PREF_LABEL, prefLabel);
@@ -49,7 +50,7 @@ public class SolrOrganizationImpl extends BaseOrganization implements Organizati
 	}
 
 	@Override
-	@Field(ConceptSolrFields.ALT_LABEL_ALL)
+	@Field(OrganizationSolrFields.ALT_LABEL_ALL)
 	public void setAltLabel(Map<String, List<String>> altLabel) {
 		Map<String, List<String>> normalizedAltLabel = SolrUtils.normalizeStringListMap(
 				ConceptSolrFields.ALT_LABEL, altLabel);
@@ -57,19 +58,19 @@ public class SolrOrganizationImpl extends BaseOrganization implements Organizati
 	}
 
 	@Override
-	@Field(ConceptSolrFields.IDENTIFIER)
+	@Field(OrganizationSolrFields.IDENTIFIER)
 	public void setIdentifier(String[] identifier) {
 		super.setIdentifier(identifier);
 	}
 	
 	@Override
-	@Field(ConceptSolrFields.ID)
+	@Field(OrganizationSolrFields.ID)
 	public void setEntityId(String entityId) {
 		super.setEntityId(entityId);
 	}
 	
 	@Override
-	@Field(ConceptSolrFields.INTERNAL_TYPE)
+	@Field(OrganizationSolrFields.INTERNAL_TYPE)
 	public void setInternalType(String internalType) {
 		super.setInternalType(internalType);
 	}	
@@ -112,13 +113,13 @@ public class SolrOrganizationImpl extends BaseOrganization implements Organizati
 	}
 	
 	@Override
-	@Field(ConceptSolrFields.DEPICTION)
+	@Field(OrganizationSolrFields.DEPICTION)
 	public void setDepiction(String depiction) {
 		super.setDepiction(depiction);
 	}
 	
 	@Override
-	@Field(ConceptSolrFields.SAME_AS)
+	@Field(OrganizationSolrFields.SAME_AS)
 	public void setSameAs(String[] sameAs) {
 		super.setSameAs(sameAs);
 	}
@@ -190,6 +191,16 @@ public class SolrOrganizationImpl extends BaseOrganization implements Organizati
 		super.setHasGeo(hasGeo);
 	}
 
+	@Override
+	@Field(OrganizationSolrFields.CREATED)
+	public void setCreated(Date created) {
+	    	super.setCreated(created);
+	}
 	
+	@Override
+	@Field(OrganizationSolrFields.MODIFIED)
+	public void setModified(Date modified) {
+	    	super.setCreated(modified);
+	}
 
 }

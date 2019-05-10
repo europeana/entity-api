@@ -74,4 +74,10 @@ public final class XmlConstants {
     public static final String XML_VCARD_COUNTRY_NAME = "vcard:country-name";
     public static final String XML_VCARD_HAS_GEO = "vcard:hasGeo";
     
+    public static final String XML_ORE_IS_AGGREGATED_BY = "ore:isAggregatedBy";
+    public static final String XML_ORE_AGGREGATION = "ore:Aggregation";
+    public static final String XML_DCTERMS_CREATED = "dcterms:created";
+    public static final String XML_DCTERMS_MODIFIED = "dcterms:modified";
+    public static final String XML_EDM_AGGREGATES = "edm:aggregates";
+    
 }

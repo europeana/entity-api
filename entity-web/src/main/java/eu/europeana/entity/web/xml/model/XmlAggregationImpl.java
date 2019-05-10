@@ -18,10 +18,12 @@ public class XmlAggregationImpl {
     	Entity entity;
     	@JsonIgnore
     	String id;
+    	@JsonIgnore
+    	private final String AGGREGATION_TAG = "#aggregation";
     	
     	public XmlAggregationImpl(Entity entity) {
     	    this.entity = entity;
-    	    id = entity.getAbout() + "#aggregation";
+    	    id = entity.getAbout() + AGGREGATION_TAG;
     	}
     	
 	@JacksonXmlProperty(isAttribute= true, localName = XmlConstants.XML_RDF_ABOUT)

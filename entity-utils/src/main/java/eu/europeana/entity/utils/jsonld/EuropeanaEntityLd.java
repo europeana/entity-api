@@ -8,6 +8,7 @@ import org.apache.stanbol.commons.jsonld.JsonLdProperty;
 import org.apache.stanbol.commons.jsonld.JsonLdPropertyValue;
 import org.apache.stanbol.commons.jsonld.JsonLdResource;
 
+import eu.europeana.api.commons.definitions.utils.DateUtils;
 import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException;
 import eu.europeana.entity.definitions.model.Agent;
 import eu.europeana.entity.definitions.model.Concept;
@@ -18,7 +19,6 @@ import eu.europeana.entity.definitions.model.Place;
 import eu.europeana.entity.definitions.model.Timespan;
 import eu.europeana.entity.definitions.model.impl.BaseEntity;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
-import eu.europeana.entity.definitions.model.vocabulary.OrganizationSolrFields;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityFields;
 import eu.europeana.entity.utils.EntityUtils;
@@ -59,6 +59,9 @@ public class EuropeanaEntityLd extends JsonLd {
 		putMapOfStringProperty(WebEntityFields.PREF_LABEL, ((BaseEntity) entity).getPrefLabelStringMap(), "", ldResource);
 		putMapOfStringListProperty(WebEntityFields.ALT_LABEL, entity.getAltLabel(), "", ldResource);
 		putMapOfStringListProperty(WebEntityFields.NOTE, entity.getNote(), "", ldResource);
+		
+		//common administrative information
+		putAggregationProperty(entity, ldResource);
 
 		// specific properties (by entity type)
 		putSpecificProperties(entity, ldResource);
@@ -267,6 +270,32 @@ public class EuropeanaEntityLd extends JsonLd {
 		ldResource.putProperty(hasAddress);
 	}
 
+	private void putAggregationProperty(Entity entity, JsonLdResource ldResource) {
+		
+		//created or modified is expected
+		if(entity.getCreated() == null && entity.getModified() == null)
+			return;
+		
+		//build aggregation object (the (json) value of the isAggregatedBy property)
+		JsonLdPropertyValue oreAggregation = new JsonLdPropertyValue(); 
+		//id is mapped to rdf:about
+		oreAggregation.putProperty(new JsonLdProperty(WebEntityFields.ID, entity.getAbout() + "#" + WebEntityFields.AGGREGATION.toLowerCase()));
+		oreAggregation.putProperty(new JsonLdProperty(WebEntityFields.TYPE, WebEntityFields.AGGREGATION));
+		
+		if (entity.getCreated() != null) 			
+		    	oreAggregation.putProperty(
+					new JsonLdProperty(WebEntityFields.CREATED, DateUtils.convertDateToStr(entity.getCreated())));
+		if (entity.getModified() != null) 			
+		    	oreAggregation.putProperty(
+					new JsonLdProperty(WebEntityFields.MODIFIED, DateUtils.convertDateToStr(entity.getModified())));
+
+		oreAggregation.putProperty(new JsonLdProperty(WebEntityFields.AGGREGATES, entity.getAbout()));
+		
+		JsonLdProperty isAggregatedBy = new JsonLdProperty(WebEntityFields.IS_AGGREGATED_BY);
+		isAggregatedBy.addValue(oreAggregation);
+		ldResource.putProperty(isAggregatedBy);
+	}
+	
 	protected String getGeoUri(String latLon){
 		return WebEntityConstants.PROTOCOL_GEO + latLon;
 	}

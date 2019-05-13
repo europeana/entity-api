@@ -131,7 +131,7 @@ public class ResolveController extends BaseRest {
         
     	    	Date timestamp = ((RankedEntity)entity).getTimestamp();
     	    	Date etagDate = (timestamp != null)? timestamp : new Date();
-    	    	int etag = etagDate.hashCode() + outFormat.hashCode(); 
+    	    	String etag = generateETag(etagDate, outFormat.name());
     	    	
     	    	MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>(5);
     	    	headers.add(HttpHeaders.ETAG, "" + etag);

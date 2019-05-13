@@ -1,5 +1,7 @@
 package eu.europeana.entity.web.controller;
 
+import java.util.Date;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
@@ -96,7 +98,7 @@ public class ConceptSchemeController extends BaseRest {
 			headers.add(HttpHeaders.AUTHORIZATION, HttpHeaders.PREFER);
 			headers.add(HttpHeaders.LINK, EntityHttpHeaders.VALUE_LDP_BASIC_CONTAINER);
 			headers.add(HttpHeaders.LINK, HttpHeaders.VALUE_LDP_RESOURCE);
-			headers.add(HttpHeaders.ETAG, generateETag(storedConceptScheme.getModified().hashCode()));
+			headers.add(HttpHeaders.ETAG, generateETag(storedConceptScheme.getModified(), null));
 			headers.add(HttpHeaders.ALLOW, HttpHeaders.ALLOW_POST);
 			headers.add(EntityHttpHeaders.PREFERENCE_APPLIED, ldProfile.getPreferHeaderValue());
 			headers.add(EntityHttpHeaders.CACHE_CONTROL, EntityHttpHeaders.VALUE_CACHE_CONTROL);
@@ -152,6 +154,7 @@ public class ConceptSchemeController extends BaseRest {
 			// if the entity is disabled respond with HTTP 410
 			String serializedConceptSchemeJsonLdStr = "";
 			ConceptScheme storedConceptScheme = getEntityService().getConceptSchemeById(identifier);
+			String eTag = generateETag(storedConceptScheme.getModified(), null);
 			if (((WebConceptSchemeImpl) storedConceptScheme).isDisabled()) {
 				throw new EntityStateException(
 					I18nConstants.MESSAGE_NOT_ACCESSIBLE, I18nConstants.MESSAGE_NOT_ACCESSIBLE
@@ -166,7 +169,7 @@ public class ConceptSchemeController extends BaseRest {
 			headers.add(HttpHeaders.VARY, HttpHeaders.PREFER);
 			headers.add(HttpHeaders.LINK, EntityHttpHeaders.VALUE_LDP_BASIC_CONTAINER);
 			headers.add(HttpHeaders.LINK, HttpHeaders.VALUE_LDP_RESOURCE);
-			headers.add(HttpHeaders.ETAG, generateETag(0));
+			headers.add(HttpHeaders.ETAG, eTag);
 			headers.add(HttpHeaders.ALLOW, HttpHeaders.ALLOW_GPuD);
 			headers.add(EntityHttpHeaders.PREFERENCE_APPLIED, ldProfile.getPreferHeaderValue());
 
@@ -223,13 +226,17 @@ public class ConceptSchemeController extends BaseRest {
 
 			// if the user set is disabled and the user is not an admin, respond with HTTP 410
 			HttpStatus httpStatus = null;
+			String eTag = null;
 			
 			if (((WebConceptSchemeImpl) existingConceptScheme).isDisabled()) {
 			    getEntityService().deleteConceptScheme(existingConceptScheme.getEntityIdentifier());
 			    httpStatus = HttpStatus.NO_CONTENT;
+			    eTag = generateETag(new Date(), null);
+			    
 			} else {			
 			    httpStatus = HttpStatus.NO_CONTENT;
-  			    getEntityService().disableConceptScheme(existingConceptScheme);
+  			    ConceptScheme updated = getEntityService().disableConceptScheme(existingConceptScheme);
+  			    eTag = generateETag(updated.getModified(), null);
 			}			
 			
 			// build response
@@ -237,7 +244,7 @@ public class ConceptSchemeController extends BaseRest {
 			headers.add(HttpHeaders.AUTHORIZATION, HttpHeaders.PREFER);
 			headers.add(HttpHeaders.LINK, HttpHeaders.VALUE_LDP_CONTAINER);
 			headers.add(HttpHeaders.LINK, HttpHeaders.VALUE_LDP_RESOURCE);
-			headers.add(HttpHeaders.ETAG, generateETag(0));
+			headers.add(HttpHeaders.ETAG, eTag);
 			headers.add(HttpHeaders.ALLOW, EntityHttpHeaders.ALLOW_GPPD);
 
 			ResponseEntity<String> response = new ResponseEntity<String>(
@@ -286,11 +293,12 @@ public class ConceptSchemeController extends BaseRest {
 			
 			// check if the Set is disabled, respond with HTTP 410
 			HttpStatus httpStatus = null;
-			int modifiedDate = 0;
 			String serializedConceptSchemeJsonLdStr = "";
+			String eTag = null; 
 			
 			if (((WebConceptSchemeImpl) existingConceptScheme).isDisabled()) { 
 				httpStatus = HttpStatus.GONE;
+				eTag = generateETag(existingConceptScheme.getModified(), null);
 			} else {			
 				// parse fields of the new user set to an object
 				ConceptScheme newConceptScheme = getEntityService().parseConceptSchemeLd(conceptScheme);
@@ -305,10 +313,9 @@ public class ConceptSchemeController extends BaseRest {
 				// generate and add a created and modified timestamp to the concept sheme
 				ConceptScheme updatedConceptScheme = getEntityService().updateConceptScheme(
 						(PersistentConceptScheme) existingConceptScheme, newConceptScheme);
-				
-				modifiedDate = updatedConceptScheme.getModified().hashCode();			
+							
 				httpStatus = HttpStatus.OK;
-
+				eTag = generateETag(updatedConceptScheme.getModified(), null);
 				serializedConceptSchemeJsonLdStr = serializeConceptScheme(ldProfile, updatedConceptScheme); 
 			}
 			
@@ -319,7 +326,7 @@ public class ConceptSchemeController extends BaseRest {
 			headers.add(HttpHeaders.ALLOW, EntityHttpHeaders.ALLOW_GPD);
 			headers.add(HttpHeaders.VARY, EntityHttpHeaders.PREFER);
 			headers.add(EntityHttpHeaders.PREFERENCE_APPLIED, ldProfile.getPreferHeaderValue());
-			headers.add(HttpHeaders.ETAG, generateETag(modifiedDate));
+			headers.add(HttpHeaders.ETAG, eTag);
 
 			ResponseEntity<String> response = new ResponseEntity<String>(
 					serializedConceptSchemeJsonLdStr, headers, httpStatus);
@@ -382,7 +389,7 @@ public class ConceptSchemeController extends BaseRest {
 			headers.add(HttpHeaders.AUTHORIZATION, HttpHeaders.PREFER);
 			headers.add(HttpHeaders.LINK, HttpHeaders.VALUE_LDP_CONTAINER);
 			headers.add(HttpHeaders.LINK, HttpHeaders.VALUE_LDP_RESOURCE);
-			headers.add(HttpHeaders.ETAG, generateETag(0));
+//			headers.add(HttpHeaders.ETAG, generateETag(0));
 			headers.add(HttpHeaders.ALLOW, HttpHeaders.ALLOW_POST);
 			headers.add(EntityHttpHeaders.PREFERENCE_APPLIED, LdProfiles.STANDARD.getPreferHeaderValue());
 

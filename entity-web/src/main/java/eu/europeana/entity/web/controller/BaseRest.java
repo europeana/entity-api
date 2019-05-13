@@ -498,20 +498,17 @@ public abstract class BaseRest {
 	
 	/**
 	 * This method generates etag for response header.
-	 * @param modifiedDate The date of the last modification of entity
+	 * @param modifiedDate, String format The date of the last modification of entity
 	 * @return etag value
 	 */
-    public String generateETag(int modifiedDate) {
-	String res = "";
+    public String generateETag(Date modifiedDate, String format) {
+	Integer hashCode;
+	hashCode = modifiedDate.hashCode();
+	// add the hascode of the serilization format if
+	if (format != null)
+	    hashCode += format.hashCode();
 
-	if (modifiedDate > 0) {
-	    res = "" + modifiedDate;
-	} else {
-	    Date etagDate = new Date();
-	    int etag = etagDate.hashCode();
-	    res = "" + etag;
-	}
-	return res;
+	return hashCode.toString();
     }
 	    
 }

@@ -254,7 +254,7 @@ public abstract class BaseRest {
 		throws EntityAuthenticationException {
 	    String defaultUserToken = getDefaultUserToken();
 	    if (!paramUserToken.equals(defaultUserToken)) {
-		throw new EntityAuthenticationException(I18nConstants.INVALID_TOKEN, I18nConstants.INVALID_TOKEN, null,
+		throw new EntityAuthenticationException(I18nConstants.INVALID_TOKEN, I18nConstants.INVALID_TOKEN, new String[] {paramUserToken},
 			HttpStatus.UNAUTHORIZED);
 	    }
 	}

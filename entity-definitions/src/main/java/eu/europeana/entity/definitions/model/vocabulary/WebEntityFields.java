@@ -24,7 +24,10 @@ public interface WebEntityFields {
 	
 	//common administrative information
 	public static final String CREATED = "created";
-	public static final String MODIFIED = "modified"; 
+	public static final String MODIFIED = "modified";
+	public static final String AGGREGATION = "Aggregation";
+	public static final String IS_AGGREGATED_BY = "isAggregatedBy";
+	public static final String AGGREGATES = "aggregates";
 	
 
 	// concept fields

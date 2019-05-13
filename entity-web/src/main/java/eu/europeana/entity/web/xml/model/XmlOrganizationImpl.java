@@ -16,44 +16,22 @@ import eu.europeana.entity.definitions.model.Organization;;
 @JsonPropertyOrder({XmlConstants.XML_FOAF_DEPICTION, XmlConstants.XML_SKOS_PREF_LABEL, XmlConstants.XML_EDM_ACRONYM, XmlConstants.XML_SKOS_ALT_LABEL, 
     	XmlConstants.XML_DC_DESCRIPTION, XmlConstants.XML_FOAF_LOGO, XmlConstants.XML_EDM_EUROPEANA_ROLE, XmlConstants.XML_EDM_ORGANIZATION_DOMAIN,
     	XmlConstants.XML_EDM_GEOGRAPHIC_LEVEL, XmlConstants.XML_EDM_COUNTRY, XmlConstants.XML_FOAF_HOMEPAGE, XmlConstants.XML_FOAF_PHONE,
-    	XmlConstants.XML_FOAF_MBOX, XmlConstants.XML_VCARD_HAS_ADDRESS, XmlConstants.XML_VCARD_ADDRESS, XmlConstants.XML_DC_IDENTIFIER, XmlConstants.XML_OWL_SAME_AS})
-public class XmlOrganizationImpl {
+    	XmlConstants.XML_FOAF_MBOX, XmlConstants.XML_VCARD_HAS_ADDRESS, XmlConstants.XML_VCARD_ADDRESS, XmlConstants.XML_DC_IDENTIFIER, 
+    	XmlConstants.XML_OWL_SAME_AS, XmlConstants.XML_ORE_IS_AGGREGATED_BY})
+public class XmlOrganizationImpl extends XmlBaseEntityImpl {
 
 	@JsonIgnore
 	private Organization organization;
     
 	public XmlOrganizationImpl(Organization organization) {
+	    	super(organization);
 	    	this.organization = organization;
-	}
-	
-	@JacksonXmlProperty(isAttribute= true, localName = XmlConstants.XML_RDF_ABOUT)
-	public String getAbout() {
-		return organization.getAbout();
-	}
-    	
-	@JacksonXmlProperty(localName = XmlConstants.XML_FOAF_DEPICTION)
-	public EdmWebResource getDepiction() {
-	    	if(organization.getDepiction() == null)
-	    	    return null;
-		return new EdmWebResource(organization.getDepiction());
-	}
-	
-	@JacksonXmlElementWrapper(useWrapping=false)
-	@JacksonXmlProperty(localName = XmlConstants.XML_SKOS_PREF_LABEL)
-	public List<XmlMultilingualString> getPrefLabel() {		
-		return RdfXmlUtils.convertToXmlMultilingualString(organization.getPrefLabel());
 	}
 	
 	@JacksonXmlElementWrapper(useWrapping=false)
 	@JacksonXmlProperty(localName = XmlConstants.XML_EDM_ACRONYM)
 	public List<XmlMultilingualString> getAcronym() {		
 		return RdfXmlUtils.convertToXmlMultilingualString(organization.getAcronym());
-	}
-	
-	@JacksonXmlElementWrapper(useWrapping=false)
-	@JacksonXmlProperty(localName = XmlConstants.XML_SKOS_ALT_LABEL)
-	public List<XmlMultilingualString> getAltLabel() {
-		return RdfXmlUtils.convertToXmlMultilingualString(organization.getAltLabel());
 	}
 	
 	@JacksonXmlElementWrapper(useWrapping=false)

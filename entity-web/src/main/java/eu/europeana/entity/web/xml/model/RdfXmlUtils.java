@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+
 import eu.europeana.corelib.utils.EuropeanaUriUtils;
 
 public class RdfXmlUtils {
@@ -18,6 +20,10 @@ public class RdfXmlUtils {
 	return res;
     }
     
+    public static XmlMultilingualString createMultilingualString(String language, String entryValue) {
+	return new XmlMultilingualString(StringEscapeUtils.escapeXml(entryValue), language);
+    }
+    
     public static List<XmlMultilingualString> convertToXmlMultilingualString(Map<String, List<String>> values) {
 	if (values == null)
 	    return null;
@@ -25,7 +31,7 @@ public class RdfXmlUtils {
 	for (String language : values.keySet()) {
 	    List<String> entryValues = values.get(language);
 	    for (String entryValue : entryValues) {
-		res.add(new XmlMultilingualString(entryValue, language));
+		res.add(createMultilingualString(language, entryValue));
 	    }
 	}
 	return res;
@@ -41,7 +47,7 @@ public class RdfXmlUtils {
 		if(EuropeanaUriUtils.isUri(entryValue))
 		    res.add(new RdfResource(entryValue));
 		else
-		    res.add(new XmlMultilingualString(entryValue, language));
+		    res.add(createMultilingualString(language, entryValue));
 	    }
 	}
 	return res;
@@ -52,7 +58,7 @@ public class RdfXmlUtils {
 	    return null;
 	List<XmlMultilingualString> res = new ArrayList<>();
 	for (String language : values.keySet()) {
-	    res.add(new XmlMultilingualString(values.get(language), language));
+	    res.add(createMultilingualString(values.get(language), language));
 	}
 	return res;
     }

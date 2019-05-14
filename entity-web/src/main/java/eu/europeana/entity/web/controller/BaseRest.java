@@ -413,12 +413,11 @@ public abstract class BaseRest {
 		if (ifMatchHeader != null) {
 		    try {
         		    int ifMatchValue = Integer.parseInt(ifMatchHeader);
-        		    if (etag != ifMatchValue) {
-        			throw new HeaderValidationException(I18nConstants.INVALID_PARAM_VALUE, ifMatchHeader);
-        		    }
+        		    if (etag != ifMatchValue)
+        			throw new HeaderValidationException(I18nConstants.INVALID_PARAM_VALUE, EntityHttpHeaders.IF_MATCH, ifMatchHeader);		    
 		    }
         	    catch (NumberFormatException e) {
-			throw new HeaderValidationException(I18nConstants.INVALID_PARAM_VALUE, ifMatchHeader);        		
+			throw new HeaderValidationException(I18nConstants.INVALID_PARAM_VALUE, EntityHttpHeaders.IF_MATCH, ifMatchHeader);        		
         	    }
 		}
 	}

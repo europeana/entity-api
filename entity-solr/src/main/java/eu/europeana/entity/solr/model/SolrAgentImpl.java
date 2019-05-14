@@ -229,6 +229,6 @@ public class SolrAgentImpl extends BaseAgent implements Agent {
 	@Override
 	@Field(AgentSolrFields.MODIFIED)
 	public void setModified(Date modified) {
-	    	super.setCreated(modified);
+	    	super.setModified(modified);
 	}
 }

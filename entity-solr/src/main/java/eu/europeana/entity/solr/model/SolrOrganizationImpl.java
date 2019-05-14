@@ -200,7 +200,7 @@ public class SolrOrganizationImpl extends BaseOrganization implements Organizati
 	@Override
 	@Field(OrganizationSolrFields.MODIFIED)
 	public void setModified(Date modified) {
-	    	super.setCreated(modified);
+	    	super.setModified(modified);
 	}
 
 }

@@ -151,6 +151,6 @@ public class SolrConceptImpl extends BaseConcept implements Concept{
 	@Override
 	@Field(ConceptSolrFields.MODIFIED)
 	public void setModified(Date modified) {
-	    	super.setCreated(modified);
+	    	super.setModified(modified);
 	}
 }

@@ -131,6 +131,6 @@ public class SolrPlaceImpl extends BasePlace implements Place {
 	@Override
 	@Field(PlaceSolrFields.MODIFIED)
 	public void setModified(Date modified) {
-	    	super.setCreated(modified);
+	    	super.setModified(modified);
 	}
 }

@@ -78,6 +78,6 @@ public final class XmlConstants {
     public static final String XML_ORE_AGGREGATION = "ore:Aggregation";
     public static final String XML_DCTERMS_CREATED = "dcterms:created";
     public static final String XML_DCTERMS_MODIFIED = "dcterms:modified";
-    public static final String XML_EDM_AGGREGATES = "edm:aggregates";
+    public static final String XML_EDM_AGGREGATES = "ore:aggregates";
     
 }

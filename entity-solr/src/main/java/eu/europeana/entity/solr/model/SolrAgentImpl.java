@@ -39,7 +39,7 @@ public class SolrAgentImpl extends BaseAgent implements Agent {
 	}
 	
 	@Override
-	@Field(ConceptSolrFields.ID)
+	@Field(AgentSolrFields.ID)
 	public void setEntityId(String entityId) {
 		super.setEntityId(entityId);
 	}
@@ -66,7 +66,7 @@ public class SolrAgentImpl extends BaseAgent implements Agent {
 	}
 
 	@Override
-	@Field(ConceptSolrFields.PREF_LABEL_ALL)
+	@Field(AgentSolrFields.PREF_LABEL_ALL)
 	public void setPrefLabelStringMap(Map<String, String> prefLabel) {
 		Map<String, String> normalizedPrefLabel = SolrUtils.normalizeStringMap(
 				ConceptSolrFields.PREF_LABEL, prefLabel);
@@ -74,7 +74,7 @@ public class SolrAgentImpl extends BaseAgent implements Agent {
 	}
 
 	@Override
-	@Field(ConceptSolrFields.ALT_LABEL_ALL)
+	@Field(AgentSolrFields.ALT_LABEL_ALL)
 	public void setAltLabel(Map<String, List<String>> altLabel) {
 		Map<String, List<String>> normalizedAltLabel = SolrUtils.normalizeStringListMap(
 				ConceptSolrFields.ALT_LABEL, altLabel);
@@ -82,7 +82,7 @@ public class SolrAgentImpl extends BaseAgent implements Agent {
 	}
 
 	@Override
-	@Field(ConceptSolrFields.HIDDEN_LABEL)
+	@Field(AgentSolrFields.HIDDEN_LABEL)
 	public void setHiddenLabel(Map<String, List<String>> hiddenLabel) {
 		Map<String, List<String>> normalizedHiddenLabel = SolrUtils.normalizeStringListMap(
 				ConceptSolrFields.HIDDEN_LABEL, hiddenLabel);
@@ -90,7 +90,7 @@ public class SolrAgentImpl extends BaseAgent implements Agent {
 	}
 
 	@Override
-	@Field(ConceptSolrFields.NOTE_ALL)
+	@Field(AgentSolrFields.NOTE_ALL)
 	public void setNote(Map<String, List<String>> note) {
 		Map<String, List<String>>  normalizedNote = SolrUtils.normalizeStringListMap(
 				ConceptSolrFields.NOTE, note);
@@ -98,7 +98,7 @@ public class SolrAgentImpl extends BaseAgent implements Agent {
 	}
 	
 	@Override
-	@Field(ConceptSolrFields.DEPICTION)
+	@Field(AgentSolrFields.DEPICTION)
 	public void setDepiction(String depiction) {
 		super.setDepiction(depiction);
 	}
@@ -218,5 +218,17 @@ public class SolrAgentImpl extends BaseAgent implements Agent {
 	@Field(AgentSolrFields.DATE)
 	public void setDate(Date date) {
 		super.setDate(date);
+	}
+	
+	@Override
+	@Field(AgentSolrFields.CREATED)
+	public void setCreated(Date created) {
+	    	super.setCreated(created);
+	}
+	
+	@Override
+	@Field(AgentSolrFields.MODIFIED)
+	public void setModified(Date modified) {
+	    	super.setModified(modified);
 	}
 }

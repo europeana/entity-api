@@ -15,27 +15,17 @@ import eu.europeana.entity.definitions.model.Place;
 @JsonInclude(value = JsonInclude.Include.NON_EMPTY)
 @JsonPropertyOrder({XmlConstants.XML_FOAF_DEPICTION, XmlConstants.XML_SKOS_PREF_LABEL, XmlConstants.XML_SKOS_ALT_LABEL, XmlConstants.XML_SKOS_HIDDEN_LABEL,
     	XmlConstants.XML_WGS84_POS_LAT, XmlConstants.XML_WGS84_POS_LONG, XmlConstants.XML_WGS84_POS_ALT, XmlConstants.XML_SKOS_NOTE, 
-    	XmlConstants.XML_DCTERMS_HAS_PART, XmlConstants.XML_DCTERMS_IS_PART_OF, XmlConstants.XML_EDM_IS_NEXT_IN_SEQUENCE, XmlConstants.XML_OWL_SAME_AS})
-public class XmlPlaceImpl {
+    	XmlConstants.XML_DCTERMS_HAS_PART, XmlConstants.XML_DCTERMS_IS_PART_OF, XmlConstants.XML_EDM_IS_NEXT_IN_SEQUENCE, 
+    	XmlConstants.XML_OWL_SAME_AS, XmlConstants.XML_ORE_IS_AGGREGATED_BY})
+public class XmlPlaceImpl extends XmlBaseEntityImpl {
     
     	@JsonIgnore
     	private Place place;
     
     	public XmlPlaceImpl(Place place) {
+    	    	super(place);
     	    	this.place = place;
     	}
-
-	@JacksonXmlProperty(isAttribute= true, localName = XmlConstants.XML_RDF_ABOUT)
-	public String getAbout() {
-		return place.getAbout();
-	}
-	
-	@JacksonXmlProperty(localName = XmlConstants.XML_FOAF_DEPICTION)
-	public EdmWebResource getDepiction() {
-	    	if(place.getDepiction() == null)
-	    	    return null;
-		return new EdmWebResource(place.getDepiction());
-	}
 	
 	@JacksonXmlProperty(localName = XmlConstants.XML_WGS84_POS_LAT)
 	public Float getLatitude() {
@@ -50,18 +40,6 @@ public class XmlPlaceImpl {
 	@JacksonXmlProperty(localName = XmlConstants.XML_WGS84_POS_ALT)
 	public Float getAltitude() {
 		return place.getAltitude();
-	}
-	
-	@JacksonXmlElementWrapper(useWrapping=false)
-	@JacksonXmlProperty(localName = XmlConstants.XML_SKOS_PREF_LABEL)
-	public List<XmlMultilingualString> getPrefLabel() {		
-		return RdfXmlUtils.convertToXmlMultilingualString(place.getPrefLabel());
-	}
-	
-	@JacksonXmlElementWrapper(useWrapping=false)
-	@JacksonXmlProperty(localName = XmlConstants.XML_SKOS_ALT_LABEL)
-	public List<XmlMultilingualString> getAltLabel() {
-		return RdfXmlUtils.convertToXmlMultilingualString(place.getAltLabel());
 	}
 	
 	@JacksonXmlElementWrapper(useWrapping=false)
@@ -99,6 +77,5 @@ public class XmlPlaceImpl {
 	public List<RdfResource> getSameAs(){
 	    	return RdfXmlUtils.convertToRdfResource(place.getSameAs());
 	}
-	
     	
 }

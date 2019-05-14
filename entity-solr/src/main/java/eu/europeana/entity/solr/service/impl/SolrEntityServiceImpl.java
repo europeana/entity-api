@@ -111,7 +111,7 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
     }
 
     @Override
-    public ResultSet<? extends Entity> search(Query searchQuery, String[] outLanguage, EntityTypes[] entityTypes,
+    public ResultSet<? extends Entity> search(Query searchQuery, String[] outLanguage, List<EntityTypes> entityTypes,
 	    String scope) throws EntityRetrievalException {
 
 	ResultSet<? extends Entity> res = null;
@@ -163,7 +163,7 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 
     @Override
     public ResultSet<? extends EntityPreview> suggest(Query searchQuery, String[] requestedLanguages,
-	    EntityTypes[] entityTypes, String scope, int rows) throws EntitySuggestionException {
+    		List<EntityTypes> entityTypes, String scope, int rows) throws EntitySuggestionException {
 
 	ResultSet<? extends EntityPreview> res = null;
 	SolrQuery query = new EntityQueryBuilder().toSolrQuery(searchQuery, SolrEntityService.HANDLER_SUGGEST,
@@ -194,7 +194,7 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
      */
     @Override
     public ResultSet<? extends EntityPreview> suggestByLabel(String text, String[] requestedLanguages,
-	    EntityTypes[] entityTypes, String scope, int rows) throws EntitySuggestionException {
+    		List<EntityTypes> entityTypes, String scope, int rows) throws EntitySuggestionException {
 
 	ResultSet<? extends EntityPreview> res = null;
 

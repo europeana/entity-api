@@ -1,5 +1,7 @@
 package eu.europeana.entity.web.service;
 
+import java.util.List;
+
 import eu.europeana.api.commons.definitions.search.Query;
 import eu.europeana.api.commons.definitions.search.ResultSet;
 import eu.europeana.api.commons.definitions.search.result.ResultsPage;
@@ -23,7 +25,7 @@ public interface EntityService {
 	 * 
 	 * @param text
 	 * @param language
-	 * @param internalEntityType
+	 * @param entityType
 	 * @param namespace
 	 * @param rows
 	 * @param algorithm The default algorithm is "suggest" but other types are possible
@@ -33,19 +35,19 @@ public interface EntityService {
 	 * e.g. GET /entity/suggest?text=leonard&language=en
 	 */
 	ResultSet<? extends EntityPreview> suggest(
-			String text, String[] language, EntityTypes[] internalEntityTypes, String scope, String namespace, int rows, SuggestAlgorithmTypes algorithm) throws HttpException;
+			String text, String[] language, List<EntityTypes> entityTypes, String scope, String namespace, int rows, SuggestAlgorithmTypes algorithm) throws HttpException;
 
 
 	/**
 	 * This method searches the entities using the provided search query and specific filters
 	 * @param query
 	 * @param preferredLanguages
-	 * @param internalEntityTypes
+	 * @param entityTypes
 	 * @param scope
 	 * @return
 	 * @throws HttpException
 	 */
-	public ResultSet<? extends Entity> search(Query query, String[] preferredLanguages, EntityTypes[] internalEntityTypes, String scope) throws HttpException;
+	public ResultSet<? extends Entity> search(Query query, String[] preferredLanguages, List<EntityTypes> entityTypes, String scope) throws HttpException;
 	
 	
 	/**

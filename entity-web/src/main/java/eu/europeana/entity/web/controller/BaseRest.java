@@ -131,10 +131,10 @@ public abstract class BaseRest {
 	 * @return Entity types string list
 	 * @throws ParamValidationException
 	 */
-	protected EntityTypes[] getEntityTypesFromString(String commaSepEntityTypes) throws ParamValidationException {
+	protected List<EntityTypes> getEntityTypesFromString(String commaSepEntityTypes) throws ParamValidationException {
 
 		String[] splittedEntityTypes = commaSepEntityTypes.split(",");
-		EntityTypes[] entityTypes = new EntityTypes[splittedEntityTypes.length];
+		List<EntityTypes> entityTypes = new ArrayList<EntityTypes>();
 
 		EntityTypes entityType = null;
 		String typeAsString = null;
@@ -143,7 +143,7 @@ public abstract class BaseRest {
 			for (int i = 0; i < splittedEntityTypes.length; i++) {
 				typeAsString = splittedEntityTypes[i].trim();
 				entityType = EntityTypes.getByInternalType(typeAsString);
-				entityTypes[i] = entityType;
+				entityTypes.add(entityType);
 			}
 		} catch (UnsupportedEntityTypeException e) {
 			throw new ParamValidationException(I18nConstants.INVALID_PARAM_VALUE, WebEntityConstants.QUERY_PARAM_TYPE,
@@ -254,7 +254,7 @@ public abstract class BaseRest {
 		throws EntityAuthenticationException {
 	    String defaultUserToken = getDefaultUserToken();
 	    if (!paramUserToken.equals(defaultUserToken)) {
-		throw new EntityAuthenticationException(I18nConstants.INVALID_TOKEN, I18nConstants.INVALID_TOKEN, null,
+		throw new EntityAuthenticationException(I18nConstants.INVALID_TOKEN, I18nConstants.INVALID_TOKEN, new String[] {paramUserToken},
 			HttpStatus.UNAUTHORIZED);
 	    }
 	}
@@ -428,12 +428,11 @@ public abstract class BaseRest {
 		if (ifMatchHeader != null) {
 		    try {
         		    int ifMatchValue = Integer.parseInt(ifMatchHeader);
-        		    if (etag != ifMatchValue) {
-        			throw new HeaderValidationException(I18nConstants.INVALID_PARAM_VALUE, ifMatchHeader);
-        		    }
+        		    if (etag != ifMatchValue)
+        			throw new HeaderValidationException(I18nConstants.INVALID_PARAM_VALUE, EntityHttpHeaders.IF_MATCH, ifMatchHeader);		    
 		    }
         	    catch (NumberFormatException e) {
-			throw new HeaderValidationException(I18nConstants.INVALID_PARAM_VALUE, ifMatchHeader);        		
+			throw new HeaderValidationException(I18nConstants.INVALID_PARAM_VALUE, EntityHttpHeaders.IF_MATCH, ifMatchHeader);        		
         	    }
 		}
 	}
@@ -513,20 +512,17 @@ public abstract class BaseRest {
 	
 	/**
 	 * This method generates etag for response header.
-	 * @param modifiedDate The date of the last modification of entity
+	 * @param modifiedDate, String format The date of the last modification of entity
 	 * @return etag value
 	 */
-    public String generateETag(int modifiedDate) {
-	String res = "";
+    public String generateETag(Date modifiedDate, String format) {
+	Integer hashCode;
+	hashCode = modifiedDate.hashCode();
+	// add the hascode of the serilization format if
+	if (format != null)
+	    hashCode += format.hashCode();
 
-	if (modifiedDate > 0) {
-	    res = "" + modifiedDate;
-	} else {
-	    Date etagDate = new Date();
-	    int etag = etagDate.hashCode();
-	    res = "" + etag;
-	}
-	return res;
+	return hashCode.toString();
     }
 
     /**

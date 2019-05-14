@@ -62,21 +62,7 @@ public enum EntityTypes implements EntityKeyword{
 	    return false;
 	}
 	
-
-	/**
-	 * Convert an array of EntityTypes into an array of strings
-	 * @param entityTypes array of EntityTypes 
-	 * @return array of strings
-	 */
-	public static String[] toStringArray(EntityTypes[] entityTypes) {
-		String[] internalEntityTypes = new String[entityTypes.length]; 
-		for (int i = 0; i < entityTypes.length; i++) {
-			internalEntityTypes[i] = entityTypes[i].getInternalType();
-	    }
-	    return internalEntityTypes;
-	}
 	
-
 	/**
 	 * Identifying agent type by the json value.
 	 * For user friendliness the the comparison is case insensitive  

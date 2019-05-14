@@ -6,6 +6,7 @@ public interface EntitySolrFields {
     @Deprecated
     /** TODO: to be replaced by type */
     public static final String INTERNAL_TYPE = "internal_type";
+    public static final String TYPE = "type";
     public static final String DEPICTION = "foaf_depiction";
     
     public static final String PREF_LABEL = "skos_prefLabel";

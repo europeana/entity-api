@@ -19,37 +19,20 @@ import eu.europeana.entity.definitions.model.Agent;
     	XmlConstants.XML_RDAGR2_PLACE_OF_BIRTH, XmlConstants.XML_RDAGR2_PLACE_OF_DEATH, XmlConstants.XML_RDAGR2_GENDER, 
     	XmlConstants.XML_RDAGR2_PROFESSION_OR_OCCUPATION, XmlConstants.XML_RDAGR2_BIOGRAPHICAL_INFORMATION, XmlConstants.XML_SKOS_NOTE,
     	XmlConstants.XML_DCTERMS_HAS_PART, XmlConstants.XML_DCTERMS_IS_PART_OF, XmlConstants.XML_EDM_HASMET, XmlConstants.XML_EDM_IS_RELATED_TO,
-    	XmlConstants.XML_DC_IDENTIFIER, XmlConstants.XML_OWL_SAME_AS})
-public class XmlAgentImpl {
+    	XmlConstants.XML_DC_IDENTIFIER, XmlConstants.XML_OWL_SAME_AS, XmlConstants.XML_ORE_IS_AGGREGATED_BY})
+public class XmlAgentImpl extends XmlBaseEntityImpl {
     	@JsonIgnore
     	private Agent agent;
     
     	public XmlAgentImpl(Agent agent) {
+    	    	super(agent);
     	    	this.agent = agent;
     	}
-    	
-	@JacksonXmlProperty(isAttribute= true, localName = XmlConstants.XML_RDF_ABOUT)
-	public String getAbout() {
-		return agent.getAbout();
-	}
-	
-	@JacksonXmlProperty(localName = XmlConstants.XML_FOAF_DEPICTION)
-	public EdmWebResource getDepiction() {
-	    	if(agent.getDepiction() == null)
-	    	    return null;
-		return new EdmWebResource(agent.getDepiction());
-	}
 	
 	@JacksonXmlElementWrapper(useWrapping=false)
 	@JacksonXmlProperty(localName = XmlConstants.XML_SKOS_HIDDEN_LABEL)
 	public List<XmlMultilingualString> getHiddenLabel() {
 		return RdfXmlUtils.convertToXmlMultilingualString(agent.getHiddenLabel());
-	}
-	
-	@JacksonXmlElementWrapper(useWrapping=false)
-	@JacksonXmlProperty(localName = XmlConstants.XML_SKOS_ALT_LABEL)
-	public List<XmlMultilingualString> getAltLabel() {
-		return RdfXmlUtils.convertToXmlMultilingualString(agent.getAltLabel());
 	}
 	
 	@JacksonXmlElementWrapper(useWrapping=false)
@@ -105,8 +88,6 @@ public class XmlAgentImpl {
 	@JacksonXmlElementWrapper(useWrapping=false)
 	@JacksonXmlProperty(localName = XmlConstants.XML_EDM_HASMET)
 	public List<RdfResource> getHasMet() {
-	    	if(agent.getHasMet() == null)
-	    	    return null;
 	    	return RdfXmlUtils.convertToRdfResource(agent.getHasMet());
 	}
 	

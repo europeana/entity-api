@@ -137,8 +137,20 @@ public class SolrConceptImpl extends BaseConcept implements Concept{
 	}
 
 	@Override
-	@Field(AgentSolrFields.SAME_AS)
+	@Field(ConceptSolrFields.SAME_AS)
 	public void setSameAs(String[] sameAs) {
 		super.setSameAs(sameAs);
+	}
+	
+	@Override
+	@Field(ConceptSolrFields.CREATED)
+	public void setCreated(Date created) {
+	    	super.setCreated(created);
+	}
+	
+	@Override
+	@Field(ConceptSolrFields.MODIFIED)
+	public void setModified(Date modified) {
+	    	super.setModified(modified);
 	}
 }

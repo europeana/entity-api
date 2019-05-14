@@ -16,27 +16,16 @@ import eu.europeana.entity.definitions.model.Concept;
 @JsonPropertyOrder({ XmlConstants.XML_FOAF_DEPICTION, XmlConstants.XML_SKOS_PREF_LABEL, XmlConstants.XML_SKOS_ALT_LABEL, XmlConstants.XML_SKOS_HIDDEN_LABEL,
     	XmlConstants.XML_SKOS_NOTE, XmlConstants.XML_SKOS_NOTATION, XmlConstants.XML_SKOS_BROADER, XmlConstants.XML_SKOS_NARROWER, XmlConstants.XML_SKOS_RELATED,
     	XmlConstants.XML_SKOS_BROAD_MATCH, XmlConstants.XML_SKOS_NARROW_MATCH, XmlConstants.XML_SKOS_RELATED_MATCH, XmlConstants.XML_SKOS_CLOSE_MATCH,
-    	XmlConstants.XML_SKOS_EXACT_MATCH, XmlConstants.XML_SKOS_IN_SCHEMA})
-public class XmlConceptImpl {
+    	XmlConstants.XML_SKOS_EXACT_MATCH, XmlConstants.XML_SKOS_IN_SCHEMA, XmlConstants.XML_ORE_IS_AGGREGATED_BY})
+public class XmlConceptImpl extends XmlBaseEntityImpl {
 
     	@JsonIgnore
     	private Concept concept;
     
     	public XmlConceptImpl(Concept concept) {
-    	    this.concept = concept;
+    	    	super(concept);
+    	    	this.concept = concept;
     	}
-	
-	@JacksonXmlProperty(isAttribute= true, localName = XmlConstants.XML_RDF_ABOUT)
-	public String getAbout() {
-		return concept.getAbout();
-	}
-    	
-	@JacksonXmlProperty(localName = XmlConstants.XML_FOAF_DEPICTION)
-	public EdmWebResource getDepiction() {
-	    	if(concept.getDepiction() == null)
-	    	    return null;
-		return new EdmWebResource(concept.getDepiction());
-	}
 	
 	@JacksonXmlElementWrapper(useWrapping=false)
 	@JacksonXmlProperty(localName = XmlConstants.XML_SKOS_BROADER)
@@ -99,21 +88,9 @@ public class XmlConceptImpl {
 	}
 	
 	@JacksonXmlElementWrapper(useWrapping=false)
-	@JacksonXmlProperty(localName = XmlConstants.XML_SKOS_ALT_LABEL)
-	public List<XmlMultilingualString> getAltLabel() {
-		return RdfXmlUtils.convertToXmlMultilingualString(concept.getAltLabel());
-	}
-	
-	@JacksonXmlElementWrapper(useWrapping=false)
 	@JacksonXmlProperty(localName = XmlConstants.XML_SKOS_NOTE)
 	public List<XmlMultilingualString> getNote() {
 		return RdfXmlUtils.convertToXmlMultilingualString(concept.getNote());
-	}
-	
-	@JacksonXmlElementWrapper(useWrapping=false)
-	@JacksonXmlProperty(localName = XmlConstants.XML_SKOS_PREF_LABEL)
-	public List<XmlMultilingualString> getPrefLabel() {		
-		return RdfXmlUtils.convertToXmlMultilingualString(concept.getPrefLabel());
 	}
 	
 	@JacksonXmlElementWrapper(useWrapping=false)

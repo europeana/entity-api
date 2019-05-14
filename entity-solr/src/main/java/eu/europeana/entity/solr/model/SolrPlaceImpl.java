@@ -1,5 +1,6 @@
 package eu.europeana.entity.solr.model;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -7,7 +8,6 @@ import org.apache.solr.client.solrj.beans.Field;
 
 import eu.europeana.entity.definitions.model.Place;
 import eu.europeana.entity.definitions.model.impl.BasePlace;
-import eu.europeana.entity.definitions.model.vocabulary.AgentSolrFields;
 import eu.europeana.entity.definitions.model.vocabulary.ConceptSolrFields;
 import eu.europeana.entity.definitions.model.vocabulary.PlaceSolrFields;
 
@@ -17,13 +17,13 @@ public class SolrPlaceImpl extends BasePlace implements Place {
 	// Need to annotate concept fields as well as this class doesn't extend the
 	// SolrConceptImpl
 	@Override
-	@Field(AgentSolrFields.SAME_AS)
+	@Field(PlaceSolrFields.SAME_AS)
 	public void setSameAs(String[] sameAs) {
 		super.setSameAs(sameAs);
 	}
 
 	@Override
-	@Field(AgentSolrFields.EXACT_MATCH)
+	@Field(PlaceSolrFields.EXACT_MATCH)
 	public void setExactMatch(String[] exactMatch) {
 		super.setExactMatch(exactMatch);
 	}
@@ -35,25 +35,25 @@ public class SolrPlaceImpl extends BasePlace implements Place {
 	// }
 
 	@Override
-	@Field(AgentSolrFields.INTERNAL_TYPE)
+	@Field(PlaceSolrFields.INTERNAL_TYPE)
 	public void setInternalType(String internalType) {
 		super.setInternalType(internalType);
 	}
 
 	@Override
-	@Field(ConceptSolrFields.ID)
+	@Field(PlaceSolrFields.ID)
 	public void setEntityId(String entityId) {
 		super.setEntityId(entityId);
 	}
 
 	@Override
-	@Field(AgentSolrFields.HAS_PART)
+	@Field(PlaceSolrFields.HAS_PART)
 	public void setHasPart(String[] hasPart) {
 		super.setHasPart(hasPart);
 	}
 
 	@Override
-	@Field(AgentSolrFields.IS_PART_OF)
+	@Field(PlaceSolrFields.IS_PART_OF)
 	public void setIsPartOfArray(String[] isPartOf) {
 		super.setIsPartOfArray(isPartOf);
 	}
@@ -62,7 +62,7 @@ public class SolrPlaceImpl extends BasePlace implements Place {
 	 * Concept fields
 	 */	
 	@Override
-	@Field(ConceptSolrFields.NOTE_ALL)
+	@Field(PlaceSolrFields.NOTE_ALL)
 	public void setNote(Map<String, List<String>> note) {
 		Map<String, List<String>>  normalizedNote = SolrUtils.normalizeStringListMap(
 				ConceptSolrFields.NOTE, note);
@@ -70,7 +70,7 @@ public class SolrPlaceImpl extends BasePlace implements Place {
 	}
 	
 	@Override
-	@Field(ConceptSolrFields.PREF_LABEL_ALL)
+	@Field(PlaceSolrFields.PREF_LABEL_ALL)
 	public void setPrefLabelStringMap(Map<String, String> prefLabel) {
 		Map<String, String> normalizedPrefLabel = SolrUtils.normalizeStringMap(
 				ConceptSolrFields.PREF_LABEL, prefLabel);
@@ -78,7 +78,7 @@ public class SolrPlaceImpl extends BasePlace implements Place {
 	}
 
 	@Override
-	@Field(ConceptSolrFields.ALT_LABEL_ALL)
+	@Field(PlaceSolrFields.ALT_LABEL_ALL)
 	public void setAltLabel(Map<String, List<String>> altLabel) {
 		Map<String, List<String>> normalizedAltLabel = SolrUtils.normalizeStringListMap(
 				ConceptSolrFields.ALT_LABEL, altLabel);
@@ -117,8 +117,20 @@ public class SolrPlaceImpl extends BasePlace implements Place {
 	}
 
 	@Override
-	@Field(ConceptSolrFields.DEPICTION)
+	@Field(PlaceSolrFields.DEPICTION)
 	public void setDepiction(String depiction) {
 		super.setDepiction(depiction);
+	}
+	
+	@Override
+	@Field(PlaceSolrFields.CREATED)
+	public void setCreated(Date created) {
+	    	super.setCreated(created);
+	}
+	
+	@Override
+	@Field(PlaceSolrFields.MODIFIED)
+	public void setModified(Date modified) {
+	    	super.setModified(modified);
 	}
 }

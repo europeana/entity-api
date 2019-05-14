@@ -22,6 +22,9 @@ public class SolrUtils {
 	 * @return normalized content in format Map<String, String>  
 	 */
 	public static Map<String, String> normalizeStringMap(String fieldNamePrefix, Map<String, String> languageMap) {
+		if(languageMap == null)
+			return null;
+		
 		Map<String, String> res;
 		int prefixLen = fieldNamePrefix.length() + 1;
 		if (languageMap.keySet().iterator().next().startsWith(fieldNamePrefix)) {
@@ -42,17 +45,21 @@ public class SolrUtils {
 	 * @param languageMap e.g. prefLabel
 	 * @return normalized content in format Map<String, String>  
 	 */
-    public static Map<String, String> normalizeStringMapByAddingPrefix(String fieldNamePrefix,
-	    Map<String, String> languageMap) {
-	Map<String, String> res;
-	if (!languageMap.keySet().iterator().next().contains(fieldNamePrefix)) {
-	    res = languageMap.entrySet().stream()
-		    .collect(Collectors.toMap(entry -> fieldNamePrefix + entry.getKey(), entry -> entry.getValue()));
-	} else {
-	    res = languageMap;
+	public static Map<String, String> normalizeStringMapByAddingPrefix(String fieldNamePrefix,
+			Map<String, String> languageMap) {
+		
+		if(languageMap == null)
+			return null;
+		
+		Map<String, String> res;
+		if (!languageMap.keySet().iterator().next().contains(fieldNamePrefix)) {
+			res = languageMap.entrySet().stream()
+					.collect(Collectors.toMap(entry -> fieldNamePrefix + entry.getKey(), entry -> entry.getValue()));
+		} else {
+			res = languageMap;
+		}
+		return res;
 	}
-	return res;
-    }
 	
 	/**
 	 * This method removes unnecessary prefixes from the fields in format Map<String, List<String>> 
@@ -62,6 +69,9 @@ public class SolrUtils {
 	 * @return normalized content in format Map<String, List<String>>  
 	 */
 	public static Map<String, List<String>> normalizeStringListMap(String fieldNamePrefix, Map<String, List<String>> languageMap){
+		if(languageMap == null)
+			return null;
+			
 		Map<String, List<String>> res;
 		int prefixLen = fieldNamePrefix.length() + 1;
 		if (languageMap.keySet().iterator().next().startsWith(fieldNamePrefix)) {
@@ -83,6 +93,10 @@ public class SolrUtils {
 	 * @return normalized content in format Map<String, String>  
 	 */
 	public static Map<String, String> normalizeToStringMap(String fieldNamePrefix, Map<String, List<String>> languageMap){
+		
+		if(languageMap == null)
+			return null;
+		
 		Map<String, String> res;
 		int prefixLen = fieldNamePrefix.length() + 1;
         	boolean hasPrefix = languageMap.keySet().iterator().next().startsWith(fieldNamePrefix);
@@ -104,6 +118,9 @@ public class SolrUtils {
 	 * @return normalized content in formatString[]  
 	 */
 	public static String[] normalizeStringList(String fieldNamePrefix, List<String> itemList) {
+		if(itemList == null)
+			return null;
+		
 		List<String> res;
 		int prefixLen = fieldNamePrefix.length() + 1;
 		if (itemList.iterator().next().startsWith(fieldNamePrefix)) {
@@ -123,6 +140,9 @@ public class SolrUtils {
 	 * @return string array
 	 */
 	public static String[] convertListToArray(List<String> itemList) {
+		if(itemList == null)
+			return null;
+		
 		String[] itemArr = new String[itemList.size()];
 		itemArr = itemList.toArray(itemArr);
 		return itemArr;

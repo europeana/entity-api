@@ -1,8 +1,10 @@
 package eu.europeana.entity.web.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -340,6 +342,21 @@ public abstract class BaseRest {
 	}
 
 	/**
+	 * @param concept
+	 * @return
+	 * @throws IOException
+	 * @throws UnsupportedEntityTypeException
+	 */
+	protected String serializeConcept(Entity concept) 
+		throws IOException, UnsupportedEntityTypeException {
+
+		// serialize Concept description in JSON-LD and respond with HTTP 201 if successful
+		EuropeanaEntityLd serializer = new EuropeanaEntityLd(concept);
+		String serializedConceptJsonLdStr = serializer.toString(4);
+		return serializedConceptJsonLdStr;
+	}
+
+	/**
 	 * This methods applies Linked Data profile to a concept scheme
 	 * 
 	 * @param conceptScheme
@@ -511,5 +528,26 @@ public abstract class BaseRest {
 	}
 	return res;
     }
-	    
+
+    /**
+     * @param strList List of Strings
+     * @return String array
+     */
+    public String[] convertStringListToArray(List<String> strList) {
+	String[] strArr = new String[strList.size()];
+	strArr = strList.toArray(strArr);
+        return strArr;
+    }
+    
+    /**
+     * This method adds a string to the existing String array
+     * @param arr The string array
+     * @param value Value to add
+     * @return extended string array
+     */
+    public String[] addStringToArray(String[] arr, String value) {
+	ArrayList<String> arrList = new ArrayList<String>();
+	arrList.add(value);
+	return arrList.toArray(new String[0]);
+    }
 }

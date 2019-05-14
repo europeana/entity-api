@@ -1,8 +1,14 @@
 package eu.europeana.entity.web.controller;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -13,19 +19,27 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import eu.europeana.api.common.config.I18nConstants;
 import eu.europeana.api.common.config.swagger.SwaggerSelect;
+import eu.europeana.api.commons.definitions.search.Query;
+import eu.europeana.api.commons.definitions.search.ResultSet;
 import eu.europeana.api.commons.definitions.vocabulary.CommonApiConstants;
 import eu.europeana.api.commons.web.exception.HttpException;
 import eu.europeana.api.commons.web.http.HttpHeaders;
 import eu.europeana.entity.definitions.exceptions.EntityInstantiationException;
 import eu.europeana.entity.definitions.exceptions.EntityValidationException;
 import eu.europeana.entity.definitions.model.ConceptScheme;
+import eu.europeana.entity.definitions.model.Entity;
+import eu.europeana.entity.definitions.model.search.SearchProfiles;
+import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.definitions.model.vocabulary.LdProfiles;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
+import eu.europeana.entity.solr.model.SolrConceptImpl;
 import eu.europeana.entity.web.exception.EntityStateException;
 import eu.europeana.entity.web.exception.InternalServerException;
+import eu.europeana.entity.web.exception.ParamValidationException;
 import eu.europeana.entity.web.exception.RequestBodyValidationException;
 import eu.europeana.entity.web.http.EntityHttpHeaders;
 import eu.europeana.entity.web.http.SwaggerConstants;
@@ -377,6 +391,91 @@ public class ConceptSchemeController extends BaseRest {
 				    LdProfiles.STANDARD, storedConceptScheme); 
 			}
 			
+			// search based on isDefinedBy content
+			String isDefinedBy = storedConceptScheme.getIsDefinedBy();
+			if (StringUtils.isBlank(isDefinedBy))
+				throw new ParamValidationException(I18nConstants.EMPTY_PARAM_MANDATORY,
+						CommonApiConstants.QUERY_PARAM_QUERY, isDefinedBy);
+
+			MultiValueMap<String, String> parameters =
+			        UriComponentsBuilder.fromUriString(isDefinedBy).build().getQueryParams();
+			List<String> queryStringList = parameters.get("query");
+			List<String> qfList = parameters.get("qf");
+			List<String> pageSizeList = parameters.get("pageSize");
+			List<String> pageList = parameters.get("page");
+			List<String> typeList = parameters.get("type");
+			    
+			// process scope
+			String scope = validateScopeParam("");
+			
+			// process type
+			String typeStr = "All";
+			if (typeList != null && typeList.size() > 0 && !StringUtils.isBlank(typeList.get(0))) {
+			    typeStr = typeList.get(0);
+			}
+			EntityTypes[] entityTypes = getEntityTypesFromString(typeStr);
+
+			// process lang 
+			String[] preferredLanguages = null;
+			
+			// process profile
+			SearchProfiles searchProfile = null;
+			
+			// process fl
+			String[] retFields = toArray("id");
+			
+			// process facet
+			String[] facets = null; //toArray(facet);
+			
+			// process sort param
+			String[] sortCriteria = null; //toArray(sort);
+			
+			// process query string
+			String queryString = null;
+			queryString = queryStringList.get(0).replace("+"," ");
+			
+			// process qf
+			String[] qf = null;
+			if (qfList != null && qfList.size() > 0) {
+			    qf = convertStringListToArray(qfList);
+			}
+			
+			// process page
+			int page = 0;
+			if (pageList != null && pageList.size() > 0) {
+			    page = Integer.valueOf(pageList.get(0));
+			}
+			
+			// process pageSize
+			int pageSize = 0;
+			if (pageSizeList != null && pageSizeList.size() > 0) {
+			    pageSize = Integer.valueOf(pageSizeList.get(0));
+			}
+			
+			// perform search
+			List<String> entityIdList = new ArrayList<String>();
+			Query searchQuery = entityService.buildSearchQuery(queryString, qf, facets, sortCriteria, page, pageSize, searchProfile, retFields);
+			ResultSet<? extends Entity> results = entityService.search(searchQuery, preferredLanguages, entityTypes, scope);
+                        for (Entity searchRes : results.getResults()) {
+                            entityIdList.add(searchRes.getEntityId());
+                        }
+                  
+                        // The id of the concept scheme needs to be added to all entities matching the search query. 
+                        // NOTE: in order to be more developer friendly, only the identifier part in the URI of 
+                        // the ConceptScheme should be stored in the inScheme field.
+                        for (Entity searchRes : results.getResults()) {
+                            String[] inScheme = ((SolrConceptImpl) searchRes).getInScheme();
+                            String entityIdentifier = storedConceptScheme.getEntityIdentifier();
+                            if (inScheme == null || !Arrays.asList(inScheme).contains(entityIdentifier)) {
+                        	String[] extendedInScheme = addStringToArray(inScheme, entityIdentifier);
+                        	((SolrConceptImpl) searchRes).setInScheme(extendedInScheme);
+                            }
+                        }
+                        
+                        // perform atomic updates for entities
+                        String test = serializeConcept(results.getResults().get(0));
+//                        entityService.atomicUpdate(results);
+
 			// build response
 			MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>(6);
 			headers.add(HttpHeaders.AUTHORIZATION, HttpHeaders.PREFER);

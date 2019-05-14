@@ -64,7 +64,7 @@ public class ResolveController extends BaseRest {
 			@PathVariable(value = WebEntityConstants.PATH_PARAM_IDENTIFIER) String identifier,
 			HttpServletRequest request
 			) throws HttpException  {	
-	    return createResponse(type, namespace, identifier, FormatTypes.jsonld, wskey);			
+	    return createResponse(type, namespace, identifier, FormatTypes.jsonld, wskey, null);			
 	}
 	
 	@ApiOperation(value = "Retrieve a known entity", nickname = "getEntity", response = java.lang.Void.class)
@@ -77,7 +77,7 @@ public class ResolveController extends BaseRest {
 			@PathVariable(value = WebEntityConstants.PATH_PARAM_IDENTIFIER) String identifier,
 			HttpServletRequest request
 			) throws HttpException  {
-	    return createResponse(type, namespace, identifier, FormatTypes.schema, wskey);			
+	    return createResponse(type, namespace, identifier, FormatTypes.schema, wskey, null);			
 	}
 	
 	@ApiOperation(value = "Retrieve a known entity", nickname = "getEntity", response = java.lang.Void.class)
@@ -90,7 +90,7 @@ public class ResolveController extends BaseRest {
 			@PathVariable(value = WebEntityConstants.PATH_PARAM_IDENTIFIER) String identifier,
 			HttpServletRequest request
 			) throws HttpException  {
-	    return createResponse(type, namespace, identifier, FormatTypes.xml, wskey);		
+	    return createResponse(type, namespace, identifier, FormatTypes.xml, wskey, HttpHeaders.CONTENT_TYPE_APPLICATION_RDF_XML);
 	}
 	
 	@ApiOperation(value = "Retrieve a known entity", nickname = "getEntity", response = java.lang.Void.class)
@@ -104,7 +104,7 @@ public class ResolveController extends BaseRest {
 			@PathVariable(value = WebEntityConstants.PATH_PARAM_IDENTIFIER) String identifier,
 			HttpServletRequest request
 			) throws HttpException  {
-	    return createResponse(type, namespace, identifier, FormatTypes.jsonld, wskey);
+	    return createResponse(type, namespace, identifier, FormatTypes.jsonld, wskey, null);
 	    		
 	}
 	
@@ -119,11 +119,11 @@ public class ResolveController extends BaseRest {
 			@PathVariable(value = WebEntityConstants.PATH_PARAM_IDENTIFIER) String identifier,
 			HttpServletRequest request
 			) throws HttpException  {
-	    return createResponse(type, namespace, identifier, FormatTypes.xml, wskey);
+	    return createResponse(type, namespace, identifier, FormatTypes.xml, wskey, null);
 	    		
 	}
 	
-	private ResponseEntity<String> createResponse(String type, String namespace, String identifier, FormatTypes outFormat, String wskey) throws HttpException{
+	private ResponseEntity<String> createResponse(String type, String namespace, String identifier, FormatTypes outFormat, String wskey, String contentType) throws HttpException{
 	    try {
 		validateApiKey(wskey);
         	Entity entity = entityService.retrieveByUrl(type, namespace, identifier);
@@ -140,6 +140,8 @@ public class ResolveController extends BaseRest {
     	    		headers.add(HttpHeaders.VARY, HttpHeaders.ACCEPT);
     	    		headers.add(HttpHeaders.LINK, HttpHeaders.VALUE_LDP_RESOURCE);
     	    	}
+    	    	if(contentType != null && !contentType.isEmpty())
+    	    	    headers.add(HttpHeaders.CONTENT_TYPE, contentType);
     
     	    	ResponseEntity<String> response = new ResponseEntity<String>(jsonLd, headers, HttpStatus.OK);
         	    	return response;

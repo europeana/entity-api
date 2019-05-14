@@ -11,7 +11,7 @@ import eu.europeana.entity.definitions.model.Entity;;
 
 @JacksonXmlRootElement(localName = XmlConstants.XML_ORE_AGGREGATION)
 @JsonInclude(value = JsonInclude.Include.NON_EMPTY)
-@JsonPropertyOrder({XmlConstants.XML_DCTERMS_CREATED, XmlConstants.XML_DCTERMS_MODIFIED, XmlConstants.XML_EDM_AGGREGATES})
+@JsonPropertyOrder({XmlConstants.XML_DCTERMS_CREATED, XmlConstants.XML_DCTERMS_MODIFIED, XmlConstants.XML_ORE_AGGREGATES})
 public class XmlAggregationImpl {
 
     	@JsonIgnore
@@ -32,20 +32,20 @@ public class XmlAggregationImpl {
 	}
     	
 	@JacksonXmlProperty(localName = XmlConstants.XML_DCTERMS_CREATED)
-	public String getCreated() {
+	public RdfTypedElement getCreated() {
 	    	if(entity.getCreated() == null)
 	    	    return null;
-		return DateUtils.convertDateToStr(entity.getCreated());
+		return new RdfTypedElement(entity.getCreated());
 	}
 	
 	@JacksonXmlProperty(localName = XmlConstants.XML_DCTERMS_MODIFIED)
-	public String getModified() {
+	public RdfTypedElement getModified() {
 	    	if(entity.getModified() == null)
 	    	    return null;
-		return DateUtils.convertDateToStr(entity.getModified());
+		return new RdfTypedElement(entity.getModified());
 	}
 	
-	@JacksonXmlProperty(localName = XmlConstants.XML_EDM_AGGREGATES)
+	@JacksonXmlProperty(localName = XmlConstants.XML_ORE_AGGREGATES)
 	public RdfResource getAggregates() {
 		return new RdfResource(entity.getAbout());
 	}

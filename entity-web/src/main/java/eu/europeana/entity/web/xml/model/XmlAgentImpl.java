@@ -40,12 +40,6 @@ public class XmlAgentImpl extends XmlBaseEntityImpl {
 	public List<XmlMultilingualString> getNote() {
 		return RdfXmlUtils.convertToXmlMultilingualString(agent.getNote());
 	}
-	
-	@JacksonXmlElementWrapper(useWrapping=false)
-	@JacksonXmlProperty(localName = XmlConstants.XML_SKOS_PREF_LABEL)
-	public List<XmlMultilingualString> getPrefLabel() {		
-		return RdfXmlUtils.convertToXmlMultilingualString(agent.getPrefLabel());
-	}
     	
 //	@JacksonXmlElementWrapper(useWrapping=false)
 //	@JacksonXmlProperty(localName = XmlConstants.XML_DC_DATE)

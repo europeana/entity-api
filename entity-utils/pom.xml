@@ -32,11 +32,6 @@
 
 
 		<!-- moved from annotation-web -->
-		<dependency>
-			<groupId>org.codehaus.jackson</groupId>
-			<artifactId>jackson-xc</artifactId>
-			<version>1.9.9</version>
-		</dependency>
 
 		<dependency>
 			<groupId>junit</groupId>
@@ -77,6 +72,12 @@
             	</exclusion>
             </exclusions>
 		</dependency>
+													
+		<dependency>
+		    <groupId>com.io-informatics.oss</groupId>
+		    <artifactId>jackson-jsonld</artifactId>
+		    <version>0.1.1</version>
+		</dependency>		
 						
 	</dependencies>
 </project>

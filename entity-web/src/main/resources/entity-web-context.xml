@@ -38,13 +38,20 @@
     <beans:import resource="entity-common-context.xml"/>
      -->
     
+    <!-- 
+    <util:properties id="setProperties" 
+		location="classpath:config/entity.properties" />
+	-->
+		    
     <!-- USING OTHER MODULES -->
 	<beans:import resource="entity-solr-context.xml"/>
 	
+    <!-- USING OTHER MODULES -->
+	<beans:import resource="entity-mongo-context.xml"/>
+	
     
-    <!--  java api bean -->
-	<beans:bean id="entityService" class="eu.europeana.entity.web.service.impl.EntityServiceImpl">
-    </beans:bean>
+    <!-- USING OTHER MODULES -->
+	<beans:import resource="entity-web-beans.xml"/>
     
     <!-- configurable error messages -->
     <beans:bean id="i18nService" class="eu.europeana.api.commons.config.i18n.I18nServiceImpl">

@@ -10,9 +10,9 @@ public interface Agent extends Entity {
 
 	public void setDate(Date date);
 
-	public String getHasMet();
+	public String[] getHasMet();
 
-	public void setHasMet(String hasMet);
+	public void setHasMet(String[] hasMet);
 
 	public Map<String, String> getName();
 

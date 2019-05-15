@@ -35,6 +35,4 @@ public interface SuggestionFields {
 //TODO: remove .. not supported anymore	
 //	public static final String COUNTRY =  WebEntityFields.COUNTRY;
 	public static final String IS_PART_OF = WebEntityFields.IS_PART_OF;
-	
-	
 }

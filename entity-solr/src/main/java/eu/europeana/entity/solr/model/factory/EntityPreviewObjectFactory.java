@@ -60,6 +60,8 @@ public class EntityPreviewObjectFactory extends AbstractModelObjectFactory<Entit
 			break;
 		case Timespan:
 			ret = TimeSpanPreviewImpl.class;
+		case ConceptScheme:
+			//not supported yet 
 		default:
 			throw new RuntimeException(
 					"The given type is not supported by the web model");

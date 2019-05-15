@@ -4,12 +4,8 @@ import java.util.Date;
 
 public interface Concept extends Entity, eu.europeana.corelib.definitions.edm.entity.Concept {
 
-	public void setDefinition(String definition);
+    void setTimestamp(Date timestamp);
 
-	public String getDefinition();
+    Date getTimestamp();
 
-	void setTimestamp(Date timestamp);
-
-	Date getTimestamp();
-	
 }

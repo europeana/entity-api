@@ -8,18 +8,20 @@ import org.apache.stanbol.commons.jsonld.JsonLdProperty;
 import org.apache.stanbol.commons.jsonld.JsonLdPropertyValue;
 import org.apache.stanbol.commons.jsonld.JsonLdResource;
 
+import eu.europeana.api.commons.definitions.utils.DateUtils;
 import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException;
 import eu.europeana.entity.definitions.model.Agent;
 import eu.europeana.entity.definitions.model.Concept;
+import eu.europeana.entity.definitions.model.ConceptScheme;
 import eu.europeana.entity.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.Organization;
 import eu.europeana.entity.definitions.model.Place;
 import eu.europeana.entity.definitions.model.Timespan;
 import eu.europeana.entity.definitions.model.impl.BaseEntity;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
-import eu.europeana.entity.definitions.model.vocabulary.OrganizationSolrFields;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityFields;
+import eu.europeana.entity.utils.EntityUtils;
 
 
 public class EuropeanaEntityLd extends JsonLd {
@@ -57,6 +59,9 @@ public class EuropeanaEntityLd extends JsonLd {
 		putMapOfStringProperty(WebEntityFields.PREF_LABEL, ((BaseEntity) entity).getPrefLabelStringMap(), "", ldResource);
 		putMapOfStringListProperty(WebEntityFields.ALT_LABEL, entity.getAltLabel(), "", ldResource);
 		putMapOfStringListProperty(WebEntityFields.NOTE, entity.getNote(), "", ldResource);
+		
+		//common administrative information
+		putAggregationProperty(entity, ldResource);
 
 		// specific properties (by entity type)
 		putSpecificProperties(entity, ldResource);
@@ -65,15 +70,14 @@ public class EuropeanaEntityLd extends JsonLd {
 		
 		return ldResource;
 	}
-
+	
 	private JsonLdProperty createWikimediaResource(String wikimediaCommonsId, String field) {
 		
 		JsonLdProperty depictionProperty = new JsonLdProperty(field);
 		JsonLdPropertyValue depictionValue = new JsonLdPropertyValue();
 		
 		depictionValue.putProperty(new JsonLdProperty(WebEntityFields.ID, wikimediaCommonsId));
-		assert wikimediaCommonsId.contains("Special:FilePath/");
-		String sourceValue = wikimediaCommonsId.replace("Special:FilePath/", "File:");
+		String sourceValue = EntityUtils.createWikimediaResourceString(wikimediaCommonsId);
 		depictionValue.putProperty(new JsonLdProperty(WebEntityFields.SOURCE, sourceValue));
 		
 		depictionProperty.addValue(depictionValue);		
@@ -117,6 +121,10 @@ public class EuropeanaEntityLd extends JsonLd {
 			putTimespanSpecificProperties((Timespan) entity, jsonLdResource);
 			break;
 			
+		case ConceptScheme:
+			putConceptSchemeSpecificProperties((ConceptScheme) entity, jsonLdResource);
+			break;
+			
 		default:
 			break;
 		}
@@ -128,6 +136,11 @@ public class EuropeanaEntityLd extends JsonLd {
 		putStringArrayProperty(WebEntityFields.BEGIN, entity.getBegin(), jsonLdResource);
 		putStringArrayProperty(WebEntityFields.END, entity.getEnd(), jsonLdResource);
 		
+	}
+
+	private void putConceptSchemeSpecificProperties(ConceptScheme entity, JsonLdResource jsonLdResource) {
+		putMapOfStringProperty(WebEntityFields.DEFINITION, entity.getDefinition(), "", ldResource);
+		putStringProperty(WebEntityFields.IS_DEFINED_BY, entity.getIsDefinedBy(), jsonLdResource);
 	}
 
 	private void putPlaceSpecificProperties(Place entity, JsonLdResource jsonLdResource) {
@@ -255,6 +268,32 @@ public class EuropeanaEntityLd extends JsonLd {
 		ldResource.putProperty(hasAddress);
 	}
 
+	private void putAggregationProperty(Entity entity, JsonLdResource ldResource) {
+		
+		//created or modified is expected
+		if(entity.getCreated() == null && entity.getModified() == null)
+			return;
+		
+		//build aggregation object (the (json) value of the isAggregatedBy property)
+		JsonLdPropertyValue oreAggregation = new JsonLdPropertyValue(); 
+		//id is mapped to rdf:about
+		oreAggregation.putProperty(new JsonLdProperty(WebEntityFields.ID, entity.getAbout() + "#" + WebEntityFields.AGGREGATION.toLowerCase()));
+		oreAggregation.putProperty(new JsonLdProperty(WebEntityFields.TYPE, WebEntityFields.AGGREGATION));
+		
+		if (entity.getCreated() != null) 			
+		    	oreAggregation.putProperty(
+					new JsonLdProperty(WebEntityFields.CREATED, DateUtils.convertDateToStr(entity.getCreated())));
+		if (entity.getModified() != null) 			
+		    	oreAggregation.putProperty(
+					new JsonLdProperty(WebEntityFields.MODIFIED, DateUtils.convertDateToStr(entity.getModified())));
+
+		oreAggregation.putProperty(new JsonLdProperty(WebEntityFields.AGGREGATES, entity.getAbout()));
+		
+		JsonLdProperty isAggregatedBy = new JsonLdProperty(WebEntityFields.IS_AGGREGATED_BY);
+		isAggregatedBy.addValue(oreAggregation);
+		ldResource.putProperty(isAggregatedBy);
+	}
+	
 	protected String getGeoUri(String latLon){
 		return WebEntityConstants.PROTOCOL_GEO + latLon;
 	}

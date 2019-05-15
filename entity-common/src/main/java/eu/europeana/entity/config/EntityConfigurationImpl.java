@@ -40,4 +40,8 @@ public class EntityConfigurationImpl implements EntityConfiguration {
 		return Integer.parseInt(getEntityProperties().getProperty(KEY_ENTITY_SUGGESTER_SNIPPETS));
 	}
 
+	@Override
+	public String getUserToken() {
+		return getEntityProperties().getProperty(DEFAULT_USER_TOKEN);
+	}
 }

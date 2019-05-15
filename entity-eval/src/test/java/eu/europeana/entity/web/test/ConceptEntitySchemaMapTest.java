@@ -1,13 +1,18 @@
 package eu.europeana.entity.web.test;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Assert;
@@ -20,16 +25,21 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import eu.europeana.api.common.config.I18nConstants;
 import eu.europeana.api.commons.web.exception.HttpException;
 import eu.europeana.corelib.definitions.edm.entity.Agent;
+import eu.europeana.corelib.definitions.edm.entity.Organization;
 import eu.europeana.corelib.edm.model.schemaorg.ContextualEntity;
+import eu.europeana.corelib.edm.model.schemaorg.EdmOrganization;
 import eu.europeana.corelib.edm.model.schemaorg.Person;
 import eu.europeana.corelib.edm.model.schemaorg.Place;
-import eu.europeana.corelib.edm.model.schemaorg.Thing;
 import eu.europeana.corelib.edm.utils.JsonLdSerializer;
 import eu.europeana.corelib.edm.utils.SchemaOrgUtils;
 import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException;
 import eu.europeana.entity.definitions.model.Concept;
+import eu.europeana.entity.definitions.model.impl.BaseAgent;
+import eu.europeana.entity.definitions.model.impl.BaseConcept;
+import eu.europeana.entity.definitions.model.impl.BasePlace;
 import eu.europeana.entity.solr.exception.EntityRetrievalException;
 import eu.europeana.entity.solr.service.SolrEntityService;
+import eu.europeana.entity.web.xml.EntityXmlSerializer;
 
 /**
  * This class investigates best way to implement Schema.org mapping
@@ -43,7 +53,7 @@ public class ConceptEntitySchemaMapTest {
 
     // test URI's and types
     // mathematics
-    public final String TEST_CONCEPT_ENTITY_URI = "http://data.europeana.eu/concept/base/153";
+    public final String TEST_CONCEPT_ENTITY_URI = "http://data.europeana.eu/concept/base/153"; //"http://data.europeana.eu/concept/base/450";
     public final String TEST_CONCEPT_ENTITY_TYPE = "concept";
     // da vinci
     public final String TEST_AGENT_ENTITY_URI = "http://data.europeana.eu/agent/base/146741";
@@ -54,6 +64,11 @@ public class ConceptEntitySchemaMapTest {
     // bnf
     public final String TEST_ORGANIZATION_ENTITY_URI = "http://data.europeana.eu/organization/1482250000002112001";
     public final String TEST_ORGANIZATION_ENTITY_TYPE = "organization";
+    
+    // Jackson
+    public final String TEST_XML_CONCEPT_FILE = "/datasets/concept-jackson.xml";
+    public final String TEST_XML_AGENT_FILE = "/datasets/agent-jackson.xml";
+    public final String TEST_XML_PLACE_FILE = "/datasets/place-jackson.xml";
 
     @Resource
     SolrEntityService solrEntityService;
@@ -188,11 +203,11 @@ public class ConceptEntitySchemaMapTest {
     public void testOrganizationMappingToSchemaOrg() throws HttpException, IOException {
 
 	String entityUri = TEST_ORGANIZATION_ENTITY_URI;
-	eu.europeana.corelib.definitions.edm.entity.Organization organization;
+	Organization organization;
 	String output = null;
 
 	try {
-	    organization = (eu.europeana.corelib.definitions.edm.entity.Organization) solrEntityService
+	    organization = (Organization) solrEntityService
 		    .searchByUrl(TEST_ORGANIZATION_ENTITY_TYPE, entityUri);
 	} catch (EntityRetrievalException e) {
 	    throw new HttpException(e.getMessage(), I18nConstants.SERVER_ERROR_CANT_RETRIEVE_URI,
@@ -202,7 +217,7 @@ public class ConceptEntitySchemaMapTest {
 		    new String[] { TEST_ORGANIZATION_ENTITY_TYPE }, HttpStatus.NOT_FOUND, null);
 	}
 
-	eu.europeana.corelib.edm.model.schemaorg.ContextualEntity organizationObject = new eu.europeana.corelib.edm.model.schemaorg.EdmOrganization();
+	ContextualEntity organizationObject = new EdmOrganization();
 	SchemaOrgUtils.processEntity(organization, organizationObject);
 
 	JsonLdSerializer serializer = new JsonLdSerializer();
@@ -216,4 +231,88 @@ public class ConceptEntitySchemaMapTest {
 	FileUtils.writeStringToFile(new File("organization-output.txt"), output);
     }
 
+    /**
+     * This test investigates EDM entity Concept Jackson Xml serialization
+     * 
+     * @throws HttpException
+     * @throws IOException
+     */
+    @Test
+    public void testConceptJacksonXmlSerialization() throws HttpException, IOException, 
+    	EntityRetrievalException, UnsupportedEntityTypeException {
+
+	String entityUri = TEST_CONCEPT_ENTITY_URI;
+	String output = null;
+
+	BaseConcept concept = (BaseConcept) solrEntityService.searchByUrl(TEST_CONCEPT_ENTITY_TYPE, entityUri);
+
+	Map<String, List<String>> prefLabel = concept.getPrefLabel();
+	Assert.assertNotNull(prefLabel);
+
+	EntityXmlSerializer entityXmlSerializer = new EntityXmlSerializer();
+	output = entityXmlSerializer.serializeXml(concept);
+	
+	Assert.assertNotNull(output);
+	
+	InputStream stream = getClass().getResourceAsStream(TEST_XML_CONCEPT_FILE);
+        String expectedOutput = IOUtils.toString(stream, StandardCharsets.UTF_8);
+        assertEquals(expectedOutput.length(), output.length());
+	
+	FileUtils.writeStringToFile(new File("concept-jackson-output.xml"), output);
+    }
+
+    /**
+     * This test investigates EDM entity Agent Jackson Xml serialization
+     * 
+     * @throws HttpException
+     * @throws IOException
+     */
+    @Test
+    public void testAgentJacksonXmlSerialization() throws HttpException, IOException, 
+	EntityRetrievalException, UnsupportedEntityTypeException {
+
+	String entityUri = TEST_AGENT_ENTITY_URI;
+	String output = null;
+
+	BaseAgent agent = (BaseAgent) solrEntityService.searchByUrl(TEST_AGENT_ENTITY_TYPE, entityUri);
+
+	EntityXmlSerializer entityXmlSerializer = new EntityXmlSerializer();
+	output = entityXmlSerializer.serializeXml(agent);
+	
+	Assert.assertNotNull(output);
+	
+	InputStream stream = getClass().getResourceAsStream(TEST_XML_AGENT_FILE);
+        String expectedOutput = IOUtils.toString(stream, StandardCharsets.UTF_8);
+        assertEquals(expectedOutput.length(), output.length());
+	
+	FileUtils.writeStringToFile(new File("agent-jackson-output.xml"), output);
+    }
+    
+    /**
+     * This test investigates EDM entity Place Jackson Xml serialization
+     * 
+     * @throws HttpException
+     * @throws IOException
+     */
+    @Test
+    public void testPlaceJacksonXmlSerialization() throws HttpException, IOException, 
+	EntityRetrievalException, UnsupportedEntityTypeException {
+
+	String entityUri = TEST_PLACE_ENTITY_URI;
+	String output = null;
+
+	BasePlace place = (BasePlace) solrEntityService
+		    .searchByUrl(TEST_PLACE_ENTITY_TYPE, entityUri);
+
+	EntityXmlSerializer entityXmlSerializer = new EntityXmlSerializer();
+	output = entityXmlSerializer.serializeXml(place);
+	
+	Assert.assertNotNull(output);
+	InputStream stream = getClass().getResourceAsStream(TEST_XML_PLACE_FILE);
+        String expectedOutput = IOUtils.toString(stream, StandardCharsets.UTF_8);
+        assertEquals(expectedOutput.length(), output.length());
+	
+	FileUtils.writeStringToFile(new File("place-jackson-output.xml"), output);
+    }
+    
 }

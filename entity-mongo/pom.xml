@@ -31,31 +31,36 @@
 			<artifactId>entity-definitions</artifactId>
 			<version>${version.entityApi}</version>
 		</dependency>
-
+		
 		<dependency>
 			<groupId>eu.europeana.corelib</groupId>
-			<artifactId>corelib-db</artifactId>
+			<artifactId>corelib-schemaorg</artifactId>
 			<version>${version.corelib}</version>
 			<exclusions>
 				<exclusion>
-					<artifactId>corelib-search</artifactId>
+					<groupId>org.mongodb.morphia</groupId>
+					<artifactId>morphia</artifactId>
+				</exclusion>
+				<exclusion>
 					<groupId>eu.europeana.corelib</groupId>
+					<artifactId>corelib-storage</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
-		
-		<dependency>
-			<groupId>eu.europeana.corelib</groupId>
-			<artifactId>corelib-common-storage</artifactId>
-			<version>${version.corelib}</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>eu.europeana.corelib</groupId>
-			<artifactId>corelib-logging</artifactId>
-			<version>${version.corelib}</version>
-		</dependency>
 
+		<dependency>
+			<groupId>eu.europeana.api.commons</groupId>
+			<version>${version.commonsApi}</version>
+			<artifactId>commons-nosql</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${version.spring}</version>
+		</dependency>
+	
 		
 		<!-- TESTING PURPOSES -->
 		

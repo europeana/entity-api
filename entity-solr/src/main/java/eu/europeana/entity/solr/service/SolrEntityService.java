@@ -1,12 +1,16 @@
 package eu.europeana.entity.solr.service;
 
+import java.util.List;
+
 import eu.europeana.api.commons.definitions.search.Query;
 import eu.europeana.api.commons.definitions.search.ResultSet;
 import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException;
+import eu.europeana.entity.definitions.model.ConceptScheme;
 import eu.europeana.entity.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.vocabulary.ConceptSolrFields;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.solr.exception.EntityRetrievalException;
+import eu.europeana.entity.solr.exception.EntityServiceException;
 import eu.europeana.entity.solr.exception.EntitySuggestionException;
 import eu.europeana.entity.web.model.view.EntityPreview;
 
@@ -36,33 +40,40 @@ public interface SolrEntityService {
 	/**
 	 * This method retrieves available Entities that meet the .
 	 * @param searchQuery The search query
+	 * @param outLanguage
+	 * @param entityTypes
+	 * @param scope
 	 * @return
 	 * @throws EntityRetrievalException 
 	 */
 	public ResultSet<? extends Entity> search(Query searchQuery, String[] outLanguage,
-			EntityTypes[] internalEntityTypes, String scope) throws EntityRetrievalException;
+			List<EntityTypes> entityTypes, String scope) throws EntityRetrievalException;
 	
 	/**
 	 * This method retrieves available Entities that meet the .
 	 * @param searchQuery The search query
 	 * @param requestedLanguages
+	 * @param entityTypes
+	 * @param scope
 	 * @param rows
 	 * @return
 	 * @throws EntityRetrievalException 
 	 * @throws EntitySuggestionException 
 	 */
-	public ResultSet<? extends EntityPreview> suggest(Query searchQuery, String[] requestedLanguages, EntityTypes[] entityTypes, String scope,  int rows) throws EntitySuggestionException;
+	public ResultSet<? extends EntityPreview> suggest(Query searchQuery, String[] requestedLanguages, List<EntityTypes> entityTypes, String scope,  int rows) throws EntitySuggestionException;
 
 	/**
 	 * This method retrieves available Entities that meet the query criteria using search by label algorithm
 	 * @param searchQuery The query text
 	 * @param requestedLanguages
+	 * @param entityTypes
+	 * @param scope
 	 * @param rows
 	 * @return
 	 * @throws EntityRetrievalException 
 	 * @throws EntitySuggestionException 
 	 */
-	public ResultSet<? extends EntityPreview> suggestByLabel(String text, String[] requestedLanguages, EntityTypes[] entityTypes, String scope,  int rows) throws EntitySuggestionException;
+	public ResultSet<? extends EntityPreview> suggestByLabel(String text, String[] requestedLanguages, List<EntityTypes> entityTypes, String scope,  int rows) throws EntitySuggestionException;
 
 	
 //	/**
@@ -91,5 +102,31 @@ public interface SolrEntityService {
 	 */
 	public String searchByCoref(String uri) throws EntityRetrievalException;
 	
+	/**
+	 * This method stores a ConceptScheme object in SOLR.
+	 * @param conceptScheme
+	 * @return result of the store method - true if successful
+	 */
+	public void store(ConceptScheme conceptScheme) throws EntityServiceException;
+
+	/**
+	 * This method stores a ConceptScheme object in SOLR.
+	 * @param conceptScheme
+	 * @param doCommit commit
+	 */
+	public void store(ConceptScheme conceptScheme, boolean doCommit) throws EntityServiceException;	
+
+	/**
+	 * @param entityUrl
+	 * @throws EntityServiceException
+	 */
+	public void delete(String entityUrl) throws EntityServiceException;
+
+	/**
+	 * @param conceptScheme
+	 * @return
+	 * @throws EntityServiceException
+	 */
+	public void update(ConceptScheme conceptScheme) throws EntityServiceException;
 
 }

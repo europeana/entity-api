@@ -163,6 +163,9 @@ public class SuggestionSetSerializer extends JsonLd {
 				putTimespanSpecificProperties((TimeSpanPreview) entityPreview, entityPreviewPropValue);
 				break;
 
+			case ConceptScheme:
+				break;
+
 			default:
 				break;
 			}

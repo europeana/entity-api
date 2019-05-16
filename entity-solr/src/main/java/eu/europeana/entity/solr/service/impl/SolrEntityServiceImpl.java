@@ -18,10 +18,12 @@ import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrClient.RemoteSolrException;
+import org.apache.solr.client.solrj.request.UpdateRequest;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.client.solrj.response.UpdateResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
+import org.apache.solr.common.SolrInputDocument;
 import org.apache.solr.common.util.SimpleOrderedMap;
 
 import eu.europeana.api.commons.definitions.search.Query;
@@ -31,6 +33,7 @@ import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException
 import eu.europeana.entity.definitions.model.ConceptScheme;
 import eu.europeana.entity.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.vocabulary.ConceptSolrFields;
+import eu.europeana.entity.definitions.model.vocabulary.EntitySolrFields;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
 import eu.europeana.entity.solr.exception.EntityRetrievalException;
@@ -516,4 +519,65 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 	}
     }
 
+    /* (non-Javadoc)
+     * @see eu.europeana.entity.solr.service.SolrEntityService#performAtomicUpdate(java.lang.String, java.util.List, java.util.List)
+     */
+    public void performAtomicUpdate(String conceptSchemeId, List<String> addList, List<String> removeList) throws EntityServiceException {
+	
+	String ADD = "add";
+	String REMOVE = "remove";
+	String COLLECTION = null;
+	
+	final UpdateRequest addRequest = performAtomicOperation(conceptSchemeId, addList, ADD);
+	final UpdateRequest removeRequest = performAtomicOperation(conceptSchemeId, removeList, REMOVE);
+
+	try {
+		if (addRequest.getDocuments() != null && addRequest.getDocuments().size() > 0) {
+		    UpdateResponse rspAdd = addRequest.process(solrServer, COLLECTION);
+		    getLogger().info("Atomic update add response: " + rspAdd.toString());		
+		}
+		if (removeRequest.getDocuments() != null && removeRequest.getDocuments().size() > 0) {
+		    UpdateResponse rspRemove = removeRequest.process(solrServer, COLLECTION);
+		    getLogger().info("Atomic update remove response: " + rspRemove.toString());
+		}
+		UpdateResponse rsp = solrServer.commit();
+		getLogger().info("Atomic update commit response: " + rsp.toString());		
+	} catch (SolrServerException ex) {
+	    throw new EntityServiceException(
+		    "Unexpected solr server exception occured when atomic updating entities", ex);
+	} catch (IOException ex) {
+	    throw new EntityServiceException(
+		    "Unexpected IO exception occured when atomic updating entities", ex);
+	} catch (Throwable th) {
+	    throw new EntityServiceException(
+		    "Unexpected exception occured when atomic updating entities", th);
+	}
+    }
+    
+    /**
+     * This method performs atomic update operation
+     * @param conceptSchemeId
+     * @param listToUpdate
+     * @param operation
+     * @return update request
+     */
+    private UpdateRequest performAtomicOperation(String conceptSchemeId, List<String> listToUpdate, String operation) {
+	
+	final UpdateRequest request = new UpdateRequest();
+
+	for (String id : listToUpdate) {
+        	SolrInputDocument updateDoc = new SolrInputDocument();
+
+        	updateDoc.addField(EntitySolrFields.ID, id);
+        
+        	Map<String, Object> updateValue = new HashMap<>();
+        	updateValue.put(operation, conceptSchemeId);
+        	updateDoc.addField(EntitySolrFields.IN_SCHEME, updateValue);
+        
+        	request.add(updateDoc);
+	}
+
+	return request;	
+    }
+    
 }

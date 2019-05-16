@@ -1,9 +1,7 @@
 package eu.europeana.entity.web.controller;
 
-import java.io.IOException;
 import java.util.Date;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.HttpStatus;
@@ -21,19 +19,11 @@ import eu.europeana.api.common.config.swagger.SwaggerSelect;
 import eu.europeana.api.commons.definitions.vocabulary.CommonApiConstants;
 import eu.europeana.api.commons.web.exception.HttpException;
 import eu.europeana.api.commons.web.http.HttpHeaders;
-import eu.europeana.corelib.edm.model.schemaorg.ContextualEntity;
-import eu.europeana.corelib.edm.utils.JsonLdSerializer;
-import eu.europeana.corelib.edm.utils.SchemaOrgTypeFactory;
-import eu.europeana.corelib.edm.utils.SchemaOrgUtils;
-import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException;
 import eu.europeana.entity.definitions.formats.FormatTypes;
 import eu.europeana.entity.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.RankedEntity;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
-import eu.europeana.entity.utils.jsonld.EuropeanaEntityLd;
 import eu.europeana.entity.web.exception.InternalServerException;
-import eu.europeana.entity.web.service.EntityService;
-import eu.europeana.entity.web.xml.EntityXmlSerializer;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -49,11 +39,9 @@ public class ResolveController extends BaseRest {
     	private static final String ACCEPT_HEADER_RDF_XML = ACCEPT + HttpHeaders.CONTENT_TYPE_RDF_XML;
     	private static final String ACCEPT_HEADER_APPLICATION_XML = ACCEPT + MediaType.APPLICATION_XML_VALUE;
     
-	@Resource 
-	EntityService entityService;
-	@Resource
-	EntityXmlSerializer entityXmlSerializer;
-
+//	@Resource 
+//	EntityService entityService;
+	
 	@ApiOperation(value = "Retrieve a known entity", nickname = "getEntity", response = java.lang.Void.class)
 	@RequestMapping(value = {"/entity/{type}/{namespace}/{identifier}.jsonld"}, method = RequestMethod.GET,
 			produces = {HttpHeaders.CONTENT_TYPE_JSONLD, MediaType.APPLICATION_JSON_VALUE})
@@ -126,7 +114,7 @@ public class ResolveController extends BaseRest {
 	private ResponseEntity<String> createResponse(String type, String namespace, String identifier, FormatTypes outFormat, String wskey) throws HttpException{
 	    try {
 		validateApiKey(wskey);
-        	Entity entity = entityService.retrieveByUrl(type, namespace, identifier);
+        	Entity entity = getEntityService().retrieveByUrl(type, namespace, identifier);
         	String jsonLd = serialize(entity, outFormat);
         
     	    	Date timestamp = ((RankedEntity)entity).getTimestamp();
@@ -155,54 +143,7 @@ public class ResolveController extends BaseRest {
 	}
 	
 
-	/**
-	 * This method selects serialization method according to provided format.
-	 * @param entity The entity
-	 * @param format The format extension
-	 * @return entity in jsonLd format
-	 * @throws UnsupportedEntityTypeException
-	 */
-	private String serialize(Entity entity, FormatTypes format) 
-			throws UnsupportedEntityTypeException {
-		
-		String responseBody = null;
-		ContextualEntity thingObject = null;
-        
-		if(FormatTypes.jsonld.equals(format)) {
-		    	EuropeanaEntityLd entityLd = new EuropeanaEntityLd(entity);		
-			return entityLd.toString(4);
-		} else if (FormatTypes.schema.equals(format)) {			
-		    	responseBody = serializeSchema(entity, responseBody, thingObject);	        
-		} else if(FormatTypes.xml.equals(format)) {
-		    	responseBody = entityXmlSerializer.serializeXml(entity);
-		}
-		return responseBody;
-	}
-
-
-	/**
-	 * This method serializes Entity object applying schema.org serialization.
-	 * @param entity The Entity object
-	 * @param entityType The type of the entity
-	 * @param jsonLd The resulting json-ld string
-	 * @param thingObject The object in corelib format
-	 * @return The serialized entity in json-ld string format
-	 * @throws UnsupportedEntityTypeException
-	 */
-	private String serializeSchema(Entity entity, String jsonLd, ContextualEntity thingObject)
-			throws UnsupportedEntityTypeException {
-		thingObject = SchemaOrgTypeFactory.createContextualEntity(entity);
-		
-		SchemaOrgUtils.processEntity(entity, thingObject);
-		JsonLdSerializer serializer = new JsonLdSerializer();
-		try {
-		    jsonLd = serializer.serialize(thingObject);
-		} catch (IOException e) {
-			throw new UnsupportedEntityTypeException(
-					"Serialization to schema.org failed for " + thingObject.getId() + e.getMessage());
-		}
-		return jsonLd;
-	}
+	
 
 	
 	@ApiOperation(value = "Performs a lookup for the entity in all 4 datasets", nickname = "resolveEntity", response = java.lang.Void.class)
@@ -217,7 +158,7 @@ public class ResolveController extends BaseRest {
 			
 			validateApiKey(wskey);
 
-			String entityUri = entityService.resolveByUri(uri.trim());
+			String entityUri = getEntityService().resolveByUri(uri.trim());
 					
 			MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>(5);
 			headers.add(HttpHeaders.LOCATION, entityUri);

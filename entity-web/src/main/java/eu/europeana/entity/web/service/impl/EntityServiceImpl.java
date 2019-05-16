@@ -38,6 +38,7 @@ import eu.europeana.entity.definitions.model.vocabulary.SuggestAlgorithmTypes;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityFields;
 import eu.europeana.entity.solr.exception.EntityRetrievalException;
+import eu.europeana.entity.solr.exception.EntityServiceException;
 import eu.europeana.entity.solr.exception.EntitySuggestionException;
 import eu.europeana.entity.solr.service.SolrEntityService;
 import eu.europeana.entity.web.controller.exception.EntityIndexingException;
@@ -491,4 +492,19 @@ public class EntityServiceImpl extends BaseEntityServiceImpl implements EntitySe
 	return updateConceptScheme((PersistentConceptScheme) existingConceptScheme, existingConceptScheme);
     }
 
+    /* (non-Javadoc)
+     * @see eu.europeana.entity.web.service.EntityService#performAtomicUpdate(java.lang.String, java.util.List, java.util.List)
+     */
+    public void performAtomicUpdate(String conceptSchemeId, List<String> addList, List<String> removeList) {
+	
+	try {
+	    getSolrService().performAtomicUpdate(conceptSchemeId, addList, removeList);
+	} catch (EntityServiceException e) {
+	    getLogger().error(
+		"Cannot perform atomic update for concept scheme identifier: " + conceptSchemeId +
+		" for entities. addition: " + addList.toString() + ", removal:" + removeList.toString(), e);
+	}
+	
+    }
+    
 }

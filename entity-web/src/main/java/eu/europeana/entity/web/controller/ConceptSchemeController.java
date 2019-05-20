@@ -3,6 +3,7 @@ package eu.europeana.entity.web.controller;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -103,14 +104,7 @@ public class ConceptSchemeController extends BaseRest {
 	    String serializedConceptSchemeJsonLdStr = serialize(resConceptScheme, FormatTypes.jsonld);
 
 	    // build response
-	    MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>(6);
-	    headers.add(HttpHeaders.AUTHORIZATION, HttpHeaders.PREFER);
-	    headers.add(HttpHeaders.LINK, EntityHttpHeaders.VALUE_LDP_BASIC_CONTAINER);
-	    headers.add(HttpHeaders.LINK, HttpHeaders.VALUE_LDP_RESOURCE);
-	    headers.add(HttpHeaders.ETAG, generateETag(storedConceptScheme.getModified(), null));
-	    headers.add(HttpHeaders.ALLOW, HttpHeaders.ALLOW_POST);
-	    headers.add(EntityHttpHeaders.PREFERENCE_APPLIED, ldProfile.getPreferHeaderValue());
-	    headers.add(EntityHttpHeaders.CACHE_CONTROL, EntityHttpHeaders.VALUE_CACHE_CONTROL);
+	    MultiValueMap<String, String> headers = buildResponseHeaders(ldProfile, storedConceptScheme);
 
 	    ResponseEntity<String> response = new ResponseEntity<String>(serializedConceptSchemeJsonLdStr, headers,
 		    HttpStatus.OK);
@@ -127,6 +121,19 @@ public class ConceptSchemeController extends BaseRest {
 	} catch (Exception e) {
 	    throw new InternalServerException(e);
 	}
+    }
+
+    private MultiValueMap<String, String> buildResponseHeaders(LdProfiles ldProfile,
+	    ConceptScheme storedConceptScheme) {
+	MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>(6);
+	headers.add(HttpHeaders.AUTHORIZATION, HttpHeaders.PREFER);
+	headers.add(HttpHeaders.LINK, EntityHttpHeaders.VALUE_LDP_BASIC_CONTAINER);
+	headers.add(HttpHeaders.LINK, HttpHeaders.VALUE_LDP_RESOURCE);
+	headers.add(HttpHeaders.ETAG, generateETag(storedConceptScheme.getModified(), null));
+	headers.add(HttpHeaders.ALLOW, HttpHeaders.ALLOW_POST);
+	headers.add(EntityHttpHeaders.PREFERENCE_APPLIED, ldProfile.getPreferHeaderValue());
+	headers.add(EntityHttpHeaders.CACHE_CONTROL, EntityHttpHeaders.VALUE_CACHE_CONTROL);
+	return headers;
     }
 
     /**
@@ -409,6 +416,8 @@ public class ConceptSchemeController extends BaseRest {
 		throw new ParamValidationException(I18nConstants.EMPTY_PARAM_MANDATORY,
 			CommonApiConstants.QUERY_PARAM_QUERY, isDefinedBy);
 
+	    //TODO: switch parsing of parameters to CommonsApi.Query
+	    //parse parameters from is defined by URL
 	    MultiValueMap<String, String> parameters = UriComponentsBuilder.fromUriString(isDefinedBy).build()
 		    .getQueryParams();
 	    String queryString = parameters.getFirst(CommonApiConstants.QUERY_PARAM_QUERY);
@@ -451,43 +460,44 @@ public class ConceptSchemeController extends BaseRest {
 	    // process sort param
 	    // String[] sortCriteria = null; //toArray(sort);
 	   
-	    // perform search
-	    List<String> matchingEntityIds = new ArrayList<String>();
+	    //Search concepts that match the ConceptScheme
 	    Query searchQuery = getEntityService().buildSearchQuery(queryString, qf, null, null, Integer.valueOf(page),
 		    Integer.valueOf(pageSize), null, retFields);
-	    ResultSet<? extends Entity> results = getEntityService().search(searchQuery, null, entityTypes, scope);
-	    for (Entity searchRes : results.getResults()) {
-		matchingEntityIds.add(searchRes.getEntityId());
-	    }
 	    
-	    System.out.println("matching: " + matchingEntityIds.size());
+	    List<String> matchingEntityIds = searchEntityIds(searchQuery, scope, entityTypes);
+	    getLogger().debug("Matching concepts for scheme : " + identifier + ", #results: " + matchingEntityIds.size());
 
-	    List<String> existingEntityIds = new ArrayList<String>();
-	    Query existingQuery = getEntityService().buildSearchQuery(EntitySolrFields.IN_SCHEME + ":" + identifier, qf, null, null,
-		    Integer.valueOf(page), Integer.valueOf(pageSize), null, retFields);
-	    ResultSet<? extends Entity> existingResults = getEntityService().search(existingQuery, null, entityTypes, scope);
-	    for (Entity searchRes : existingResults.getResults()) {
-		existingEntityIds.add(searchRes.getEntityId());
-	    }
-	    System.out.println("existing: " + existingEntityIds.size());
-
+	    //search entities that are already in the current ConceptScheme 
+	    //first page with max size
+	    String conceptSchemeId = storedConceptScheme.getEntityId();
+	    String inSchemeQuery = EntitySolrFields.IN_SCHEME + ":\"" + conceptSchemeId + "\"";
+	    Query existingQuery = getEntityService().buildSearchQuery(inSchemeQuery, qf, null, null, Query.DEFAULT_PAGE, Query.DEFAULT_MAX_PAGE_SIZE, null, retFields);
 	    
-	    // The id of the concept scheme needs to be added to all entities matching the search query.
-	    // NOTE: in order to be more developer friendly, only the identifier part in the URI of
-	    // the ConceptScheme should be stored in the inScheme field.
+	    List<String> existingEntityIds = searchEntityIds(existingQuery, null, null);
+	    getLogger().debug("existing befoe update: " + existingEntityIds.size());
+	    
+	    
+	    //Compute ADD and REMOVE lists
 	    List<String> removeList = ListUtils.subtract(existingEntityIds, matchingEntityIds);
 	    List<String> addList = ListUtils.subtract(matchingEntityIds, existingEntityIds);
-
+	    
 	    // perform atomic updates for entities
-	    getEntityService().performAtomicUpdate(identifier, addList, removeList);
+	    getEntityService().performAtomicUpdate(conceptSchemeId, addList, removeList);
 	    
 	    // update concept scheme
 	    // add total (update modified)
+	    // fire a new search query to check the actual number of entities in scheme
+	    existingQuery.setPageSize(0);
+	    ResultSet<? extends Entity> storedResults = getEntityService().search(existingQuery, null, entityTypes, scope);
+	    //number of (existing) entities in scheme after atomic update	
+	    long inSchemeCount = storedResults.getResultSize();
+	    getLogger().debug("matching after update: " + inSchemeCount);
+	    
+	    storedConceptScheme.setTotal((int)inSchemeCount);
 	    ConceptScheme updatedConceptScheme = getEntityService()
 			.updateConceptScheme((PersistentConceptScheme) storedConceptScheme, null);
-	    updatedConceptScheme.setTotal(0);
-
-	    // serialized
+	    
+	    // serialize
 	    ConceptScheme resConceptScheme = applyProfile(updatedConceptScheme, ldProfile);
 	    String serializedConceptSchemeJsonLdStr = serialize(resConceptScheme, FormatTypes.jsonld);
 
@@ -514,6 +524,17 @@ public class ConceptSchemeController extends BaseRest {
 	} catch (Exception e) {
 	    throw new InternalServerException(e);
 	}
+    }
+
+    private List<String> searchEntityIds(Query searchQuery, String scope, List<EntityTypes> entityTypes) throws HttpException {
+	
+	List<String> matchingEntityIds = new ArrayList<String>();
+	
+	ResultSet<? extends Entity> results = getEntityService().search(searchQuery, null, entityTypes, scope);
+	for (Entity searchRes : results.getResults()) {
+	    matchingEntityIds.add(searchRes.getEntityId());
+	}
+	return matchingEntityIds;
     }
 
 }

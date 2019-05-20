@@ -26,11 +26,13 @@
 	
 	
 	<dependencies>
+	<!-- 
 		<dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
             <version>${httpclient.version}</version>
         </dependency>
+         -->
         
 		<dependency>
 			<groupId>eu.europeana.entity</groupId>
@@ -39,9 +41,28 @@
 		</dependency>
 		
 		<dependency>
+			<groupId>org.apache.solr</groupId>
+			<artifactId>solr-solrj</artifactId>
+			<version>${version.apacheSolr}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>wstx-asl</artifactId>
+					<groupId>org.codehaus.woodstox</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		
+		<dependency>
 			<groupId>eu.europeana.api.commons</groupId>
 			<artifactId>commons-search</artifactId>
 			<version>${version.commonsApi}</version>
+			<exclusions>
+			<exclusion>
+			<groupId>org.apache.solr</groupId>
+			<artifactId>solr-solrj</artifactId>
+			
+			</exclusion>
+			</exclusions>
 		</dependency>
 		
 		<!-- Other -->
@@ -60,21 +81,11 @@
                 					
 		<!-- Other -->
 		<dependency>
-			<groupId>org.apache.solr</groupId>
-			<artifactId>solr-solrj</artifactId>
-			<version>${version.apacheSolr}</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>wstx-asl</artifactId>
-					<groupId>org.codehaus.woodstox</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
                 <groupId>org.apache.solr</groupId>
                 <artifactId>solr-core</artifactId>
                 <version>${version.apacheSolr}</version>
-                <exclusions>
+                <scope>test</scope>
+			    <exclusions>
                 	<exclusion>
                 		<artifactId>jdk.tools</artifactId>
                 		<groupId>jdk.tools</groupId>

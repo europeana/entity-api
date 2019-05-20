@@ -30,8 +30,11 @@
 		<constructor-arg value="#{entityProperties['solr.entity.url']}"/>
 		<property name="followRedirects" value="false"/>
 		<property name="connectionTimeout" value="#{entityProperties['solr.entity.timeout']}"/>
+		<!-- 
 		<property name="defaultMaxConnectionsPerHost" value="64"/>
+		
 		<property name="maxTotalConnections" value="125"/>
+		 -->
 	</bean>
 	
 </beans>

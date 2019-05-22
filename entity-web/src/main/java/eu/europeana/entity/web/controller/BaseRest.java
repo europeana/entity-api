@@ -114,27 +114,27 @@ public abstract class BaseRest {
 	    return getAuthorizationService().getConfiguration().getUserToken();
 	}
 	
-	protected void validateEntityTypes(List<EntityTypes> entityTypes, boolean suggest) throws ParamValidationException {
-		// search
-		if (!suggest) {
-		    if (entityTypes.contains(EntityTypes.All))
-			entityTypes.clear();// no filtering needed
-		} else {// suggest
-
-		    // ConceptScheme Not Supported in suggester
-		    if (entityTypes.contains(EntityTypes.ConceptScheme))
-			throw new ParamValidationException(I18nConstants.INVALID_PARAM_VALUE, WebEntityConstants.QUERY_PARAM_TYPE,
-				EntityTypes.ConceptScheme.getInternalType()); 
-
-		    if (entityTypes.contains(EntityTypes.All)) {
-			entityTypes.clear();
-			entityTypes.add(EntityTypes.Concept);
-			entityTypes.add(EntityTypes.Agent);
-			entityTypes.add(EntityTypes.Place);
-			entityTypes.add(EntityTypes.Organization);
-		    }
-		}
-	    }
+//	protected void validateEntityTypes(List<EntityTypes> entityTypes, boolean suggest) throws ParamValidationException {
+//		// search
+//		if (!suggest) {
+//		    if (entityTypes.contains(EntityTypes.All))
+//			entityTypes.clear();// no filtering needed
+//		} else {// suggest
+//
+//		    // ConceptScheme Not Supported in suggester
+//		    if (entityTypes.contains(EntityTypes.ConceptScheme))
+//			throw new ParamValidationException(I18nConstants.INVALID_PARAM_VALUE, WebEntityConstants.QUERY_PARAM_TYPE,
+//				EntityTypes.ConceptScheme.getInternalType()); 
+//
+//		    if (entityTypes.contains(EntityTypes.All)) {
+//			entityTypes.clear();
+//			entityTypes.add(EntityTypes.Concept);
+//			entityTypes.add(EntityTypes.Agent);
+//			entityTypes.add(EntityTypes.Place);
+//			entityTypes.add(EntityTypes.Organization);
+//		    }
+//		}
+//	    }
 
 	
 	/**
@@ -154,36 +154,36 @@ public abstract class BaseRest {
 		return serializer.serialize(profileVal);
 	}
 
-	/**
-	 * Get entity type string list from comma separated entities string.
-	 * 
-	 * @param commaSepEntityTypes
-	 *            Comma separated entities string
-	 * @return Entity types string list
-	 * @throws ParamValidationException
-	 */
-	protected List<EntityTypes> getEntityTypesFromString(String commaSepEntityTypes) throws ParamValidationException {
-
-		String[] splittedEntityTypes = commaSepEntityTypes.split(",");
-		List<EntityTypes> entityTypes = new ArrayList<EntityTypes>();
-
-		EntityTypes entityType = null;
-		String typeAsString = null;
-
-		try {
-			for (int i = 0; i < splittedEntityTypes.length; i++) {
-				typeAsString = splittedEntityTypes[i].trim();
-				entityType = EntityTypes.getByInternalType(typeAsString);
-				entityTypes.add(entityType);
-			}
-		} catch (UnsupportedEntityTypeException e) {
-			throw new ParamValidationException(I18nConstants.INVALID_PARAM_VALUE, WebEntityConstants.QUERY_PARAM_TYPE,
-					typeAsString);
-		}
-
-		return entityTypes;
-	}
-
+//	/**
+//	 * Get entity type string list from comma separated entities string.
+//	 * 
+//	 * @param commaSepEntityTypes
+//	 *            Comma separated entities string
+//	 * @return Entity types string list
+//	 * @throws ParamValidationException
+//	 */
+//	protected List<EntityTypes> getEntityTypesFromString(String commaSepEntityTypes) throws ParamValidationException {
+//
+//		String[] splittedEntityTypes = commaSepEntityTypes.split(",");
+//		List<EntityTypes> entityTypes = new ArrayList<EntityTypes>();
+//
+//		EntityTypes entityType = null;
+//		String typeAsString = null;
+//
+//		try {
+//			for (int i = 0; i < splittedEntityTypes.length; i++) {
+//				typeAsString = splittedEntityTypes[i].trim();
+//				entityType = EntityTypes.getByInternalType(typeAsString);
+//				entityTypes.add(entityType);
+//			}
+//		} catch (UnsupportedEntityTypeException e) {
+//			throw new ParamValidationException(I18nConstants.INVALID_PARAM_VALUE, WebEntityConstants.QUERY_PARAM_TYPE,
+//					typeAsString);
+//		}
+//
+//		return entityTypes;
+//	}
+//
 	/**
 	 * This method splits the list of values provided as concatenated string to the
 	 * corresponding array representation
@@ -192,10 +192,11 @@ public abstract class BaseRest {
 	 * @return
 	 */
 	protected String[] toArray(String requestParam) {
-		if (StringUtils.isEmpty(requestParam))
-			return null;
-		String[] array = StringUtils.splitByWholeSeparator(requestParam, ",");
-		return StringUtils.stripAll(array);
+	    return getEntityService().toArray(requestParam);
+//		if (StringUtils.isEmpty(requestParam))
+//			return null;
+//		String[] array = StringUtils.splitByWholeSeparator(requestParam, ",");
+//		return StringUtils.stripAll(array);
 	}
 
 	/**
@@ -570,16 +571,6 @@ public abstract class BaseRest {
 	return hashCode.toString();
     }
 
-    /**
-     * @param strList List of Strings
-     * @return String array
-     */
-    public String[] convertStringListToArray(List<String> strList) {
-	String[] strArr = new String[strList.size()];
-	strArr = strList.toArray(strArr);
-        return strArr;
-    }
-    
     /**
      * This method adds a string to the existing String array
      * @param arr The string array

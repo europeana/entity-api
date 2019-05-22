@@ -1,7 +1,5 @@
 package eu.europeana.entity.web.controller;
 
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -21,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import eu.europeana.api.common.config.I18nConstants;
 import eu.europeana.api.common.config.swagger.SwaggerSelect;
@@ -376,6 +373,9 @@ public class ConceptSchemeController extends BaseRest {
      * 
      * @param wskey
      *            The API key
+     * @param identifier
+     * @param profile
+     * @param sort
      * @param request
      *            HTTP request
      * @return response entity that comprises response body, headers and status code
@@ -390,6 +390,7 @@ public class ConceptSchemeController extends BaseRest {
 	    @RequestParam(value = CommonApiConstants.PARAM_WSKEY, required = false) String wskey,
 	    @PathVariable(value = WebEntityConstants.PATH_PARAM_IDENTIFIER) String identifier,
 	    @RequestParam(value = CommonApiConstants.QUERY_PARAM_PROFILE, required = false, defaultValue = WebEntityConstants.PROFILE_MINIMAL) String profile,
+	    @RequestParam(value = CommonApiConstants.QUERY_PARAM_SORT, required = false) String sort,
 	    HttpServletRequest request) throws HttpException {
 
 	try {
@@ -416,53 +417,12 @@ public class ConceptSchemeController extends BaseRest {
 		throw new ParamValidationException(I18nConstants.EMPTY_PARAM_MANDATORY,
 			CommonApiConstants.QUERY_PARAM_QUERY, isDefinedBy);
 
-	    //TODO: switch parsing of parameters to CommonsApi.Query
-	    //parse parameters from is defined by URL
-	    MultiValueMap<String, String> parameters = UriComponentsBuilder.fromUriString(isDefinedBy).build()
-		    .getQueryParams();
-	    String queryString = parameters.getFirst(CommonApiConstants.QUERY_PARAM_QUERY);
-	    List<String> qfList = parameters.get(CommonApiConstants.QUERY_PARAM_QF);
-	    String pageSize = parameters.getFirst(CommonApiConstants.QUERY_PARAM_PAGE_SIZE);
-	    String page = parameters.getFirst(CommonApiConstants.QUERY_PARAM_PAGE);
-	    String type = parameters.getFirst(WebEntityConstants.QUERY_PARAM_TYPE);
-	    String scope = parameters.getFirst(WebEntityConstants.QUERY_PARAM_SCOPE);
+	    //parse and process parameters from is defined by URL
+	    List<EntityTypes> entityTypes = getEntityService().extractEntityTypesFromUriString(isDefinedBy);
+	    String scope = getEntityService().extractScopeFromUriString(isDefinedBy);
 
-	    // process query
-	    if(StringUtils.isNotBlank(queryString))
-	    queryString = URLDecoder.decode(queryString, StandardCharsets.UTF_8.name());
-	    
-	    // process qf
-	    String[] qf = null;
-	    if (qfList != null && qfList.size() > 0) {
-		qf = convertStringListToArray(qfList);
-	    }
-	    	    
-	    //process pageSize
-	    if(StringUtils.isEmpty(page) )
-		page = "" + Query.DEFAULT_PAGE;
-	    
-	    //process pageSize
-	    if(StringUtils.isEmpty(pageSize) )
-		pageSize = "" + Query.DEFAULT_PAGE_SIZE;
-	    
-	    // process type
-	    if(StringUtils.isBlank(type))
-		type = EntityTypes.All.name();
-	    else
-		type = URLDecoder.decode(type, StandardCharsets.UTF_8.name());
-	    		
-	    List<EntityTypes> entityTypes = getEntityTypesFromString(type);
-	    validateEntityTypes(entityTypes, false);
-
-	    // process fl
-	    String[] retFields = toArray(EntitySolrFields.ID);
-
-	    // process sort param
-	    // String[] sortCriteria = null; //toArray(sort);
-	   
 	    //Search concepts that match the ConceptScheme
-	    Query searchQuery = getEntityService().buildSearchQuery(queryString, qf, null, null, Integer.valueOf(page),
-		    Integer.valueOf(pageSize), null, retFields);
+	    Query searchQuery = getEntityService().buildParameterSearchQuery(isDefinedBy, sort);
 	    
 	    List<String> matchingEntityIds = searchEntityIds(searchQuery, scope, entityTypes);
 	    getLogger().debug("Matching concepts for scheme : " + identifier + ", #results: " + matchingEntityIds.size());
@@ -471,12 +431,11 @@ public class ConceptSchemeController extends BaseRest {
 	    //first page with max size
 	    String conceptSchemeId = storedConceptScheme.getEntityId();
 	    String inSchemeQuery = EntitySolrFields.IN_SCHEME + ":\"" + conceptSchemeId + "\"";
-	    Query existingQuery = getEntityService().buildSearchQuery(inSchemeQuery, qf, null, null, Query.DEFAULT_PAGE, Query.DEFAULT_MAX_PAGE_SIZE, null, retFields);
+	    Query existingQuery = getEntityService().buildParameterSearchQuery(inSchemeQuery, sort);
 	    
 	    List<String> existingEntityIds = searchEntityIds(existingQuery, null, null);
 	    getLogger().debug("existing befoe update: " + existingEntityIds.size());
-	    
-	    
+	    	    
 	    //Compute ADD and REMOVE lists
 	    List<String> removeList = ListUtils.subtract(existingEntityIds, matchingEntityIds);
 	    List<String> addList = ListUtils.subtract(matchingEntityIds, existingEntityIds);
@@ -484,8 +443,7 @@ public class ConceptSchemeController extends BaseRest {
 	    // perform atomic updates for entities
 	    getEntityService().performAtomicUpdate(conceptSchemeId, addList, removeList);
 	    
-	    // update concept scheme
-	    // add total (update modified)
+	    // update concept scheme, add total (update modified)
 	    // fire a new search query to check the actual number of entities in scheme
 	    existingQuery.setPageSize(0);
 	    ResultSet<? extends Entity> storedResults = getEntityService().search(existingQuery, null, entityTypes, scope);

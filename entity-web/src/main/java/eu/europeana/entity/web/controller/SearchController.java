@@ -72,8 +72,8 @@ public class SearchController extends BaseRest {
 	    SuggestAlgorithmTypes suggestType = validateAlgorithmParam(algorithm);
 
 	    // validate and convert type
-	    List<EntityTypes> entityTypes = getEntityTypesFromString(type);
-	    validateEntityTypes(entityTypes, true);
+	    List<EntityTypes> entityTypes = entityService.getEntityTypesFromString(type);
+	    entityService.validateEntityTypes(entityTypes, true);
 
 	    // validate scope parameter
 	    validateScopeParam(scope);
@@ -145,8 +145,8 @@ public class SearchController extends BaseRest {
 	    scope = validateScopeParam(scope);
 
 	    // process type
-	    List<EntityTypes> entityTypes = getEntityTypesFromString(type);
-	    validateEntityTypes(entityTypes, false);
+	    List<EntityTypes> entityTypes = entityService.getEntityTypesFromString(type);
+	    entityService.validateEntityTypes(entityTypes, false);
 
 	    // process lang
 	    String[] preferredLanguages = null;

@@ -1,6 +1,9 @@
 package eu.europeana.entity.web.service.impl;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -10,6 +13,8 @@ import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParseException;
@@ -33,6 +38,7 @@ import eu.europeana.entity.definitions.model.ConceptScheme;
 import eu.europeana.entity.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.search.SearchProfiles;
 import eu.europeana.entity.definitions.model.vocabulary.ConceptSolrFields;
+import eu.europeana.entity.definitions.model.vocabulary.EntitySolrFields;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.definitions.model.vocabulary.SuggestAlgorithmTypes;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
@@ -52,6 +58,10 @@ import eu.europeana.entity.web.service.EntityService;
 import eu.europeana.grouping.mongo.model.internal.PersistentConceptScheme;
 import ioinformarics.oss.jackson.module.jsonld.JsonldModule;
 
+/**
+ * @author GrafR
+ *
+ */
 public class EntityServiceImpl extends BaseEntityServiceImpl implements EntityService {
 
     public final String BASE_URL_DATA = "http://data.europeana.eu/";
@@ -194,6 +204,178 @@ public class EntityServiceImpl extends BaseEntityServiceImpl implements EntitySe
 	return query;
     }
 
+
+    /**
+     * process type from URI string
+     * 
+     * @param uriString
+     * @return entity types
+     * @throws ParamValidationException
+     * @throws UnsupportedEncodingException
+     */
+    public List<EntityTypes> extractEntityTypesFromUriString(String uriString)
+	    throws ParamValidationException, UnsupportedEncodingException {
+	List<EntityTypes> entityTypes = null;
+	MultiValueMap<String, String> parameters = UriComponentsBuilder.fromUriString(uriString).build()
+		.getQueryParams();
+	String type = parameters.getFirst(WebEntityConstants.QUERY_PARAM_TYPE);
+
+	if (StringUtils.isBlank(type))
+	    type = EntityTypes.All.name();
+	else
+	    type = URLDecoder.decode(type, StandardCharsets.UTF_8.name());
+
+	entityTypes = getEntityTypesFromString(type);
+	validateEntityTypes(entityTypes, false);
+	return entityTypes;
+    }
+
+    /**
+     * @param entityTypes
+     * @param suggest
+     * @throws ParamValidationException
+     */
+    public void validateEntityTypes(List<EntityTypes> entityTypes, boolean suggest) throws ParamValidationException {
+	// search
+	if (!suggest) {
+	    if (entityTypes.contains(EntityTypes.All))
+		entityTypes.clear();// no filtering needed
+	} else {// suggest
+
+	    // ConceptScheme Not Supported in suggester
+	    if (entityTypes.contains(EntityTypes.ConceptScheme))
+		throw new ParamValidationException(I18nConstants.INVALID_PARAM_VALUE,
+			WebEntityConstants.QUERY_PARAM_TYPE, EntityTypes.ConceptScheme.getInternalType());
+
+	    if (entityTypes.contains(EntityTypes.All)) {
+		entityTypes.clear();
+		entityTypes.add(EntityTypes.Concept);
+		entityTypes.add(EntityTypes.Agent);
+		entityTypes.add(EntityTypes.Place);
+		entityTypes.add(EntityTypes.Organization);
+	    }
+	}
+    }
+
+    /**
+     * Get entity type string list from comma separated entities string.
+     * 
+     * @param commaSepEntityTypes
+     *            Comma separated entities string
+     * @return Entity types string list
+     * @throws ParamValidationException
+     */
+    public List<EntityTypes> getEntityTypesFromString(String commaSepEntityTypes) throws ParamValidationException {
+
+	String[] splittedEntityTypes = commaSepEntityTypes.split(",");
+	List<EntityTypes> entityTypes = new ArrayList<EntityTypes>();
+
+	EntityTypes entityType = null;
+	String typeAsString = null;
+
+	try {
+	    for (int i = 0; i < splittedEntityTypes.length; i++) {
+		typeAsString = splittedEntityTypes[i].trim();
+		entityType = EntityTypes.getByInternalType(typeAsString);
+		entityTypes.add(entityType);
+	    }
+	} catch (UnsupportedEntityTypeException e) {
+	    throw new ParamValidationException(I18nConstants.INVALID_PARAM_VALUE, WebEntityConstants.QUERY_PARAM_TYPE,
+		    typeAsString);
+	}
+
+	return entityTypes;
+    }
+
+    /* (non-Javadoc)
+     * @see eu.europeana.entity.web.service.EntityService#extractScopeFromUriString(java.lang.String)
+     */
+    public String extractScopeFromUriString(String uriString) {
+	String scope = "";
+	MultiValueMap<String, String> parameters = UriComponentsBuilder.fromUriString(uriString).build()
+		.getQueryParams();
+	scope = parameters.getFirst(WebEntityConstants.QUERY_PARAM_SCOPE);
+	return scope;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * eu.europeana.entity.web.service.EntityService#buildAtomicUpdateQuery(java.
+     * lang.String, java.lang.String)
+     */
+    public Query buildParameterSearchQuery(String uriString, String sort) throws UnsupportedEncodingException {
+	Query searchQuery = null;
+
+	MultiValueMap<String, String> parameters = UriComponentsBuilder.fromUriString(uriString).build()
+		.getQueryParams();
+	String queryString = parameters.getFirst(CommonApiConstants.QUERY_PARAM_QUERY);
+	List<String> qfList = parameters.get(CommonApiConstants.QUERY_PARAM_QF);
+	String pageSize = parameters.getFirst(CommonApiConstants.QUERY_PARAM_PAGE_SIZE);
+	String page = parameters.getFirst(CommonApiConstants.QUERY_PARAM_PAGE);
+	String type = parameters.getFirst(WebEntityConstants.QUERY_PARAM_TYPE);
+	String scope = parameters.getFirst(WebEntityConstants.QUERY_PARAM_SCOPE);
+
+	// process fl
+	String[] retFields = toArray(EntitySolrFields.ID);
+
+	if (retFields != null) {
+	    retFields = buildCustomSelectionFields(retFields);
+	}
+
+	// process sort param
+	String[] sortCriteria = toArray(sort);
+
+	// process query
+	if (StringUtils.isNotBlank(queryString))
+	    queryString = URLDecoder.decode(queryString, StandardCharsets.UTF_8.name());
+
+	// process qf
+	String[] qf = null;
+	if (qfList != null && qfList.size() > 0) {
+	    qf = convertStringListToArray(qfList);
+	}
+
+	// process pageSize
+	if (StringUtils.isEmpty(page))
+	    page = "" + Query.DEFAULT_PAGE;
+
+	// process pageSize
+	if (StringUtils.isEmpty(pageSize))
+	    pageSize = "" + Query.DEFAULT_PAGE_SIZE;
+
+	searchQuery = buildSearchQuery(queryString, qf, null, sortCriteria, Integer.valueOf(page),
+		Integer.valueOf(pageSize), null, retFields);
+
+	return searchQuery;
+    }
+
+        /**
+         * @param strList
+         *            List of Strings
+         * @return String array
+         */
+        public String[] convertStringListToArray(List<String> strList) {
+    	    String[] strArr = new String[strList.size()];
+    	    strArr = strList.toArray(strArr);
+    	    return strArr;
+        }
+    
+	/**
+	 * This method splits the list of values provided as concatenated string to the
+	 * corresponding array representation
+	 * 
+	 * @param requestParam
+	 * @return
+	 */
+	public String[] toArray(String requestParam) {
+		if (StringUtils.isEmpty(requestParam))
+			return null;
+		String[] array = StringUtils.splitByWholeSeparator(requestParam, ",");
+		return StringUtils.stripAll(array);
+	}
+    
     /**
      * This method enriches provided custom selection fields by required fields if
      * they are not already provided in input array.

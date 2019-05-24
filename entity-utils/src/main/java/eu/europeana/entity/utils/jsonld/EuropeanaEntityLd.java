@@ -261,7 +261,8 @@ public class EuropeanaEntityLd extends JsonLd {
 		
 		if (!StringUtils.isEmpty(entity.getHasGeo())) 			
 			vcardAddress.putProperty(
-					new JsonLdProperty(WebEntityFields.HAS_GEO, getGeoUri(entity.getHasGeo())));
+					new JsonLdProperty(WebEntityFields.HAS_GEO, 
+						EntityUtils.toGeoUri(entity.getHasGeo())));
 		
 		JsonLdProperty hasAddress = new JsonLdProperty(WebEntityFields.HAS_ADDRESS);
 		hasAddress.addValue(vcardAddress);
@@ -292,10 +293,6 @@ public class EuropeanaEntityLd extends JsonLd {
 		JsonLdProperty isAggregatedBy = new JsonLdProperty(WebEntityFields.IS_AGGREGATED_BY);
 		isAggregatedBy.addValue(oreAggregation);
 		ldResource.putProperty(isAggregatedBy);
-	}
-	
-	protected String getGeoUri(String latLon){
-		return WebEntityConstants.PROTOCOL_GEO + latLon;
 	}
 	
 	private void putBaseEntityProperties(BaseEntity entity, JsonLdResource jsonLdResource) {

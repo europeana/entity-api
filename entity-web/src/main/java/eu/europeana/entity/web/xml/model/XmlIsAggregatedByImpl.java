@@ -12,7 +12,7 @@ public class XmlIsAggregatedByImpl {
 	    id = aggregation_id;
 	}
 	
-	@JacksonXmlProperty(isAttribute= true, localName = XmlConstants.XML_RDF_ABOUT)
+	@JacksonXmlProperty(isAttribute= true, localName = XmlConstants.XML_RDF_RESOURCE)
 	public String getAbout() {
 		return id;
 	}

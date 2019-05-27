@@ -58,7 +58,7 @@ public class RdfXmlUtils {
 	    return null;
 	List<XmlMultilingualString> res = new ArrayList<>();
 	for (String language : values.keySet()) {
-	    res.add(createMultilingualString(values.get(language), language));
+	    res.add(createMultilingualString(language, values.get(language)));
 	}
 	return res;
     }

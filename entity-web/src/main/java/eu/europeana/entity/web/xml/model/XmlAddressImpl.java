@@ -7,6 +7,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 import eu.europeana.entity.definitions.model.Organization;
+import eu.europeana.entity.utils.EntityUtils;
 
 @JacksonXmlRootElement(localName = XmlConstants.XML_VCARD_ADDRESS)
 @JsonInclude(value = JsonInclude.Include.NON_EMPTY)
@@ -72,7 +73,7 @@ public class XmlAddressImpl {
 	public RdfResource getHasGeo() {
 	    	if(organization.getHasGeo() == null || organization.getHasGeo().isEmpty())
 	    	    return null;
-		return new RdfResource(organization.getHasGeo());
+		return new RdfResource(EntityUtils.toGeoUri(organization.getHasGeo()));
 	}
 	
 }

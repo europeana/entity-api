@@ -37,9 +37,9 @@ import eu.europeana.grouping.mongo.model.internal.PersistentConceptScheme;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
-//@Controller
-//@Api(tags = "Concept Scheme API")
-//@SwaggerSelect
+@Controller
+@Api(tags = "Concept Scheme API")
+@SwaggerSelect
 public class ConceptSchemeController extends BaseRest {
 
 	@Resource

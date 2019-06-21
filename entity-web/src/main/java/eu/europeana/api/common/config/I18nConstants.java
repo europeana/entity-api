@@ -1,6 +1,6 @@
 package eu.europeana.api.common.config;
 
-public interface I18nConstants extends eu.europeana.api.commons.config.i18n.I18nConstants{
+public interface I18nConstants extends eu.europeana.api.commons.definitions.config.i18n.I18nConstants{
 	
 	// shared error messages
 	//replaced by generic error message

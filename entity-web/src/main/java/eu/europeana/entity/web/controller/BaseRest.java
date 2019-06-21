@@ -22,6 +22,7 @@ import eu.europeana.api.commons.definitions.search.result.ResultsPage;
 import eu.europeana.api.commons.definitions.vocabulary.CommonApiConstants;
 import eu.europeana.api.commons.definitions.vocabulary.CommonLdConstants;
 import eu.europeana.api.commons.definitions.vocabulary.ContextTypes;
+import eu.europeana.api.commons.exception.ApiKeyExtractionException;
 import eu.europeana.api.commons.utils.ResultsPageSerializer;
 import eu.europeana.api.commons.web.exception.ApplicationAuthenticationException;
 import eu.europeana.api.commons.web.exception.HttpException;
@@ -50,6 +51,8 @@ import eu.europeana.entity.web.jsonld.EntityResultsPageSerializer;
 import eu.europeana.entity.web.service.EntityService;
 import eu.europeana.entity.web.service.authorization.AuthorizationService;
 import eu.europeana.entity.web.xml.EntityXmlSerializer;
+
+import eu.europeana.api.commons.oauth2.service.impl.ApiKeyUtils;
 
 public abstract class BaseRest {
 
@@ -103,6 +106,25 @@ public abstract class BaseRest {
 			throw new EntityAuthenticationException(null, I18nConstants.EMPTY_APIKEY, null);
 		if (!wsKey.equals("apidemo"))
 			throw new EntityAuthenticationException(null, I18nConstants.INVALID_APIKEY, new String[] { wsKey });
+	}
+
+	/**
+	 * This method extracts apikey from request and
+	 * throws exception if the apikey is not extracted
+	 * @param request The HTTP request that should iclude apikey
+	 * @throws EntityAuthenticationException
+	 */
+	protected String extractApiKey(HttpServletRequest request) throws EntityAuthenticationException {		
+		ApiKeyUtils apiKeyUtils = new ApiKeyUtils();
+		String apikey = null;
+		try {
+		    apikey = apiKeyUtils.extractApiKey(request);
+		} catch (ApiKeyExtractionException e) {
+			throw new EntityAuthenticationException(null, I18nConstants.INVALID_APIKEY, new String[] { apikey });
+		}
+		if (apikey == null)
+			throw new EntityAuthenticationException(null, I18nConstants.INVALID_APIKEY, new String[] { apikey });
+		return apikey;
 	}
 
 	/**

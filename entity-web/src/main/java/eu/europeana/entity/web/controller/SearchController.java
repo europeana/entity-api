@@ -134,6 +134,7 @@ public class SearchController extends BaseRest {
 
 	try {
 	    // Check client access (a valid “wskey” must be provided)
+	    String apikey = extractApiKey(request);
 	    validateApiKey(wskey);
 
 	    // ** Process input params

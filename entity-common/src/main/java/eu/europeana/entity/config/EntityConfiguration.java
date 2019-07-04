@@ -10,6 +10,7 @@ public interface EntityConfiguration {
 	public static final String VALUE_ENVIRONMENT_DEVELOPMENT = "development";
 
 	public static final String KEY_ENTITY_SUGGESTER_SNIPPETS = "entity.suggester.snippets";
+	public static final String KEY_APIKEY_JWTTOKEN_SIGNATUREKEY = "europeana.apikey.jwttoken.siganturekey";
 	
 	public static final String DEFAULT_USER_TOKEN = "default.user.token";
 
@@ -29,5 +30,7 @@ public interface EntityConfiguration {
 	public int getSuggesterSnippets();
 	
 	public String getUserToken();
+
+	public String getJwtTokenSignatureKey();
 	
 }

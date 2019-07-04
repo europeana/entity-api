@@ -75,10 +75,11 @@ public class ConceptSchemeController extends BaseRest {
 					
 		try {
 			// validate user - check user credentials (all registered users can create) 
-			// if invalid respond with HTTP 401 or if unauthorized respond with HTTP 403;
+			// if invalid respond with HTTP 401 
 			// Check client access (a valid "wskey" must be provided)
-			validateApiKey(wskey);
-
+			validateApiKey(request);
+			
+			//if unauthorized respond with HTTP 403;
                         checkUserToken(userToken);
 			LdProfiles ldProfile = getProfile(profile, request);
 
@@ -145,7 +146,7 @@ public class ConceptSchemeController extends BaseRest {
 			// validate user - check user credentials (all registered users can create) 
 			// if invalid respond with HTTP 401 or if unauthorized respond with HTTP 403;
 			// Check client access (a valid "wskey" must be provided)
-			validateApiKey(wskey);
+			validateApiKey(request);
 
 			LdProfiles ldProfile = getProfile(profile, request);
 
@@ -212,7 +213,7 @@ public class ConceptSchemeController extends BaseRest {
 			// validate user - check user credentials (all registered users can create) 
 			// if invalid respond with HTTP 401 or if unauthorized respond with HTTP 403;
 			// Check client access (a valid "wskey" must be provided)
-			validateApiKey(wskey);
+			validateApiKey(request);
 			
                         checkUserToken(userToken);
 
@@ -277,7 +278,7 @@ public class ConceptSchemeController extends BaseRest {
 		try {
 			// check user credentials, if invalid respond with HTTP 401,
 			// check client access (a valid "wskey" must be provided)
-			validateApiKey(wskey);
+			validateApiKey(request);
 
                         checkUserToken(userToken);
 			LdProfiles ldProfile = getProfile(profile, request);
@@ -367,7 +368,7 @@ public class ConceptSchemeController extends BaseRest {
 			// validate user - check user credentials (all registered users can create) 
 			// if invalid respond with HTTP 401 or if unauthorized respond with HTTP 403;
 			// Check client access (a valid "wskey" must be provided)
-			validateApiKey(wskey);
+			validateApiKey(request);
 			
 			// retrieve a concept scheme based on its identifier - process query
 			// if the concept scheme doesn’t exist, respond with HTTP 404

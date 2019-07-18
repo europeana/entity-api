@@ -148,10 +148,11 @@ public interface EntityService {
 	/**
 	 * This method adds the id of the concept scheme to all entities matching the concept scheme ID.
 	 * @param concepSchemeId
-	 * @param addList
-	 * @param removeList
+	 * @param conceptSchemeId
+	 * @param addToEntities
+	 * @param removeFromEntities
 	 */
-	public void performAtomicUpdate(String conceptSchemeId, List<String> addList, List<String> removeList);
+	public void updateConceptSchemeForEntities(String conceptSchemeId, List<String> addToEntities, List<String> removeFromEntities);
 	    	
 	/**
 	 * This method extracts entity types from URI string

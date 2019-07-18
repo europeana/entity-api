@@ -26,7 +26,6 @@ import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.SolrInputDocument;
 import org.apache.solr.common.params.ModifiableSolrParams;
-import org.apache.solr.common.params.UpdateParams;
 import org.apache.solr.common.util.SimpleOrderedMap;
 
 import eu.europeana.api.commons.definitions.search.Query;
@@ -548,21 +547,19 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 	    //process add operation
 	    if (addRequest.getDocuments() != null && addRequest.getDocuments().size() > 0) {
 		addRequest.process(solr);
-		solr.commit();
 	    }
 	    //process remove operation
 	     if (removeRequest.getDocuments() != null &&
 		 removeRequest.getDocuments().size() > 0) {
-		removeRequest.process(solr);
-		solr.commit();
+		removeRequest.process(solr);		
 	    }
-
+	    solr.commit();
 	    solr.close();
 	} catch (SolrServerException ex) {
 	    throw new EntityServiceException("Unexpected solr server exception occured when atomic updating entities",
 		    ex);
 	} catch (IOException ex) {
-	    throw new EntityServiceException("Cannot access solr server for updating concepts with scheme", ex);
+	    throw new EntityServiceException("Cannot access solr server for updating concepts with scheme", ex);    
 	} 
     }
 
@@ -588,8 +585,7 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 	}
 
 	ModifiableSolrParams atomicOperation = new ModifiableSolrParams().add("processor", "atomic")
-		.add("atomic." + EntitySolrFields.IN_SCHEME, operation)
-		.add(UpdateParams.COMMIT, "true");
+		.add("atomic." + EntitySolrFields.IN_SCHEME, operation);
 
 	request.setParams(atomicOperation);
 	return request;

@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -38,7 +37,6 @@ import eu.europeana.entity.definitions.formats.FormatTypes;
 import eu.europeana.entity.definitions.model.ConceptScheme;
 import eu.europeana.entity.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.search.SearchProfiles;
-import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.definitions.model.vocabulary.LdProfiles;
 import eu.europeana.entity.definitions.model.vocabulary.SuggestAlgorithmTypes;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
@@ -114,29 +112,6 @@ public abstract class BaseRest {
 	    return getAuthorizationService().getConfiguration().getUserToken();
 	}
 	
-//	protected void validateEntityTypes(List<EntityTypes> entityTypes, boolean suggest) throws ParamValidationException {
-//		// search
-//		if (!suggest) {
-//		    if (entityTypes.contains(EntityTypes.All))
-//			entityTypes.clear();// no filtering needed
-//		} else {// suggest
-//
-//		    // ConceptScheme Not Supported in suggester
-//		    if (entityTypes.contains(EntityTypes.ConceptScheme))
-//			throw new ParamValidationException(I18nConstants.INVALID_PARAM_VALUE, WebEntityConstants.QUERY_PARAM_TYPE,
-//				EntityTypes.ConceptScheme.getInternalType()); 
-//
-//		    if (entityTypes.contains(EntityTypes.All)) {
-//			entityTypes.clear();
-//			entityTypes.add(EntityTypes.Concept);
-//			entityTypes.add(EntityTypes.Agent);
-//			entityTypes.add(EntityTypes.Place);
-//			entityTypes.add(EntityTypes.Organization);
-//		    }
-//		}
-//	    }
-
-	
 	/**
 	 * This method returns the json-ld serialization for the given results page,
 	 * according to the specifications of the provided search profile
@@ -154,36 +129,6 @@ public abstract class BaseRest {
 		return serializer.serialize(profileVal);
 	}
 
-//	/**
-//	 * Get entity type string list from comma separated entities string.
-//	 * 
-//	 * @param commaSepEntityTypes
-//	 *            Comma separated entities string
-//	 * @return Entity types string list
-//	 * @throws ParamValidationException
-//	 */
-//	protected List<EntityTypes> getEntityTypesFromString(String commaSepEntityTypes) throws ParamValidationException {
-//
-//		String[] splittedEntityTypes = commaSepEntityTypes.split(",");
-//		List<EntityTypes> entityTypes = new ArrayList<EntityTypes>();
-//
-//		EntityTypes entityType = null;
-//		String typeAsString = null;
-//
-//		try {
-//			for (int i = 0; i < splittedEntityTypes.length; i++) {
-//				typeAsString = splittedEntityTypes[i].trim();
-//				entityType = EntityTypes.getByInternalType(typeAsString);
-//				entityTypes.add(entityType);
-//			}
-//		} catch (UnsupportedEntityTypeException e) {
-//			throw new ParamValidationException(I18nConstants.INVALID_PARAM_VALUE, WebEntityConstants.QUERY_PARAM_TYPE,
-//					typeAsString);
-//		}
-//
-//		return entityTypes;
-//	}
-//
 	/**
 	 * This method splits the list of values provided as concatenated string to the
 	 * corresponding array representation
@@ -193,10 +138,6 @@ public abstract class BaseRest {
 	 */
 	protected String[] toArray(String requestParam) {
 	    return getEntityService().toArray(requestParam);
-//		if (StringUtils.isEmpty(requestParam))
-//			return null;
-//		String[] array = StringUtils.splitByWholeSeparator(requestParam, ",");
-//		return StringUtils.stripAll(array);
 	}
 
 	/**

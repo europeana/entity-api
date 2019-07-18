@@ -677,14 +677,14 @@ public class EntityServiceImpl extends BaseEntityServiceImpl implements EntitySe
     /* (non-Javadoc)
      * @see eu.europeana.entity.web.service.EntityService#performAtomicUpdate(java.lang.String, java.util.List, java.util.List)
      */
-    public void performAtomicUpdate(String conceptSchemeId, List<String> addList, List<String> removeList) {
+    public void updateConceptSchemeForEntities(String conceptSchemeId, List<String> addToEntities, List<String> removeFromEntities) {
 	
 	try {
-	    getSolrService().performAtomicUpdate(conceptSchemeId, addList, removeList);
+	    getSolrService().performAtomicUpdate(conceptSchemeId, addToEntities, removeFromEntities);
 	} catch (EntityServiceException e) {
 	    getLogger().error(
 		"Cannot perform atomic update for concept scheme identifier: " + conceptSchemeId +
-		" for entities. addition: " + addList.toString() + ", removal:" + removeList.toString(), e);
+		" for entities. addition: " + addToEntities.toString() + ", removal:" + removeFromEntities.toString(), e);
 	}
 	
     }

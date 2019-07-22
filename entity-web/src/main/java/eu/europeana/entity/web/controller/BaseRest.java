@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -27,6 +26,10 @@ import eu.europeana.api.commons.utils.ResultsPageSerializer;
 import eu.europeana.api.commons.web.exception.ApplicationAuthenticationException;
 import eu.europeana.api.commons.web.exception.HttpException;
 import eu.europeana.api.commons.web.http.HttpHeaders;
+import eu.europeana.corelib.edm.model.schemaorg.ContextualEntity;
+import eu.europeana.corelib.edm.utils.JsonLdSerializer;
+import eu.europeana.corelib.edm.utils.SchemaOrgTypeFactory;
+import eu.europeana.corelib.edm.utils.SchemaOrgUtils;
 import eu.europeana.entity.definitions.exceptions.ConceptSchemeProfileValidationException;
 import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException;
 import eu.europeana.entity.definitions.exceptions.UnsupportedFormatTypeException;
@@ -34,7 +37,6 @@ import eu.europeana.entity.definitions.formats.FormatTypes;
 import eu.europeana.entity.definitions.model.ConceptScheme;
 import eu.europeana.entity.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.search.SearchProfiles;
-import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.definitions.model.vocabulary.LdProfiles;
 import eu.europeana.entity.definitions.model.vocabulary.SuggestAlgorithmTypes;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
@@ -47,11 +49,15 @@ import eu.europeana.entity.web.http.EntityHttpHeaders;
 import eu.europeana.entity.web.jsonld.EntityResultsPageSerializer;
 import eu.europeana.entity.web.service.EntityService;
 import eu.europeana.entity.web.service.authorization.AuthorizationService;
+import eu.europeana.entity.web.xml.EntityXmlSerializer;
 
 public abstract class BaseRest {
 
 	@Resource
 	private EntityService entityService;
+
+	@Resource
+	EntityXmlSerializer entityXmlSerializer;
 
 	@Resource
 	AuthorizationService authorizationService;
@@ -115,42 +121,12 @@ public abstract class BaseRest {
 	 * @return
 	 * @throws JsonProcessingException
 	 */
-	protected String searializeResultsPage(ResultsPage<? extends Entity> resPage, SearchProfiles profile)
+	protected String serializeResultsPage(ResultsPage<? extends Entity> resPage, SearchProfiles profile)
 			throws JsonProcessingException {
 		ResultsPageSerializer<? extends Entity> serializer = new EntityResultsPageSerializer<>(resPage,
 				ContextTypes.ENTITY.getJsonValue(), CommonLdConstants.RESULT_PAGE);
 		String profileVal = (profile == null) ? null : profile.name();
 		return serializer.serialize(profileVal);
-	}
-
-	/**
-	 * Get entity type string list from comma separated entities string.
-	 * 
-	 * @param commaSepEntityTypes
-	 *            Comma separated entities string
-	 * @return Entity types string list
-	 * @throws ParamValidationException
-	 */
-	protected List<EntityTypes> getEntityTypesFromString(String commaSepEntityTypes) throws ParamValidationException {
-
-		String[] splittedEntityTypes = commaSepEntityTypes.split(",");
-		List<EntityTypes> entityTypes = new ArrayList<EntityTypes>();
-
-		EntityTypes entityType = null;
-		String typeAsString = null;
-
-		try {
-			for (int i = 0; i < splittedEntityTypes.length; i++) {
-				typeAsString = splittedEntityTypes[i].trim();
-				entityType = EntityTypes.getByInternalType(typeAsString);
-				entityTypes.add(entityType);
-			}
-		} catch (UnsupportedEntityTypeException e) {
-			throw new ParamValidationException(I18nConstants.INVALID_PARAM_VALUE, WebEntityConstants.QUERY_PARAM_TYPE,
-					typeAsString);
-		}
-
-		return entityTypes;
 	}
 
 	/**
@@ -161,10 +137,7 @@ public abstract class BaseRest {
 	 * @return
 	 */
 	protected String[] toArray(String requestParam) {
-		if (StringUtils.isEmpty(requestParam))
-			return null;
-		String[] array = StringUtils.splitByWholeSeparator(requestParam, ",");
-		return StringUtils.stripAll(array);
+	    return getEntityService().toArray(requestParam);
 	}
 
 	/**
@@ -321,24 +294,53 @@ public abstract class BaseRest {
 		return res;
 	}
 
+	
 	/**
-	 * This method serializes concept scheme and applies profile to the object.
-	 * 
-	 * @param profile
-	 * @param storedConceptScheme
-	 * @return serialized user set as a JsonLd string
-	 * @throws IOException
-	 * @throws UnsupportedEntityTypeException 
+	 * This method selects serialization method according to provided format.
+	 * @param entity The entity
+	 * @param format The format extension
+	 * @return entity in jsonLd format
+	 * @throws UnsupportedEntityTypeException
 	 */
-	protected String serializeConceptScheme(LdProfiles profile, ConceptScheme storedConceptScheme) 
-		throws IOException, UnsupportedEntityTypeException {
-		// apply linked data profile from header
-		ConceptScheme resConceptScheme = applyProfile(storedConceptScheme, profile);
-
-		// serialize ConceptScheme description in JSON-LD and respond with HTTP 201 if successful
-		EuropeanaEntityLd serializer = new EuropeanaEntityLd(resConceptScheme);
-		String serializedConceptSchemeJsonLdStr = serializer.toString(4);
-		return serializedConceptSchemeJsonLdStr;
+	protected String serialize(Entity entity, FormatTypes format) 
+			throws UnsupportedEntityTypeException {
+		
+		String responseBody = null;
+		ContextualEntity thingObject = null;
+        
+		if(FormatTypes.jsonld.equals(format)) {
+		    	EuropeanaEntityLd entityLd = new EuropeanaEntityLd(entity);		
+			return entityLd.toString(4);
+		} else if (FormatTypes.schema.equals(format)) {			
+		    	responseBody = serializeSchema(entity, responseBody, thingObject);	        
+		} else if(FormatTypes.xml.equals(format)) {
+		    	responseBody = entityXmlSerializer.serializeXml(entity);
+		}
+		return responseBody;
+	}
+	
+	/**
+	 * This method serializes Entity object applying schema.org serialization.
+	 * @param entity The Entity object
+	 * @param entityType The type of the entity
+	 * @param jsonLd The resulting json-ld string
+	 * @param thingObject The object in corelib format
+	 * @return The serialized entity in json-ld string format
+	 * @throws UnsupportedEntityTypeException
+	 */
+	private String serializeSchema(Entity entity, String jsonLd, ContextualEntity thingObject)
+			throws UnsupportedEntityTypeException {
+		thingObject = SchemaOrgTypeFactory.createContextualEntity(entity);
+		
+		SchemaOrgUtils.processEntity(entity, thingObject);
+		JsonLdSerializer serializer = new JsonLdSerializer();
+		try {
+		    jsonLd = serializer.serialize(thingObject);
+		} catch (IOException e) {
+			throw new UnsupportedEntityTypeException(
+					"Serialization to schema.org failed for " + thingObject.getId() + e.getMessage());
+		}
+		return jsonLd;
 	}
 
 	/**
@@ -509,5 +511,16 @@ public abstract class BaseRest {
 
 	return hashCode.toString();
     }
-	    
+
+    /**
+     * This method adds a string to the existing String array
+     * @param arr The string array
+     * @param value Value to add
+     * @return extended string array
+     */
+    public String[] addStringToArray(String[] arr, String value) {
+	ArrayList<String> arrList = new ArrayList<String>();
+	arrList.add(value);
+	return arrList.toArray(new String[0]);
+    }
 }

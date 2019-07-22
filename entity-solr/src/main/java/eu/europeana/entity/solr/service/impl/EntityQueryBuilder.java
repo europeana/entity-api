@@ -123,7 +123,7 @@ public class EntityQueryBuilder extends QueryBuilder {
 	 * @return Solr query filter for entity types
 	 */
 	private String buildEntityTypeCondition(List<EntityTypes> entityTypes) {
-		if (entityTypes.isEmpty()) {
+		if (entityTypes == null || entityTypes.isEmpty()) {
 			return null;
 		}
 

@@ -18,9 +18,10 @@ public interface EntitySolrFields {
     public static final String EUROPEANA_DOC_COUNT = "europeana_doc_count";
     public static final String DERIVED_SCORE = "derived_score";
 
-    
     public static final String TIMESTAMP = "timestamp";
     public static final String CREATED = "created";
     public static final String MODIFIED = "modified";
+    
+    public static final String IN_SCHEME = "skos_inScheme";    
     
 }

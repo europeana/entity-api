@@ -1,5 +1,6 @@
 package eu.europeana.entity.web.service;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import eu.europeana.api.commons.definitions.search.Query;
@@ -11,6 +12,7 @@ import eu.europeana.entity.definitions.model.ConceptScheme;
 import eu.europeana.entity.definitions.model.search.SearchProfiles;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.definitions.model.vocabulary.SuggestAlgorithmTypes;
+import eu.europeana.entity.web.exception.ParamValidationException;
 import eu.europeana.entity.web.exception.RequestBodyValidationException;
 import eu.europeana.entity.web.exception.response.ConceptSchemeNotFoundException;
 import eu.europeana.entity.web.model.view.EntityPreview;
@@ -143,4 +145,60 @@ public interface EntityService {
 	 */
 	public ConceptScheme disableConceptScheme(ConceptScheme existingConceptScheme);					 
 		
+	/**
+	 * This method adds the id of the concept scheme to all entities matching the concept scheme ID.
+	 * @param concepSchemeId
+	 * @param conceptSchemeId
+	 * @param addToEntities
+	 * @param removeFromEntities
+	 */
+	public void updateConceptSchemeForEntities(String conceptSchemeId, List<String> addToEntities, List<String> removeFromEntities);
+	    	
+	/**
+	 * This method extracts entity types from URI string
+	 * @param uriString
+	 * @return entity types
+	 * @throws ParamValidationException
+	 * @throws UnsupportedEncodingException
+	 */
+	public List<EntityTypes> extractEntityTypesFromUriString(String uriString)
+		    throws ParamValidationException, UnsupportedEncodingException;
+	
+	/**
+	 * @param uriString
+	 * @return
+	 */
+	public String extractScopeFromUriString(String uriString);
+	
+	/**
+	 * @param entityTypes
+	 * @param suggest
+	 * @throws ParamValidationException
+	 */
+	public void validateEntityTypes(List<EntityTypes> entityTypes, boolean suggest) throws ParamValidationException;
+	
+	/**
+	 * @param commaSepEntityTypes
+	 * @return
+	 * @throws ParamValidationException
+	 */
+	public List<EntityTypes> getEntityTypesFromString(String commaSepEntityTypes) throws ParamValidationException;
+	
+	/**
+	 * @param requestParam
+	 * @return
+	 */
+	public String[] toArray(String requestParam);
+		  	   
+        /**
+         * Search concepts that match the ConceptScheme parse parameters from is defined
+         * by URL
+         * 
+         * @param uriString
+         * @param sort
+         * @return solr query
+         * @throws UnsupportedEncodingException
+         */
+        public Query buildParameterSearchQuery(String uriString, String sort) throws UnsupportedEncodingException;
+	
 }

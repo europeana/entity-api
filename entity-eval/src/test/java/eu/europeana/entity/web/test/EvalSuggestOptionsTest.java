@@ -19,7 +19,7 @@ public class EvalSuggestOptionsTest extends BaseEvaluation {
 	List<String> getResults(SolrQuery solrQuery) {
 		
 		@SuppressWarnings("deprecation")
-		SolrClient solrClient = new HttpSolrClient("http://entity-api.eanadev.org:9292/solr/test/");
+		SolrClient solrClient = new HttpSolrClient("http://entity-api.eanadev.org:9292/solr/test/", null, false);
 
 		QueryResponse rsp;
 		List<String> res = null;

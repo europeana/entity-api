@@ -1,20 +1,16 @@
 package eu.europeana.api.common.config;
 
-public interface I18nConstants extends eu.europeana.api.commons.config.i18n.I18nConstants{
+public interface I18nConstants extends eu.europeana.api.commons.definitions.config.i18n.I18nConstants{
 	
 	// shared error messages
-	//replaced by generic error message
-	//static final String INVALID_APIKEY = "error.entity_invalid_apikey";
-
+	
 	//400
 //	#static final String INVALID_FIELD_NAME = "error.invalid_field_name";
     	static final String BAD_HEADER_REQUEST = "error.extension_and_accept";
 	
 	//401
 	//replaced by generic error message
-	//static final String EMPTY_APIKEY = "error.entity_empty_apikey";
 	static final String NO_APPLICATION_FOR_APIKEY = "error.entity_no_application_for_apikey";
-	static final String MISSING_APIKEY = "error.missing_apikey";
 	
 	//404
 	//replaced by generic constant

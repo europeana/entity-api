@@ -6,7 +6,7 @@ import eu.europeana.entity.definitions.model.Agent;
 import eu.europeana.entity.web.exception.authorization.OperationAuthorizationException;
 import eu.europeana.entity.web.exception.authorization.UserAuthorizationException;
 
-public interface AuthorizationService {
+public interface AuthorizationService extends eu.europeana.api.commons.service.authorization.AuthorizationService{
 
 	/**
 	 * use authorizeUser(String userToken, String apiKey, String operationName) 

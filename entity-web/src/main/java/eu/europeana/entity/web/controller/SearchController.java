@@ -58,12 +58,13 @@ public class SearchController extends BaseRest {
 	    @RequestParam(value = WebEntityConstants.QUERY_PARAM_SCOPE, required = false) String scope,
 	    @RequestParam(value = WebEntityConstants.QUERY_PARAM_TYPE, defaultValue = WebEntityConstants.PARAM_TYPE_ALL) String type,
 	    @RequestParam(value = CommonApiConstants.QUERY_PARAM_ROWS, defaultValue = WebEntityConstants.PARAM_DEFAULT_ROWS) int rows,
-	    @RequestParam(value = WebEntityConstants.ALGORITHM, required = false, defaultValue = WebEntityConstants.SUGGEST_ALGORITHM_DEFAULT) String algorithm)
+	    @RequestParam(value = WebEntityConstants.ALGORITHM, required = false, defaultValue = WebEntityConstants.SUGGEST_ALGORITHM_DEFAULT) String algorithm,
+	    HttpServletRequest request)
 	    throws HttpException {
 
 	try {
 	    // Check client access (a valid “wskey” must be provided)
-	    validateApiKey(wskey);
+	    validateApiKey(request);
 
 	    // validate text parameter
 	    validateTextParam(text);
@@ -72,8 +73,8 @@ public class SearchController extends BaseRest {
 	    SuggestAlgorithmTypes suggestType = validateAlgorithmParam(algorithm);
 
 	    // validate and convert type
-	    List<EntityTypes> entityTypes = getEntityTypesFromString(type);
-	    validateEntityTypes(entityTypes, true);
+	    List<EntityTypes> entityTypes = entityService.getEntityTypesFromString(type);
+	    entityService.validateEntityTypes(entityTypes, true);
 
 	    // validate scope parameter
 	    validateScopeParam(scope);
@@ -111,28 +112,7 @@ public class SearchController extends BaseRest {
 	}
     }
 
-    private void validateEntityTypes(List<EntityTypes> entityTypes, boolean suggest) throws ParamValidationException {
-	// search
-	if (!suggest) {
-	    if (entityTypes.contains(EntityTypes.All))
-		entityTypes.clear();// no filtering needed
-	} else {// suggest
-
-	    // ConceptScheme Not Supported in suggester
-	    if (entityTypes.contains(EntityTypes.ConceptScheme))
-		throw new ParamValidationException(I18nConstants.INVALID_PARAM_VALUE, WebEntityConstants.QUERY_PARAM_TYPE,
-			EntityTypes.ConceptScheme.getInternalType()); 
-
-	    if (entityTypes.contains(EntityTypes.All)) {
-		entityTypes.clear();
-		entityTypes.add(EntityTypes.Concept);
-		entityTypes.add(EntityTypes.Agent);
-		entityTypes.add(EntityTypes.Place);
-		entityTypes.add(EntityTypes.Organization);
-	    }
-	}
-    }
-
+    
     @ApiOperation(value = "Search entities for the given text query. By default the search will return all entity fields. "
 	    + "The facets profile and the facet param are available for including facets in the response. fl and lang params are used to reduce the amount of data included in the response", nickname = "search", response = java.lang.Void.class)
     @RequestMapping(value = { "/entity/search", "/entity/search.jsonld" }, method = RequestMethod.GET, produces = {
@@ -155,7 +135,8 @@ public class SearchController extends BaseRest {
 
 	try {
 	    // Check client access (a valid “wskey” must be provided)
-	    validateApiKey(wskey);
+//	    String apikey = extractApiKey();
+	    validateApiKey(request);
 
 	    // ** Process input params
 	    if (StringUtils.isBlank(queryString))
@@ -166,8 +147,8 @@ public class SearchController extends BaseRest {
 	    scope = validateScopeParam(scope);
 
 	    // process type
-	    List<EntityTypes> entityTypes = getEntityTypesFromString(type);
-	    validateEntityTypes(entityTypes, false);
+	    List<EntityTypes> entityTypes = entityService.getEntityTypesFromString(type);
+	    entityService.validateEntityTypes(entityTypes, false);
 
 	    // process lang
 	    String[] preferredLanguages = null;
@@ -200,7 +181,7 @@ public class SearchController extends BaseRest {
 
 	    ResultsPage<? extends Entity> resPage = entityService.buildResultsPage(searchQuery, results,
 		    request.getRequestURL(), request.getQueryString());
-	    String jsonLd = searializeResultsPage(resPage, searchProfile);
+	    String jsonLd = serializeResultsPage(resPage, searchProfile);
 
 	    // build response
 	    MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>(5);

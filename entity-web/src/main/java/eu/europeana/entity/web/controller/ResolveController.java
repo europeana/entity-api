@@ -64,7 +64,7 @@ public class ResolveController extends BaseRest {
 			@PathVariable(value = WebEntityConstants.PATH_PARAM_IDENTIFIER) String identifier,
 			HttpServletRequest request
 			) throws HttpException  {	
-	    return createResponse(type, namespace, identifier, FormatTypes.jsonld, wskey, null);			
+	    return createResponse(type, namespace, identifier, FormatTypes.jsonld, null, request);			
 	}
 	
 	@ApiOperation(value = "Retrieve a known entity", nickname = "getEntity", response = java.lang.Void.class)
@@ -77,7 +77,7 @@ public class ResolveController extends BaseRest {
 			@PathVariable(value = WebEntityConstants.PATH_PARAM_IDENTIFIER) String identifier,
 			HttpServletRequest request
 			) throws HttpException  {
-	    return createResponse(type, namespace, identifier, FormatTypes.schema, wskey, null);			
+	    return createResponse(type, namespace, identifier, FormatTypes.schema, null, request);			
 	}
 	
 	@ApiOperation(value = "Retrieve a known entity", nickname = "getEntity", response = java.lang.Void.class)
@@ -90,7 +90,7 @@ public class ResolveController extends BaseRest {
 			@PathVariable(value = WebEntityConstants.PATH_PARAM_IDENTIFIER) String identifier,
 			HttpServletRequest request
 			) throws HttpException  {
-	    return createResponse(type, namespace, identifier, FormatTypes.xml, wskey, HttpHeaders.CONTENT_TYPE_APPLICATION_RDF_XML);
+	    return createResponse(type, namespace, identifier, FormatTypes.xml, HttpHeaders.CONTENT_TYPE_APPLICATION_RDF_XML, request);
 	}
 	
 	@ApiOperation(value = "Retrieve a known entity", nickname = "getEntity", response = java.lang.Void.class)
@@ -104,7 +104,7 @@ public class ResolveController extends BaseRest {
 			@PathVariable(value = WebEntityConstants.PATH_PARAM_IDENTIFIER) String identifier,
 			HttpServletRequest request
 			) throws HttpException  {
-	    return createResponse(type, namespace, identifier, FormatTypes.jsonld, wskey, null);
+	    return createResponse(type, namespace, identifier, FormatTypes.jsonld, null, request);
 	    		
 	}
 	
@@ -119,13 +119,13 @@ public class ResolveController extends BaseRest {
 			@PathVariable(value = WebEntityConstants.PATH_PARAM_IDENTIFIER) String identifier,
 			HttpServletRequest request
 			) throws HttpException  {
-	    return createResponse(type, namespace, identifier, FormatTypes.xml, wskey, null);
+	    return createResponse(type, namespace, identifier, FormatTypes.xml, null, request);
 	    		
 	}
 	
-	private ResponseEntity<String> createResponse(String type, String namespace, String identifier, FormatTypes outFormat, String wskey, String contentType) throws HttpException{
+	private ResponseEntity<String> createResponse(String type, String namespace, String identifier, FormatTypes outFormat,  String contentType, HttpServletRequest request) throws HttpException{
 	    try {
-		validateApiKey(wskey);
+		validateApiKey(request);
         	Entity entity = entityService.retrieveByUrl(type, namespace, identifier);
         	String jsonLd = serialize(entity, outFormat);
         
@@ -164,22 +164,22 @@ public class ResolveController extends BaseRest {
 	 * @return entity in jsonLd format
 	 * @throws UnsupportedEntityTypeException
 	 */
-	private String serialize(Entity entity, FormatTypes format) 
-			throws UnsupportedEntityTypeException {
-		
-		String responseBody = null;
-		ContextualEntity thingObject = null;
-        
-		if(FormatTypes.jsonld.equals(format)) {
-		    	EuropeanaEntityLd entityLd = new EuropeanaEntityLd(entity);		
-			return entityLd.toString(4);
-		} else if (FormatTypes.schema.equals(format)) {			
-		    	responseBody = serializeSchema(entity, responseBody, thingObject);	        
-		} else if(FormatTypes.xml.equals(format)) {
-		    	responseBody = entityXmlSerializer.serializeXml(entity);
-		}
-		return responseBody;
-	}
+//	private String serialize(Entity entity, FormatTypes format) 
+//			throws UnsupportedEntityTypeException {
+//		
+//		String responseBody = null;
+//		ContextualEntity thingObject = null;
+//        
+//		if(FormatTypes.jsonld.equals(format)) {
+//		    	EuropeanaEntityLd entityLd = new EuropeanaEntityLd(entity);		
+//			return entityLd.toString(4);
+//		} else if (FormatTypes.schema.equals(format)) {			
+//		    	responseBody = serializeSchema(entity, responseBody, thingObject);	        
+//		} else if(FormatTypes.xml.equals(format)) {
+//		    	responseBody = entityXmlSerializer.serializeXml(entity);
+//		}
+//		return responseBody;
+//	}
 
 
 	/**
@@ -212,12 +212,13 @@ public class ResolveController extends BaseRest {
 			produces = { HttpHeaders.CONTENT_TYPE_JSON_UTF8})
 	public ResponseEntity<String> resolveEntity(
 			@RequestParam(value = CommonApiConstants.PARAM_WSKEY, required=false) String wskey,
-			@RequestParam(value = WebEntityConstants.QUERY_PARAM_URI) String uri
+			@RequestParam(value = WebEntityConstants.QUERY_PARAM_URI) String uri,
+			HttpServletRequest request
 			) throws HttpException  {
 
 		try {
 			
-			validateApiKey(wskey);
+			validateApiKey(request);
 
 			String entityUri = entityService.resolveByUri(uri.trim());
 					

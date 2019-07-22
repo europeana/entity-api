@@ -44,4 +44,10 @@ public class EntityConfigurationImpl implements EntityConfiguration {
 	public String getUserToken() {
 		return getEntityProperties().getProperty(DEFAULT_USER_TOKEN);
 	}
+
+
+	@Override
+	public String getJwtTokenSignatureKey() {
+	    return getEntityProperties().getProperty(KEY_APIKEY_JWTTOKEN_SIGNATUREKEY);
+	}
 }

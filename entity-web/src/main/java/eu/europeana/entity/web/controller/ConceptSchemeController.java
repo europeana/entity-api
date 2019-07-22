@@ -1,10 +1,14 @@
 package eu.europeana.entity.web.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.collections.ListUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -18,16 +22,23 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import eu.europeana.api.common.config.I18nConstants;
 import eu.europeana.api.common.config.swagger.SwaggerSelect;
+import eu.europeana.api.commons.definitions.search.Query;
+import eu.europeana.api.commons.definitions.search.ResultSet;
 import eu.europeana.api.commons.definitions.vocabulary.CommonApiConstants;
 import eu.europeana.api.commons.web.exception.HttpException;
 import eu.europeana.api.commons.web.http.HttpHeaders;
 import eu.europeana.entity.definitions.exceptions.EntityInstantiationException;
 import eu.europeana.entity.definitions.exceptions.EntityValidationException;
+import eu.europeana.entity.definitions.formats.FormatTypes;
 import eu.europeana.entity.definitions.model.ConceptScheme;
+import eu.europeana.entity.definitions.model.Entity;
+import eu.europeana.entity.definitions.model.vocabulary.EntitySolrFields;
+import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.definitions.model.vocabulary.LdProfiles;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
 import eu.europeana.entity.web.exception.EntityStateException;
 import eu.europeana.entity.web.exception.InternalServerException;
+import eu.europeana.entity.web.exception.ParamValidationException;
 import eu.europeana.entity.web.exception.RequestBodyValidationException;
 import eu.europeana.entity.web.http.EntityHttpHeaders;
 import eu.europeana.entity.web.http.SwaggerConstants;
@@ -75,10 +86,11 @@ public class ConceptSchemeController extends BaseRest {
 					
 		try {
 			// validate user - check user credentials (all registered users can create) 
-			// if invalid respond with HTTP 401 or if unauthorized respond with HTTP 403;
+			// if invalid respond with HTTP 401 
 			// Check client access (a valid "wskey" must be provided)
-			validateApiKey(wskey);
-
+			validateApiKey(request);
+			
+			//if unauthorized respond with HTTP 403;
                         checkUserToken(userToken);
 			LdProfiles ldProfile = getProfile(profile, request);
 
@@ -145,7 +157,7 @@ public class ConceptSchemeController extends BaseRest {
 			// validate user - check user credentials (all registered users can create) 
 			// if invalid respond with HTTP 401 or if unauthorized respond with HTTP 403;
 			// Check client access (a valid "wskey" must be provided)
-			validateApiKey(wskey);
+			validateApiKey(request);
 
 			LdProfiles ldProfile = getProfile(profile, request);
 
@@ -212,7 +224,7 @@ public class ConceptSchemeController extends BaseRest {
 			// validate user - check user credentials (all registered users can create) 
 			// if invalid respond with HTTP 401 or if unauthorized respond with HTTP 403;
 			// Check client access (a valid "wskey" must be provided)
-			validateApiKey(wskey);
+			validateApiKey(request);
 			
                         checkUserToken(userToken);
 
@@ -277,7 +289,7 @@ public class ConceptSchemeController extends BaseRest {
 		try {
 			// check user credentials, if invalid respond with HTTP 401,
 			// check client access (a valid "wskey" must be provided)
-			validateApiKey(wskey);
+			validateApiKey(request);
 
                         checkUserToken(userToken);
 			LdProfiles ldProfile = getProfile(profile, request);
@@ -367,7 +379,7 @@ public class ConceptSchemeController extends BaseRest {
 			// validate user - check user credentials (all registered users can create) 
 			// if invalid respond with HTTP 401 or if unauthorized respond with HTTP 403;
 			// Check client access (a valid "wskey" must be provided)
-			validateApiKey(wskey);
+			validateApiKey(request);
 			
 			// retrieve a concept scheme based on its identifier - process query
 			// if the concept scheme doesn’t exist, respond with HTTP 404

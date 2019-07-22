@@ -392,21 +392,22 @@ public abstract class BaseRest extends BaseRestController {
     }
 
     /**
-     * This method returns the json-ld serialization for the given results page,
-     * according to the specifications of the provided search profile
-     * 
-     * @param resPage
-     * @param profile
-     * @return
-     * @throws JsonProcessingException
-     */
-    protected String serializeResultsPage(ResultsPage<? extends Entity> resPage, SearchProfiles profile)
-	    throws JsonProcessingException {
-	ResultsPageSerializer<? extends Entity> serializer = new EntityResultsPageSerializer<>(resPage,
-		ContextTypes.ENTITY.getJsonValue(), CommonLdConstants.RESULT_PAGE);
-	String profileVal = (profile == null) ? null : profile.name();
-	return serializer.serialize(profileVal);
-    }
+	 * This method returns the json-ld serialization for the given results page,
+	 * according to the specifications of the provided search profile
+	 * 
+	 * @param resPage
+	 * @param profile
+	 * @return
+	 * @throws JsonProcessingException
+	 */
+	protected String serializeResultsPage(ResultsPage<? extends Entity> resPage, SearchProfiles profile)
+			throws JsonProcessingException {
+		ResultsPageSerializer<? extends Entity> serializer = new EntityResultsPageSerializer<>(resPage,
+				ContextTypes.ENTITY.getJsonValue(), CommonLdConstants.RESULT_PAGE);
+		String profileVal = (profile == null) ? null : profile.name();
+		return serializer.serialize(profileVal);
+	}
+
 
     /**
      * This method splits the list of values provided as concatenated string to the
@@ -418,6 +419,7 @@ public abstract class BaseRest extends BaseRestController {
     protected String[] toArray(String requestParam) {
 	return getEntityService().toArray(requestParam);
     }
+
 
     /**
      * This method retrieves view profile if provided within the "If-Match" HTTP
@@ -475,6 +477,7 @@ public abstract class BaseRest extends BaseRestController {
 	}
 	return resMap;
     }
+
 
     /**
      * This method selects serialization method according to provided format.
@@ -541,6 +544,7 @@ public abstract class BaseRest extends BaseRestController {
 	    throws OperationAuthorizationException {
     }
 
+    
     /**
      * This method generates etag for response header.
      * 
@@ -548,7 +552,7 @@ public abstract class BaseRest extends BaseRestController {
      *        entity
      * @return etag value
      */
-    public String generateETag(Date modifiedDate, String format) {
+     public String generateETag(Date modifiedDate, String format) {
 	Integer hashCode;
 	hashCode = modifiedDate.hashCode();
 	// add the hascode of the serilization format if
@@ -558,10 +562,10 @@ public abstract class BaseRest extends BaseRestController {
 	return hashCode.toString();
     }
 
+    
     /**
      * This method adds a string to the existing String array
-     * 
-     * @param arr   The string array
+     * @param arr The string array
      * @param value Value to add
      * @return extended string array
      */

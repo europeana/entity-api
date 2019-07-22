@@ -1,10 +1,14 @@
 package eu.europeana.entity.web.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.collections.ListUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -18,16 +22,23 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import eu.europeana.api.common.config.I18nConstants;
 import eu.europeana.api.common.config.swagger.SwaggerSelect;
+import eu.europeana.api.commons.definitions.search.Query;
+import eu.europeana.api.commons.definitions.search.ResultSet;
 import eu.europeana.api.commons.definitions.vocabulary.CommonApiConstants;
 import eu.europeana.api.commons.web.exception.HttpException;
 import eu.europeana.api.commons.web.http.HttpHeaders;
 import eu.europeana.entity.definitions.exceptions.EntityInstantiationException;
 import eu.europeana.entity.definitions.exceptions.EntityValidationException;
+import eu.europeana.entity.definitions.formats.FormatTypes;
 import eu.europeana.entity.definitions.model.ConceptScheme;
+import eu.europeana.entity.definitions.model.Entity;
+import eu.europeana.entity.definitions.model.vocabulary.EntitySolrFields;
+import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.definitions.model.vocabulary.LdProfiles;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
 import eu.europeana.entity.web.exception.EntityStateException;
 import eu.europeana.entity.web.exception.InternalServerException;
+import eu.europeana.entity.web.exception.ParamValidationException;
 import eu.europeana.entity.web.exception.RequestBodyValidationException;
 import eu.europeana.entity.web.http.EntityHttpHeaders;
 import eu.europeana.entity.web.http.SwaggerConstants;

@@ -30,6 +30,7 @@ import eu.europeana.entity.definitions.formats.FormatTypes;
 import eu.europeana.entity.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.RankedEntity;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
+import eu.europeana.entity.utils.jsonld.EuropeanaEntityLd;
 import eu.europeana.entity.web.exception.InternalServerException;
 import eu.europeana.entity.web.service.EntityService;
 import eu.europeana.entity.web.xml.EntityXmlSerializer;

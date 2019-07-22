@@ -10,6 +10,7 @@ entity.environment=development
 
 #string value representing the key used for JWT signature verification 
 europeana.apikey.jwttoken.siganturekey= 
+europeana.apikey.serviceurl=
 
 #Socks proxy configuration. If provided it will be used for all http connections (e.g. solr.entity.url)
 # Url Format: socks://username:password@socks_proxy_server:1080 

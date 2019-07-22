@@ -23,7 +23,9 @@
     <!--  AuthenticationService -->
    	<beans:bean name="entity_authenticationService" class="eu.europeana.entity.web.service.authentication.mock.BridgeAuthenticationManagerAdapter"/>
 	<beans:bean name="entity_authorizationService" class="eu.europeana.entity.web.service.authorization.AuthorizationServiceImpl"/> 	 
-	<beans:bean name="commons_oauth2_europeanaClientDetailsService" class="eu.europeana.api.commons.oauth2.service.impl.EuropeanaClientDetailsService"/> 	 
+	<beans:bean name="commons_oauth2_europeanaClientDetailsService" class="eu.europeana.api.commons.oauth2.service.impl.EuropeanaClientDetailsService">
+		<beans:property name="apiKeyServiceUrl" value="http://apikey2-test.eanadev.org/apikey"/>
+	</beans:bean> 	 
 		
     <!--  java api bean -->
 	<beans:bean id="entityService" class="eu.europeana.entity.web.service.impl.EntityServiceImpl">

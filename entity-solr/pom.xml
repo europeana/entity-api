@@ -129,6 +129,12 @@
 			<artifactId>spring-context</artifactId>
 			<version>${version.spring}</version>
 		</dependency>
+		
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-xc</artifactId>
+            <version>${version.codehausJackson}</version>
+        </dependency>		
 	</dependencies>
 	
 </project>

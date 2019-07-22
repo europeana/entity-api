@@ -58,12 +58,13 @@ public class SearchController extends BaseRest {
 	    @RequestParam(value = WebEntityConstants.QUERY_PARAM_SCOPE, required = false) String scope,
 	    @RequestParam(value = WebEntityConstants.QUERY_PARAM_TYPE, defaultValue = WebEntityConstants.PARAM_TYPE_ALL) String type,
 	    @RequestParam(value = CommonApiConstants.QUERY_PARAM_ROWS, defaultValue = WebEntityConstants.PARAM_DEFAULT_ROWS) int rows,
-	    @RequestParam(value = WebEntityConstants.ALGORITHM, required = false, defaultValue = WebEntityConstants.SUGGEST_ALGORITHM_DEFAULT) String algorithm)
+	    @RequestParam(value = WebEntityConstants.ALGORITHM, required = false, defaultValue = WebEntityConstants.SUGGEST_ALGORITHM_DEFAULT) String algorithm,
+	    HttpServletRequest request)
 	    throws HttpException {
 
 	try {
 	    // Check client access (a valid “wskey” must be provided)
-	    validateApiKey(wskey);
+	    validateApiKey(request);
 
 	    // validate text parameter
 	    validateTextParam(text);
@@ -134,8 +135,8 @@ public class SearchController extends BaseRest {
 
 	try {
 	    // Check client access (a valid “wskey” must be provided)
-	    String apikey = extractApiKey(request);
-	    validateApiKey(wskey);
+//	    String apikey = extractApiKey();
+	    validateApiKey(request);
 
 	    // ** Process input params
 	    if (StringUtils.isBlank(queryString))

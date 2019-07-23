@@ -60,17 +60,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>eu.europeana.api.commons</groupId>
-			<artifactId>commons-oauth</artifactId>
-			<version>${version.commonsApi}</version>
-		</dependency>
-		<dependency>
-			<groupId>eu.europeana.api.commons</groupId>
-			<artifactId>commons-net</artifactId>
-			<version>${version.commonsApi}</version>
-		</dependency>
-
-		<dependency>
 			<groupId>eu.europeana.corelib</groupId>
 			<artifactId>corelib-schemaorg</artifactId>
 			<version>${version.corelib}</version>

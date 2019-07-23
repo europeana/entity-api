@@ -6,10 +6,12 @@
 entity.environment=development
 
 #string value indicating default user token
-#default.user.token=tester1
+#DEPRECATED - To BE REMOVED
+default.user.token=tester1
 
 #string value representing the key used for JWT signature verification 
 europeana.apikey.jwttoken.siganturekey= 
+#URL of the APIKEY service
 europeana.apikey.serviceurl=
 
 #Socks proxy configuration. If provided it will be used for all http connections (e.g. solr.entity.url)

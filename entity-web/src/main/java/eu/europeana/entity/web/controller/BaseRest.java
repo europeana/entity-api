@@ -10,7 +10,6 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -272,24 +271,24 @@ public abstract class BaseRest extends BaseRestController {
 //	return userToken;
 //    }
 
-    /**
-     * This method performs decoding of base64 string
-     * 
-     * @param base64Str
-     * @return decoded string
-     * @throws ApplicationAuthenticationException
-     */
-    public String decodeBase64(String base64Str) throws ApplicationAuthenticationException {
-	String res = null;
-	try {
-	    byte[] decodedBase64Str = Base64.decodeBase64(base64Str);
-	    res = new String(decodedBase64Str);
-	} catch (Exception e) {
-	    throw new ApplicationAuthenticationException(I18nConstants.BASE64_DECODING_FAIL,
-		    I18nConstants.BASE64_DECODING_FAIL, null);
-	}
-	return res;
-    }
+//    /**
+//     * This method performs decoding of base64 string
+//     * 
+//     * @param base64Str
+//     * @return decoded string
+//     * @throws ApplicationAuthenticationException
+//     */
+//    public String decodeBase64(String base64Str) throws ApplicationAuthenticationException {
+//	String res = null;
+//	try {
+//	    byte[] decodedBase64Str = Base64.decodeBase64(base64Str);
+//	    res = new String(decodedBase64Str);
+//	} catch (Exception e) {
+//	    throw new ApplicationAuthenticationException(I18nConstants.BASE64_DECODING_FAIL,
+//		    I18nConstants.BASE64_DECODING_FAIL, null);
+//	}
+//	return res;
+//    }
 
     /**
      * This method serializes concept scheme and applies profile to the object.
@@ -527,7 +526,8 @@ public abstract class BaseRest extends BaseRestController {
 	}
 	return jsonLd;
     }
-
+    
+    
     /**
      * This method checks that only the admins and the owners of the user sets are
      * allowed to delete the user set. in the case of regular users (not admins),
@@ -563,15 +563,15 @@ public abstract class BaseRest extends BaseRestController {
     }
 
     
-    /**
-     * This method adds a string to the existing String array
-     * @param arr The string array
-     * @param value Value to add
-     * @return extended string array
-     */
-    public String[] addStringToArray(String[] arr, String value) {
-	ArrayList<String> arrList = new ArrayList<String>();
-	arrList.add(value);
-	return arrList.toArray(new String[0]);
-    }
+//    /**
+//     * This method adds a string to the existing String array
+//     * @param arr The string array
+//     * @param value Value to add
+//     * @return extended string array
+//     */
+//    public String[] addStringToArray(String[] arr, String value) {
+//	ArrayList<String> arrList = new ArrayList<String>();
+//	arrList.add(value);
+//	return arrList.toArray(new String[0]);
+//    }
 }

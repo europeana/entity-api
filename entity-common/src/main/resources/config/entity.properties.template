@@ -31,7 +31,7 @@ mongodb.entity.truststorepass=
 # core search (default) 
 solr.entity.url = http://localhost:8282/solr/entity
 
-solr.entity.timeout = 60000
+solr.entity.timeout = 6000
 solr.facetLimit=750
 #solr.username=europeana
 #solr.rowLimit=12

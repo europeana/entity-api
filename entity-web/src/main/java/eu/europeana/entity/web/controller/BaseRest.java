@@ -14,6 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -22,6 +23,8 @@ import eu.europeana.api.commons.definitions.search.result.ResultsPage;
 import eu.europeana.api.commons.definitions.vocabulary.CommonApiConstants;
 import eu.europeana.api.commons.definitions.vocabulary.CommonLdConstants;
 import eu.europeana.api.commons.definitions.vocabulary.ContextTypes;
+import eu.europeana.api.commons.exception.ApiKeyExtractionException;
+import eu.europeana.api.commons.exception.AuthorizationExtractionException;
 import eu.europeana.api.commons.utils.ResultsPageSerializer;
 import eu.europeana.api.commons.web.controller.BaseRestController;
 import eu.europeana.api.commons.web.exception.ApplicationAuthenticationException;
@@ -574,4 +577,35 @@ public abstract class BaseRest extends BaseRestController {
 //	arrList.add(value);
 //	return arrList.toArray(new String[0]);
 //    }
+     
+     /**
+      * This method adopts KeyCloack token from HTTP request
+      * @param request The HTTP request
+      * @return list of Authentication objects
+      * @throws ApplicationAuthenticationException
+      * @throws ApiKeyExtractionException
+      */
+     public List<? extends Authentication> processJwtToken(HttpServletRequest request) 
+ 	    throws ApplicationAuthenticationException, ApiKeyExtractionException, AuthorizationExtractionException {
+	 return getAuthorizationService().processJwtToken(request); 	
+     }
+     
+     /**
+      * This method verifies write access rights for particular api and operation
+      * @param authenticationList The list of authentications extracted from the JWT token
+      * @param operation The name of current operation
+      * @return true if authenticated, false otherwise
+      * @throws ApplicationAuthenticationException
+     * @throws OperationAuthorizationException 
+      */
+     public boolean verifyWriteAccess(List<? extends Authentication> authenticationList, String operation) 
+	     throws ApplicationAuthenticationException, OperationAuthorizationException {
+	 boolean res = getAuthorizationService().authorizeWriteAccess(authenticationList, operation); 	
+	 if(!res) {
+	     throw new OperationAuthorizationException(I18nConstants.OPERATION_NOT_AUTHORIZED, I18nConstants.OPERATION_NOT_AUTHORIZED, null);
+	 }
+         return res;
+     }
+     
+     
 }

@@ -136,4 +136,9 @@ public class AuthorizationServiceImpl extends BaseAuthorizationService implement
     protected String getSignatureKey() {
 	return getConfiguration().getJwtTokenSignatureKey();
     }
+
+    @Override
+    protected String getAuthorizationApiName() {
+	return getConfiguration().getAuthorizationApiName();
+    }
 }

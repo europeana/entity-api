@@ -1,12 +1,14 @@
 package eu.europeana.entity.web.controller;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -83,6 +85,10 @@ public class ConceptSchemeController extends BaseRest {
                         checkUserToken(userToken);
 			LdProfiles ldProfile = getProfile(profile, request);
 
+			// verify access rights
+			List<? extends Authentication> authenticationList = processJwtToken(request);
+		        verifyWriteAccess(authenticationList, "create");	
+			
 			// parse concept scheme
 			ConceptScheme webConceptScheme = getEntityService().parseConceptSchemeLd(conceptScheme);
 			getEntityService().validateWebConceptScheme(webConceptScheme);

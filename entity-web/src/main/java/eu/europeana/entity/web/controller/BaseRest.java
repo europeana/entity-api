@@ -14,7 +14,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -51,6 +50,7 @@ import eu.europeana.entity.web.exception.ParamValidationException;
 import eu.europeana.entity.web.exception.authorization.OperationAuthorizationException;
 import eu.europeana.entity.web.http.EntityHttpHeaders;
 import eu.europeana.entity.web.jsonld.EntityResultsPageSerializer;
+import eu.europeana.entity.web.model.vocabulary.Roles;
 import eu.europeana.entity.web.service.EntityService;
 import eu.europeana.entity.web.service.authorization.AuthorizationService;
 import eu.europeana.entity.web.xml.EntityXmlSerializer;
@@ -500,15 +500,9 @@ public abstract class BaseRest extends BaseRestController {
       * @throws AuthorizationExtractionException 
       * @throws ApiKeyExtractionException 
       */
-     public boolean verifyWriteAccess(String operation, HttpServletRequest request) 
+     public void verifyWriteAccess(String operation, HttpServletRequest request) 
 	     throws ApplicationAuthenticationException, OperationAuthorizationException, ApiKeyExtractionException, AuthorizationExtractionException {
-	 List<? extends Authentication> authenticationList = getAuthorizationService().processJwtToken(request); 
-	 boolean res = getAuthorizationService().authorizeWriteAccess(authenticationList, operation); 	
-	 if(!res) {
-	     throw new OperationAuthorizationException(I18nConstants.OPERATION_NOT_AUTHORIZED, I18nConstants.OPERATION_NOT_AUTHORIZED, null);
-	 }
-         return res;
+	 getAuthorizationService().authorizeWriteAccess(request, operation, Roles.values()); 	
      }
-     
      
 }

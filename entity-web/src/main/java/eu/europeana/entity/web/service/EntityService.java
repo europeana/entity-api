@@ -1,15 +1,13 @@
 package eu.europeana.entity.web.service;
 
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import eu.europeana.api.commons.definitions.search.Query;
 import eu.europeana.api.commons.definitions.search.ResultSet;
 import eu.europeana.api.commons.definitions.search.result.ResultsPage;
 import eu.europeana.api.commons.web.exception.HttpException;
-import eu.europeana.entity.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.ConceptScheme;
-import eu.europeana.entity.definitions.model.search.SearchProfiles;
+import eu.europeana.entity.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.definitions.model.vocabulary.SuggestAlgorithmTypes;
 import eu.europeana.entity.web.exception.ParamValidationException;
@@ -65,20 +63,7 @@ public interface EntityService {
 	 */
 	String resolveByUri(String uri) throws HttpException;
 	
-	/**
-	 * @param queryString
-	 * @param qf
-	 * @param facets
-	 * @param sort
-	 * @param page
-	 * @param pageSize
-	 * @param profile
-	 * @param retFields
-	 * @return
-	 */
-	public Query buildSearchQuery(String queryString, String[] qf, String[] facets, String[] sort, int page,
-			int pageSize, SearchProfiles profile, String[] retFields);
-
+	
 	/**
 	 * This method build the results page object for the search results retrieved with the given search query.
 	 * @param searchQuery
@@ -154,21 +139,6 @@ public interface EntityService {
 	 */
 	public void updateConceptSchemeForEntities(String conceptSchemeId, List<String> addToEntities, List<String> removeFromEntities);
 	    	
-	/**
-	 * This method extracts entity types from URI string
-	 * @param uriString
-	 * @return entity types
-	 * @throws ParamValidationException
-	 * @throws UnsupportedEncodingException
-	 */
-	public List<EntityTypes> extractEntityTypesFromUriString(String uriString)
-		    throws ParamValidationException, UnsupportedEncodingException;
-	
-	/**
-	 * @param uriString
-	 * @return
-	 */
-	public String extractScopeFromUriString(String uriString);
 	
 	/**
 	 * @param entityTypes
@@ -176,29 +146,5 @@ public interface EntityService {
 	 * @throws ParamValidationException
 	 */
 	public void validateEntityTypes(List<EntityTypes> entityTypes, boolean suggest) throws ParamValidationException;
-	
-	/**
-	 * @param commaSepEntityTypes
-	 * @return
-	 * @throws ParamValidationException
-	 */
-	public List<EntityTypes> getEntityTypesFromString(String commaSepEntityTypes) throws ParamValidationException;
-	
-	/**
-	 * @param requestParam
-	 * @return
-	 */
-	public String[] toArray(String requestParam);
-		  	   
-        /**
-         * Search concepts that match the ConceptScheme parse parameters from is defined
-         * by URL
-         * 
-         * @param uriString
-         * @param sort
-         * @return solr query
-         * @throws UnsupportedEncodingException
-         */
-        public Query buildParameterSearchQuery(String uriString, String sort) throws UnsupportedEncodingException;
-	
+		
 }

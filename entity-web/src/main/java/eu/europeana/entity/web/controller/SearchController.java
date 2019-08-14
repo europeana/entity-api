@@ -25,6 +25,7 @@ import eu.europeana.api.commons.definitions.search.result.ResultsPage;
 import eu.europeana.api.commons.definitions.vocabulary.CommonApiConstants;
 import eu.europeana.api.commons.web.exception.HttpException;
 import eu.europeana.api.commons.web.http.HttpHeaders;
+import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException;
 import eu.europeana.entity.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.search.SearchProfiles;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
@@ -32,6 +33,7 @@ import eu.europeana.entity.definitions.model.vocabulary.SuggestAlgorithmTypes;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
 import eu.europeana.entity.solr.exception.EntityRetrievalException;
 import eu.europeana.entity.solr.exception.InvalidSearchQueryException;
+import eu.europeana.entity.solr.service.impl.EntityQueryBuilder;
 import eu.europeana.entity.web.exception.InternalServerException;
 import eu.europeana.entity.web.exception.ParamValidationException;
 import eu.europeana.entity.web.jsonld.SuggestionSetSerializer;
@@ -72,15 +74,17 @@ public class SearchController extends BaseRest {
 	    // validate algorithm parameter
 	    SuggestAlgorithmTypes suggestType = validateAlgorithmParam(algorithm);
 
+	    EntityQueryBuilder queryBuilder = new EntityQueryBuilder();
+	    
 	    // validate and convert type
-	    List<EntityTypes> entityTypes = entityService.getEntityTypesFromString(type);
+	    List<EntityTypes> entityTypes = queryBuilder.getEntityTypesFromString(type);
 	    entityService.validateEntityTypes(entityTypes, true);
 
 	    // validate scope parameter
 	    validateScopeParam(scope);
 
 	    // parse language list
-	    String[] requestedLanguages = toArray(language);
+	    String[] requestedLanguages = queryBuilder.toArray(language);
 
 	    // perform search
 	    ResultSet<? extends EntityPreview> results = entityService.suggest(text, requestedLanguages, entityTypes,
@@ -147,13 +151,15 @@ public class SearchController extends BaseRest {
 	    scope = validateScopeParam(scope);
 
 	    // process type
-	    List<EntityTypes> entityTypes = entityService.getEntityTypesFromString(type);
+	    EntityQueryBuilder queryBuilder = new EntityQueryBuilder();
+	    List<EntityTypes> entityTypes;
+	    entityTypes = queryBuilder.getEntityTypesFromString(type);
 	    entityService.validateEntityTypes(entityTypes, false);
 
 	    // process lang
 	    String[] preferredLanguages = null;
 	    if (outLanguage != null && !outLanguage.contains(WebEntityConstants.PARAM_LANGUAGE_ALL))
-		preferredLanguages = toArray(outLanguage);
+		preferredLanguages = queryBuilder.toArray(outLanguage);
 
 	    // process profile
 	    SearchProfiles searchProfile = null;
@@ -165,16 +171,16 @@ public class SearchController extends BaseRest {
 	    }
 
 	    // process fl
-	    String[] retFields = toArray(fl);
+	    String[] retFields = queryBuilder.toArray(fl);
 
 	    // process facet
-	    String[] facets = toArray(facet);
+	    String[] facets = queryBuilder.toArray(facet);
 
 	    // process sort param
-	    String[] sortCriteria = toArray(sort);
+	    String[] sortCriteria = queryBuilder.toArray(sort);
 
 	    // perform search
-	    Query searchQuery = entityService.buildSearchQuery(queryString, qf, facets, sortCriteria, page, pageSize,
+	    Query searchQuery = queryBuilder.buildSearchQuery(queryString, qf, facets, sortCriteria, page, pageSize,
 		    searchProfile, retFields);
 	    ResultSet<? extends Entity> results = entityService.search(searchQuery, preferredLanguages, entityTypes,
 		    scope);
@@ -193,6 +199,14 @@ public class SearchController extends BaseRest {
 
 	    return response;
 
+	} catch (UnsupportedEntityTypeException e) {
+		 throw new ParamValidationException(I18nConstants.INVALID_PARAM_VALUE, WebEntityConstants.QUERY_PARAM_TYPE,
+			 type);
+	} catch (InvalidSearchQueryException e) {
+	    throw new ParamValidationException(I18nConstants.INVALID_PARAM_VALUE, CommonApiConstants.QUERY_PARAM_QUERY,
+		    e.getMessage());
+	} catch (EntityRetrievalException e) {
+	    throw new InternalServerException(e.getMessage(), e);
 	} catch (HttpException e) {
 	    // avoid wrapping http exception
 	    throw e;
@@ -200,16 +214,12 @@ public class SearchController extends BaseRest {
 	    // not found ..
 	    // System.out.println(e);
 	    throw new InternalServerException(e);
-	} catch (InvalidSearchQueryException e) {
-	    throw new ParamValidationException(I18nConstants.INVALID_PARAM_VALUE, CommonApiConstants.QUERY_PARAM_QUERY,
-		    e.getMessage());
-	} catch (EntityRetrievalException e) {
-	    throw new InternalServerException(e.getMessage(), e);
 	} catch (RuntimeException e) {
 	    // not found ..
 	    // System.out.println(e);
 	    throw new InternalServerException(e);
 	}
+	
     }
 
 }

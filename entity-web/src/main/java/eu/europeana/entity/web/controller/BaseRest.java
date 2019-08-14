@@ -1,10 +1,8 @@
 package eu.europeana.entity.web.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -38,7 +36,6 @@ import eu.europeana.entity.definitions.formats.FormatTypes;
 import eu.europeana.entity.definitions.model.ConceptScheme;
 import eu.europeana.entity.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.search.SearchProfiles;
-import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.definitions.model.vocabulary.LdProfiles;
 import eu.europeana.entity.definitions.model.vocabulary.SuggestAlgorithmTypes;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
@@ -109,35 +106,7 @@ public abstract class BaseRest extends BaseRestController {
 	String profileVal = (profile == null) ? null : profile.name();
 	return serializer.serialize(profileVal);
     }
-
-    /**
-     * Get entity type string list from comma separated entities string.
-     * 
-     * @param commaSepEntityTypes Comma separated entities string
-     * @return Entity types string list
-     * @throws ParamValidationException
-     */
-    protected List<EntityTypes> getEntityTypesFromString(String commaSepEntityTypes) throws ParamValidationException {
-
-	String[] splittedEntityTypes = commaSepEntityTypes.split(",");
-	List<EntityTypes> entityTypes = new ArrayList<EntityTypes>();
-
-	EntityTypes entityType = null;
-	String typeAsString = null;
-
-	try {
-	    for (int i = 0; i < splittedEntityTypes.length; i++) {
-		typeAsString = splittedEntityTypes[i].trim();
-		entityType = EntityTypes.getByInternalType(typeAsString);
-		entityTypes.add(entityType);
-	    }
-	} catch (UnsupportedEntityTypeException e) {
-	    throw new ParamValidationException(I18nConstants.INVALID_PARAM_VALUE, WebEntityConstants.QUERY_PARAM_TYPE,
-		    typeAsString);
-	}
-
-	return entityTypes;
-    }
+   
 
     /**
      * This method verifies if the provided scope parameter is a valid one
@@ -407,19 +376,7 @@ public abstract class BaseRest extends BaseRestController {
 		return serializer.serialize(profileVal);
 	}
 
-
-    /**
-     * This method splits the list of values provided as concatenated string to the
-     * corresponding array representation
-     * 
-     * @param requestParam
-     * @return
-     */
-    protected String[] toArray(String requestParam) {
-	return getEntityService().toArray(requestParam);
-    }
-
-
+    
     /**
      * This method retrieves view profile if provided within the "If-Match" HTTP
      * header

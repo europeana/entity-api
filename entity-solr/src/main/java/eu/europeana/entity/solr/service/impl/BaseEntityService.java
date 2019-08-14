@@ -43,7 +43,7 @@ public abstract class BaseEntityService{
 		List<T> beans = new ArrayList<T>();
 		
 		for (SolrDocument doc : docList) {
-			type = (String) doc.get(ConceptSolrFields.INTERNAL_TYPE);
+			type = (String) doc.get(ConceptSolrFields.TYPE);
 			entityClass = (Class<T>) EntityObjectFactory.getInstance().getClassForType(type);
 			entity = (T) binder.getBean(entityClass, doc);
 			processLanguageMaps(entity, outLanguage);

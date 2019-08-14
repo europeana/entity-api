@@ -119,7 +119,7 @@ public class SolrConceptImpl extends BaseConcept implements Concept{
 	}
 	
 	@Override
-	@Field(ConceptSolrFields.INTERNAL_TYPE)
+	@Field(ConceptSolrFields.TYPE)
 	public void setInternalType(String internalType) {
 		super.setInternalType(internalType);
 	}

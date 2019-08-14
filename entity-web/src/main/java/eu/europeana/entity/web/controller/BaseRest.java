@@ -48,7 +48,6 @@ import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
 import eu.europeana.entity.utils.jsonld.EuropeanaEntityLd;
 import eu.europeana.entity.web.exception.HeaderValidationException;
 import eu.europeana.entity.web.exception.ParamValidationException;
-import eu.europeana.entity.web.exception.authentication.EntityAuthenticationException;
 import eu.europeana.entity.web.exception.authorization.OperationAuthorizationException;
 import eu.europeana.entity.web.http.EntityHttpHeaders;
 import eu.europeana.entity.web.jsonld.EntityResultsPageSerializer;
@@ -218,80 +217,6 @@ public abstract class BaseRest extends BaseRestController {
 		    WebEntityConstants.QUERY_PARAM_ALGORITHM, algorithm);
 	}
     }
-
-    /**
-     * @param paramUserToken
-     * @throws ApplicationAuthenticationException
-     * @throws EntityAuthenticationException
-     */
-    public void checkUserToken(String paramUserToken) throws EntityAuthenticationException {
-	String defaultUserToken = getDefaultUserToken();
-	// TODO: if unauthorized respond with HTTP 403;
-	if (!paramUserToken.equals(defaultUserToken)) {
-	    throw new EntityAuthenticationException(I18nConstants.INVALID_TOKEN, I18nConstants.INVALID_TOKEN,
-		    new String[] { paramUserToken });
-	}
-    }
-
-    /**
-     * This method takes user token from a HTTP header if it exists or from the
-     * passed request parameter.
-     * 
-     * @param paramUserToken The HTTP request parameter
-     * @param request        The HTTP request with headers
-     * @return user token
-     * @throws ApplicationAuthenticationException
-     */
-//    public String getUserToken(String paramUserToken, HttpServletRequest request)
-//	    throws ApplicationAuthenticationException {
-//	int USER_TOKEN_TYPE_POS = 0;
-//	int BASE64_ENCODED_STRING_POS = 1;
-//	String userToken = null;
-//	String userTokenHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-//	if (userTokenHeader != null) {
-//	    getLogger().trace("'Authorization' header value: " + userTokenHeader);
-//	    String[] headerElems = userTokenHeader.split(" ");
-//	    if (headerElems.length < 2)
-//		throw new ApplicationAuthenticationException(I18nConstants.INVALID_HEADER_FORMAT,
-//			I18nConstants.INVALID_HEADER_FORMAT, new String[] { userTokenHeader });
-//
-//	    String userTokenType = headerElems[USER_TOKEN_TYPE_POS];
-//	    if (!EntityHttpHeaders.BEARER.equals(userTokenType)) {
-//		throw new ApplicationAuthenticationException(I18nConstants.UNSUPPORTED_TOKEN_TYPE,
-//			I18nConstants.UNSUPPORTED_TOKEN_TYPE, new String[] { userTokenType });
-//	    }
-//
-//	    String encodedUserToken = headerElems[BASE64_ENCODED_STRING_POS];
-//
-//	    userToken = decodeBase64(encodedUserToken);
-//	    getLogger().debug("Decoded user token: " + userToken);
-//
-//	} else {
-//	    // @deprecated to be removed in the next versions
-//	    // fallback to URL param
-//	    userToken = paramUserToken;
-//	}
-//	return userToken;
-//    }
-
-//    /**
-//     * This method performs decoding of base64 string
-//     * 
-//     * @param base64Str
-//     * @return decoded string
-//     * @throws ApplicationAuthenticationException
-//     */
-//    public String decodeBase64(String base64Str) throws ApplicationAuthenticationException {
-//	String res = null;
-//	try {
-//	    byte[] decodedBase64Str = Base64.decodeBase64(base64Str);
-//	    res = new String(decodedBase64Str);
-//	} catch (Exception e) {
-//	    throw new ApplicationAuthenticationException(I18nConstants.BASE64_DECODING_FAIL,
-//		    I18nConstants.BASE64_DECODING_FAIL, null);
-//	}
-//	return res;
-//    }
 
     /**
      * This method serializes concept scheme and applies profile to the object.
@@ -564,42 +489,20 @@ public abstract class BaseRest extends BaseRestController {
 
 	return hashCode.toString();
     }
-
     
-//    /**
-//     * This method adds a string to the existing String array
-//     * @param arr The string array
-//     * @param value Value to add
-//     * @return extended string array
-//     */
-//    public String[] addStringToArray(String[] arr, String value) {
-//	ArrayList<String> arrList = new ArrayList<String>();
-//	arrList.add(value);
-//	return arrList.toArray(new String[0]);
-//    }
-     
      /**
-      * This method adopts KeyCloack token from HTTP request
+      * This method adopts KeyCloack token from HTTP request and verifies write access rights for particular api and operation
       * @param request The HTTP request
-      * @return list of Authentication objects
-      * @throws ApplicationAuthenticationException
-      * @throws ApiKeyExtractionException
-      */
-     public List<? extends Authentication> processJwtToken(HttpServletRequest request) 
- 	    throws ApplicationAuthenticationException, ApiKeyExtractionException, AuthorizationExtractionException {
-	 return getAuthorizationService().processJwtToken(request); 	
-     }
-     
-     /**
-      * This method verifies write access rights for particular api and operation
-      * @param authenticationList The list of authentications extracted from the JWT token
       * @param operation The name of current operation
       * @return true if authenticated, false otherwise
       * @throws ApplicationAuthenticationException
-     * @throws OperationAuthorizationException 
+      * @throws OperationAuthorizationException 
+      * @throws AuthorizationExtractionException 
+      * @throws ApiKeyExtractionException 
       */
-     public boolean verifyWriteAccess(List<? extends Authentication> authenticationList, String operation) 
-	     throws ApplicationAuthenticationException, OperationAuthorizationException {
+     public boolean verifyWriteAccess(String operation, HttpServletRequest request) 
+	     throws ApplicationAuthenticationException, OperationAuthorizationException, ApiKeyExtractionException, AuthorizationExtractionException {
+	 List<? extends Authentication> authenticationList = getAuthorizationService().processJwtToken(request); 
 	 boolean res = getAuthorizationService().authorizeWriteAccess(authenticationList, operation); 	
 	 if(!res) {
 	     throw new OperationAuthorizationException(I18nConstants.OPERATION_NOT_AUTHORIZED, I18nConstants.OPERATION_NOT_AUTHORIZED, null);

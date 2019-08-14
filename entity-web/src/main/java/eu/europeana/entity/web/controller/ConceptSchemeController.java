@@ -1,14 +1,12 @@
 package eu.europeana.entity.web.controller;
 
 import java.util.Date;
-import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -82,12 +80,10 @@ public class ConceptSchemeController extends BaseRest {
 			validateApiKey(request);
 			
 			//if unauthorized respond with HTTP 403;
-                        checkUserToken(userToken);
 			LdProfiles ldProfile = getProfile(profile, request);
 
 			// verify access rights
-			List<? extends Authentication> authenticationList = processJwtToken(request);
-		        verifyWriteAccess(authenticationList, "create");	
+		        verifyWriteAccess("create", request);	
 			
 			// parse concept scheme
 			ConceptScheme webConceptScheme = getEntityService().parseConceptSchemeLd(conceptScheme);
@@ -220,9 +216,10 @@ public class ConceptSchemeController extends BaseRest {
 			// if invalid respond with HTTP 401 or if unauthorized respond with HTTP 403;
 			// Check client access (a valid "wskey" must be provided)
 			validateApiKey(request);
-			
-                        checkUserToken(userToken);
-
+		
+			// verify access rights
+		        verifyWriteAccess("delete", request);	
+                        
 			// retrieve a concept scheme based on its identifier - process query
 			// if the Set doesn’t exist, respond with HTTP 404
 			// if the Set is disabled respond with HTTP 410
@@ -286,9 +283,11 @@ public class ConceptSchemeController extends BaseRest {
 			// check client access (a valid "wskey" must be provided)
 			validateApiKey(request);
 
-                        checkUserToken(userToken);
 			LdProfiles ldProfile = getProfile(profile, request);
 			// check if the concept scheme exists, if not respond with HTTP 404
+
+			// verify access rights
+		        verifyWriteAccess("update", request);	
 
 			// retrieve an existing concept scheme based on its identifier
 			ConceptScheme existingConceptScheme = getEntityService().getConceptSchemeById(identifier);

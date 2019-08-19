@@ -1,6 +1,6 @@
 package eu.europeana.entity.web.model.vocabulary;
 
-public enum Roles implements eu.europeana.api.commons.definitions.vocabulary.Roles {
+public enum UserRoles implements eu.europeana.api.commons.definitions.vocabulary.Role {
 
 	ANONYMOUS(new String[]{Operations.RETRIEVE}), 
 	USER(new String[]{Operations.RETRIEVE, Operations.CREATE, Operations.DELETE, Operations.UPDATE}), 
@@ -10,7 +10,7 @@ public enum Roles implements eu.europeana.api.commons.definitions.vocabulary.Rol
 	
 	String[] operations;
 	
-	Roles (String[] operations){
+	UserRoles (String[] operations){
 		this.operations = operations;
 	}
 	
@@ -23,9 +23,9 @@ public enum Roles implements eu.europeana.api.commons.definitions.vocabulary.Rol
 	}
 
 //	@Override
-	public static Roles getByName(String name) {
-	    Roles userRole = null;
-	    for(Roles role : Roles.values()) {
+	public static UserRoles getByName(String name) {
+	    UserRoles userRole = null;
+	    for(UserRoles role : UserRoles.values()) {
 		if(role.name().equals(name)) {
 		    userRole = role;
 		    break;

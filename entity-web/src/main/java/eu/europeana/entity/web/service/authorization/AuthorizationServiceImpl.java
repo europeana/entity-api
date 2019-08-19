@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 
 import eu.europeana.api.common.config.I18nConstants;
+import eu.europeana.api.commons.definitions.vocabulary.Role;
 import eu.europeana.api.commons.service.authorization.BaseAuthorizationService;
 import eu.europeana.api.commons.web.exception.ApplicationAuthenticationException;
 import eu.europeana.entity.config.EntityConfiguration;
@@ -16,6 +17,7 @@ import eu.europeana.entity.definitions.model.authentication.Application;
 import eu.europeana.entity.web.exception.authorization.OperationAuthorizationException;
 import eu.europeana.entity.web.exception.authorization.UserAuthorizationException;
 import eu.europeana.entity.web.model.vocabulary.Operations;
+import eu.europeana.entity.web.model.vocabulary.UserRoles;
 import eu.europeana.entity.web.service.authentication.AuthenticationService;
 
 public class AuthorizationServiceImpl extends BaseAuthorizationService implements AuthorizationService {
@@ -138,7 +140,12 @@ public class AuthorizationServiceImpl extends BaseAuthorizationService implement
     }
 
     @Override
-    protected String getAuthorizationApiName() {
+    protected Role getRoleByName(String name) {
+	return UserRoles.getRoleByName(name);
+    }
+
+    @Override
+    protected String getApiName() {
 	return getConfiguration().getAuthorizationApiName();
     }
 }

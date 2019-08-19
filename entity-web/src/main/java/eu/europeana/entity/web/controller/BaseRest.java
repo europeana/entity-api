@@ -50,7 +50,6 @@ import eu.europeana.entity.web.exception.ParamValidationException;
 import eu.europeana.entity.web.exception.authorization.OperationAuthorizationException;
 import eu.europeana.entity.web.http.EntityHttpHeaders;
 import eu.europeana.entity.web.jsonld.EntityResultsPageSerializer;
-import eu.europeana.entity.web.model.vocabulary.Roles;
 import eu.europeana.entity.web.service.EntityService;
 import eu.europeana.entity.web.service.authorization.AuthorizationService;
 import eu.europeana.entity.web.xml.EntityXmlSerializer;
@@ -502,7 +501,7 @@ public abstract class BaseRest extends BaseRestController {
       */
      public void verifyWriteAccess(String operation, HttpServletRequest request) 
 	     throws ApplicationAuthenticationException, OperationAuthorizationException, ApiKeyExtractionException, AuthorizationExtractionException {
-	 getAuthorizationService().authorizeWriteAccess(request, operation, Roles.values()); 	
+	 getAuthorizationService().authorizeWriteAccess(request, operation); 	
      }
      
 }

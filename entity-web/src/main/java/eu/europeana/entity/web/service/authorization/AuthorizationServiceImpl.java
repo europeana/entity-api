@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 
 import eu.europeana.api.common.config.I18nConstants;
+import eu.europeana.api.commons.definitions.vocabulary.Role;
 import eu.europeana.api.commons.service.authorization.BaseAuthorizationService;
 import eu.europeana.api.commons.web.exception.ApplicationAuthenticationException;
 import eu.europeana.entity.config.EntityConfiguration;
@@ -135,5 +136,15 @@ public class AuthorizationServiceImpl extends BaseAuthorizationService implement
     @Override
     protected String getSignatureKey() {
 	return getConfiguration().getJwtTokenSignatureKey();
+    }
+
+    @Override
+    protected Role getRoleByName(String name) {
+	return null;
+    }
+
+    @Override
+    protected String getApiName() {
+	return "entity-api";
     }
 }

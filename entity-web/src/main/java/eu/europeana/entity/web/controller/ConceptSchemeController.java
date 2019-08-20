@@ -1,6 +1,8 @@
 package eu.europeana.entity.web.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -18,12 +20,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import eu.europeana.api.common.config.I18nConstants;
 import eu.europeana.api.common.config.swagger.SwaggerSelect;
+import eu.europeana.api.commons.definitions.search.Query;
+import eu.europeana.api.commons.definitions.search.ResultSet;
 import eu.europeana.api.commons.definitions.vocabulary.CommonApiConstants;
 import eu.europeana.api.commons.web.exception.HttpException;
 import eu.europeana.api.commons.web.http.HttpHeaders;
 import eu.europeana.entity.definitions.exceptions.EntityInstantiationException;
 import eu.europeana.entity.definitions.exceptions.EntityValidationException;
 import eu.europeana.entity.definitions.model.ConceptScheme;
+import eu.europeana.entity.definitions.model.Entity;
+import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.definitions.model.vocabulary.LdProfiles;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
 import eu.europeana.entity.web.exception.EntityStateException;
@@ -32,11 +38,11 @@ import eu.europeana.entity.web.exception.RequestBodyValidationException;
 import eu.europeana.entity.web.http.EntityHttpHeaders;
 import eu.europeana.entity.web.http.SwaggerConstants;
 import eu.europeana.entity.web.model.WebConceptSchemeImpl;
+import eu.europeana.entity.web.model.vocabulary.Operations;
 import eu.europeana.entity.web.service.EntityService;
 import eu.europeana.grouping.mongo.model.internal.PersistentConceptScheme;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import eu.europeana.entity.web.model.vocabulary.Operations;
 
 
 @Controller
@@ -56,7 +62,9 @@ public class ConceptSchemeController extends BaseRest {
 	}	
 
 	/**
-	 * This method requests parsing of a ConceptScheme in JsonLd format to a ConceptScheme object
+     * This method requests parsing of a ConceptScheme in JsonLd format to a
+     * ConceptScheme object
+     * 
 	 * @param wskey The API key
 	 * @param userToken The user identifier
 	 * @param profile The profile definition
@@ -64,16 +72,15 @@ public class ConceptSchemeController extends BaseRest {
 	 * @return response entity that comprises response body, headers and status code
 	 * @throws HttpException
 	 */
-	@RequestMapping(value = "/scheme/", method = RequestMethod.POST, 
-			produces = {HttpHeaders.CONTENT_TYPE_JSONLD_UTF8, HttpHeaders.CONTENT_TYPE_JSON_UTF8})
+    @RequestMapping(value = "/scheme/", method = RequestMethod.POST, produces = { HttpHeaders.CONTENT_TYPE_JSONLD_UTF8,
+	    HttpHeaders.CONTENT_TYPE_JSON_UTF8 })
 	@ApiOperation(notes = SwaggerConstants.SAMPLES_JSONLD, value = "Create concept scheme", nickname = "create", response = java.lang.Void.class)
 	public ResponseEntity<String> createConceptScheme(
 			@RequestParam(value = CommonApiConstants.PARAM_WSKEY, required = false) String wskey,
 			@RequestBody String conceptScheme,
 			@RequestParam(value = WebEntityConstants.USER_TOKEN, required = false, defaultValue = WebEntityConstants.USER_ANONYMOUNS) String userToken,			
 			@RequestParam(value = CommonApiConstants.QUERY_PARAM_PROFILE, required = false) String profile,
-			HttpServletRequest request)
-					throws HttpException {
+	    HttpServletRequest request) throws HttpException {
 					
 		try {
 			// validate user - check user credentials (all registered users can create) 
@@ -91,7 +98,8 @@ public class ConceptSchemeController extends BaseRest {
 			ConceptScheme webConceptScheme = getEntityService().parseConceptSchemeLd(conceptScheme);
 			getEntityService().validateWebConceptScheme(webConceptScheme);
 
-			// store the new ConceptScheme with its respective id, together with all the containing items 
+	    // store the new ConceptScheme with its respective id, together with all the
+	    // containing items
 			// following the order given by the list
 			// generate an identifier (in sequence) for the Set
 			ConceptScheme storedConceptScheme = getEntityService().storeConceptScheme(webConceptScheme);
@@ -99,14 +107,7 @@ public class ConceptSchemeController extends BaseRest {
 			String serializedConceptSchemeJsonLdStr = serializeConceptScheme(ldProfile, storedConceptScheme); 
 						
 			// build response
-			MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>(6);
-			headers.add(HttpHeaders.AUTHORIZATION, HttpHeaders.PREFER);
-			headers.add(HttpHeaders.LINK, EntityHttpHeaders.VALUE_LDP_BASIC_CONTAINER);
-			headers.add(HttpHeaders.LINK, HttpHeaders.VALUE_LDP_RESOURCE);
-			headers.add(HttpHeaders.ETAG, generateETag(storedConceptScheme.getModified(), null));
-			headers.add(HttpHeaders.ALLOW, HttpHeaders.ALLOW_POST);
-			headers.add(EntityHttpHeaders.PREFERENCE_APPLIED, ldProfile.getPreferHeaderValue());
-			headers.add(EntityHttpHeaders.CACHE_CONTROL, EntityHttpHeaders.VALUE_CACHE_CONTROL);
+	    MultiValueMap<String, String> headers = buildResponseHeaders(ldProfile, storedConceptScheme);
 
 			ResponseEntity<String> response = new ResponseEntity<String>(
 					serializedConceptSchemeJsonLdStr, headers, HttpStatus.OK);
@@ -125,6 +126,19 @@ public class ConceptSchemeController extends BaseRest {
 		}
 	}
 
+    private MultiValueMap<String, String> buildResponseHeaders(LdProfiles ldProfile,
+	    ConceptScheme storedConceptScheme) {
+	MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>(6);
+	headers.add(HttpHeaders.AUTHORIZATION, HttpHeaders.PREFER);
+	headers.add(HttpHeaders.LINK, EntityHttpHeaders.VALUE_LDP_BASIC_CONTAINER);
+	headers.add(HttpHeaders.LINK, HttpHeaders.VALUE_LDP_RESOURCE);
+	headers.add(HttpHeaders.ETAG, generateETag(storedConceptScheme.getModified(), null));
+	headers.add(HttpHeaders.ALLOW, HttpHeaders.ALLOW_POST);
+	headers.add(EntityHttpHeaders.PREFERENCE_APPLIED, ldProfile.getPreferHeaderValue());
+	headers.add(EntityHttpHeaders.CACHE_CONTROL, EntityHttpHeaders.VALUE_CACHE_CONTROL);
+	return headers;
+    }
+
 	/**
 	 * This method retrieves an existing concept scheme identified by given identifier, which is
 	 * a number in string format.	 
@@ -134,10 +148,9 @@ public class ConceptSchemeController extends BaseRest {
 	 * @return response entity that comprises response body, headers and status code
 	 * @throws HttpException
 	 */
-	@RequestMapping(value = { "/scheme/{identifier}", "/scheme/{identifier}.jsonld" }, 
-			method = {RequestMethod.GET},
-			produces = { HttpHeaders.CONTENT_TYPE_JSONLD_UTF8, HttpHeaders.CONTENT_TYPE_JSON_UTF8 }
-			)
+    @RequestMapping(value = { "/scheme/{identifier}", "/scheme/{identifier}.jsonld" }, method = {
+	    RequestMethod.GET }, produces = { HttpHeaders.CONTENT_TYPE_JSONLD_UTF8,
+		    HttpHeaders.CONTENT_TYPE_JSON_UTF8 })
 	@ApiOperation(notes = SwaggerConstants.SAMPLES_JSONLD, value = "Retrieve concept scheme", nickname = "retrieve", response = java.lang.Void.class)
 	public ResponseEntity<String> getConceptScheme(
 			@RequestParam(value = CommonApiConstants.PARAM_WSKEY, required = false) String wskey,
@@ -161,22 +174,15 @@ public class ConceptSchemeController extends BaseRest {
 			ConceptScheme storedConceptScheme = getEntityService().getConceptSchemeById(identifier);
 			String eTag = generateETag(storedConceptScheme.getModified(), null);
 			if (((WebConceptSchemeImpl) storedConceptScheme).isDisabled()) {
-				throw new EntityStateException(
-					I18nConstants.MESSAGE_NOT_ACCESSIBLE, I18nConstants.MESSAGE_NOT_ACCESSIBLE
-					, new String[] { "disabled" });
+		throw new EntityStateException(I18nConstants.MESSAGE_NOT_ACCESSIBLE,
+			I18nConstants.MESSAGE_NOT_ACCESSIBLE, new String[] { "disabled" });
 				
 			} else {			
 			    serializedConceptSchemeJsonLdStr = serializeConceptScheme(ldProfile, storedConceptScheme); 
 			}
 			
 			// build response
-			MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>(6);
-			headers.add(HttpHeaders.VARY, HttpHeaders.PREFER);
-			headers.add(HttpHeaders.LINK, EntityHttpHeaders.VALUE_LDP_BASIC_CONTAINER);
-			headers.add(HttpHeaders.LINK, HttpHeaders.VALUE_LDP_RESOURCE);
-			headers.add(HttpHeaders.ETAG, eTag);
-			headers.add(HttpHeaders.ALLOW, HttpHeaders.ALLOW_GPuD);
-			headers.add(EntityHttpHeaders.PREFERENCE_APPLIED, ldProfile.getPreferHeaderValue());
+	    MultiValueMap<String, String> headers = buildGetMethodHeaders(ldProfile, eTag);
 
 			ResponseEntity<String> response = new ResponseEntity<String>(
 					serializedConceptSchemeJsonLdStr, headers, HttpStatus.OK);
@@ -194,6 +200,17 @@ public class ConceptSchemeController extends BaseRest {
 			throw new InternalServerException(e);
 		}
 	}
+
+    private MultiValueMap<String, String> buildGetMethodHeaders(LdProfiles ldProfile, String eTag) {
+	MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>(6);
+	headers.add(HttpHeaders.VARY, HttpHeaders.PREFER);
+	headers.add(HttpHeaders.LINK, EntityHttpHeaders.VALUE_LDP_BASIC_CONTAINER);
+	headers.add(HttpHeaders.LINK, HttpHeaders.VALUE_LDP_RESOURCE);
+	headers.add(HttpHeaders.ETAG, eTag);
+	headers.add(HttpHeaders.ALLOW, HttpHeaders.ALLOW_GPuD);
+	headers.add(EntityHttpHeaders.PREFERENCE_APPLIED, ldProfile.getPreferHeaderValue());
+	return headers;
+    }
 
 	/**
 	 * This method implements removal of a concept scheme
@@ -246,12 +263,7 @@ public class ConceptSchemeController extends BaseRest {
 			}			
 			
 			// build response
-			MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>(6);
-			headers.add(HttpHeaders.AUTHORIZATION, HttpHeaders.PREFER);
-			headers.add(HttpHeaders.LINK, HttpHeaders.VALUE_LDP_CONTAINER);
-			headers.add(HttpHeaders.LINK, HttpHeaders.VALUE_LDP_RESOURCE);
-			headers.add(HttpHeaders.ETAG, eTag);
-			headers.add(HttpHeaders.ALLOW, EntityHttpHeaders.ALLOW_GPPD);
+	    MultiValueMap<String, String> headers = buildDeleteMethodHeaders(eTag);
 
 			ResponseEntity<String> response = new ResponseEntity<String>(
 					identifier, headers, httpStatus);
@@ -269,6 +281,16 @@ public class ConceptSchemeController extends BaseRest {
 		}
 	}
 	
+	private MultiValueMap<String, String> buildDeleteMethodHeaders(String eTag) {
+		MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>(6);
+		headers.add(HttpHeaders.AUTHORIZATION, HttpHeaders.PREFER);
+		headers.add(HttpHeaders.LINK, HttpHeaders.VALUE_LDP_CONTAINER);
+		headers.add(HttpHeaders.LINK, HttpHeaders.VALUE_LDP_RESOURCE);
+		headers.add(HttpHeaders.ETAG, eTag);
+		headers.add(HttpHeaders.ALLOW, EntityHttpHeaders.ALLOW_GPPD);
+		return headers;
+	}
+	    
 	@RequestMapping(value = {"/scheme/{identifier}"}, method = RequestMethod.PUT, 
 			produces = {HttpHeaders.CONTENT_TYPE_JSONLD_UTF8, HttpHeaders.CONTENT_TYPE_JSON_UTF8})
 	@ApiOperation(notes = SwaggerConstants.UPDATE_SAMPLES_JSONLD, value = "Update an existing concept scheme", nickname = "update", response = java.lang.Void.class)
@@ -328,13 +350,7 @@ public class ConceptSchemeController extends BaseRest {
 			}
 			
 			// build response entity with headers
-			MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>(5);
-			headers.add(HttpHeaders.LINK, EntityHttpHeaders.VALUE_LDP_BASIC_CONTAINER);
-			headers.add(HttpHeaders.LINK, EntityHttpHeaders.VALUE_LDP_RESOURCE);
-			headers.add(HttpHeaders.ALLOW, EntityHttpHeaders.ALLOW_GPD);
-			headers.add(HttpHeaders.VARY, EntityHttpHeaders.PREFER);
-			headers.add(EntityHttpHeaders.PREFERENCE_APPLIED, ldProfile.getPreferHeaderValue());
-			headers.add(HttpHeaders.ETAG, eTag);
+	    MultiValueMap<String, String> headers = buildUpdateMethodHeaders(ldProfile, eTag);
 
 			ResponseEntity<String> response = new ResponseEntity<String>(
 					serializedConceptSchemeJsonLdStr, headers, httpStatus);
@@ -342,17 +358,31 @@ public class ConceptSchemeController extends BaseRest {
 			return response;
 			
 		} catch (EntityValidationException e) { 
-			throw new RequestBodyValidationException(I18nConstants.CONCEPT_SCHEME_CANT_PARSE_BODY, new String[]{e.getMessage()}, e);
+	    throw new RequestBodyValidationException(I18nConstants.CONCEPT_SCHEME_CANT_PARSE_BODY,
+		    new String[] { e.getMessage() }, e);
 		} catch (EntityInstantiationException e) {
-			throw new RequestBodyValidationException(I18nConstants.CONCEPT_SCHEME_CANT_PARSE_BODY, new String[]{e.getMessage()}, e);
+	    throw new RequestBodyValidationException(I18nConstants.CONCEPT_SCHEME_CANT_PARSE_BODY,
+		    new String[] { e.getMessage() }, e);
 		} catch (HttpException e) {
-				//TODO: change this when OAUTH is implemented and the user information is available in service
+	    // TODO: change this when OAUTH is implemented and the user information is
+	    // available in service
 				throw e;
 		} catch (Exception e) {
 			throw new InternalServerException(e);
 		}
 	}	
 	
+    private MultiValueMap<String, String> buildUpdateMethodHeaders(LdProfiles ldProfile, String eTag) {
+	MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>(5);
+	headers.add(HttpHeaders.LINK, EntityHttpHeaders.VALUE_LDP_BASIC_CONTAINER);
+	headers.add(HttpHeaders.LINK, EntityHttpHeaders.VALUE_LDP_RESOURCE);
+	headers.add(HttpHeaders.ALLOW, EntityHttpHeaders.ALLOW_GPD);
+	headers.add(HttpHeaders.VARY, EntityHttpHeaders.PREFER);
+	headers.add(EntityHttpHeaders.PREFERENCE_APPLIED, ldProfile.getPreferHeaderValue());
+	headers.add(HttpHeaders.ETAG, eTag);
+	return headers;
+    }
+
 	/**
 	 * This method updates an existing concept scheme identified by given identifier with groupings.	 
 	 * @param wskey The API key
@@ -383,9 +413,8 @@ public class ConceptSchemeController extends BaseRest {
 			String serializedConceptSchemeJsonLdStr = "";
 			ConceptScheme storedConceptScheme = getEntityService().getConceptSchemeById(identifier);
 			if (((WebConceptSchemeImpl) storedConceptScheme).isDisabled()) {
-				throw new EntityStateException(
-					I18nConstants.MESSAGE_NOT_ACCESSIBLE, I18nConstants.MESSAGE_NOT_ACCESSIBLE
-					, new String[] { "disabled" });
+		throw new EntityStateException(I18nConstants.MESSAGE_NOT_ACCESSIBLE,
+			I18nConstants.MESSAGE_NOT_ACCESSIBLE, new String[] { "disabled" });
 				
 			} else {			
 			    serializedConceptSchemeJsonLdStr = serializeConceptScheme(
@@ -393,13 +422,7 @@ public class ConceptSchemeController extends BaseRest {
 			}
 			
 			// build response
-			MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>(6);
-			headers.add(HttpHeaders.AUTHORIZATION, HttpHeaders.PREFER);
-			headers.add(HttpHeaders.LINK, HttpHeaders.VALUE_LDP_CONTAINER);
-			headers.add(HttpHeaders.LINK, HttpHeaders.VALUE_LDP_RESOURCE);
-//			headers.add(HttpHeaders.ETAG, generateETag(0));
-			headers.add(HttpHeaders.ALLOW, HttpHeaders.ALLOW_POST);
-			headers.add(EntityHttpHeaders.PREFERENCE_APPLIED, LdProfiles.STANDARD.getPreferHeaderValue());
+	    MultiValueMap<String, String> headers = buildUpdateEntitiesWithConceptSchemeHeader();
 
 			ResponseEntity<String> response = new ResponseEntity<String>(
 					serializedConceptSchemeJsonLdStr, headers, HttpStatus.OK);
@@ -417,5 +440,15 @@ public class ConceptSchemeController extends BaseRest {
 			throw new InternalServerException(e);
 		}
 	}
+
+    private MultiValueMap<String, String> buildUpdateEntitiesWithConceptSchemeHeader() {
+	MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>(6);
+	headers.add(HttpHeaders.AUTHORIZATION, HttpHeaders.PREFER);
+	headers.add(HttpHeaders.LINK, HttpHeaders.VALUE_LDP_CONTAINER);
+	headers.add(HttpHeaders.LINK, HttpHeaders.VALUE_LDP_RESOURCE);
+	headers.add(HttpHeaders.ALLOW, HttpHeaders.ALLOW_POST);
+	headers.add(EntityHttpHeaders.PREFERENCE_APPLIED, LdProfiles.STANDARD.getPreferHeaderValue());
+	return headers;
+    }
 
 }

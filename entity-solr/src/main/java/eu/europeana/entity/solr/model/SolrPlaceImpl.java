@@ -35,7 +35,7 @@ public class SolrPlaceImpl extends BasePlace implements Place {
 	// }
 
 	@Override
-	@Field(PlaceSolrFields.INTERNAL_TYPE)
+	@Field(PlaceSolrFields.TYPE)
 	public void setInternalType(String internalType) {
 		super.setInternalType(internalType);
 	}

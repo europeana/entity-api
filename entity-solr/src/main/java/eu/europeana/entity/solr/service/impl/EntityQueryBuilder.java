@@ -1,16 +1,27 @@
 package eu.europeana.entity.solr.service.impl;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.common.params.CommonParams;
 import org.apache.solr.common.params.HighlightParams;
 import org.apache.solr.common.params.SimpleParams;
+import org.springframework.util.MultiValueMap;
 
 import eu.europeana.api.commons.definitions.search.Query;
+import eu.europeana.api.commons.definitions.search.impl.QueryImpl;
 import eu.europeana.api.commons.definitions.vocabulary.CommonApiConstants;
 import eu.europeana.api.commons.search.util.QueryBuilder;
+import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException;
+import eu.europeana.entity.definitions.model.search.SearchProfiles;
 import eu.europeana.entity.definitions.model.vocabulary.ConceptSolrFields;
+import eu.europeana.entity.definitions.model.vocabulary.EntitySolrFields;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.definitions.model.vocabulary.OrganizationSolrFields;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
@@ -41,7 +52,8 @@ public class EntityQueryBuilder extends QueryBuilder {
 		return WebEntityConstants.PARAM_SCOPE_EUROPEANA.equalsIgnoreCase(scope);
 	}
 
-	private void addFiltersToSearchQuery(SolrQuery query, List<EntityTypes> entityTypes, String scope, boolean suggest) {
+	private void addFiltersToSearchQuery(SolrQuery query, List<EntityTypes> entityTypes, String scope,
+			boolean suggest) {
 
 		if (hasScopeEuropeana(scope))
 			query.addFilterQuery("suggest_filters:" + SuggestionFields.FILTER_IN_EUROPEANA);
@@ -137,19 +149,213 @@ public class EntityQueryBuilder extends QueryBuilder {
 
 	/**
 	 * Convert a list of EntityTypes into an array of strings
-	 * @param entityTypes array of EntityTypes 
+	 * 
+	 * @param entityTypes array of EntityTypes
 	 * @return array of strings
 	 */
 	static String[] toStringArray(List<EntityTypes> entityTypes) {
-		String[] internalEntityTypes = new String[entityTypes.size()]; 
+		String[] internalEntityTypes = new String[entityTypes.size()];
 		for (int i = 0; i < entityTypes.size(); i++) {
 			internalEntityTypes[i] = entityTypes.get(i).getInternalType();
-	    }
-	    return internalEntityTypes;
+		}
+		return internalEntityTypes;
 	}
-	
+
 	protected void verifySortField(String fieldName) {
 		// TODO: implement when field list is specified
+	}
+
+	/**
+	 * Search concepts that match the ConceptScheme parse parameters from is defined
+	 * by URL
+	 * 
+	 * @param uriString
+	 * @param sort
+	 * @return solr query
+	 * @throws UnsupportedEncodingException
+	 */
+	public Query buildParameterSearchQuery(MultiValueMap<String, String> parameters, String sort)
+			throws UnsupportedEncodingException {
+		Query searchQuery = null;
+
+		String queryString = parameters.getFirst(CommonApiConstants.QUERY_PARAM_QUERY);
+		List<String> qfList = parameters.get(CommonApiConstants.QUERY_PARAM_QF);
+		String pageSize = parameters.getFirst(CommonApiConstants.QUERY_PARAM_PAGE_SIZE);
+		String page = parameters.getFirst(CommonApiConstants.QUERY_PARAM_PAGE);
+//		String type = parameters.getFirst(WebEntityConstants.QUERY_PARAM_TYPE);
+//		String scope = parameters.getFirst(WebEntityConstants.QUERY_PARAM_SCOPE);
+
+		// process fl
+		String[] retFields = toArray(EntitySolrFields.ID);
+
+		if (retFields != null) {
+			retFields = buildCustomSelectionFields(retFields);
+		}
+
+		// process sort param
+		String[] sortCriteria = toArray(sort);
+
+		// process query
+		if (StringUtils.isNotBlank(queryString))
+			queryString = URLDecoder.decode(queryString, StandardCharsets.UTF_8.name());
+
+		// process qf
+		String[] qf = null;
+		if (qfList != null && qfList.size() > 0) {
+			qf = qfList.toArray(new String[qfList.size()]);
+		}
+
+		// process pageSize
+		if (StringUtils.isEmpty(page))
+			page = "" + Query.DEFAULT_PAGE;
+
+		// process pageSize
+		if (StringUtils.isEmpty(pageSize))
+			pageSize = "" + Query.DEFAULT_PAGE_SIZE;
+
+		searchQuery = buildSearchQuery(queryString, qf, null, sortCriteria, Integer.valueOf(page),
+				Integer.valueOf(pageSize), null, retFields);
+
+		return searchQuery;
+	}
+
+	/**
+	 * @param queryString
+	 * @param qf
+	 * @param facets
+	 * @param sort
+	 * @param page
+	 * @param pageSize
+	 * @param profile
+	 * @param retFields
+	 * @return
+	 */
+	public Query buildSearchQuery(String queryString, String[] qf, String[] facets, String[] sort, int page,
+			int pageSize, SearchProfiles profile, String[] retFields) {
+
+		QueryBuilder builder = new QueryBuilder();
+		int maxPageSize = Query.DEFAULT_MAX_PAGE_SIZE;
+		String profileName = null;
+		if (profile != null) {
+			profileName = profile.name();
+		}
+
+		if (retFields != null) {
+			retFields = buildCustomSelectionFields(retFields);
+		}
+
+		Query query = builder.buildSearchQuery(queryString, qf, facets, retFields, sort, page, pageSize, maxPageSize,
+				profileName);
+		return query;
+	}
+
+	/**
+	 * @param queryString
+	 * @param filters
+	 * @param rows
+	 * @return
+	 */
+	public Query buildSearchQuery(String queryString, String[] filters, int pageSize) {
+
+		Query searchQuery = new QueryImpl();
+		searchQuery.setQuery(queryString);
+		searchQuery.setPageSize(Math.min(pageSize, Query.DEFAULT_MAX_PAGE_SIZE));
+		searchQuery.setFilters(filters);
+
+		return searchQuery;
+	}
+
+	/**
+	 * process type from URI params map
+	 * 
+	 * @param parameters
+	 * @return entity types
+	 * @throws ParamValidationException
+	 * @throws UnsupportedEncodingException
+	 * @throws UnsupportedEntityTypeException 
+	 */
+	public List<EntityTypes> extractEntityTypes(MultiValueMap<String, String> parameters)
+			throws UnsupportedEncodingException, UnsupportedEntityTypeException {
+		List<EntityTypes> entityTypes = null;
+		String type = parameters.getFirst(WebEntityConstants.QUERY_PARAM_TYPE);
+
+		if (StringUtils.isBlank(type))
+			type = EntityTypes.All.name();
+		else
+			type = URLDecoder.decode(type, StandardCharsets.UTF_8.name());
+
+		entityTypes = getEntityTypesFromString(type);
+		return entityTypes;
+	}
+
+	/**
+	 * This method splits the list of values provided as concatenated string to the
+	 * corresponding array representation
+	 * 
+	 * @param concatenatedStrings
+	 * @return
+	 */
+	public String[] toArray(String concatenatedStrings) {
+		if (StringUtils.isEmpty(concatenatedStrings))
+			return null;
+		String[] array = StringUtils.splitByWholeSeparator(concatenatedStrings, ",");
+		return StringUtils.stripAll(array);
+	}
+
+	/**
+	 * This method enriches provided custom selection fields by required fields if
+	 * they are not already provided in input array.
+	 * 
+	 * @param inputArray
+	 * @return enriched array
+	 */
+	public String[] buildCustomSelectionFields(String[] inputFields) {
+		List<String> fieldList = new ArrayList<String>();
+		Collections.addAll(fieldList, inputFields);
+		// add mandatory fields
+		if (!fieldList.contains(ConceptSolrFields.ID))
+			fieldList.add(ConceptSolrFields.ID);
+		if (!fieldList.contains(ConceptSolrFields.TYPE))
+			fieldList.add(ConceptSolrFields.TYPE);
+
+		return fieldList.toArray(new String[fieldList.size()]);
+	}
+
+	/**
+	 * Get entity type string list from comma separated entities string.
+	 * 
+	 * @param commaSepEntityTypes Comma separated entities string
+	 * @return Entity types string list
+	 * @throws UnsupportedEntityTypeException
+	 * @throws ParamValidationException
+	 */
+	public List<EntityTypes> getEntityTypesFromString(String commaSepEntityTypes)
+			throws UnsupportedEntityTypeException {
+
+		String[] splittedEntityTypes = commaSepEntityTypes.split(",");
+		List<EntityTypes> entityTypes = new ArrayList<EntityTypes>();
+
+		EntityTypes entityType = null;
+		String typeAsString = null;
+
+		for (int i = 0; i < splittedEntityTypes.length; i++) {
+			typeAsString = splittedEntityTypes[i].trim();
+			entityType = EntityTypes.getByInternalType(typeAsString);
+			entityTypes.add(entityType);
+		}
+
+		return entityTypes;
+	}
+	
+	 /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * eu.europeana.entity.web.service.EntityService#extractScopeFromUriString(java.
+     * lang.String)
+     */
+    public String extractScope(MultiValueMap<String, String> parameters) {
+		return parameters.getFirst(WebEntityConstants.QUERY_PARAM_SCOPE);
 	}
 
 }

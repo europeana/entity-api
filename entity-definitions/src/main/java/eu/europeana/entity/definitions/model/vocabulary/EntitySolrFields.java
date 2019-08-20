@@ -3,9 +3,10 @@ package eu.europeana.entity.definitions.model.vocabulary;
 public interface EntitySolrFields {
 
     public static final String ID = "id";
-    @Deprecated
+    
     /** TODO: to be replaced by type */
-    public static final String INTERNAL_TYPE = "internal_type";
+//    @Deprecated
+//    public static final String INTERNAL_TYPE = "internal_type";
     public static final String TYPE = "type";
     public static final String DEPICTION = "foaf_depiction";
     

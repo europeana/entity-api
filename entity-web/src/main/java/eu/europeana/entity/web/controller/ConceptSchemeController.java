@@ -36,6 +36,8 @@ import eu.europeana.entity.web.service.EntityService;
 import eu.europeana.grouping.mongo.model.internal.PersistentConceptScheme;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import eu.europeana.entity.web.model.vocabulary.Operations;
+
 
 @Controller
 @Api(tags = "Concept Scheme API")
@@ -83,7 +85,7 @@ public class ConceptSchemeController extends BaseRest {
 			LdProfiles ldProfile = getProfile(profile, request);
 
 			// verify access rights
-		        verifyWriteAccess("create", request);	
+		        verifyWriteAccess(Operations.CREATE, request);	
 			
 			// parse concept scheme
 			ConceptScheme webConceptScheme = getEntityService().parseConceptSchemeLd(conceptScheme);
@@ -218,7 +220,7 @@ public class ConceptSchemeController extends BaseRest {
 			validateApiKey(request);
 		
 			// verify access rights
-		        verifyWriteAccess("delete", request);	
+		        verifyWriteAccess(Operations.DELETE, request);	
                         
 			// retrieve a concept scheme based on its identifier - process query
 			// if the Set doesn’t exist, respond with HTTP 404
@@ -287,7 +289,7 @@ public class ConceptSchemeController extends BaseRest {
 			// check if the concept scheme exists, if not respond with HTTP 404
 
 			// verify access rights
-		        verifyWriteAccess("update", request);	
+		        verifyWriteAccess(Operations.UPDATE, request);	
 
 			// retrieve an existing concept scheme based on its identifier
 			ConceptScheme existingConceptScheme = getEntityService().getConceptSchemeById(identifier);

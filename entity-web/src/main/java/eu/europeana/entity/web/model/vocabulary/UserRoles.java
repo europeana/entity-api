@@ -24,18 +24,6 @@ public enum UserRoles implements eu.europeana.api.commons.definitions.vocabulary
 		this.operations = operations;
 	}
 
-//	@Override
-	public static UserRoles getByName(String name) {
-	    UserRoles userRole = null;
-	    for(UserRoles role : UserRoles.values()) {
-		if(role.name().equals(name)) {
-		    userRole = role;
-		    break;
-		}
-	    }
-	    return userRole;
-	}
-	
 	/**
 	 * This method returns the api specific Role for the given role name
 	 * 
@@ -52,8 +40,7 @@ public enum UserRoles implements eu.europeana.api.commons.definitions.vocabulary
 	    }
 	    return userRole;
 	}
-	
-	
+		
 	@Override
 	public String getName() {
 	    return this.name();

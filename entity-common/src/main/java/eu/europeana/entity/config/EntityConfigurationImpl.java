@@ -50,4 +50,9 @@ public class EntityConfigurationImpl implements EntityConfiguration {
 	public String getJwtTokenSignatureKey() {
 	    return getEntityProperties().getProperty(KEY_APIKEY_JWTTOKEN_SIGNATUREKEY);
 	}
+
+	@Override
+	public String getAuthorizationApiName() {
+	    return getEntityProperties().getProperty(AUTHORIZATION_API_NAME);
+	}
 }

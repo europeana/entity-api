@@ -14,6 +14,8 @@ public interface EntityConfiguration {
 	
 	public static final String DEFAULT_USER_TOKEN = "default.user.token";
 
+	public static final String AUTHORIZATION_API_NAME = "authorization.api.name";
+
 	public String getComponentName();
 	
 	
@@ -32,5 +34,7 @@ public interface EntityConfiguration {
 	public String getUserToken();
 
 	public String getJwtTokenSignatureKey();
+	
+	public String getAuthorizationApiName();
 	
 }

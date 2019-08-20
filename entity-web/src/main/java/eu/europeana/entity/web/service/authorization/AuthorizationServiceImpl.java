@@ -17,6 +17,7 @@ import eu.europeana.entity.definitions.model.authentication.Application;
 import eu.europeana.entity.web.exception.authorization.OperationAuthorizationException;
 import eu.europeana.entity.web.exception.authorization.UserAuthorizationException;
 import eu.europeana.entity.web.model.vocabulary.Operations;
+import eu.europeana.entity.web.model.vocabulary.UserRoles;
 import eu.europeana.entity.web.service.authentication.AuthenticationService;
 
 public class AuthorizationServiceImpl extends BaseAuthorizationService implements AuthorizationService {
@@ -140,11 +141,11 @@ public class AuthorizationServiceImpl extends BaseAuthorizationService implement
 
     @Override
     protected Role getRoleByName(String name) {
-	return null;
+	return UserRoles.getRoleByName(name);
     }
 
     @Override
     protected String getApiName() {
-	return "entity-api";
+	return getConfiguration().getAuthorizationApiName();
     }
 }

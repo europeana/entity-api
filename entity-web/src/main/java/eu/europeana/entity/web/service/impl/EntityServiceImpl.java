@@ -1,13 +1,20 @@
 package eu.europeana.entity.web.service.impl;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParseException;
@@ -173,7 +180,7 @@ public class EntityServiceImpl extends BaseEntityServiceImpl implements EntitySe
 	    }
 	}
     }
-    
+
     // TODO: consider usage of a helper class for helper methods
     public <T extends Entity> ResultsPage<T> buildResultsPage(Query searchQuery, ResultSet<T> results,
 	    StringBuffer requestUrl, String reqParams) {
@@ -475,4 +482,120 @@ public class EntityServiceImpl extends BaseEntityServiceImpl implements EntitySe
 
     }
 
+    @Override
+    public List<String> searchEntityIds(Query searchQuery, String scope, List<EntityTypes> entityTypes)
+	    throws HttpException {
+
+	List<String> matchingEntityIds = new ArrayList<String>();
+
+	validateEntityTypes(entityTypes, false);
+
+	ResultSet<? extends Entity> results = search(searchQuery, null, entityTypes, scope);
+	for (Entity searchRes : results.getResults()) {
+	    matchingEntityIds.add(searchRes.getEntityId());
+	}
+	return matchingEntityIds;
+    }
+
+    @Override
+    public ConceptScheme updateEntitiesWithConceptScheme(ConceptScheme storedConceptScheme)
+	    throws HttpException, UnsupportedEncodingException, UnsupportedEntityTypeException{
+	EntityQueryBuilder queryBuilder = new EntityQueryBuilder();
+
+	// parse and process parameters from is defined by URL
+	MultiValueMap<String, String> parameters = UriComponentsBuilder
+		.fromUriString(storedConceptScheme.getIsDefinedBy()).build().getQueryParams();
+
+	String scope = parameters.getFirst(WebEntityConstants.QUERY_PARAM_SCOPE);
+	String sort = parameters.getFirst(CommonApiConstants.QUERY_PARAM_SORT);
+
+	List<EntityTypes> entityTypes = extractEntityTypes(parameters);
+	// we need to process entity types, for building the correct filter
+	validateEntityTypes(entityTypes, false);
+
+	// Search concepts that match the ConceptScheme
+	Query searchQuery = queryBuilder.buildParameterSearchQuery(parameters, sort);
+	List<String> matchingEntityIds = searchEntityIds(searchQuery, scope, entityTypes);
+	getLogger().debug("Matching concepts for scheme : " + storedConceptScheme.getEntityId() + ", #results: "
+		+ matchingEntityIds.size());
+
+	// search entities that are already in the current ConceptScheme
+	// first page with max size
+	String conceptSchemeId = storedConceptScheme.getEntityId();
+	Query existingQuery = queryBuilder.buildEntitiesInSchemeQuery(conceptSchemeId);
+
+	List<String> existingEntityIds = searchEntityIds(existingQuery, null, null);
+	getLogger().debug("existing before update: " + existingEntityIds.size());
+
+	// Compute ADD and REMOVE lists
+	@SuppressWarnings("unchecked")
+	List<String> removeList = ListUtils.subtract(existingEntityIds, matchingEntityIds);
+	@SuppressWarnings("unchecked")
+	List<String> addList = ListUtils.subtract(matchingEntityIds, existingEntityIds);
+
+	// perform atomic updates for entities
+	updateConceptSchemeForEntities(conceptSchemeId, addList, removeList);
+
+	// update concept scheme, add total (update modified)
+	// fire a new search query to check the actual number of entities in scheme
+	existingQuery.setPageSize(0);
+	ResultSet<? extends Entity> storedResults = search(existingQuery, null, entityTypes, scope);
+	// number of (existing) entities in scheme after atomic update
+	long inSchemeCount = storedResults.getResultSize();
+	getLogger().debug("matching after update: " + inSchemeCount);
+
+	storedConceptScheme.setTotal((int) inSchemeCount);
+	return updateConceptScheme((PersistentConceptScheme) storedConceptScheme, null);
+    }
+
+    /**
+     * process type from URI params map
+     * 
+     * @param parameters
+     * @return entity types
+     * @throws ParamValidationException
+     * @throws UnsupportedEncodingException
+     * @throws UnsupportedEntityTypeException
+     */
+    @Override
+    public List<EntityTypes> extractEntityTypes(MultiValueMap<String, String> parameters)
+	    throws UnsupportedEncodingException, UnsupportedEntityTypeException {
+	List<EntityTypes> entityTypes = null;
+	String type = parameters.getFirst(WebEntityConstants.QUERY_PARAM_TYPE);
+
+	if (StringUtils.isBlank(type))
+	    type = EntityTypes.All.name();
+	else
+	    type = URLDecoder.decode(type, StandardCharsets.UTF_8.name());
+
+	entityTypes = getEntityTypesFromString(type);
+	return entityTypes;
+    }
+    
+    /**
+     * Get entity type string list from comma separated entities string.
+     * 
+     * @param commaSepEntityTypes Comma separated entities string
+     * @return Entity types string list
+     * @throws UnsupportedEntityTypeException
+     * @throws ParamValidationException
+     */
+    @Override
+    public List<EntityTypes> getEntityTypesFromString(String commaSepEntityTypes)
+	    throws UnsupportedEntityTypeException {
+
+	String[] splittedEntityTypes = commaSepEntityTypes.split(",");
+	List<EntityTypes> entityTypes = new ArrayList<EntityTypes>();
+
+	EntityTypes entityType = null;
+	String typeAsString = null;
+
+	for (int i = 0; i < splittedEntityTypes.length; i++) {
+	    typeAsString = splittedEntityTypes[i].trim();
+	    entityType = EntityTypes.getByInternalType(typeAsString);
+	    entityTypes.add(entityType);
+	}
+
+	return entityTypes;
+    }
 }

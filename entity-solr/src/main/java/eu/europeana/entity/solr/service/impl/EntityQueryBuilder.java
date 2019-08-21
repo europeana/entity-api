@@ -18,7 +18,6 @@ import eu.europeana.api.commons.definitions.search.Query;
 import eu.europeana.api.commons.definitions.search.impl.QueryImpl;
 import eu.europeana.api.commons.definitions.vocabulary.CommonApiConstants;
 import eu.europeana.api.commons.search.util.QueryBuilder;
-import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException;
 import eu.europeana.entity.definitions.model.search.SearchProfiles;
 import eu.europeana.entity.definitions.model.vocabulary.ConceptSolrFields;
 import eu.europeana.entity.definitions.model.vocabulary.EntitySolrFields;
@@ -266,29 +265,6 @@ public class EntityQueryBuilder extends QueryBuilder {
 	}
 
 	/**
-	 * process type from URI params map
-	 * 
-	 * @param parameters
-	 * @return entity types
-	 * @throws ParamValidationException
-	 * @throws UnsupportedEncodingException
-	 * @throws UnsupportedEntityTypeException 
-	 */
-	public List<EntityTypes> extractEntityTypes(MultiValueMap<String, String> parameters)
-			throws UnsupportedEncodingException, UnsupportedEntityTypeException {
-		List<EntityTypes> entityTypes = null;
-		String type = parameters.getFirst(WebEntityConstants.QUERY_PARAM_TYPE);
-
-		if (StringUtils.isBlank(type))
-			type = EntityTypes.All.name();
-		else
-			type = URLDecoder.decode(type, StandardCharsets.UTF_8.name());
-
-		entityTypes = getEntityTypesFromString(type);
-		return entityTypes;
-	}
-
-	/**
 	 * This method splits the list of values provided as concatenated string to the
 	 * corresponding array representation
 	 * 
@@ -321,41 +297,13 @@ public class EntityQueryBuilder extends QueryBuilder {
 		return fieldList.toArray(new String[fieldList.size()]);
 	}
 
-	/**
-	 * Get entity type string list from comma separated entities string.
-	 * 
-	 * @param commaSepEntityTypes Comma separated entities string
-	 * @return Entity types string list
-	 * @throws UnsupportedEntityTypeException
-	 * @throws ParamValidationException
-	 */
-	public List<EntityTypes> getEntityTypesFromString(String commaSepEntityTypes)
-			throws UnsupportedEntityTypeException {
-
-		String[] splittedEntityTypes = commaSepEntityTypes.split(",");
-		List<EntityTypes> entityTypes = new ArrayList<EntityTypes>();
-
-		EntityTypes entityType = null;
-		String typeAsString = null;
-
-		for (int i = 0; i < splittedEntityTypes.length; i++) {
-			typeAsString = splittedEntityTypes[i].trim();
-			entityType = EntityTypes.getByInternalType(typeAsString);
-			entityTypes.add(entityType);
-		}
-
-		return entityTypes;
+	public Query buildEntitiesInSchemeQuery(String conceptSchemeId) {
+		String inSchemeQuery = EntitySolrFields.IN_SCHEME + ":\"" + conceptSchemeId + "\"";
+		Query existingQuery = buildSearchQuery(inSchemeQuery, null, 0);
+		// TODO: update logic for buildSearchQuery to handle internal and external max
+		// page sizes
+		int INTERNAL_MAX_PAGE_SIZE = 1000;
+		existingQuery.setPageSize(INTERNAL_MAX_PAGE_SIZE);
+		return existingQuery;
 	}
-	
-	 /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * eu.europeana.entity.web.service.EntityService#extractScopeFromUriString(java.
-     * lang.String)
-     */
-    public String extractScope(MultiValueMap<String, String> parameters) {
-		return parameters.getFirst(WebEntityConstants.QUERY_PARAM_SCOPE);
-	}
-
 }

@@ -1,11 +1,15 @@
 package eu.europeana.entity.web.service;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
+
+import org.springframework.util.MultiValueMap;
 
 import eu.europeana.api.commons.definitions.search.Query;
 import eu.europeana.api.commons.definitions.search.ResultSet;
 import eu.europeana.api.commons.definitions.search.result.ResultsPage;
 import eu.europeana.api.commons.web.exception.HttpException;
+import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException;
 import eu.europeana.entity.definitions.model.ConceptScheme;
 import eu.europeana.entity.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
@@ -146,5 +150,22 @@ public interface EntityService {
 	 * @throws ParamValidationException
 	 */
 	public void validateEntityTypes(List<EntityTypes> entityTypes, boolean suggest) throws ParamValidationException;
+
+	/**
+	 * 
+	 * @param searchQuery the query to search for entities
+	 * @param scope optional parameter to filter only entities used in europeana, see also general search method
+	 * @param entityTypes optional parameter to filter results by entity type
+	 * @return
+	 * @throws HttpException
+	 */
+	public List<String> searchEntityIds(Query searchQuery, String scope, List<EntityTypes> entityTypes) throws HttpException;
+
+	ConceptScheme updateEntitiesWithConceptScheme(ConceptScheme storedConceptScheme)
+		throws UnsupportedEncodingException, HttpException, UnsupportedEntityTypeException;
+
+	List<EntityTypes> getEntityTypesFromString(String commaSepEntityTypes) throws UnsupportedEntityTypeException;
+
+	List<EntityTypes> extractEntityTypes(MultiValueMap<String, String> parameters) throws UnsupportedEncodingException, UnsupportedEntityTypeException;
 		
 }

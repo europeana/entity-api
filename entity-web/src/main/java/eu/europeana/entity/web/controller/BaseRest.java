@@ -107,7 +107,6 @@ public abstract class BaseRest extends BaseRestController {
 	String profileVal = (profile == null) ? null : profile.name();
 	return serializer.serialize(profileVal);
     }
-   
 
     /**
      * This method verifies if the provided scope parameter is a valid one
@@ -185,27 +184,7 @@ public abstract class BaseRest extends BaseRestController {
 		    WebEntityConstants.QUERY_PARAM_ALGORITHM, algorithm);
 	}
     }
-
-    /**
-     * This method serializes concept scheme and applies profile to the object.
-     * 
-     * @param profile
-     * @param storedConceptScheme
-     * @return serialized user set as a JsonLd string
-     * @throws IOException
-     * @throws UnsupportedEntityTypeException
-     */
-    protected String serializeConceptScheme(LdProfiles profile, ConceptScheme storedConceptScheme)
-	    throws IOException, UnsupportedEntityTypeException {
-	// apply linked data profile from header
-	ConceptScheme resConceptScheme = applyProfile(storedConceptScheme, profile);
-
-	// serialize ConceptScheme description in JSON-LD and respond with HTTP 201 if
-	// successful
-	EuropeanaEntityLd serializer = new EuropeanaEntityLd(resConceptScheme);
-	String serializedConceptSchemeJsonLdStr = serializer.toString(4);
-	return serializedConceptSchemeJsonLdStr;
-    }
+ 
 
     /**
      * This methods applies Linked Data profile to a concept scheme
@@ -287,23 +266,22 @@ public abstract class BaseRest extends BaseRestController {
     }
 
     /**
-	 * This method returns the json-ld serialization for the given results page,
-	 * according to the specifications of the provided search profile
-	 * 
-	 * @param resPage
-	 * @param profile
-	 * @return
-	 * @throws JsonProcessingException
-	 */
-	protected String serializeResultsPage(ResultsPage<? extends Entity> resPage, SearchProfiles profile)
-			throws JsonProcessingException {
-		ResultsPageSerializer<? extends Entity> serializer = new EntityResultsPageSerializer<>(resPage,
-				ContextTypes.ENTITY.getJsonValue(), CommonLdConstants.RESULT_PAGE);
-		String profileVal = (profile == null) ? null : profile.name();
-		return serializer.serialize(profileVal);
-	}
+     * This method returns the json-ld serialization for the given results page,
+     * according to the specifications of the provided search profile
+     * 
+     * @param resPage
+     * @param profile
+     * @return
+     * @throws JsonProcessingException
+     */
+    protected String serializeResultsPage(ResultsPage<? extends Entity> resPage, SearchProfiles profile)
+	    throws JsonProcessingException {
+	ResultsPageSerializer<? extends Entity> serializer = new EntityResultsPageSerializer<>(resPage,
+		ContextTypes.ENTITY.getJsonValue(), CommonLdConstants.RESULT_PAGE);
+	String profileVal = (profile == null) ? null : profile.name();
+	return serializer.serialize(profileVal);
+    }
 
-    
     /**
      * This method retrieves view profile if provided within the "If-Match" HTTP
      * header
@@ -361,7 +339,6 @@ public abstract class BaseRest extends BaseRestController {
 	return resMap;
     }
 
-
     /**
      * This method selects serialization method according to provided format.
      * 
@@ -410,8 +387,7 @@ public abstract class BaseRest extends BaseRestController {
 	}
 	return jsonLd;
     }
-    
-    
+
     /**
      * This method checks that only the admins and the owners of the user sets are
      * allowed to delete the user set. in the case of regular users (not admins),
@@ -428,7 +404,6 @@ public abstract class BaseRest extends BaseRestController {
 	    throws OperationAuthorizationException {
     }
 
-    
     /**
      * This method generates etag for response header.
      * 
@@ -436,7 +411,7 @@ public abstract class BaseRest extends BaseRestController {
      *        entity
      * @return etag value
      */
-     public String generateETag(Date modifiedDate, String format) {
+    public String generateETag(Date modifiedDate, String format) {
 	Integer hashCode;
 	hashCode = modifiedDate.hashCode();
 	// add the hascode of the serilization format if
@@ -445,20 +420,23 @@ public abstract class BaseRest extends BaseRestController {
 
 	return hashCode.toString();
     }
-    
-     /**
-      * This method adopts KeyCloack token from HTTP request and verifies write access rights for particular api and operation
-      * @param request The HTTP request
-      * @param operation The name of current operation
-      * @return true if authenticated, false otherwise
-      * @throws ApplicationAuthenticationException
-      * @throws OperationAuthorizationException 
-      * @throws AuthorizationExtractionException 
-      * @throws ApiKeyExtractionException 
-      */
-     public void verifyWriteAccess(String operation, HttpServletRequest request) 
-	     throws ApplicationAuthenticationException, OperationAuthorizationException, ApiKeyExtractionException, AuthorizationExtractionException {
-	 getAuthorizationService().authorizeWriteAccess(request, operation); 	
-     }
-     
+
+    /**
+     * This method adopts KeyCloack token from HTTP request and verifies write
+     * access rights for particular api and operation
+     * 
+     * @param request   The HTTP request
+     * @param operation The name of current operation
+     * @return true if authenticated, false otherwise
+     * @throws ApplicationAuthenticationException
+     * @throws OperationAuthorizationException
+     * @throws AuthorizationExtractionException
+     * @throws ApiKeyExtractionException
+     */
+    public void verifyWriteAccess(String operation, HttpServletRequest request)
+	    throws ApplicationAuthenticationException, OperationAuthorizationException, ApiKeyExtractionException,
+	    AuthorizationExtractionException {
+	getAuthorizationService().authorizeWriteAccess(request, operation);
+    }
+   
 }

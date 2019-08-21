@@ -421,22 +421,5 @@ public abstract class BaseRest extends BaseRestController {
 	return hashCode.toString();
     }
 
-    /**
-     * This method adopts KeyCloack token from HTTP request and verifies write
-     * access rights for particular api and operation
-     * 
-     * @param request   The HTTP request
-     * @param operation The name of current operation
-     * @return true if authenticated, false otherwise
-     * @throws ApplicationAuthenticationException
-     * @throws OperationAuthorizationException
-     * @throws AuthorizationExtractionException
-     * @throws ApiKeyExtractionException
-     */
-    public void verifyWriteAccess(String operation, HttpServletRequest request)
-	    throws ApplicationAuthenticationException, OperationAuthorizationException, ApiKeyExtractionException,
-	    AuthorizationExtractionException {
-	getAuthorizationService().authorizeWriteAccess(request, operation);
-    }
-   
+
 }

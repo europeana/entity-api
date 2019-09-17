@@ -148,4 +148,5 @@ public class AuthorizationServiceImpl extends BaseAuthorizationService implement
     protected String getApiName() {
 	return getConfiguration().getAuthorizationApiName();
     }
+    
 }

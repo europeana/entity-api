@@ -93,7 +93,7 @@ public class ConceptSchemeController extends BaseRest {
 	    // generate an identifier (in sequence) for the Set
 	    ConceptScheme storedConceptScheme = getEntityService().storeConceptScheme(webConceptScheme);
 
-	    applyProfile(storedConceptScheme, null);
+	    applyProfile(storedConceptScheme, ldProfile);
 	    String serializedConceptSchemeJsonLdStr = serialize(storedConceptScheme, FormatTypes.jsonld);
 	    
 	    // build response
@@ -401,7 +401,7 @@ public class ConceptSchemeController extends BaseRest {
 	    ConceptScheme updatedConceptScheme = getEntityService().updateEntitiesWithConceptScheme(storedConceptScheme);
 
 	    // serialize concept scheme
-	    updatedConceptScheme = applyProfile(updatedConceptScheme, null);
+	    updatedConceptScheme = applyProfile(updatedConceptScheme, LdProfiles.STANDARD);
 	    String serializedConceptSchemeJsonLdStr = serialize(updatedConceptScheme, FormatTypes.jsonld);
 	    
 	    // build response

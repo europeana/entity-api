@@ -20,28 +20,6 @@
 	<dependencies>
 		
 		<dependency>
-			<groupId>eu.europeana.corelib</groupId>
-			<artifactId>corelib-definitions</artifactId>
-			<version>${version.corelib}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>eu.europeana.corelib</groupId>
-					<artifactId>corelib-utils</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.mongodb.morphia</groupId>
-					<artifactId>morphia</artifactId>
-				</exclusion>
-				<!--  
-				<exclusion>
-					<groupId>org.mongodb</groupId>
-					<artifactId>mongo-java-driver</artifactId>
-				</exclusion>
-				-->
-			</exclusions>
-		</dependency>
-		
-		<dependency>
 			<groupId>eu.europeana.api.commons</groupId>
 			<artifactId>commons-definitions</artifactId>
 			<version>${version.commonsApi}</version>

@@ -31,6 +31,7 @@ public class EuropeanaEntityLd extends JsonLd {
 	public EuropeanaEntityLd(Entity entity) throws UnsupportedEntityTypeException {
 		super();
 		setPropOrderComparator(new EntityJsonComparator());
+		registerContainerProperty(WebEntityConstants.BIOGRAPHICAL_INFORMATION);
 		setEntity(entity);
 	}
 

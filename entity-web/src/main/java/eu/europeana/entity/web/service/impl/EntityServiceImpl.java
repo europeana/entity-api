@@ -2,8 +2,6 @@ package eu.europeana.entity.web.service.impl;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -159,26 +157,34 @@ public class EntityServiceImpl extends BaseEntityServiceImpl implements EntitySe
      * @param suggest
      * @throws ParamValidationException
      */
-    public void validateEntityTypes(List<EntityTypes> entityTypes, boolean suggest) throws ParamValidationException {
+    public List<EntityTypes> validateEntityTypes(List<EntityTypes> entityTypes, boolean suggest) throws ParamValidationException {
 	// search
 	if (!suggest) {
-	    if (entityTypes.contains(EntityTypes.All))
-		entityTypes.clear();// no filtering needed
+	    if (isEmptyOrAll(entityTypes)) {
+		//no filtering needed
+		return null;
+	    }
 	} else {// suggest
 
-	    // ConceptScheme Not Supported in suggester
-	    if (entityTypes.contains(EntityTypes.ConceptScheme))
-		throw new ParamValidationException(I18nConstants.INVALID_PARAM_VALUE,
-			WebEntityConstants.QUERY_PARAM_TYPE, EntityTypes.ConceptScheme.getInternalType());
-
-	    if (entityTypes.contains(EntityTypes.All)) {
+	    if (isEmptyOrAll(entityTypes)) {
 		entityTypes.clear();
 		entityTypes.add(EntityTypes.Concept);
 		entityTypes.add(EntityTypes.Agent);
 		entityTypes.add(EntityTypes.Place);
 		entityTypes.add(EntityTypes.Organization);
 	    }
+	    
+	    // ConceptScheme Not Supported in suggester
+	    if (entityTypes.contains(EntityTypes.ConceptScheme))
+		throw new ParamValidationException(I18nConstants.INVALID_PARAM_VALUE,
+			WebEntityConstants.QUERY_PARAM_TYPE, EntityTypes.ConceptScheme.getInternalType());
 	}
+	
+	return entityTypes;
+    }
+
+    private boolean isEmptyOrAll(List<EntityTypes> entityTypes) {
+	return entityTypes == null || entityTypes.isEmpty() || entityTypes.contains(EntityTypes.All);
     }
 
     // TODO: consider usage of a helper class for helper methods
@@ -487,9 +493,6 @@ public class EntityServiceImpl extends BaseEntityServiceImpl implements EntitySe
 	    throws HttpException {
 
 	List<String> matchingEntityIds = new ArrayList<String>();
-
-	validateEntityTypes(entityTypes, false);
-
 	ResultSet<? extends Entity> results = search(searchQuery, null, entityTypes, scope);
 	for (Entity searchRes : results.getResults()) {
 	    matchingEntityIds.add(searchRes.getEntityId());
@@ -509,9 +512,10 @@ public class EntityServiceImpl extends BaseEntityServiceImpl implements EntitySe
 	String scope = parameters.getFirst(WebEntityConstants.QUERY_PARAM_SCOPE);
 	String sort = parameters.getFirst(CommonApiConstants.QUERY_PARAM_SORT);
 
-	List<EntityTypes> entityTypes = extractEntityTypes(parameters);
+	String type = parameters.getFirst(WebEntityConstants.QUERY_PARAM_TYPE);
+	List<EntityTypes> entityTypes = getEntityTypesFromString(type);
 	// we need to process entity types, for building the correct filter
-	validateEntityTypes(entityTypes, false);
+	entityTypes = validateEntityTypes(entityTypes, false);
 
 	// Search concepts that match the ConceptScheme
 	Query searchQuery = queryBuilder.buildParameterSearchQuery(parameters, sort);
@@ -557,20 +561,20 @@ public class EntityServiceImpl extends BaseEntityServiceImpl implements EntitySe
      * @throws UnsupportedEncodingException
      * @throws UnsupportedEntityTypeException
      */
-    @Override
-    public List<EntityTypes> extractEntityTypes(MultiValueMap<String, String> parameters)
-	    throws UnsupportedEncodingException, UnsupportedEntityTypeException {
-	List<EntityTypes> entityTypes = null;
-	String type = parameters.getFirst(WebEntityConstants.QUERY_PARAM_TYPE);
-
-	if (StringUtils.isBlank(type))
-	    type = EntityTypes.All.name();
-	else
-	    type = URLDecoder.decode(type, StandardCharsets.UTF_8.name());
-
-	entityTypes = getEntityTypesFromString(type);
-	return entityTypes;
-    }
+//    @Override
+//    public List<EntityTypes> extractEntityTypes(MultiValueMap<String, String> parameters)
+//	    throws UnsupportedEncodingException, UnsupportedEntityTypeException {
+//	List<EntityTypes> entityTypes = null;
+//	String type = parameters.getFirst(WebEntityConstants.QUERY_PARAM_TYPE);
+//
+//	if (StringUtils.isBlank(type))
+//	    type = EntityTypes.All.name();
+//	else
+//	    type = URLDecoder.decode(type, StandardCharsets.UTF_8.name());
+//
+//	entityTypes = getEntityTypesFromString(type);
+//	return entityTypes;
+//    }
     
     /**
      * Get entity type string list from comma separated entities string.
@@ -584,6 +588,10 @@ public class EntityServiceImpl extends BaseEntityServiceImpl implements EntitySe
     public List<EntityTypes> getEntityTypesFromString(String commaSepEntityTypes)
 	    throws UnsupportedEntityTypeException {
 
+	if(StringUtils.isBlank(commaSepEntityTypes)) {
+	    return null;
+	}
+	    
 	String[] splittedEntityTypes = commaSepEntityTypes.split(",");
 	List<EntityTypes> entityTypes = new ArrayList<EntityTypes>();
 

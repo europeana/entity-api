@@ -93,11 +93,14 @@ public class ConceptSchemeController extends BaseRest {
 	    // generate an identifier (in sequence) for the Set
 	    ConceptScheme storedConceptScheme = getEntityService().storeConceptScheme(webConceptScheme);
 
-	    applyProfile(storedConceptScheme, ldProfile);
-	    String serializedConceptSchemeJsonLdStr = serialize(storedConceptScheme, FormatTypes.jsonld);
+	    //update entities with concept scheme
+	    ConceptScheme updatedEntitiesWithConceptScheme = getEntityService().updateEntitiesWithConceptScheme(storedConceptScheme);		
+	    
+	    applyProfile(updatedEntitiesWithConceptScheme, ldProfile);
+	    String serializedConceptSchemeJsonLdStr = serialize(updatedEntitiesWithConceptScheme, FormatTypes.jsonld);
 	    
 	    // build response
-	    MultiValueMap<String, String> headers = buildResponseHeaders(ldProfile, storedConceptScheme);
+	    MultiValueMap<String, String> headers = buildResponseHeaders(ldProfile, updatedEntitiesWithConceptScheme);
 
 	    ResponseEntity<String> response = new ResponseEntity<String>(serializedConceptSchemeJsonLdStr, headers,
 		    HttpStatus.OK);
@@ -242,7 +245,9 @@ public class ConceptSchemeController extends BaseRest {
 	    } else {
 		httpStatus = HttpStatus.NO_CONTENT;
 		ConceptScheme updated = getEntityService().disableConceptScheme(existingConceptScheme);
-		eTag = generateETag(updated.getModified(), null);
+		//update entities with concept scheme
+		ConceptScheme updatedEntitiesWithConceptScheme = getEntityService().updateEntitiesWithConceptScheme(updated);		
+		eTag = generateETag(updatedEntitiesWithConceptScheme.getModified(), null);
 	    }
 
 	    // build response
@@ -327,8 +332,11 @@ public class ConceptSchemeController extends BaseRest {
 		httpStatus = HttpStatus.OK;
 		eTag = generateETag(updatedConceptScheme.getModified(), null);
 		
-		applyProfile(updatedConceptScheme, ldProfile);
-		serializedConceptSchemeJsonLdStr = serialize(updatedConceptScheme, FormatTypes.jsonld);	    
+		//update entities with concept scheme
+		ConceptScheme updatedEntitiesWithConceptScheme = getEntityService().updateEntitiesWithConceptScheme(updatedConceptScheme);
+		
+		applyProfile(updatedEntitiesWithConceptScheme, ldProfile);
+		serializedConceptSchemeJsonLdStr = serialize(updatedEntitiesWithConceptScheme, FormatTypes.jsonld);	    
 	    }
 
 	    // build response entity with headers

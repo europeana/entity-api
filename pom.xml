@@ -43,7 +43,7 @@
 		<version.junit>4.12</version.junit>
 		<version.corelib>2.9.0</version.corelib>
 		<version.entityApi>0.7-SNAPSHOT</version.entityApi>
-		<version.annotationLd>1.1.4-RELEASE</version.annotationLd>
+		<version.annotationLd>1.1.5-SNAPSHOT</version.annotationLd>
 		<version.commonsLang3>3.0</version.commonsLang3>
 		<version.spring>5.0.7.RELEASE</version.spring>
 		<version.springBoot>2.1.5.RELEASE</version.springBoot>

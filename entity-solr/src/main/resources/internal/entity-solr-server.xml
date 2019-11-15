@@ -1,23 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<beans 
-	xmlns="http://www.springframework.org/schema/beans"
+<beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="
 		http://www.springframework.org/schema/beans
 		http://www.springframework.org/schema/beans/spring-beans.xsd
 	">
 
-	<!-- LAZY INIT: the next beans has lazy init, to prevent them from being started when not used... -->
-	<bean id="entity_solr_server" class="org.apache.solr.client.solrj.impl.HttpSolrClient" lazy-init="true">
-		<constructor-arg value="#{entityProperties['solr.entity.url']}"/>
-		<property name="followRedirects" value="false"/>
-		<property name="connectionTimeout" value="#{entityProperties['solr.entity.timeout']}"/>
-		<!-- 
-		<property name="defaultMaxConnectionsPerHost" value="64"/>
-		
-		<property name="maxTotalConnections" value="125"/>
-		 -->
+
+	<bean id="entity_solr_client_clientbuilderBean"
+		class="org.apache.solr.client.solrj.impl.LBHttpSolrClient.Builder" />
+
+	<bean id="entity_solr_client_clientBuilder"
+		class="org.apache.solr.client.solrj.impl.LBHttpSolrClient.Builder"
+		factory-bean="entity_solr_client_clientbuilderBean"
+		factory-method="withBaseSolrUrls">
+		<constructor-arg
+			value="#{entityProperties['solr.entity.url'].split(',')}" />
 	</bean>
-	
+
+	<bean id="entity_solr_server"
+		class="org.apache.solr.client.solrj.SolrClient"
+		factory-bean="entity_solr_client_clientBuilder" factory-method="build">
+		<property name="connectionTimeout"
+			value="#{entityProperties['solr.entity.timeout']}" />
+	</bean>
+
 </beans>

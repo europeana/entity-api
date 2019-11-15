@@ -49,7 +49,7 @@
 		<version.springBoot>2.1.5.RELEASE</version.springBoot>
 		<version.jackson>2.9.8</version.jackson>
 		<version.codehausJackson>1.9.9</version.codehausJackson>
-		<version.apacheSolr>7.7.1</version.apacheSolr>
+		<version.apacheSolr>7.7.2</version.apacheSolr>
 		<version.commonsApi>0.2.7-SNAPSHOT</version.commonsApi>
 		<version.servletJstl>1.2</version.servletJstl>
 		<version.mapstruct>1.2.0.Final</version.mapstruct>

@@ -555,6 +555,33 @@ public class EntityServiceImpl extends BaseEntityServiceImpl implements EntitySe
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * process type from URI params map
+     * 
+     * @param parameters
+     * @return entity types
+     * @throws ParamValidationException
+     * @throws UnsupportedEncodingException
+     * @throws UnsupportedEntityTypeException
+     */
+//    @Override
+//    public List<EntityTypes> extractEntityTypes(MultiValueMap<String, String> parameters)
+//	    throws UnsupportedEncodingException, UnsupportedEntityTypeException {
+//	List<EntityTypes> entityTypes = null;
+//	String type = parameters.getFirst(WebEntityConstants.QUERY_PARAM_TYPE);
+//
+//	if (StringUtils.isBlank(type))
+//	    type = EntityTypes.All.name();
+//	else
+//	    type = URLDecoder.decode(type, StandardCharsets.UTF_8.name());
+//
+//	entityTypes = getEntityTypesFromString(type);
+//	return entityTypes;
+//    }
+    
+    /**
+>>>>>>> branch '#146_update_entity_grouping_with_reset' of https://github.com/europeana/entity-api.git
      * Get entity type string list from comma separated entities string.
      * 
      * @param commaSepEntityTypes Comma separated entities string

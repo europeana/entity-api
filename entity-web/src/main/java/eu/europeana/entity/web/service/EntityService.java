@@ -132,15 +132,6 @@ public interface EntityService {
 	 */
 	public ConceptScheme disableConceptScheme(ConceptScheme existingConceptScheme);					 
 		
-	/**
-	 * This method adds the id of the concept scheme to all entities matching the concept scheme ID.
-	 * @param concepSchemeId
-	 * @param conceptSchemeId
-	 * @param addToEntities
-	 * @param removeFromEntities
-	 */
-	public void updateConceptSchemeForEntities(String conceptSchemeId, List<String> addToEntities, List<String> removeFromEntities);
-	    	
 	
 	/**
 	 * @param entityTypes

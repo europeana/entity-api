@@ -3,8 +3,6 @@ package eu.europeana.entity.web.service;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
-import org.springframework.util.MultiValueMap;
-
 import eu.europeana.api.commons.definitions.search.Query;
 import eu.europeana.api.commons.definitions.search.ResultSet;
 import eu.europeana.api.commons.definitions.search.result.ResultsPage;
@@ -138,9 +136,10 @@ public interface EntityService {
 	/**
 	 * @param entityTypes
 	 * @param suggest
+	 * @return 
 	 * @throws ParamValidationException
 	 */
-	public void validateEntityTypes(List<EntityTypes> entityTypes, boolean suggest) throws ParamValidationException;
+	public List<EntityTypes> validateEntityTypes(List<EntityTypes> entityTypes, boolean suggest) throws ParamValidationException;
 
 	/**
 	 * 
@@ -156,7 +155,5 @@ public interface EntityService {
 		throws UnsupportedEncodingException, HttpException, UnsupportedEntityTypeException;
 
 	List<EntityTypes> getEntityTypesFromString(String commaSepEntityTypes) throws UnsupportedEntityTypeException;
-
-	List<EntityTypes> extractEntityTypes(MultiValueMap<String, String> parameters) throws UnsupportedEncodingException, UnsupportedEntityTypeException;
 		
 }

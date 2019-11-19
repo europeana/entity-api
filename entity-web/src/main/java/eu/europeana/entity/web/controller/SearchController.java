@@ -78,7 +78,7 @@ public class SearchController extends BaseRest {
 	    
 	    // validate and convert type
 	    List<EntityTypes> entityTypes = entityService.getEntityTypesFromString(type);
-	    entityService.validateEntityTypes(entityTypes, true);
+	    entityTypes = entityService.validateEntityTypes(entityTypes, true);
 
 	    // validate scope parameter
 	    validateScopeParam(scope);
@@ -154,7 +154,7 @@ public class SearchController extends BaseRest {
 	    EntityQueryBuilder queryBuilder = new EntityQueryBuilder();
 	    List<EntityTypes> entityTypes;
 	    entityTypes = entityService.getEntityTypesFromString(type);
-	    entityService.validateEntityTypes(entityTypes, false);
+	    entityTypes = entityService.validateEntityTypes(entityTypes, false);
 
 	    // process lang
 	    String[] preferredLanguages = null;

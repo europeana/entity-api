@@ -245,7 +245,7 @@ public class ConceptSchemeController extends BaseRest {
 	    } else {
 		httpStatus = HttpStatus.NO_CONTENT;
 		ConceptScheme updated = getEntityService().disableConceptScheme(existingConceptScheme);
-		//remove entities with concept scheme
+		//remove concept scheme from entities
 		ConceptScheme updatedEntitiesWithConceptScheme = getEntityService().updateEntitiesWithConceptScheme(updated);		
 		eTag = generateETag(updatedEntitiesWithConceptScheme.getModified(), null);
 	    }

@@ -469,7 +469,7 @@ public class EntityServiceImpl extends BaseEntityServiceImpl implements EntitySe
      * eu.europeana.entity.web.service.EntityService#performAtomicUpdate(java.lang.
      * String, java.util.List, java.util.List)
      */
-    public void updateConceptSchemeForEntities(String conceptSchemeId, List<String> addToEntities,
+    void updateConceptSchemeForEntities(String conceptSchemeId, List<String> addToEntities,
 	    List<String> removeFromEntities) {
 
 	try {

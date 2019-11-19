@@ -245,7 +245,11 @@ public class ConceptSchemeController extends BaseRest {
 	    } else {
 		httpStatus = HttpStatus.NO_CONTENT;
 		ConceptScheme updated = getEntityService().disableConceptScheme(existingConceptScheme);
+<<<<<<< HEAD
 		//remove concept scheme from entities
+=======
+		//remove entities with concept scheme
+>>>>>>> branch '#146_update_entity_grouping_with_reset' of https://github.com/europeana/entity-api.git
 		ConceptScheme updatedEntitiesWithConceptScheme = getEntityService().updateEntitiesWithConceptScheme(updated);		
 		eTag = generateETag(updatedEntitiesWithConceptScheme.getModified(), null);
 	    }

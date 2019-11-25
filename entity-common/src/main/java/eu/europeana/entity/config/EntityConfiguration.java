@@ -1,5 +1,7 @@
 package eu.europeana.entity.config;
 
+import java.util.List;
+
 public interface EntityConfiguration {
 
 	public static final String ENTITY_ENVIRONMENT = "entity.environment";
@@ -16,6 +18,8 @@ public interface EntityConfiguration {
 
 	public static final String AUTHORIZATION_API_NAME = "authorization.api.name";
 
+	public static final String SOLR_ENTITY_URL = "solr.entity.url";
+	
 	public String getComponentName();
 	
 	
@@ -36,5 +40,8 @@ public interface EntityConfiguration {
 	public String getJwtTokenSignatureKey();
 	
 	public String getAuthorizationApiName();
+
+
+	List<String> getSolrServeUrls();
 	
 }

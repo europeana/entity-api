@@ -541,8 +541,8 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 	try {
 	    //use dedicated solr client for update operations
 	    //when needed, create own bean
-	    String baseUrl = ((HttpSolrClient)solrServer).getBaseURL();
-	    SolrClient solr = new HttpSolrClient.Builder(baseUrl).build();
+		String baseUrl = entityConfiguration.getSolrServeUrls().get(0);
+		SolrClient solr = new HttpSolrClient.Builder(baseUrl).build();
 
 	    //process add operation
 	    if (addRequest.getDocuments() != null && addRequest.getDocuments().size() > 0) {

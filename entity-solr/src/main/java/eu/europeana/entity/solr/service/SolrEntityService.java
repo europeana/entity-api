@@ -129,4 +129,11 @@ public interface SolrEntityService {
 	 */
 	public void update(ConceptScheme conceptScheme) throws EntityServiceException;
 
+	/**
+	 * This method adds the id of the concept scheme to all entities matching the concept scheme ID.
+	 * @param conceptSchemeId
+	 * @param addList
+	 * @param removeList
+	 */
+	public void performAtomicUpdate(String conceptSchemeId, List<String> addList, List<String> removeList) throws EntityServiceException;
 }

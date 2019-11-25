@@ -70,7 +70,7 @@ public class SolrOrganizationImpl extends BaseOrganization implements Organizati
 	}
 	
 	@Override
-	@Field(OrganizationSolrFields.INTERNAL_TYPE)
+	@Field(OrganizationSolrFields.TYPE)
 	public void setInternalType(String internalType) {
 		super.setInternalType(internalType);
 	}	

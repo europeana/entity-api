@@ -1,16 +1,18 @@
 package eu.europeana.entity.web.service;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import eu.europeana.api.commons.definitions.search.Query;
 import eu.europeana.api.commons.definitions.search.ResultSet;
 import eu.europeana.api.commons.definitions.search.result.ResultsPage;
 import eu.europeana.api.commons.web.exception.HttpException;
-import eu.europeana.entity.definitions.model.Entity;
+import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException;
 import eu.europeana.entity.definitions.model.ConceptScheme;
-import eu.europeana.entity.definitions.model.search.SearchProfiles;
+import eu.europeana.entity.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.definitions.model.vocabulary.SuggestAlgorithmTypes;
+import eu.europeana.entity.web.exception.ParamValidationException;
 import eu.europeana.entity.web.exception.RequestBodyValidationException;
 import eu.europeana.entity.web.exception.response.ConceptSchemeNotFoundException;
 import eu.europeana.entity.web.model.view.EntityPreview;
@@ -63,20 +65,7 @@ public interface EntityService {
 	 */
 	String resolveByUri(String uri) throws HttpException;
 	
-	/**
-	 * @param queryString
-	 * @param qf
-	 * @param facets
-	 * @param sort
-	 * @param page
-	 * @param pageSize
-	 * @param profile
-	 * @param retFields
-	 * @return
-	 */
-	public Query buildSearchQuery(String queryString, String[] qf, String[] facets, String[] sort, int page,
-			int pageSize, SearchProfiles profile, String[] retFields);
-
+	
 	/**
 	 * This method build the results page object for the search results retrieved with the given search query.
 	 * @param searchQuery
@@ -142,5 +131,29 @@ public interface EntityService {
 	 * @return disabled ConceptScheme
 	 */
 	public ConceptScheme disableConceptScheme(ConceptScheme existingConceptScheme);					 
+		
+	
+	/**
+	 * @param entityTypes
+	 * @param suggest
+	 * @return 
+	 * @throws ParamValidationException
+	 */
+	public List<EntityTypes> validateEntityTypes(List<EntityTypes> entityTypes, boolean suggest) throws ParamValidationException;
+
+	/**
+	 * 
+	 * @param searchQuery the query to search for entities
+	 * @param scope optional parameter to filter only entities used in europeana, see also general search method
+	 * @param entityTypes optional parameter to filter results by entity type
+	 * @return
+	 * @throws HttpException
+	 */
+	public List<String> searchEntityIds(Query searchQuery, String scope, List<EntityTypes> entityTypes) throws HttpException;
+
+	ConceptScheme updateEntitiesWithConceptScheme(ConceptScheme storedConceptScheme)
+		throws UnsupportedEncodingException, HttpException, UnsupportedEntityTypeException;
+
+	List<EntityTypes> getEntityTypesFromString(String commaSepEntityTypes) throws UnsupportedEntityTypeException;
 		
 }

@@ -17,11 +17,15 @@ import org.apache.logging.log4j.Logger;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
+import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.apache.solr.client.solrj.impl.HttpSolrClient.RemoteSolrException;
+import org.apache.solr.client.solrj.request.UpdateRequest;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.client.solrj.response.UpdateResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
+import org.apache.solr.common.SolrInputDocument;
+import org.apache.solr.common.params.ModifiableSolrParams;
 import org.apache.solr.common.util.SimpleOrderedMap;
 
 import eu.europeana.api.commons.definitions.search.Query;
@@ -31,14 +35,15 @@ import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException
 import eu.europeana.entity.definitions.model.ConceptScheme;
 import eu.europeana.entity.definitions.model.Entity;
 import eu.europeana.entity.definitions.model.vocabulary.ConceptSolrFields;
+import eu.europeana.entity.definitions.model.vocabulary.EntitySolrFields;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
 import eu.europeana.entity.solr.exception.EntityRetrievalException;
 import eu.europeana.entity.solr.exception.EntityRuntimeException;
 import eu.europeana.entity.solr.exception.EntityServiceException;
 import eu.europeana.entity.solr.exception.EntitySuggestionException;
-import eu.europeana.entity.solr.model.SolrConceptSchemeImpl;
 import eu.europeana.entity.solr.exception.InvalidSearchQueryException;
+import eu.europeana.entity.solr.model.SolrConceptSchemeImpl;
 import eu.europeana.entity.solr.model.factory.EntityObjectFactory;
 import eu.europeana.entity.solr.model.vocabulary.SuggestionFields;
 import eu.europeana.entity.solr.service.SolrEntityService;
@@ -118,44 +123,42 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 	SolrQuery query = (new EntityQueryBuilder()).toSolrQuery(searchQuery, SolrEntityService.HANDLER_SELECT,
 		entityTypes, scope);
 
-		try {
-		    getLogger().debug("invoke suggest handler: " + SolrEntityService.HANDLER_SELECT);
-		    getLogger().debug("search query: " + query);
-		    QueryResponse rsp = solrServer.query(query);
-		    res = buildResultSet(rsp, outLanguage);
-		    getLogger().debug("search obj res size: " + res.getResultSize());
-		} catch (RemoteSolrException e) {
-		    RuntimeException ex = handleRemoteSolrException(searchQuery, e);
-		    throw ex;
-		} catch (IOException | SolrServerException | RuntimeException e) {
-			throw new EntityRetrievalException(
-					"An error occured exception occured when searching entities: " + searchQuery.toString() + "" , e);
-		} 
-		return res;
+	try {
+	    getLogger().debug("invoke suggest handler: " + SolrEntityService.HANDLER_SELECT);
+	    getLogger().debug("search query: " + query);
+	    QueryResponse rsp = solrServer.query(query);
+	    res = buildResultSet(rsp, outLanguage);
+	    getLogger().debug("search obj res size: " + res.getResultSize());
+	} catch (RemoteSolrException e) {
+	    RuntimeException ex = handleRemoteSolrException(searchQuery, e);
+	    throw ex;
+	} catch (IOException | SolrServerException | RuntimeException e) {
+	    throw new EntityRetrievalException(
+		    "An error occured exception occured when searching entities: " + searchQuery.toString() + "", e);
 	}
+	return res;
+    }
 
-	private RuntimeException handleRemoteSolrException(Query searchQuery, RemoteSolrException e) {
-		String remoteMessage = e.getMessage();
-		String UNDEFINED_FIELD = "undefined field";
-		RuntimeException ex;
-		if (remoteMessage.contains(UNDEFINED_FIELD)) {
-			// invalid search field
-			int startPos = remoteMessage.indexOf(UNDEFINED_FIELD) + UNDEFINED_FIELD.length();
-			String fieldName = remoteMessage.substring(startPos);
-			ex = new InvalidSearchQueryException(fieldName, e);
-		} else {
-			int separatorPos = remoteMessage.lastIndexOf(':');
-			if (separatorPos > 0) {
-				// remove server url from remote message
-				remoteMessage = remoteMessage.substring(separatorPos + 1);
-			}
-			ex = new EntityRetrievalException("An error occured when searching entities: " + searchQuery.toString()
-					+ ", remote message: " + remoteMessage, e);
-		}
-		return ex;
+    private RuntimeException handleRemoteSolrException(Query searchQuery, RemoteSolrException e) {
+	String remoteMessage = e.getMessage();
+	String UNDEFINED_FIELD = "undefined field";
+	RuntimeException ex;
+	if (remoteMessage.contains(UNDEFINED_FIELD)) {
+	    // invalid search field
+	    int startPos = remoteMessage.indexOf(UNDEFINED_FIELD) + UNDEFINED_FIELD.length();
+	    String fieldName = remoteMessage.substring(startPos);
+	    ex = new InvalidSearchQueryException(fieldName, e);
+	} else {
+	    int separatorPos = remoteMessage.lastIndexOf(':');
+	    if (separatorPos > 0) {
+		// remove server url from remote message
+		remoteMessage = remoteMessage.substring(separatorPos + 1);
+	    }
+	    ex = new EntityRetrievalException("An error occured when searching entities: " + searchQuery.toString()
+		    + ", remote message: " + remoteMessage, e);
 	}
-
-	
+	return ex;
+    }
 
     public Logger getLogger() {
 	return log;
@@ -163,7 +166,7 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 
     @Override
     public ResultSet<? extends EntityPreview> suggest(Query searchQuery, String[] requestedLanguages,
-    		List<EntityTypes> entityTypes, String scope, int rows) throws EntitySuggestionException {
+	    List<EntityTypes> entityTypes, String scope, int rows) throws EntitySuggestionException {
 
 	ResultSet<? extends EntityPreview> res = null;
 	SolrQuery query = new EntityQueryBuilder().toSolrQuery(searchQuery, SolrEntityService.HANDLER_SUGGEST,
@@ -194,7 +197,7 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
      */
     @Override
     public ResultSet<? extends EntityPreview> suggestByLabel(String text, String[] requestedLanguages,
-    		List<EntityTypes> entityTypes, String scope, int rows) throws EntitySuggestionException {
+	    List<EntityTypes> entityTypes, String scope, int rows) throws EntitySuggestionException {
 
 	ResultSet<? extends EntityPreview> res = null;
 
@@ -465,7 +468,7 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 	    }
 
 	    UpdateResponse rsp = solrServer.addBean(indexedConceptScheme);
-	    getLogger().info("store response: " + rsp.toString());
+	    getLogger().debug("store response: " + rsp.toString());
 	    if (doCommit) {
 		solrServer.commit();
 	    }
@@ -489,18 +492,21 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
      */
     public void update(ConceptScheme conceptScheme) throws EntityServiceException {
 	getLogger().debug("update solr concept scheme: " + conceptScheme.toString());
-//	delete(conceptScheme.getEntityId());
+	// delete(conceptScheme.getEntityId());
 	ConceptScheme indexedConceptScheme = new SolrConceptSchemeImpl(conceptScheme);
 	store(indexedConceptScheme);
     }
 
-    /* (non-Javadoc)
-     * @see eu.europeana.entity.solr.service.SolrEntityService#delete(java.lang.String)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * eu.europeana.entity.solr.service.SolrEntityService#delete(java.lang.String)
      */
     @Override
     public void delete(String entityUrl) throws EntityServiceException {
 	try {
-	    getLogger().info("delete concept scheme with ID: " + entityUrl);
+	    getLogger().debug("delete concept scheme with ID: " + entityUrl);
 	    UpdateResponse rsp = solrServer.deleteById(entityUrl);
 	    getLogger().trace("delete response: " + rsp.toString());
 	    solrServer.commit();
@@ -514,6 +520,75 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 	    throw new EntityServiceException(
 		    "Unexpected exception occured when deleting concept scheme for: " + entityUrl, th);
 	}
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * eu.europeana.entity.solr.service.SolrEntityService#performAtomicUpdate(java.
+     * lang.String, java.util.List, java.util.List)
+     */
+    public void performAtomicUpdate(String conceptSchemeId, List<String> addList, List<String> removeList)
+	    throws EntityServiceException {
+
+	String ADD_DISTINCT = "add-distinct";
+	String REMOVE = "remove";
+	
+	final UpdateRequest addRequest = buildAtomicUpdateOperation(conceptSchemeId, addList, ADD_DISTINCT);
+	final UpdateRequest removeRequest = buildAtomicUpdateOperation(conceptSchemeId, removeList, REMOVE);
+
+	try {
+	    //use dedicated solr client for update operations
+	    //when needed, create own bean
+		String baseUrl = entityConfiguration.getSolrServeUrls().get(0);
+		SolrClient solr = new HttpSolrClient.Builder(baseUrl).build();
+
+	    //process add operation
+	    if (addRequest.getDocuments() != null && addRequest.getDocuments().size() > 0) {
+		addRequest.process(solr);
+	    }
+	    //process remove operation
+	     if (removeRequest.getDocuments() != null &&
+		 removeRequest.getDocuments().size() > 0) {
+		removeRequest.process(solr);		
+	    }
+	    solr.commit();
+	    solr.close();
+	} catch (SolrServerException ex) {
+	    throw new EntityServiceException("Unexpected solr server exception occured when atomic updating entities",
+		    ex);
+	} catch (IOException ex) {
+	    throw new EntityServiceException("Cannot access solr server for updating concepts with scheme", ex);    
+	} 
+    }
+
+    /**
+     * This method performs atomic update operation
+     * 
+     * @param conceptSchemeId
+     * @param listToUpdate
+     * @param operation
+     * @return update request
+     */
+    private UpdateRequest buildAtomicUpdateOperation(String conceptSchemeId, List<String> listToUpdate,
+	    String operation) {
+
+	final UpdateRequest request = new UpdateRequest();
+	SolrInputDocument updateDoc;
+	
+	for (String id : listToUpdate) {
+	    updateDoc = new SolrInputDocument();
+	    updateDoc.addField(EntitySolrFields.ID, id);
+	    updateDoc.addField(EntitySolrFields.IN_SCHEME, conceptSchemeId);
+	    request.add(updateDoc);
+	}
+
+	ModifiableSolrParams atomicOperation = new ModifiableSolrParams().add("processor", "atomic")
+		.add("atomic." + EntitySolrFields.IN_SCHEME, operation);
+
+	request.setParams(atomicOperation);
+	return request;
     }
 
 }

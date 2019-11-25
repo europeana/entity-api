@@ -31,6 +31,7 @@ public class EuropeanaEntityLd extends JsonLd {
 	public EuropeanaEntityLd(Entity entity) throws UnsupportedEntityTypeException {
 		super();
 		setPropOrderComparator(new EntityJsonComparator());
+		registerContainerProperty(WebEntityConstants.BIOGRAPHICAL_INFORMATION);
 		setEntity(entity);
 	}
 
@@ -141,6 +142,7 @@ public class EuropeanaEntityLd extends JsonLd {
 	private void putConceptSchemeSpecificProperties(ConceptScheme entity, JsonLdResource jsonLdResource) {
 		putMapOfStringProperty(WebEntityFields.DEFINITION, entity.getDefinition(), "", ldResource);
 		putStringProperty(WebEntityFields.IS_DEFINED_BY, entity.getIsDefinedBy(), jsonLdResource);
+		putStringProperty(WebEntityFields.TOTAL, Integer.toString(entity.getTotal()), jsonLdResource);
 	}
 
 	private void putPlaceSpecificProperties(Place entity, JsonLdResource jsonLdResource) {

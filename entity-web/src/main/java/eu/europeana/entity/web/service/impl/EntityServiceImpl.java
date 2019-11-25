@@ -1,15 +1,18 @@
 package eu.europeana.entity.web.service.impl;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParseException;
@@ -20,26 +23,24 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import eu.europeana.api.common.config.I18nConstants;
 import eu.europeana.api.commons.definitions.search.Query;
 import eu.europeana.api.commons.definitions.search.ResultSet;
-import eu.europeana.api.commons.definitions.search.impl.QueryImpl;
 import eu.europeana.api.commons.definitions.search.result.ResultsPage;
 import eu.europeana.api.commons.definitions.search.result.impl.ResultsPageImpl;
 import eu.europeana.api.commons.definitions.vocabulary.CommonApiConstants;
-import eu.europeana.api.commons.search.util.QueryBuilder;
 import eu.europeana.api.commons.web.exception.HttpException;
 import eu.europeana.entity.definitions.exceptions.EntityAttributeInstantiationException;
 import eu.europeana.entity.definitions.exceptions.EntityInstantiationException;
 import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException;
 import eu.europeana.entity.definitions.model.ConceptScheme;
 import eu.europeana.entity.definitions.model.Entity;
-import eu.europeana.entity.definitions.model.search.SearchProfiles;
-import eu.europeana.entity.definitions.model.vocabulary.ConceptSolrFields;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.definitions.model.vocabulary.SuggestAlgorithmTypes;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityFields;
 import eu.europeana.entity.solr.exception.EntityRetrievalException;
+import eu.europeana.entity.solr.exception.EntityServiceException;
 import eu.europeana.entity.solr.exception.EntitySuggestionException;
 import eu.europeana.entity.solr.service.SolrEntityService;
+import eu.europeana.entity.solr.service.impl.EntityQueryBuilder;
 import eu.europeana.entity.web.controller.exception.EntityIndexingException;
 import eu.europeana.entity.web.exception.InternalServerException;
 import eu.europeana.entity.web.exception.ParamValidationException;
@@ -51,6 +52,10 @@ import eu.europeana.entity.web.service.EntityService;
 import eu.europeana.grouping.mongo.model.internal.PersistentConceptScheme;
 import ioinformarics.oss.jackson.module.jsonld.JsonldModule;
 
+/**
+ * @author GrafR
+ *
+ */
 public class EntityServiceImpl extends BaseEntityServiceImpl implements EntityService {
 
     public final String BASE_URL_DATA = "http://data.europeana.eu/";
@@ -90,23 +95,6 @@ public class EntityServiceImpl extends BaseEntityServiceImpl implements EntitySe
 	return result;
     }
 
-    /**
-     * @deprecated use QueryBuilder
-     * @param queryString
-     * @param filters
-     * @param rows
-     * @return
-     */
-    protected Query buildSearchQuery(String queryString, String[] filters, int pageSize) {
-
-	Query searchQuery = new QueryImpl();
-	searchQuery.setQuery(queryString);
-	searchQuery.setPageSize(Math.min(pageSize, Query.DEFAULT_MAX_PAGE_SIZE));
-	searchQuery.setFilters(filters);
-
-	return searchQuery;
-    }
-
     /*
      * (non-Javadoc)
      * 
@@ -122,7 +110,8 @@ public class EntityServiceImpl extends BaseEntityServiceImpl implements EntitySe
 	try {
 	    switch (algorithm) {
 	    case suggest:
-		query = buildSearchQuery(text, null, rows);
+		EntityQueryBuilder builder = new EntityQueryBuilder();
+		query = builder.buildSearchQuery(text, null, rows);
 		res = solrEntityService.suggest(query, language, entityTypes, scope, rows);
 		break;
 	    case suggestByLabel:
@@ -164,52 +153,40 @@ public class EntityServiceImpl extends BaseEntityServiceImpl implements EntitySe
     }
 
     /**
-     * @param queryString
-     * @param qf
-     * @param facets
-     * @param sort
-     * @param page
-     * @param pageSize
-     * @param profile
-     * @param retFields
-     * @return
+     * @param entityTypes
+     * @param suggest
+     * @throws ParamValidationException
      */
-    public Query buildSearchQuery(String queryString, String[] qf, String[] facets, String[] sort, int page,
-	    int pageSize, SearchProfiles profile, String[] retFields) {
+    public List<EntityTypes> validateEntityTypes(List<EntityTypes> entityTypes, boolean suggest) throws ParamValidationException {
+	// search
+	if (!suggest) {
+	    if (isEmptyOrAll(entityTypes)) {
+		//no filtering needed
+		return null;
+	    }
+	} else {// suggest
 
-	QueryBuilder builder = new QueryBuilder();
-	int maxPageSize = Query.DEFAULT_MAX_PAGE_SIZE;
-	String profileName = null;
-	if (profile != null) {
-	    profileName = profile.name();
+	    if (isEmptyOrAll(entityTypes)) {
+		if (entityTypes == null)
+		    entityTypes = new ArrayList<EntityTypes>(); 
+		entityTypes.clear();
+		entityTypes.add(EntityTypes.Concept);
+		entityTypes.add(EntityTypes.Agent);
+		entityTypes.add(EntityTypes.Place);
+		entityTypes.add(EntityTypes.Organization);
+	    }
+	    
+	    // ConceptScheme Not Supported in suggester
+	    if (entityTypes.contains(EntityTypes.ConceptScheme))
+		throw new ParamValidationException(I18nConstants.INVALID_PARAM_VALUE,
+			WebEntityConstants.QUERY_PARAM_TYPE, EntityTypes.ConceptScheme.getInternalType());
 	}
-
-	if (retFields != null) {
-	    retFields = buildCustomSelectionFields(retFields);
-	}
-
-	Query query = builder.buildSearchQuery(queryString, qf, facets, retFields, sort, page, pageSize, maxPageSize,
-		profileName);
-	return query;
+	
+	return entityTypes;
     }
 
-    /**
-     * This method enriches provided custom selection fields by required fields if
-     * they are not already provided in input array.
-     * 
-     * @param inputArray
-     * @return enriched array
-     */
-    protected String[] buildCustomSelectionFields(String[] inputFields) {
-	List<String> fieldList = new ArrayList<String>();
-	Collections.addAll(fieldList, inputFields);
-	// add mandatory fields
-	if (!fieldList.contains(ConceptSolrFields.ID))
-	    fieldList.add(ConceptSolrFields.ID);
-	if (!fieldList.contains(ConceptSolrFields.INTERNAL_TYPE))
-	    fieldList.add(ConceptSolrFields.INTERNAL_TYPE);
-
-	return fieldList.toArray(new String[fieldList.size()]);
+    private boolean isEmptyOrAll(List<EntityTypes> entityTypes) {
+	return entityTypes == null || entityTypes.isEmpty() || entityTypes.contains(EntityTypes.All);
     }
 
     // TODO: consider usage of a helper class for helper methods
@@ -421,7 +398,7 @@ public class EntityServiceImpl extends BaseEntityServiceImpl implements EntitySe
 	try {
 	    // index concept scheme only if not disabled
 	    if (!((WebConceptSchemeImpl) res).isDisabled()) {
-	        reindexConceptScheme(res, res.getModified());
+		reindexConceptScheme(res, res.getModified());
 	    }
 	} catch (EntityIndexingException e) {
 	    getLogger().warn("The concept scheme could not be reindexed successfully: " + res.getEntityIdentifier(), e);
@@ -451,7 +428,9 @@ public class EntityServiceImpl extends BaseEntityServiceImpl implements EntitySe
     }
 
     /**
-     * check if the update test must merge the properties or if it simply overwrites it
+     * check if the update test must merge the properties or if it simply overwrites
+     * it
+     * 
      * @param ConceptScheme
      * @param updatedWebConceptScheme
      */
@@ -459,7 +438,7 @@ public class EntityServiceImpl extends BaseEntityServiceImpl implements EntitySe
 	    ConceptScheme updatedWebConceptScheme) {
 
 	if (updatedWebConceptScheme != null) {
-	   
+
 	    if (updatedWebConceptScheme.getIsDefinedBy() != null) {
 		conceptScheme.setIsDefinedBy(updatedWebConceptScheme.getIsDefinedBy());
 	    }
@@ -484,11 +463,125 @@ public class EntityServiceImpl extends BaseEntityServiceImpl implements EntitySe
 	try {
 	    getSolrService().delete(existingConceptScheme.getEntityId());
 	} catch (Exception e) {
-	    getLogger().error(
-		"Cannot remove concept scheme from solr index: " + existingConceptScheme.getEntityId(), e);
+	    getLogger().error("Cannot remove concept scheme from solr index: " + existingConceptScheme.getEntityId(),
+		    e);
 	}
 
 	return updateConceptScheme((PersistentConceptScheme) existingConceptScheme, existingConceptScheme);
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * eu.europeana.entity.web.service.EntityService#performAtomicUpdate(java.lang.
+     * String, java.util.List, java.util.List)
+     */
+    void updateConceptSchemeForEntities(String conceptSchemeId, List<String> addToEntities,
+	    List<String> removeFromEntities) {
+
+	try {
+	    getSolrService().performAtomicUpdate(conceptSchemeId, addToEntities, removeFromEntities);
+	} catch (EntityServiceException e) {
+	    getLogger().error("Cannot perform atomic update for concept scheme identifier: " + conceptSchemeId
+		    + " for entities. addition: " + addToEntities.toString() + ", removal:"
+		    + removeFromEntities.toString(), e);
+	}
+
+    }
+
+    @Override
+    public List<String> searchEntityIds(Query searchQuery, String scope, List<EntityTypes> entityTypes)
+	    throws HttpException {
+
+	List<String> matchingEntityIds = new ArrayList<String>();
+	ResultSet<? extends Entity> results = search(searchQuery, null, entityTypes, scope);
+	for (Entity searchRes : results.getResults()) {
+	    matchingEntityIds.add(searchRes.getEntityId());
+	}
+	return matchingEntityIds;
+    }
+
+    @Override
+    public ConceptScheme updateEntitiesWithConceptScheme(ConceptScheme storedConceptScheme)
+	    throws HttpException, UnsupportedEncodingException, UnsupportedEntityTypeException{
+	EntityQueryBuilder queryBuilder = new EntityQueryBuilder();
+
+	// parse and process parameters from is defined by URL
+	MultiValueMap<String, String> parameters = UriComponentsBuilder
+		.fromUriString(storedConceptScheme.getIsDefinedBy()).build().getQueryParams();
+
+	String scope = parameters.getFirst(WebEntityConstants.QUERY_PARAM_SCOPE);
+	String sort = parameters.getFirst(CommonApiConstants.QUERY_PARAM_SORT);
+
+	String type = parameters.getFirst(WebEntityConstants.QUERY_PARAM_TYPE);
+	List<EntityTypes> entityTypes = getEntityTypesFromString(type);
+	// we need to process entity types, for building the correct filter
+	entityTypes = validateEntityTypes(entityTypes, false);
+
+	// Search concepts that match the ConceptScheme
+	Query searchQuery = queryBuilder.buildParameterSearchQuery(parameters, sort);
+	List<String> matchingEntityIds = searchEntityIds(searchQuery, scope, entityTypes);
+	getLogger().debug("Matching concepts for scheme : " + storedConceptScheme.getEntityId() + ", #results: "
+		+ matchingEntityIds.size());
+
+	// search entities that are already in the current ConceptScheme
+	// first page with max size
+	String conceptSchemeId = storedConceptScheme.getEntityId();
+	Query existingQuery = queryBuilder.buildEntitiesInSchemeQuery(conceptSchemeId);
+
+	List<String> existingEntityIds = searchEntityIds(existingQuery, null, null);
+	getLogger().debug("existing before update: " + existingEntityIds.size());
+
+	// Compute ADD and REMOVE lists
+	@SuppressWarnings("unchecked")
+	List<String> removeList = ListUtils.subtract(existingEntityIds, matchingEntityIds);
+	@SuppressWarnings("unchecked")
+	List<String> addList = ListUtils.subtract(matchingEntityIds, existingEntityIds);
+
+	// perform atomic updates for entities
+	updateConceptSchemeForEntities(conceptSchemeId, addList, removeList);
+
+	// update concept scheme, add total (update modified)
+	// fire a new search query to check the actual number of entities in scheme
+	existingQuery.setPageSize(0);
+	ResultSet<? extends Entity> storedResults = search(existingQuery, null, entityTypes, scope);
+	// number of (existing) entities in scheme after atomic update
+	long inSchemeCount = storedResults.getResultSize();
+	getLogger().debug("matching after update: " + inSchemeCount);
+
+	storedConceptScheme.setTotal((int) inSchemeCount);
+	return updateConceptScheme((PersistentConceptScheme) storedConceptScheme, null);
+    }
+
+    /**
+     * Get entity type string list from comma separated entities string.
+     * 
+     * @param commaSepEntityTypes Comma separated entities string
+     * @return Entity types string list
+     * @throws UnsupportedEntityTypeException
+     * @throws ParamValidationException
+     */
+    @Override
+    public List<EntityTypes> getEntityTypesFromString(String commaSepEntityTypes)
+	    throws UnsupportedEntityTypeException {
+
+	if(StringUtils.isBlank(commaSepEntityTypes)) {
+	    return null;
+	}
+	    
+	String[] splittedEntityTypes = commaSepEntityTypes.split(",");
+	List<EntityTypes> entityTypes = new ArrayList<EntityTypes>();
+
+	EntityTypes entityType = null;
+	String typeAsString = null;
+
+	for (int i = 0; i < splittedEntityTypes.length; i++) {
+	    typeAsString = splittedEntityTypes[i].trim();
+	    entityType = EntityTypes.getByInternalType(typeAsString);
+	    entityTypes.add(entityType);
+	}
+
+	return entityTypes;
+    }
 }

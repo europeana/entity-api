@@ -1,6 +1,8 @@
 package eu.europeana.entity.web.model.vocabulary;
 
-public enum Roles {
+import eu.europeana.api.commons.definitions.vocabulary.Role;
+
+public enum UserRoles implements eu.europeana.api.commons.definitions.vocabulary.Role {
 
 	ANONYMOUS(new String[]{Operations.RETRIEVE}), 
 	USER(new String[]{Operations.RETRIEVE, Operations.CREATE, Operations.DELETE, Operations.UPDATE}), 
@@ -10,7 +12,7 @@ public enum Roles {
 	
 	String[] operations;
 	
-	Roles (String[] operations){
+	UserRoles (String[] operations){
 		this.operations = operations;
 	}
 	
@@ -20,6 +22,33 @@ public enum Roles {
 	
 	public void setOperations(String[] operations) {
 		this.operations = operations;
+	}
+
+	/**
+	 * This method returns the api specific Role for the given role name
+	 * 
+	 * @param name the name of user role 
+	 * @return the user role
+	 */
+	public static Role getRoleByName(String name) {
+	    Role userRole = null;
+	    for(UserRoles role : UserRoles.values()) {
+		if(role.name().toLowerCase().equals(name)) {
+		    userRole = role;
+		    break;
+		}
+	    }
+	    return userRole;
+	}
+		
+	@Override
+	public String getName() {
+	    return this.name();
+	}
+
+	@Override
+	public String[] getPermissions() {
+	    return getOperations();
 	}
 	
 }

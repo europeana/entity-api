@@ -6,7 +6,15 @@
 entity.environment=development
 
 #string value indicating default user token
-default.user.token=tester1
+#default.user.token=tester1
+
+#string value representing the key used for JWT signature verification 
+europeana.apikey.jwttoken.siganturekey= 
+#URL of the APIKEY service
+europeana.apikey.serviceurl=
+
+#current API name
+authorization.api.name=
 
 #Socks proxy configuration. If provided it will be used for all http connections (e.g. solr.entity.url)
 # Url Format: socks://username:password@socks_proxy_server:1080 
@@ -25,7 +33,7 @@ mongodb.entity.truststorepass=
 # core search (default) 
 solr.entity.url = http://localhost:8282/solr/entity
 
-solr.entity.timeout = 60000
+solr.entity.timeout = 6000
 solr.facetLimit=750
 #solr.username=europeana
 #solr.rowLimit=12
@@ -34,4 +42,5 @@ solr.facetLimit=750
 entity.properties.timestamp=-1
 
 # hl.snippets parameter in the url for highlighted terms
+
 entity.suggester.snippets=50

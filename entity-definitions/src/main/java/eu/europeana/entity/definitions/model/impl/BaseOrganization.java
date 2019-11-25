@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import eu.europeana.api.commons.definitions.entities.BaseAddress;
 import eu.europeana.corelib.definitions.edm.entity.Address;
 import eu.europeana.entity.definitions.model.Organization;
 
@@ -405,7 +406,6 @@ public class BaseOrganization extends BaseEntity
 	    	    address.setVcardPostalCode(postalCode);
 	    	    address.setVcardPostOfficeBox(postBox);
 	    	    address.setVcardLocality(locality);
-	    	    //region
 	    	    address.setVcardCountryName(countryName);
 	    	}
 		return this.address;

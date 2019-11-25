@@ -91,7 +91,7 @@ public class SolrConceptSchemeImpl extends BaseConceptScheme implements SolrConc
     }    
 
     @Override
-    @Field(SolrConceptSchemeConstants.INTERNAL_TYPE)
+    @Field(SolrConceptSchemeConstants.TYPE)
     public void setInternalType(String internalType) {
 	super.setInternalType(internalType);
     }

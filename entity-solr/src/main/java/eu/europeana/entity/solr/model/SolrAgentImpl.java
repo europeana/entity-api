@@ -27,7 +27,7 @@ public class SolrAgentImpl extends BaseAgent implements Agent {
 	}
 	
 	@Override
-	@Field(AgentSolrFields.INTERNAL_TYPE)
+	@Field(AgentSolrFields.TYPE)
 	public void setInternalType(String internalType) {
 		super.setInternalType(internalType);
 	}

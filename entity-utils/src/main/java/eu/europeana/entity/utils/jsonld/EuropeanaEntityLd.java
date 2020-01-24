@@ -32,6 +32,8 @@ public class EuropeanaEntityLd extends JsonLd {
 		super();
 		setPropOrderComparator(new EntityJsonComparator());
 		registerContainerProperty(WebEntityConstants.BIOGRAPHICAL_INFORMATION);
+		//always string array, not container
+//		registerContainerProperty(WebEntityConstants.IS_PART_OF);
 		setEntity(entity);
 	}
 
@@ -306,4 +308,10 @@ public class EuropeanaEntityLd extends JsonLd {
 	public JsonLdResource getLdResource() {
 		return ldResource;
 	}
+	
+    @Override
+    public boolean isContainerProperty(String property) {
+	// TODO Auto-generated method stub, overwrite this method as the super implementation is  
+	return  !WebEntityFields.IS_PART_OF.equals(property) && super.isContainerProperty(property);
+    }
 }

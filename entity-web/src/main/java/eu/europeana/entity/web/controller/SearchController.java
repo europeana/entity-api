@@ -66,7 +66,7 @@ public class SearchController extends BaseRest {
 
 	try {
 	    // Check client access (a valid “wskey” must be provided)
-	    validateApiKey(request);
+	    verifyReadAccess(request);
 
 	    // validate text parameter
 	    validateTextParam(text);
@@ -140,7 +140,7 @@ public class SearchController extends BaseRest {
 	try {
 	    // Check client access (a valid “wskey” must be provided)
 //	    String apikey = extractApiKey();
-	    validateApiKey(request);
+	    verifyReadAccess(request);
 
 	    // ** Process input params
 	    if (StringUtils.isBlank(queryString))

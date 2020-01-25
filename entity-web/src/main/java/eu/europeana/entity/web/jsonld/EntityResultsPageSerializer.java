@@ -11,6 +11,7 @@ import eu.europeana.api.commons.definitions.vocabulary.CommonLdConstants;
 import eu.europeana.api.commons.utils.ResultsPageSerializer;
 import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException;
 import eu.europeana.entity.definitions.model.Entity;
+import eu.europeana.entity.definitions.model.vocabulary.WebEntityFields;
 import eu.europeana.entity.utils.jsonld.EntityJsonComparator;
 import eu.europeana.entity.utils.jsonld.EuropeanaEntityLd;
 import eu.europeana.entity.web.exception.FunctionalRuntimeException;
@@ -57,4 +58,11 @@ public class EntityResultsPageSerializer<T extends Entity> extends ResultsPageSe
 		propertyMap.putAll(entityProps);
 		itemsProp.addValue(propertyValue);
 	}
+	
+    @Override
+    public boolean isContainerProperty(String property) {
+	// TODO Auto-generated method stub, overwrite this method as the super
+	// implementation is
+	return !WebEntityFields.IS_PART_OF.equals(property) && super.isContainerProperty(property);
+    }
 }

@@ -59,8 +59,6 @@ public class ConceptSchemeController extends BaseRest {
      * This method requests parsing of a ConceptScheme in JsonLd format to a
      * ConceptScheme object
      * 
-     * @param wskey     The API key
-     * @param userToken The user identifier
      * @param profile   The profile definition
      * @param request   HTTP request
      * @return response entity that comprises response body, headers and status code
@@ -70,9 +68,7 @@ public class ConceptSchemeController extends BaseRest {
 	    HttpHeaders.CONTENT_TYPE_JSON_UTF8 })
     @ApiOperation(notes = SwaggerConstants.SAMPLES_JSONLD, value = "Create concept scheme", nickname = "create", response = java.lang.Void.class)
     public ResponseEntity<String> createConceptScheme(
-	    @RequestParam(value = CommonApiConstants.PARAM_WSKEY, required = false) String wskey,
 	    @RequestBody String conceptScheme,
-	    @RequestParam(value = WebEntityConstants.USER_TOKEN, required = false, defaultValue = WebEntityConstants.USER_ANONYMOUNS) String userToken,
 	    @RequestParam(value = CommonApiConstants.QUERY_PARAM_PROFILE, required = false) String profile,
 	    HttpServletRequest request) throws HttpException {
 
@@ -205,9 +201,7 @@ public class ConceptSchemeController extends BaseRest {
     /**
      * This method implements removal of a concept scheme
      * 
-     * @param wskey
      * @param identifier
-     * @param userToken
      * @param request
      * @return
      * @throws HttpException
@@ -215,9 +209,7 @@ public class ConceptSchemeController extends BaseRest {
     @RequestMapping(value = { "/scheme/{identifier}" }, method = { RequestMethod.DELETE })
     @ApiOperation(value = "Delete an existing concept scheme", nickname = "delete", response = java.lang.Void.class)
     public ResponseEntity<String> deleteConceptScheme(
-	    @RequestParam(value = CommonApiConstants.PARAM_WSKEY, required = false) String wskey,
 	    @PathVariable(value = WebEntityConstants.PATH_PARAM_IDENTIFIER) String identifier,
-	    @RequestParam(value = WebEntityConstants.USER_TOKEN, required = false, defaultValue = WebEntityConstants.USER_ANONYMOUNS) String userToken,
 	    HttpServletRequest request) throws HttpException {
 
 	try {
@@ -229,8 +221,6 @@ public class ConceptSchemeController extends BaseRest {
 	    // if the Set is disabled respond with HTTP 410
 	    ConceptScheme existingConceptScheme = getEntityService().getConceptSchemeById(identifier);
 	    checkIfMatchHeader(existingConceptScheme.getModified().hashCode(), request);
-
-	    hasModifyRights(existingConceptScheme, wskey, userToken);
 
 	    // if the user set is disabled and the user is not an admin, respond with HTTP
 	    // 410
@@ -282,10 +272,8 @@ public class ConceptSchemeController extends BaseRest {
 	    HttpHeaders.CONTENT_TYPE_JSONLD_UTF8, HttpHeaders.CONTENT_TYPE_JSON_UTF8 })
     @ApiOperation(notes = SwaggerConstants.UPDATE_SAMPLES_JSONLD, value = "Update an existing concept scheme", nickname = "update", response = java.lang.Void.class)
     public ResponseEntity<String> updateConceptScheme(
-	    @RequestParam(value = CommonApiConstants.PARAM_WSKEY, required = false) String wskey,
 	    @PathVariable(value = WebEntityConstants.PATH_PARAM_IDENTIFIER) String identifier,
 	    @RequestBody String conceptScheme,
-	    @RequestParam(value = WebEntityConstants.USER_TOKEN, required = false, defaultValue = WebEntityConstants.USER_ANONYMOUNS) String userToken,
 	    @RequestParam(value = CommonApiConstants.QUERY_PARAM_PROFILE, required = false, defaultValue = WebEntityConstants.PROFILE_MINIMAL) String profile,
 	    HttpServletRequest request) throws HttpException {
 
@@ -303,7 +291,7 @@ public class ConceptSchemeController extends BaseRest {
 
 	    // check if the user is the owner of the set or admin, otherwise respond with
 	    // 403
-	    hasModifyRights(existingConceptScheme, wskey, userToken);
+//	    hasModifyRights(existingConceptScheme, wskey, userToken);
 
 	    // check if the Set is disabled, respond with HTTP 410
 	    HttpStatus httpStatus = null;
@@ -387,7 +375,6 @@ public class ConceptSchemeController extends BaseRest {
 		    HttpHeaders.CONTENT_TYPE_JSON_UTF8 })
     @ApiOperation(notes = SwaggerConstants.SAMPLES_JSONLD, value = "Update entities with groupings", nickname = "update with groupings", response = java.lang.Void.class)
     public ResponseEntity<String> updateEntitiesWithConceptScheme(
-	    @RequestParam(value = CommonApiConstants.PARAM_WSKEY, required = false) String wskey,
 	    @PathVariable(value = WebEntityConstants.PATH_PARAM_IDENTIFIER) String identifier,
 	    HttpServletRequest request) throws HttpException {
 

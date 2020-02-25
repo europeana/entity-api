@@ -26,4 +26,7 @@ public interface PersistentConceptScheme extends ConceptScheme, NoSqlEntity {
     public void setGeneratedIdentifier(String generatedIdentifier);
 
     public abstract void setPrefLabelStringMap(Map<String, String> prefLabelStringMap);
+    
+    public abstract void setSameAs(String[] sameAs);
+    
 }

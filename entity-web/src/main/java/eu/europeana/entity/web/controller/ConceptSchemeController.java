@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import eu.europeana.api.common.config.I18nConstants;
 import eu.europeana.api.common.config.swagger.SwaggerSelect;
 import eu.europeana.api.commons.definitions.vocabulary.CommonApiConstants;
+import eu.europeana.api.commons.exception.ApiKeyExtractionException;
 import eu.europeana.api.commons.web.exception.HttpException;
 import eu.europeana.api.commons.web.http.HttpHeaders;
 import eu.europeana.entity.definitions.exceptions.EntityInstantiationException;
@@ -99,7 +100,7 @@ public class ConceptSchemeController extends BaseRest {
 	    MultiValueMap<String, String> headers = buildResponseHeaders(ldProfile, updatedEntitiesWithConceptScheme);
 
 	    ResponseEntity<String> response = new ResponseEntity<String>(serializedConceptSchemeJsonLdStr, headers,
-		    HttpStatus.OK);
+		    HttpStatus.CREATED);
 
 	    return response;
 
@@ -110,6 +111,8 @@ public class ConceptSchemeController extends BaseRest {
 	    // not found ..
 	    // System.out.println(e);
 	    throw new InternalServerException(e);
+	} catch (ApiKeyExtractionException e) {
+	    throw new InternalServerException(HttpStatus.FORBIDDEN, e);
 	} catch (Exception e) {
 	    throw new InternalServerException(e);
 	}

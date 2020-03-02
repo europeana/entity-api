@@ -9,6 +9,7 @@ import org.apache.stanbol.commons.jsonld.JsonLdPropertyValue;
 import org.apache.stanbol.commons.jsonld.JsonLdResource;
 
 import eu.europeana.api.commons.definitions.utils.DateUtils;
+import eu.europeana.api.commons.definitions.vocabulary.CommonLdConstants;
 import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException;
 import eu.europeana.entity.definitions.model.Agent;
 import eu.europeana.entity.definitions.model.Concept;
@@ -144,7 +145,7 @@ public class EuropeanaEntityLd extends JsonLd {
 	private void putConceptSchemeSpecificProperties(ConceptScheme entity, JsonLdResource jsonLdResource) {
 		putMapOfStringProperty(WebEntityFields.DEFINITION, entity.getDefinition(), "", ldResource);
 		putStringProperty(WebEntityFields.IS_DEFINED_BY, entity.getIsDefinedBy(), jsonLdResource);
-		putStringProperty(WebEntityFields.TOTAL, Integer.toString(entity.getTotal()), jsonLdResource);
+		jsonLdResource.putProperty(WebEntityFields.TOTAL, entity.getTotal());
 	}
 
 	private void putPlaceSpecificProperties(Place entity, JsonLdResource jsonLdResource) {

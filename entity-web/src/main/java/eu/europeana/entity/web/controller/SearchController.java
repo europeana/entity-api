@@ -137,7 +137,7 @@ public class SearchController extends BaseRest {
 	    @RequestParam(value = CommonApiConstants.QUERY_PARAM_PAGE_SIZE, required = false, defaultValue = ""
 		    + Query.DEFAULT_PAGE_SIZE) int pageSize,
 	    @RequestParam(value = CommonApiConstants.QUERY_PARAM_PROFILE, required = false) String profile,
-	    HttpServletRequest request) throws HttpException, ApiKeyExtractionException, AuthorizationExtractionException {
+	    HttpServletRequest request) throws HttpException {
 
 	try {
 	    // Check client access (a valid “wskey” must be provided)

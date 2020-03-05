@@ -447,6 +447,10 @@ public class EntityServiceImpl extends BaseEntityServiceImpl implements EntitySe
 		conceptScheme.setDefinition(updatedWebConceptScheme.getDefinition());
 	    }
 
+	    if (updatedWebConceptScheme.getSameAs() != null) {
+		conceptScheme.setSameAs(updatedWebConceptScheme.getSameAs());
+	    }
+
 	    conceptScheme.setPrefLabelStringMap(updatedWebConceptScheme.getPrefLabelStringMap());
 	}
 

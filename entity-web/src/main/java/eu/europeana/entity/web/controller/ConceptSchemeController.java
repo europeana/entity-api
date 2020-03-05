@@ -99,7 +99,7 @@ public class ConceptSchemeController extends BaseRest {
 	    MultiValueMap<String, String> headers = buildResponseHeaders(ldProfile, updatedEntitiesWithConceptScheme);
 
 	    ResponseEntity<String> response = new ResponseEntity<String>(serializedConceptSchemeJsonLdStr, headers,
-		    HttpStatus.OK);
+		    HttpStatus.CREATED);
 
 	    return response;
 

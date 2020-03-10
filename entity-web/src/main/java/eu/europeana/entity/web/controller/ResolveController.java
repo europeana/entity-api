@@ -137,6 +137,7 @@ public class ResolveController extends BaseRest {
     	    	if(contentType != null && !contentType.isEmpty())
     	    	    headers.add(HttpHeaders.CONTENT_TYPE, contentType);
     
+//        	System.out.println(jsonLd);
     	    	ResponseEntity<String> response = new ResponseEntity<String>(jsonLd, headers, HttpStatus.OK);
         	    	return response;
 	    } catch (RuntimeException e) {

@@ -21,6 +21,8 @@ public interface WebEntityFields {
 	public static final String NOTE = "note";
 	public static final String DEPICTION = "depiction";
 	public static final String SOURCE = "source";
+	public static final String THUMBNAIL = "thumbnail";
+	public static final String IS_SHOWN_BY = "isShownBy";
 	
 	//common administrative information
 	public static final String CREATED = "created";
@@ -102,5 +104,8 @@ public interface WebEntityFields {
 
 	// Authentication
 	public static final String USER_ADMIN = "admin";	
-	
+
+	// Type
+	public static final String WEB_RESOURCE = "WebResource";
+
 }

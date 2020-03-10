@@ -1,6 +1,8 @@
 package eu.europeana.entity.utils.jsonld;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.stanbol.commons.jsonld.JsonLd;
@@ -9,7 +11,6 @@ import org.apache.stanbol.commons.jsonld.JsonLdPropertyValue;
 import org.apache.stanbol.commons.jsonld.JsonLdResource;
 
 import eu.europeana.api.commons.definitions.utils.DateUtils;
-import eu.europeana.api.commons.definitions.vocabulary.CommonLdConstants;
 import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException;
 import eu.europeana.entity.definitions.model.Agent;
 import eu.europeana.entity.definitions.model.Concept;
@@ -66,7 +67,13 @@ public class EuropeanaEntityLd extends JsonLd {
 		
 		//common administrative information
 		putAggregationProperty(entity, ldResource);
-
+		
+		//isShownBy
+		if (!StringUtils.isEmpty(((BaseEntity) entity).getIsShownById())) {	
+        		ldResource.putProperty(createIsShownByResource(
+        			(BaseEntity) entity, WebEntityFields.IS_SHOWN_BY));	
+		}
+		
 		// specific properties (by entity type)
 		putSpecificProperties(entity, ldResource);
 
@@ -75,6 +82,32 @@ public class EuropeanaEntityLd extends JsonLd {
 		return ldResource;
 	}
 	
+	/**
+	 * This method constructs isShownBy property
+	 * @param entity
+	 * @param field
+	 * @return jsonLd property for isShownBy field
+	 */
+	private JsonLdProperty createIsShownByResource(BaseEntity entity, String field) {
+		
+		JsonLdProperty isShownByProperty = new JsonLdProperty(field);
+		JsonLdPropertyValue isShownByValue = new JsonLdPropertyValue();
+		
+		if (!StringUtils.isEmpty(entity.getIsShownById())) { 			
+			isShownByValue.putProperty(new JsonLdProperty(WebEntityFields.ID, entity.getIsShownById()));
+			isShownByValue.putProperty(new JsonLdProperty(WebEntityFields.TYPE, WebEntityFields.WEB_RESOURCE));
+		}
+
+		if (!StringUtils.isEmpty(entity.getIsShownBySource())) 			
+			isShownByValue.putProperty(new JsonLdProperty(WebEntityFields.SOURCE, entity.getIsShownBySource()));
+
+		if (!StringUtils.isEmpty(entity.getIsShownByThumbnail())) 			
+			isShownByValue.putProperty(new JsonLdProperty(WebEntityFields.THUMBNAIL, entity.getIsShownByThumbnail()));
+
+		isShownByProperty.addValue(isShownByValue);		
+		return isShownByProperty;
+	}
+
 	private JsonLdProperty createWikimediaResource(String wikimediaCommonsId, String field) {
 		
 		JsonLdProperty depictionProperty = new JsonLdProperty(field);

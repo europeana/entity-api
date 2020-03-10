@@ -43,7 +43,7 @@ public class EntityJsonComparator implements Comparator<Object> {
 		propOrderMap.put(WebEntityConstants.GENDER, 190);
 		propOrderMap.put(WebEntityConstants.PROFESSION_OR_OCCUPATION, 200);
 		propOrderMap.put(WebEntityConstants.BIOGRAPHICAL_INFORMATION, 210);
-		propOrderMap.put(WebEntityConstants.IS_SHOWN_BY, 2200); //215
+		propOrderMap.put(WebEntityConstants.IS_SHOWN_BY, 215); //2200
 		//Place
 		propOrderMap.put(WebEntityConstants.LATITUDE, 220);
 		propOrderMap.put(WebEntityConstants.LONGITUDE, 230);

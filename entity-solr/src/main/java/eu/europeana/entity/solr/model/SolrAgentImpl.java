@@ -102,8 +102,25 @@ public class SolrAgentImpl extends BaseAgent implements Agent {
 	public void setDepiction(String depiction) {
 		super.setDepiction(depiction);
 	}
+	        
+	@Override
+	@Field(AgentSolrFields.IS_SHOWN_BY_ID)
+	public void setIsShownById(String isShownById) {
+		super.setIsShownById(isShownById);
+	}
 	
-
+	@Override
+	@Field(AgentSolrFields.IS_SHOWN_BY_SOURCE)
+	public void setIsShownBySource(String isShownBySource) {
+		super.setIsShownBySource(isShownBySource);
+	}
+	
+	@Override
+	@Field(AgentSolrFields.IS_SHOWN_BY_THUMBNAIL)
+	public void setIsShownByThumbnail(String isShownByThumbnail) {
+		super.setIsShownByThumbnail(isShownByThumbnail);
+	}
+	
 	// Agent Specific Fields
 	@Override
 	@Field(AgentSolrFields.BEGIN)

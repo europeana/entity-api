@@ -65,7 +65,13 @@ public class EuropeanaEntityLd extends JsonLd {
 		
 		//common administrative information
 		putAggregationProperty(entity, ldResource);
-
+		
+		//isShownBy
+		if (!StringUtils.isEmpty(((BaseEntity) entity).getIsShownById())) {	
+        		ldResource.putProperty(createIsShownByResource(
+        			(BaseEntity) entity, WebEntityFields.IS_SHOWN_BY));	
+		}
+		
 		// specific properties (by entity type)
 		putSpecificProperties(entity, ldResource);
 
@@ -74,6 +80,32 @@ public class EuropeanaEntityLd extends JsonLd {
 		return ldResource;
 	}
 	
+	/**
+	 * This method constructs isShownBy property
+	 * @param entity
+	 * @param field
+	 * @return jsonLd property for isShownBy field
+	 */
+	private JsonLdProperty createIsShownByResource(BaseEntity entity, String field) {
+		
+		JsonLdProperty isShownByProperty = new JsonLdProperty(field);
+		JsonLdPropertyValue isShownByValue = new JsonLdPropertyValue();
+		
+		if (!StringUtils.isEmpty(entity.getIsShownById())) { 			
+			isShownByValue.putProperty(new JsonLdProperty(WebEntityFields.ID, entity.getIsShownById()));
+			isShownByValue.putProperty(new JsonLdProperty(WebEntityFields.TYPE, WebEntityFields.WEB_RESOURCE));
+		}
+
+		if (!StringUtils.isEmpty(entity.getIsShownBySource())) 			
+			isShownByValue.putProperty(new JsonLdProperty(WebEntityFields.SOURCE, entity.getIsShownBySource()));
+
+		if (!StringUtils.isEmpty(entity.getIsShownByThumbnail())) 			
+			isShownByValue.putProperty(new JsonLdProperty(WebEntityFields.THUMBNAIL, entity.getIsShownByThumbnail()));
+
+		isShownByProperty.addValue(isShownByValue);		
+		return isShownByProperty;
+	}
+
 	private JsonLdProperty createWikimediaResource(String wikimediaCommonsId, String field) {
 		
 		JsonLdProperty depictionProperty = new JsonLdProperty(field);
@@ -144,7 +176,7 @@ public class EuropeanaEntityLd extends JsonLd {
 	private void putConceptSchemeSpecificProperties(ConceptScheme entity, JsonLdResource jsonLdResource) {
 		putMapOfStringProperty(WebEntityFields.DEFINITION, entity.getDefinition(), "", ldResource);
 		putStringProperty(WebEntityFields.IS_DEFINED_BY, entity.getIsDefinedBy(), jsonLdResource);
-		putStringProperty(WebEntityFields.TOTAL, Integer.toString(entity.getTotal()), jsonLdResource);
+		jsonLdResource.putProperty(WebEntityFields.TOTAL, entity.getTotal());
 	}
 
 	private void putPlaceSpecificProperties(Place entity, JsonLdResource jsonLdResource) {

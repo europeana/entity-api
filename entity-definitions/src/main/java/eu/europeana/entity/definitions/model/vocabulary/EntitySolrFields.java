@@ -24,5 +24,8 @@ public interface EntitySolrFields {
     public static final String MODIFIED = "modified";
     
     public static final String IN_SCHEME = "skos_inScheme";    
-    
+
+    public static final String IS_SHOWN_BY_ID = "isShownBy";
+    public static final String IS_SHOWN_BY_SOURCE = "isShownBy.source";
+    public static final String IS_SHOWN_BY_THUMBNAIL = "isShownBy.thumbnail";
 }

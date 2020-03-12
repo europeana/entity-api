@@ -48,7 +48,11 @@ public class BaseEntity implements Entity, RankedEntity {
 	// The time at which the Set was modified, after creation. 
 	private Date modified;
 	
-
+        // isShownBy fields
+	private String isShownById;
+	private String isShownBySource;
+	private String isShownByThumbnail;
+	
 
 	public Map<String, String> getPrefLabelStringMap() {
 		return prefLabel;
@@ -318,6 +322,30 @@ public class BaseEntity implements Entity, RankedEntity {
 	@Override
 	public void setModified(Date modified) {
 		this.modified = modified;
+	}
+
+	public String getIsShownById() {
+		return isShownById;
+	}
+	
+	public void setIsShownById(String isShownById) {
+		this.isShownById = isShownById;
+	}
+
+	public String getIsShownBySource() {
+		return isShownBySource;
+	}
+	
+	public void setIsShownBySource(String isShownBySource) {
+		this.isShownBySource = isShownBySource;
+	}
+
+	public String getIsShownByThumbnail() {
+		return isShownByThumbnail;
+	}
+	
+	public void setIsShownByThumbnail(String isShownByThumbnail) {
+		this.isShownByThumbnail = isShownByThumbnail;
 	}
 
 }

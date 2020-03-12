@@ -289,11 +289,9 @@ public class EntityServiceImpl extends BaseEntityServiceImpl implements EntitySe
 	    parser = jsonFactory.createParser(groupingJsonLdStr);
 	    ConceptScheme conceptScheme = mapper.readValue(parser, WebConceptSchemeImpl.class);
 	    return conceptScheme;
-	} catch (EntityAttributeInstantiationException e) {
+	} catch (EntityAttributeInstantiationException | JsonParseException e) {
 	    throw new RequestBodyValidationException(I18nConstants.CONCEPT_SCHEME_CANT_PARSE_BODY,
 		    new String[] { e.getMessage() }, e);
-	} catch (JsonParseException e) {
-	    throw new EntityInstantiationException("Json formating exception! " + e.getMessage(), e);
 	} catch (IOException e) {
 	    throw new EntityInstantiationException("Json reading exception! " + e.getMessage(), e);
 	}

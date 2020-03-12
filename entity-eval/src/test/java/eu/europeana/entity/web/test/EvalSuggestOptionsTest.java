@@ -19,7 +19,7 @@ public class EvalSuggestOptionsTest extends BaseEvaluation {
 	List<String> getResults(SolrQuery solrQuery) {
 		
 		@SuppressWarnings("deprecation")
-		SolrClient solrClient = new HttpSolrClient("http://entity-api.eanadev.org:9292/solr/test/", null, false);
+		SolrClient solrClient = new HttpSolrClient.Builder(this.baseUrl).build();
 
 		QueryResponse rsp;
 		List<String> res = null;
@@ -43,7 +43,7 @@ public class EvalSuggestOptionsTest extends BaseEvaluation {
 
 	@Test
 	public void testSuggestPrefLabel() throws Exception {
-		initEval("AutoCompleteDataset_2.csv", FIELD_SKOS_PREF_LABEL + "SuggestionsResults.csv");
+		initEval("AutoCompleteDataset_Revised_1.csv", FIELD_SKOS_PREF_LABEL + "SuggestionsResults.csv");
 		FileUtils.writeStringToFile(testResultsFile, HEAD_LINE, "utf-8", false);
 		for (String id : ids) {
 			System.out.println("searching: " + inputLinesMap.get(id)[posEntity]);
@@ -58,18 +58,65 @@ public class EvalSuggestOptionsTest extends BaseEvaluation {
 		FileUtils.writeStringToFile(testResultsFile, HEAD_LINE, "utf-8", false);
 		for (String id : ids) {
 			System.out.println("searching: " + inputLinesMap.get(id)[posEntity]);
-			generateResults(id, inputMap.get(id), FIELD_LABEL);
+			generateResults(id, inputMap.get(id), FIELD_LABEL_PAGERANK);
+		}
+		System.out.println("done");
+	}
+	
+	
+	@Test
+	public void testSuggestLabel_pagerank() throws Exception {
+		initEval("AutoCompleteDataset_Revised_1.csv", FIELD_LABEL + "SuggestionsResults_pagerank.csv");
+		FileUtils.writeStringToFile(testResultsFile, HEAD_LINE, "utf-8", false);
+		for (String id : ids) {
+			System.out.println("searching: " + inputLinesMap.get(id)[posEntity]);
+			generateResults(id, inputMap.get(id), FIELD_LABEL_PAGERANK);
+		}
+		System.out.println("done");
+	}
+	
+	@Test
+	public void testSuggestLabel_europeana() throws Exception {
+		initEval("AutoCompleteDataset_Revised_1.csv", FIELD_LABEL + "SuggestionsResults_europeana.csv");
+		FileUtils.writeStringToFile(testResultsFile, HEAD_LINE, "utf-8", false);
+		for (String id : ids) {
+			System.out.println("searching: " + inputLinesMap.get(id)[posEntity]);
+			generateResults(id, inputMap.get(id), FIELD_LABEL_EUROPEANA);
 		}
 		System.out.println("done");
 	}
 	
 	@Test
 	public void testSuggester() throws Exception {
-		initEval("AutoCompleteDataset_2.csv", "suggesterResults.csv");
+		initEval("AutoCompleteDataset_Revised_1.csv", "suggesterResults.csv");
 		FileUtils.writeStringToFile(testResultsFile, HEAD_LINE, "utf-8", false);
 		for (String id : ids) {
 			System.out.println("searching: " + inputLinesMap.get(id)[posEntity]);
 			generateResults(id, inputMap.get(id), SUGGESTER);
+		}
+		System.out.println("done");
+	}
+	
+	@Test
+	public void testPrefLabelSearch() throws Exception{
+		initEval("AutoCompleteDataset_Revised_1.csv", FIELD_SKOS_PREF_LABEL_SEARCH);
+		String headline = "Language	Query	Character	Query@n	Rank found	Entity	Type \t\n";
+		FileUtils.writeStringToFile(testResultsFile, headline, "utf-8", false);
+		for (String id : ids) {
+			System.out.println("searching: " + inputLinesMap.get(id)[posEntity]);
+			generateResults(id, inputMap.get(id), FIELD_SKOS_PREF_LABEL_SEARCH);	
+		}
+		System.out.println("done");
+	}
+	
+	@Test
+	public void testLabelSearch() throws Exception{
+		initEval("AutoCompleteDataset_Revised_1.csv", FIELD_SKOS_LABEL_SEARCH);
+		String headline = "Language	Query	Character	Query@n	Rank found	Entity	Type \t\n";
+		FileUtils.writeStringToFile(testResultsFile, headline, "utf-8", false);
+		for (String id : ids) {
+			System.out.println("searching: " + inputLinesMap.get(id)[posEntity]);
+			generateResults(id, inputMap.get(id), FIELD_SKOS_LABEL_SEARCH);	
 		}
 		System.out.println("done");
 	}

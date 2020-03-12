@@ -45,17 +45,22 @@ public abstract class BaseEvaluation {
 	Map<String, String> inputMap = new LinkedHashMap<String, String>();
 	Map<String, String[]> inputLinesMap = new LinkedHashMap<String, String[]>();
 	List<String> ids = new ArrayList<>();
-	String field = "label";
+//	String field = "label";
 //	String field = "text";
 	File datasetFile;
 	File testResultsFile;
 	private SuggestionUtils suggestionHelper;
 	static final String FIELD_SKOS_PREF_LABEL = "skos_prefLabel";
+	static final String FIELD_LABEL_PAGERANK = "label_pagerank";
+	static final String FIELD_LABEL_EUROPEANA = "label_europeana"; 
+	static final String FIELD_SKOS_PREF_LABEL_SEARCH = "skos_prefLabel_search";
+	static final String FIELD_SKOS_LABEL_SEARCH = "skos_label_search";
 	static final String FIELD_LABEL = "label";
 	static final String SUGGESTER = "suggester";
 	static final String FIELD_ID = "id";
 	static final String HEAD_LINE = "Language	Query	Character	Query@n	Rank found	Entity	Type \t\n";
 	
+	String baseUrl ="http://entity-api.eanadev.org:9292/solr/test/";
 	
 	protected File getClasspathFile(String fileName) throws URISyntaxException, IOException, FileNotFoundException {
 		URL resource = getClass().getResource(fileName);
@@ -140,7 +145,8 @@ public abstract class BaseEvaluation {
 	List<String> getResults(SolrQuery query, String testCase){
 //		String request = "http://entity-api.eanadev.org:9292/solr/test/select?fl=id&indent=on&wt=csv&q=text:(query)";
 		@SuppressWarnings("deprecation")
-		SolrClient solrClient = new HttpSolrClient("http://entity-api.eanadev.org:9292/solr/test/");
+		SolrClient solrClient = new HttpSolrClient.Builder(baseUrl).build();
+		
 		
 		QueryResponse rsp;
 		List<String> res = null;
@@ -229,7 +235,29 @@ public abstract class BaseEvaluation {
 				searchParams = new String[]{CommonParams.SORT, "derived_score desc", "q.op", "AND"};
 				fields = new String[]{"id", "skos_prefLabel", "payload", "derived_score"};
 				solrQuery = buildSolrQuery(FIELD_LABEL + ":(" +query + "*)", searchParams, fields);
-				break;	
+				break;
+			case FIELD_LABEL_PAGERANK:
+			  //?q=label%3AMozart*&sort=derived_score+desc&rows=100&fl=skos_prefLabel%2C+payload%2C+id%2C+pagerank%2C+derived_score%2C+europeana_term_hits%2C+europeana_doc_count&wt=json&indent=true
+				searchParams = new String[]{CommonParams.SORT, "pagerank desc", "q.op", "AND"};
+				fields = new String[]{"id", "skos_prefLabel", "payload", "derived_score"};
+				solrQuery = buildSolrQuery(FIELD_LABEL + ":(" +query + "*)", searchParams, fields);
+				break;
+			case FIELD_LABEL_EUROPEANA:
+			  //?q=label%3AMozart*&sort=derived_score+desc&rows=100&fl=skos_prefLabel%2C+payload%2C+id%2C+pagerank%2C+derived_score%2C+europeana_term_hits%2C+europeana_doc_count&wt=json&indent=true
+				searchParams = new String[]{CommonParams.SORT, "if(termfreq(type,'Agent'),sum(div(europeana_doc_count,31734),div(europeana_term_hits,2297502)),sum(div(europeana_doc_count,3065416),div(europeana_term_hits,24576199))) desc", "q.op", "AND"};
+				fields = new String[]{"id", "skos_prefLabel", "payload", "derived_score"};
+				solrQuery = buildSolrQuery(FIELD_LABEL + ":(" +query + "*)", searchParams, fields);
+				break;
+			case FIELD_SKOS_PREF_LABEL_SEARCH:
+			    	searchParams = new String[]{"q.op", "AND"};
+				fields = new String[]{"id", "skos_prefLabel", "payload", "score"};
+				solrQuery = buildSolrQuery(FIELD_SKOS_PREF_LABEL + ":(" +query + "*)", searchParams, fields);
+				break;
+			case FIELD_SKOS_LABEL_SEARCH:
+			    	searchParams = new String[]{"q.op", "AND"};
+				fields = new String[]{"id", "skos_prefLabel", "payload", "score"};
+				solrQuery = buildSolrQuery(FIELD_LABEL + ":(" +query + "*)", searchParams, fields);
+				break;
 			case SUGGESTER:	
 				//?q=skos_prefLabel%3AMozart*&sort=derived_score+desc&rows=100&fl=skos_prefLabel%2C+payload%2C+id%2C+pagerank%2C+derived_score%2C+europeana_term_hits%2C+europeana_doc_count&wt=json&indent=true
 				solrQuery = buildSuggesterQuery(query);

@@ -16,7 +16,8 @@ public class AuthorizationServiceImpl extends BaseAuthorizationService implement
 
     protected final Logger logger = LogManager.getLogger(getClass());
 
-    @Resource
+//    @Resource
+    @Deprecated
     AuthenticationService authenticationService;
 
     @Resource
@@ -25,6 +26,7 @@ public class AuthorizationServiceImpl extends BaseAuthorizationService implement
     @Resource(name = "commons_oauth2_europeanaClientDetailsService")
     ClientDetailsService clientDetailsService;
 
+    @Deprecated
     public AuthorizationServiceImpl(AuthenticationService authenticationService) {
 	this.authenticationService = authenticationService;
     }

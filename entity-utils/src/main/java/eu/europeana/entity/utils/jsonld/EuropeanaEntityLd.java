@@ -32,6 +32,8 @@ public class EuropeanaEntityLd extends JsonLd {
 		super();
 		setPropOrderComparator(new EntityJsonComparator());
 		registerContainerProperty(WebEntityConstants.BIOGRAPHICAL_INFORMATION);
+		registerContainerProperty(WebEntityConstants.PLACE_OF_BIRTH);
+		registerContainerProperty(WebEntityConstants.PLACE_OF_DEATH);
 		//always string array, not container
 //		registerContainerProperty(WebEntityConstants.IS_PART_OF);
 		setEntity(entity);

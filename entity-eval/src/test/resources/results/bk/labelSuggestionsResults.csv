@@ -2,7 +2,7 @@ Language	Query	Character	Query@n	Rank found	Entity	Type
 ﻿bg (Bulgarian)	стара загора	1	с	0	http://data.europeana.eu/place/base/131058	Entity	
 ﻿bg (Bulgarian)	стара загора	2	ст	0	http://data.europeana.eu/place/base/131058	Entity	
 ﻿bg (Bulgarian)	стара загора	3	ста	0	http://data.europeana.eu/place/base/131058	Entity	
-﻿bg (Bulgarian)	стара загора	4	стар	4	http://data.europeana.eu/place/base/131058	Entity	
+﻿bg (Bulgarian)	стара загора	4	стар	8	http://data.europeana.eu/place/base/131058	Entity	
 ﻿bg (Bulgarian)	стара загора	5	стара	2	http://data.europeana.eu/place/base/131058	Entity	
 ﻿bg (Bulgarian)	стара загора	6	стара 	1	http://data.europeana.eu/place/base/131058	Entity	
 ﻿bg (Bulgarian)	стара загора	7	стара з	1	http://data.europeana.eu/place/base/131058	Entity	
@@ -31,8 +31,8 @@ bg (Bulgarian)	Алеко Константинов	17	Алеко Констан�
 bg (Bulgarian)	Алеко Константинов	18	Алеко Константинов	1	http://data.europeana.eu/agent/base/75860	Entity	
 cs (Czech)	Deanna Durbin	1	D	0	http://data.europeana.eu/agent/base/149369	Entity	
 cs (Czech)	Deanna Durbin	2	De	0	http://data.europeana.eu/agent/base/149369	Entity	
-cs (Czech)	Deanna Durbin	3	Dea	0	http://data.europeana.eu/agent/base/149369	Entity	
-cs (Czech)	Deanna Durbin	4	Dean	6	http://data.europeana.eu/agent/base/149369	Entity	
+cs (Czech)	Deanna Durbin	3	Dea	10	http://data.europeana.eu/agent/base/149369	Entity	
+cs (Czech)	Deanna Durbin	4	Dean	4	http://data.europeana.eu/agent/base/149369	Entity	
 cs (Czech)	Deanna Durbin	5	Deann	2	http://data.europeana.eu/agent/base/149369	Entity	
 cs (Czech)	Deanna Durbin	6	Deanna	2	http://data.europeana.eu/agent/base/149369	Entity	
 cs (Czech)	Deanna Durbin	7	Deanna 	2	http://data.europeana.eu/agent/base/149369	Entity	
@@ -49,22 +49,22 @@ cs (Czech)	Anton Janscha	4	Anto	0	http://data.europeana.eu/agent/base/50213	Enti
 cs (Czech)	Anton Janscha	5	Anton	0	http://data.europeana.eu/agent/base/50213	Entity	
 cs (Czech)	Anton Janscha	6	Anton 	0	http://data.europeana.eu/agent/base/50213	Entity	
 cs (Czech)	Anton Janscha	7	Anton J	0	http://data.europeana.eu/agent/base/50213	Entity	
-cs (Czech)	Anton Janscha	8	Anton Ja	4	http://data.europeana.eu/agent/base/50213	Entity	
-cs (Czech)	Anton Janscha	9	Anton Jan	3	http://data.europeana.eu/agent/base/50213	Entity	
+cs (Czech)	Anton Janscha	8	Anton Ja	6	http://data.europeana.eu/agent/base/50213	Entity	
+cs (Czech)	Anton Janscha	9	Anton Jan	4	http://data.europeana.eu/agent/base/50213	Entity	
 cs (Czech)	Anton Janscha	10	Anton Jans	1	http://data.europeana.eu/agent/base/50213	Entity	
 cs (Czech)	Anton Janscha	11	Anton Jansc	1	http://data.europeana.eu/agent/base/50213	Entity	
 cs (Czech)	Anton Janscha	12	Anton Jansch	1	http://data.europeana.eu/agent/base/50213	Entity	
 cs (Czech)	Anton Janscha	13	Anton Janscha	1	http://data.europeana.eu/agent/base/50213	Entity	
 da (Danish)	Aalborg	1	A	0	http://data.europeana.eu/place/base/24238	Entity	
 da (Danish)	Aalborg	2	Aa	0	http://data.europeana.eu/place/base/24238	Entity	
-da (Danish)	Aalborg	3	Aal	2	http://data.europeana.eu/place/base/24238	Entity	
-da (Danish)	Aalborg	4	Aalb	1	http://data.europeana.eu/place/base/24238	Entity	
+da (Danish)	Aalborg	3	Aal	0	http://data.europeana.eu/place/base/24238	Entity	
+da (Danish)	Aalborg	4	Aalb	2	http://data.europeana.eu/place/base/24238	Entity	
 da (Danish)	Aalborg	5	Aalbo	1	http://data.europeana.eu/place/base/24238	Entity	
 da (Danish)	Aalborg	6	Aalbor	1	http://data.europeana.eu/place/base/24238	Entity	
 da (Danish)	Aalborg	7	Aalborg	1	http://data.europeana.eu/place/base/24238	Entity	
 da (Danish)	københavn	1	k	0	http://data.europeana.eu/place/base/24025	Entity	
 da (Danish)	københavn	2	kø	0	http://data.europeana.eu/place/base/24025	Entity	
-da (Danish)	københavn	3	køb	2	http://data.europeana.eu/place/base/24025	Entity	
+da (Danish)	københavn	3	køb	1	http://data.europeana.eu/place/base/24025	Entity	
 da (Danish)	københavn	4	købe	1	http://data.europeana.eu/place/base/24025	Entity	
 da (Danish)	københavn	5	køben	1	http://data.europeana.eu/place/base/24025	Entity	
 da (Danish)	københavn	6	københ	1	http://data.europeana.eu/place/base/24025	Entity	
@@ -91,9 +91,9 @@ de (German)	Hanna Hirsch-Pauli	17	Hanna Hirsch-Paul	1	http://data.europeana.eu/a
 de (German)	Hanna Hirsch-Pauli	18	Hanna Hirsch-Pauli	1	http://data.europeana.eu/agent/base/30576	Entity	
 de (German)	Czernowitz	1	C	0	http://data.europeana.eu/place/base/16107	Entity	
 de (German)	Czernowitz	2	Cz	0	http://data.europeana.eu/place/base/16107	Entity	
-de (German)	Czernowitz	3	Cze	7	http://data.europeana.eu/place/base/16107	Entity	
-de (German)	Czernowitz	4	Czer	2	http://data.europeana.eu/place/base/16107	Entity	
-de (German)	Czernowitz	5	Czern	2	http://data.europeana.eu/place/base/16107	Entity	
+de (German)	Czernowitz	3	Cze	9	http://data.europeana.eu/place/base/16107	Entity	
+de (German)	Czernowitz	4	Czer	3	http://data.europeana.eu/place/base/16107	Entity	
+de (German)	Czernowitz	5	Czern	3	http://data.europeana.eu/place/base/16107	Entity	
 de (German)	Czernowitz	6	Czerno	1	http://data.europeana.eu/place/base/16107	Entity	
 de (German)	Czernowitz	7	Czernow	1	http://data.europeana.eu/place/base/16107	Entity	
 de (German)	Czernowitz	8	Czernowi	1	http://data.europeana.eu/place/base/16107	Entity	
@@ -101,7 +101,7 @@ de (German)	Czernowitz	9	Czernowit	1	http://data.europeana.eu/place/base/16107	E
 de (German)	Czernowitz	10	Czernowitz	1	http://data.europeana.eu/place/base/16107	Entity	
 el (Modern Greek)	Dior	1	D	0	http://data.europeana.eu/agent/base/61169	Entity	
 el (Modern Greek)	Dior	2	Di	0	http://data.europeana.eu/agent/base/61169	Entity	
-el (Modern Greek)	Dior	3	Dio	4	http://data.europeana.eu/agent/base/61169	Entity	
+el (Modern Greek)	Dior	3	Dio	1	http://data.europeana.eu/agent/base/61169	Entity	
 el (Modern Greek)	Dior	4	Dior	1	http://data.europeana.eu/agent/base/61169	Entity	
 el (Modern Greek)	Coray	1	C	0	http://data.europeana.eu/place/base/65831	Entity	
 el (Modern Greek)	Coray	2	Co	0	http://data.europeana.eu/place/base/65831	Entity	
@@ -109,10 +109,10 @@ el (Modern Greek)	Coray	3	Cor	0	http://data.europeana.eu/place/base/65831	Entity
 el (Modern Greek)	Coray	4	Cora	0	http://data.europeana.eu/place/base/65831	Entity	
 el (Modern Greek)	Coray	5	Coray	2	http://data.europeana.eu/place/base/65831	Entity	
 en (English)	Yves Saint Laurent	1	Y	0	http://data.europeana.eu/agent/base/61152	Entity	
-en (English)	Yves Saint Laurent	2	Yv	4	http://data.europeana.eu/agent/base/61152	Entity	
-en (English)	Yves Saint Laurent	3	Yve	4	http://data.europeana.eu/agent/base/61152	Entity	
-en (English)	Yves Saint Laurent	4	Yves	3	http://data.europeana.eu/agent/base/61152	Entity	
-en (English)	Yves Saint Laurent	5	Yves 	3	http://data.europeana.eu/agent/base/61152	Entity	
+en (English)	Yves Saint Laurent	2	Yv	1	http://data.europeana.eu/agent/base/61152	Entity	
+en (English)	Yves Saint Laurent	3	Yve	1	http://data.europeana.eu/agent/base/61152	Entity	
+en (English)	Yves Saint Laurent	4	Yves	1	http://data.europeana.eu/agent/base/61152	Entity	
+en (English)	Yves Saint Laurent	5	Yves 	1	http://data.europeana.eu/agent/base/61152	Entity	
 en (English)	Yves Saint Laurent	6	Yves S	1	http://data.europeana.eu/agent/base/61152	Entity	
 en (English)	Yves Saint Laurent	7	Yves Sa	1	http://data.europeana.eu/agent/base/61152	Entity	
 en (English)	Yves Saint Laurent	8	Yves Sai	1	http://data.europeana.eu/agent/base/61152	Entity	
@@ -129,7 +129,7 @@ en (English)	Yves Saint Laurent	18	Yves Saint Laurent	1	http://data.europeana.eu
 en (English)	Art Nouveau	1	A	0	http://data.europeana.eu/concept/base/96	Entity	
 en (English)	Art Nouveau	2	Ar	0	http://data.europeana.eu/concept/base/96	Entity	
 en (English)	Art Nouveau	3	Art	3	http://data.europeana.eu/concept/base/96	Entity	
-en (English)	Art Nouveau	4	Art 	3	http://data.europeana.eu/concept/base/96	Entity	
+en (English)	Art Nouveau	4	Art 	2	http://data.europeana.eu/concept/base/96	Entity	
 en (English)	Art Nouveau	5	Art N	1	http://data.europeana.eu/concept/base/96	Entity	
 en (English)	Art Nouveau	6	Art No	1	http://data.europeana.eu/concept/base/96	Entity	
 en (English)	Art Nouveau	7	Art Nou	1	http://data.europeana.eu/concept/base/96	Entity	
@@ -139,22 +139,22 @@ en (English)	Art Nouveau	10	Art Nouvea	1	http://data.europeana.eu/concept/base/9
 en (English)	Art Nouveau	11	Art Nouveau	1	http://data.europeana.eu/concept/base/96	Entity	
 es (Spanish)	tapies	1	t	0	http://data.europeana.eu/agent/base/51657	Entity	
 es (Spanish)	tapies	2	ta	0	http://data.europeana.eu/agent/base/51657	Entity	
-es (Spanish)	tapies	3	tap	7	http://data.europeana.eu/agent/base/51657	Entity	
-es (Spanish)	tapies	4	tapi	2	http://data.europeana.eu/agent/base/51657	Entity	
+es (Spanish)	tapies	3	tap	4	http://data.europeana.eu/agent/base/51657	Entity	
+es (Spanish)	tapies	4	tapi	1	http://data.europeana.eu/agent/base/51657	Entity	
 es (Spanish)	tapies	5	tapie	1	http://data.europeana.eu/agent/base/51657	Entity	
 es (Spanish)	tapies	6	tapies	1	http://data.europeana.eu/agent/base/51657	Entity	
 es (Spanish)	VÍllora	1	V	0	http://data.europeana.eu/place/base/206870	Entity	
 es (Spanish)	VÍllora	2	VÍ	0	http://data.europeana.eu/place/base/206870	Entity	
 es (Spanish)	VÍllora	3	VÍl	0	http://data.europeana.eu/place/base/206870	Entity	
 es (Spanish)	VÍllora	4	VÍll	0	http://data.europeana.eu/place/base/206870	Entity	
-es (Spanish)	VÍllora	5	VÍllo	0	http://data.europeana.eu/place/base/206870	Entity	
-es (Spanish)	VÍllora	6	VÍllor	5	http://data.europeana.eu/place/base/206870	Entity	
+es (Spanish)	VÍllora	5	VÍllo	10	http://data.europeana.eu/place/base/206870	Entity	
+es (Spanish)	VÍllora	6	VÍllor	4	http://data.europeana.eu/place/base/206870	Entity	
 es (Spanish)	VÍllora	7	VÍllora	1	http://data.europeana.eu/place/base/206870	Entity	
 et (Estonian)	Schleswig-Holstein	1	S	0	http://data.europeana.eu/place/base/697	Entity	
 et (Estonian)	Schleswig-Holstein	2	Sc	0	http://data.europeana.eu/place/base/697	Entity	
-et (Estonian)	Schleswig-Holstein	3	Sch	6	http://data.europeana.eu/place/base/697	Entity	
-et (Estonian)	Schleswig-Holstein	4	Schl	1	http://data.europeana.eu/place/base/697	Entity	
-et (Estonian)	Schleswig-Holstein	5	Schle	1	http://data.europeana.eu/place/base/697	Entity	
+et (Estonian)	Schleswig-Holstein	3	Sch	0	http://data.europeana.eu/place/base/697	Entity	
+et (Estonian)	Schleswig-Holstein	4	Schl	2	http://data.europeana.eu/place/base/697	Entity	
+et (Estonian)	Schleswig-Holstein	5	Schle	2	http://data.europeana.eu/place/base/697	Entity	
 et (Estonian)	Schleswig-Holstein	6	Schles	1	http://data.europeana.eu/place/base/697	Entity	
 et (Estonian)	Schleswig-Holstein	7	Schlesw	1	http://data.europeana.eu/place/base/697	Entity	
 et (Estonian)	Schleswig-Holstein	8	Schleswi	1	http://data.europeana.eu/place/base/697	Entity	
@@ -170,22 +170,22 @@ et (Estonian)	Schleswig-Holstein	17	Schleswig-Holstei	1	http://data.europeana.eu
 et (Estonian)	Schleswig-Holstein	18	Schleswig-Holstein	1	http://data.europeana.eu/place/base/697	Entity	
 et (Estonian)	versace	1	v	0	http://data.europeana.eu/agent/base/63316	Entity	
 et (Estonian)	versace	2	ve	0	http://data.europeana.eu/agent/base/63316	Entity	
-et (Estonian)	versace	3	ver	0	http://data.europeana.eu/agent/base/63316	Entity	
-et (Estonian)	versace	4	vers	3	http://data.europeana.eu/agent/base/63316	Entity	
-et (Estonian)	versace	5	versa	2	http://data.europeana.eu/agent/base/63316	Entity	
+et (Estonian)	versace	3	ver	8	http://data.europeana.eu/agent/base/63316	Entity	
+et (Estonian)	versace	4	vers	1	http://data.europeana.eu/agent/base/63316	Entity	
+et (Estonian)	versace	5	versa	1	http://data.europeana.eu/agent/base/63316	Entity	
 et (Estonian)	versace	6	versac	1	http://data.europeana.eu/agent/base/63316	Entity	
 et (Estonian)	versace	7	versace	1	http://data.europeana.eu/agent/base/63316	Entity	
 fi (Finnish)	sotkamo	1	s	0	http://data.europeana.eu/place/base/86519	Entity	
 fi (Finnish)	sotkamo	2	so	0	http://data.europeana.eu/place/base/86519	Entity	
 fi (Finnish)	sotkamo	3	sot	0	http://data.europeana.eu/place/base/86519	Entity	
-fi (Finnish)	sotkamo	4	sotk	3	http://data.europeana.eu/place/base/86519	Entity	
+fi (Finnish)	sotkamo	4	sotk	2	http://data.europeana.eu/place/base/86519	Entity	
 fi (Finnish)	sotkamo	5	sotka	2	http://data.europeana.eu/place/base/86519	Entity	
 fi (Finnish)	sotkamo	6	sotkam	2	http://data.europeana.eu/place/base/86519	Entity	
 fi (Finnish)	sotkamo	7	sotkamo	2	http://data.europeana.eu/place/base/86519	Entity	
 fi (Finnish)	New Zealand	1	N	0	http://data.europeana.eu/place/base/8	Entity	
-fi (Finnish)	New Zealand	2	Ne	5	http://data.europeana.eu/place/base/8	Entity	
-fi (Finnish)	New Zealand	3	New	1	http://data.europeana.eu/place/base/8	Entity	
-fi (Finnish)	New Zealand	4	New 	1	http://data.europeana.eu/place/base/8	Entity	
+fi (Finnish)	New Zealand	2	Ne	0	http://data.europeana.eu/place/base/8	Entity	
+fi (Finnish)	New Zealand	3	New	5	http://data.europeana.eu/place/base/8	Entity	
+fi (Finnish)	New Zealand	4	New 	2	http://data.europeana.eu/place/base/8	Entity	
 fi (Finnish)	New Zealand	5	New Z	1	http://data.europeana.eu/place/base/8	Entity	
 fi (Finnish)	New Zealand	6	New Ze	1	http://data.europeana.eu/place/base/8	Entity	
 fi (Finnish)	New Zealand	7	New Zea	1	http://data.europeana.eu/place/base/8	Entity	
@@ -199,19 +199,19 @@ fr (French)	clemenceau	3	cle	0	http://data.europeana.eu/agent/base/54309	Entity
 fr (French)	clemenceau	4	clem	0	http://data.europeana.eu/agent/base/54309	Entity	
 fr (French)	clemenceau	5	cleme	0	http://data.europeana.eu/agent/base/54309	Entity	
 fr (French)	clemenceau	6	clemen	0	http://data.europeana.eu/agent/base/54309	Entity	
-fr (French)	clemenceau	7	clemenc	4	http://data.europeana.eu/agent/base/54309	Entity	
-fr (French)	clemenceau	8	clemence	3	http://data.europeana.eu/agent/base/54309	Entity	
+fr (French)	clemenceau	7	clemenc	5	http://data.europeana.eu/agent/base/54309	Entity	
+fr (French)	clemenceau	8	clemence	4	http://data.europeana.eu/agent/base/54309	Entity	
 fr (French)	clemenceau	9	clemencea	1	http://data.europeana.eu/agent/base/54309	Entity	
 fr (French)	clemenceau	10	clemenceau	1	http://data.europeana.eu/agent/base/54309	Entity	
 fr (French)	Maurice Ravel	1	M	0	http://data.europeana.eu/agent/base/147015	Entity	
 fr (French)	Maurice Ravel	2	Ma	0	http://data.europeana.eu/agent/base/147015	Entity	
-fr (French)	Maurice Ravel	3	Mau	3	http://data.europeana.eu/agent/base/147015	Entity	
-fr (French)	Maurice Ravel	4	Maur	3	http://data.europeana.eu/agent/base/147015	Entity	
-fr (French)	Maurice Ravel	5	Mauri	3	http://data.europeana.eu/agent/base/147015	Entity	
-fr (French)	Maurice Ravel	6	Mauric	2	http://data.europeana.eu/agent/base/147015	Entity	
-fr (French)	Maurice Ravel	7	Maurice	2	http://data.europeana.eu/agent/base/147015	Entity	
-fr (French)	Maurice Ravel	8	Maurice 	2	http://data.europeana.eu/agent/base/147015	Entity	
-fr (French)	Maurice Ravel	9	Maurice R	2	http://data.europeana.eu/agent/base/147015	Entity	
+fr (French)	Maurice Ravel	3	Mau	1	http://data.europeana.eu/agent/base/147015	Entity	
+fr (French)	Maurice Ravel	4	Maur	1	http://data.europeana.eu/agent/base/147015	Entity	
+fr (French)	Maurice Ravel	5	Mauri	1	http://data.europeana.eu/agent/base/147015	Entity	
+fr (French)	Maurice Ravel	6	Mauric	1	http://data.europeana.eu/agent/base/147015	Entity	
+fr (French)	Maurice Ravel	7	Maurice	1	http://data.europeana.eu/agent/base/147015	Entity	
+fr (French)	Maurice Ravel	8	Maurice 	1	http://data.europeana.eu/agent/base/147015	Entity	
+fr (French)	Maurice Ravel	9	Maurice R	1	http://data.europeana.eu/agent/base/147015	Entity	
 fr (French)	Maurice Ravel	10	Maurice Ra	1	http://data.europeana.eu/agent/base/147015	Entity	
 fr (French)	Maurice Ravel	11	Maurice Rav	1	http://data.europeana.eu/agent/base/147015	Entity	
 fr (French)	Maurice Ravel	12	Maurice Rave	1	http://data.europeana.eu/agent/base/147015	Entity	
@@ -224,23 +224,23 @@ ga (Irish)	Newry	5	Newry	1	http://data.europeana.eu/place/base/177052	Entity
 ga (Irish)	Louth	1	L	0	http://data.europeana.eu/place/base/191832	Entity	
 ga (Irish)	Louth	2	Lo	0	http://data.europeana.eu/place/base/191832	Entity	
 ga (Irish)	Louth	3	Lou	0	http://data.europeana.eu/place/base/191832	Entity	
-ga (Irish)	Louth	4	Lout	5	http://data.europeana.eu/place/base/191832	Entity	
-ga (Irish)	Louth	5	Louth	2	http://data.europeana.eu/place/base/191832	Entity	
+ga (Irish)	Louth	4	Lout	4	http://data.europeana.eu/place/base/191832	Entity	
+ga (Irish)	Louth	5	Louth	3	http://data.europeana.eu/place/base/191832	Entity	
 hr (Croatian)	dubrovnik	1	d	0	http://data.europeana.eu/place/base/23124	Entity	
 hr (Croatian)	dubrovnik	2	du	0	http://data.europeana.eu/place/base/23124	Entity	
-hr (Croatian)	dubrovnik	3	dub	3	http://data.europeana.eu/place/base/23124	Entity	
-hr (Croatian)	dubrovnik	4	dubr	2	http://data.europeana.eu/place/base/23124	Entity	
-hr (Croatian)	dubrovnik	5	dubro	2	http://data.europeana.eu/place/base/23124	Entity	
-hr (Croatian)	dubrovnik	6	dubrov	2	http://data.europeana.eu/place/base/23124	Entity	
-hr (Croatian)	dubrovnik	7	dubrovn	2	http://data.europeana.eu/place/base/23124	Entity	
-hr (Croatian)	dubrovnik	8	dubrovni	2	http://data.europeana.eu/place/base/23124	Entity	
-hr (Croatian)	dubrovnik	9	dubrovnik	2	http://data.europeana.eu/place/base/23124	Entity	
+hr (Croatian)	dubrovnik	3	dub	6	http://data.europeana.eu/place/base/23124	Entity	
+hr (Croatian)	dubrovnik	4	dubr	1	http://data.europeana.eu/place/base/23124	Entity	
+hr (Croatian)	dubrovnik	5	dubro	1	http://data.europeana.eu/place/base/23124	Entity	
+hr (Croatian)	dubrovnik	6	dubrov	1	http://data.europeana.eu/place/base/23124	Entity	
+hr (Croatian)	dubrovnik	7	dubrovn	1	http://data.europeana.eu/place/base/23124	Entity	
+hr (Croatian)	dubrovnik	8	dubrovni	1	http://data.europeana.eu/place/base/23124	Entity	
+hr (Croatian)	dubrovnik	9	dubrovnik	1	http://data.europeana.eu/place/base/23124	Entity	
 hr (Croatian)	Slava Raškaj	1	S	0	http://data.europeana.eu/agent/base/49209	Entity	
 hr (Croatian)	Slava Raškaj	2	Sl	0	http://data.europeana.eu/agent/base/49209	Entity	
 hr (Croatian)	Slava Raškaj	3	Sla	0	http://data.europeana.eu/agent/base/49209	Entity	
-hr (Croatian)	Slava Raškaj	4	Slav	0	http://data.europeana.eu/agent/base/49209	Entity	
-hr (Croatian)	Slava Raškaj	5	Slava	3	http://data.europeana.eu/agent/base/49209	Entity	
-hr (Croatian)	Slava Raškaj	6	Slava 	2	http://data.europeana.eu/agent/base/49209	Entity	
+hr (Croatian)	Slava Raškaj	4	Slav	3	http://data.europeana.eu/agent/base/49209	Entity	
+hr (Croatian)	Slava Raškaj	5	Slava	1	http://data.europeana.eu/agent/base/49209	Entity	
+hr (Croatian)	Slava Raškaj	6	Slava 	1	http://data.europeana.eu/agent/base/49209	Entity	
 hr (Croatian)	Slava Raškaj	7	Slava R	1	http://data.europeana.eu/agent/base/49209	Entity	
 hr (Croatian)	Slava Raškaj	8	Slava Ra	1	http://data.europeana.eu/agent/base/49209	Entity	
 hr (Croatian)	Slava Raškaj	9	Slava Raš	1	http://data.europeana.eu/agent/base/49209	Entity	
@@ -251,20 +251,20 @@ hu (Hungarian)	Szécsény	1	S	0	http://data.europeana.eu/place/base/153945	Entit
 hu (Hungarian)	Szécsény	2	Sz	0	http://data.europeana.eu/place/base/153945	Entity	
 hu (Hungarian)	Szécsény	3	Szé	0	http://data.europeana.eu/place/base/153945	Entity	
 hu (Hungarian)	Szécsény	4	Széc	3	http://data.europeana.eu/place/base/153945	Entity	
-hu (Hungarian)	Szécsény	5	Szécs	2	http://data.europeana.eu/place/base/153945	Entity	
+hu (Hungarian)	Szécsény	5	Szécs	1	http://data.europeana.eu/place/base/153945	Entity	
 hu (Hungarian)	Szécsény	6	Szécsé	1	http://data.europeana.eu/place/base/153945	Entity	
 hu (Hungarian)	Szécsény	7	Szécsén	1	http://data.europeana.eu/place/base/153945	Entity	
 hu (Hungarian)	Szécsény	8	Szécsény	1	http://data.europeana.eu/place/base/153945	Entity	
 hu (Hungarian)	pozsony	1	p	0	http://data.europeana.eu/place/base/35611	Entity	
 hu (Hungarian)	pozsony	2	po	0	http://data.europeana.eu/place/base/35611	Entity	
-hu (Hungarian)	pozsony	3	poz	6	http://data.europeana.eu/place/base/35611	Entity	
+hu (Hungarian)	pozsony	3	poz	7	http://data.europeana.eu/place/base/35611	Entity	
 hu (Hungarian)	pozsony	4	pozs	2	http://data.europeana.eu/place/base/35611	Entity	
 hu (Hungarian)	pozsony	5	pozso	2	http://data.europeana.eu/place/base/35611	Entity	
 hu (Hungarian)	pozsony	6	pozson	2	http://data.europeana.eu/place/base/35611	Entity	
 hu (Hungarian)	pozsony	7	pozsony	2	http://data.europeana.eu/place/base/35611	Entity	
 it (Italian)	Palermo	1	P	0	http://data.europeana.eu/place/base/150586	Entity	
 it (Italian)	Palermo	2	Pa	0	http://data.europeana.eu/place/base/150586	Entity	
-it (Italian)	Palermo	3	Pal	7	http://data.europeana.eu/place/base/150586	Entity	
+it (Italian)	Palermo	3	Pal	0	http://data.europeana.eu/place/base/150586	Entity	
 it (Italian)	Palermo	4	Pale	5	http://data.europeana.eu/place/base/150586	Entity	
 it (Italian)	Palermo	5	Paler	1	http://data.europeana.eu/place/base/150586	Entity	
 it (Italian)	Palermo	6	Palerm	1	http://data.europeana.eu/place/base/150586	Entity	
@@ -273,14 +273,14 @@ it (Italian)	Cattapani	1	C	0	http://data.europeana.eu/agent/base/103174	Entity
 it (Italian)	Cattapani	2	Ca	0	http://data.europeana.eu/agent/base/103174	Entity	
 it (Italian)	Cattapani	3	Cat	0	http://data.europeana.eu/agent/base/103174	Entity	
 it (Italian)	Cattapani	4	Catt	0	http://data.europeana.eu/agent/base/103174	Entity	
-it (Italian)	Cattapani	5	Catta	0	http://data.europeana.eu/agent/base/103174	Entity	
+it (Italian)	Cattapani	5	Catta	10	http://data.europeana.eu/agent/base/103174	Entity	
 it (Italian)	Cattapani	6	Cattap	1	http://data.europeana.eu/agent/base/103174	Entity	
 it (Italian)	Cattapani	7	Cattapa	1	http://data.europeana.eu/agent/base/103174	Entity	
 it (Italian)	Cattapani	8	Cattapan	1	http://data.europeana.eu/agent/base/103174	Entity	
 it (Italian)	Cattapani	9	Cattapani	1	http://data.europeana.eu/agent/base/103174	Entity	
 lt (Lithuanian)	Tauragė	1	T	0	http://data.europeana.eu/place/base/201859	Entity	
 lt (Lithuanian)	Tauragė	2	Ta	0	http://data.europeana.eu/place/base/201859	Entity	
-lt (Lithuanian)	Tauragė	3	Tau	3	http://data.europeana.eu/place/base/201859	Entity	
+lt (Lithuanian)	Tauragė	3	Tau	8	http://data.europeana.eu/place/base/201859	Entity	
 lt (Lithuanian)	Tauragė	4	Taur	2	http://data.europeana.eu/place/base/201859	Entity	
 lt (Lithuanian)	Tauragė	5	Taura	1	http://data.europeana.eu/place/base/201859	Entity	
 lt (Lithuanian)	Tauragė	6	Taurag	1	http://data.europeana.eu/place/base/201859	Entity	
@@ -288,35 +288,35 @@ lt (Lithuanian)	Tauragė	7	Tauragė	1	http://data.europeana.eu/place/base/201859
 lt (Lithuanian)	Metz	1	M	0	http://data.europeana.eu/place/base/71080	Entity	
 lt (Lithuanian)	Metz	2	Me	0	http://data.europeana.eu/place/base/71080	Entity	
 lt (Lithuanian)	Metz	3	Met	0	http://data.europeana.eu/place/base/71080	Entity	
-lt (Lithuanian)	Metz	4	Metz	0	http://data.europeana.eu/place/base/71080	Entity	
+lt (Lithuanian)	Metz	4	Metz	8	http://data.europeana.eu/place/base/71080	Entity	
 lv (Latvian)	riga	1	r	0	http://data.europeana.eu/place/base/85634	Entity	
 lv (Latvian)	riga	2	ri	0	http://data.europeana.eu/place/base/85634	Entity	
-lv (Latvian)	riga	3	rig	1	http://data.europeana.eu/place/base/85634	Entity	
+lv (Latvian)	riga	3	rig	7	http://data.europeana.eu/place/base/85634	Entity	
 lv (Latvian)	riga	4	riga	1	http://data.europeana.eu/place/base/85634	Entity	
 lv (Latvian)	Saldus	1	S	0	http://data.europeana.eu/place/base/85630	Entity	
 lv (Latvian)	Saldus	2	Sa	0	http://data.europeana.eu/place/base/85630	Entity	
 lv (Latvian)	Saldus	3	Sal	0	http://data.europeana.eu/place/base/85630	Entity	
-lv (Latvian)	Saldus	4	Sald	3	http://data.europeana.eu/place/base/85630	Entity	
-lv (Latvian)	Saldus	5	Saldu	3	http://data.europeana.eu/place/base/85630	Entity	
+lv (Latvian)	Saldus	4	Sald	6	http://data.europeana.eu/place/base/85630	Entity	
+lv (Latvian)	Saldus	5	Saldu	4	http://data.europeana.eu/place/base/85630	Entity	
 lv (Latvian)	Saldus	6	Saldus	2	http://data.europeana.eu/place/base/85630	Entity	
 mt (Maltese)	Izola	1	I	0	http://data.europeana.eu/place/base/85423	Entity	
 mt (Maltese)	Izola	2	Iz	0	http://data.europeana.eu/place/base/85423	Entity	
-mt (Maltese)	Izola	3	Izo	0	http://data.europeana.eu/place/base/85423	Entity	
-mt (Maltese)	Izola	4	Izol	5	http://data.europeana.eu/place/base/85423	Entity	
-mt (Maltese)	Izola	5	Izola	3	http://data.europeana.eu/place/base/85423	Entity	
+mt (Maltese)	Izola	3	Izo	5	http://data.europeana.eu/place/base/85423	Entity	
+mt (Maltese)	Izola	4	Izol	2	http://data.europeana.eu/place/base/85423	Entity	
+mt (Maltese)	Izola	5	Izola	2	http://data.europeana.eu/place/base/85423	Entity	
 mt (Maltese)	Jan Toorop	1	J	0	http://data.europeana.eu/agent/base/61729	Entity	
 mt (Maltese)	Jan Toorop	2	Ja	0	http://data.europeana.eu/agent/base/61729	Entity	
 mt (Maltese)	Jan Toorop	3	Jan	0	http://data.europeana.eu/agent/base/61729	Entity	
 mt (Maltese)	Jan Toorop	4	Jan 	0	http://data.europeana.eu/agent/base/61729	Entity	
-mt (Maltese)	Jan Toorop	5	Jan T	3	http://data.europeana.eu/agent/base/61729	Entity	
-mt (Maltese)	Jan Toorop	6	Jan To	2	http://data.europeana.eu/agent/base/61729	Entity	
+mt (Maltese)	Jan Toorop	5	Jan T	1	http://data.europeana.eu/agent/base/61729	Entity	
+mt (Maltese)	Jan Toorop	6	Jan To	1	http://data.europeana.eu/agent/base/61729	Entity	
 mt (Maltese)	Jan Toorop	7	Jan Too	1	http://data.europeana.eu/agent/base/61729	Entity	
 mt (Maltese)	Jan Toorop	8	Jan Toor	1	http://data.europeana.eu/agent/base/61729	Entity	
 mt (Maltese)	Jan Toorop	9	Jan Tooro	1	http://data.europeana.eu/agent/base/61729	Entity	
 mt (Maltese)	Jan Toorop	10	Jan Toorop	1	http://data.europeana.eu/agent/base/61729	Entity	
 nl (Dutch)	Photo	1	P	0	http://data.europeana.eu/concept/base/48	Entity	
-nl (Dutch)	Photo	2	Ph	0	http://data.europeana.eu/concept/base/48	Entity	
-nl (Dutch)	Photo	3	Pho	8	http://data.europeana.eu/concept/base/48	Entity	
+nl (Dutch)	Photo	2	Ph	5	http://data.europeana.eu/concept/base/48	Entity	
+nl (Dutch)	Photo	3	Pho	3	http://data.europeana.eu/concept/base/48	Entity	
 nl (Dutch)	Photo	4	Phot	1	http://data.europeana.eu/concept/base/48	Entity	
 nl (Dutch)	Photo	5	Photo	1	http://data.europeana.eu/concept/base/48	Entity	
 nl (Dutch)	Maastricht	1	M	0	http://data.europeana.eu/place/base/40541	Entity	
@@ -324,15 +324,15 @@ nl (Dutch)	Maastricht	2	Ma	0	http://data.europeana.eu/place/base/40541	Entity
 nl (Dutch)	Maastricht	3	Maa	10	http://data.europeana.eu/place/base/40541	Entity	
 nl (Dutch)	Maastricht	4	Maas	2	http://data.europeana.eu/place/base/40541	Entity	
 nl (Dutch)	Maastricht	5	Maast	2	http://data.europeana.eu/place/base/40541	Entity	
-nl (Dutch)	Maastricht	6	Maastr	2	http://data.europeana.eu/place/base/40541	Entity	
-nl (Dutch)	Maastricht	7	Maastri	2	http://data.europeana.eu/place/base/40541	Entity	
-nl (Dutch)	Maastricht	8	Maastric	2	http://data.europeana.eu/place/base/40541	Entity	
-nl (Dutch)	Maastricht	9	Maastrich	2	http://data.europeana.eu/place/base/40541	Entity	
-nl (Dutch)	Maastricht	10	Maastricht	2	http://data.europeana.eu/place/base/40541	Entity	
+nl (Dutch)	Maastricht	6	Maastr	1	http://data.europeana.eu/place/base/40541	Entity	
+nl (Dutch)	Maastricht	7	Maastri	1	http://data.europeana.eu/place/base/40541	Entity	
+nl (Dutch)	Maastricht	8	Maastric	1	http://data.europeana.eu/place/base/40541	Entity	
+nl (Dutch)	Maastricht	9	Maastrich	1	http://data.europeana.eu/place/base/40541	Entity	
+nl (Dutch)	Maastricht	10	Maastricht	1	http://data.europeana.eu/place/base/40541	Entity	
 no (Norwegian)	Marcel Duchamp	1	M	0	http://data.europeana.eu/agent/base/60394	Entity	
 no (Norwegian)	Marcel Duchamp	2	Ma	0	http://data.europeana.eu/agent/base/60394	Entity	
 no (Norwegian)	Marcel Duchamp	3	Mar	0	http://data.europeana.eu/agent/base/60394	Entity	
-no (Norwegian)	Marcel Duchamp	4	Marc	4	http://data.europeana.eu/agent/base/60394	Entity	
+no (Norwegian)	Marcel Duchamp	4	Marc	7	http://data.europeana.eu/agent/base/60394	Entity	
 no (Norwegian)	Marcel Duchamp	5	Marce	1	http://data.europeana.eu/agent/base/60394	Entity	
 no (Norwegian)	Marcel Duchamp	6	Marcel	1	http://data.europeana.eu/agent/base/60394	Entity	
 no (Norwegian)	Marcel Duchamp	7	Marcel 	1	http://data.europeana.eu/agent/base/60394	Entity	
@@ -344,12 +344,12 @@ no (Norwegian)	Marcel Duchamp	12	Marcel Ducha	1	http://data.europeana.eu/agent/b
 no (Norwegian)	Marcel Duchamp	13	Marcel Ducham	1	http://data.europeana.eu/agent/base/60394	Entity	
 no (Norwegian)	Marcel Duchamp	14	Marcel Duchamp	1	http://data.europeana.eu/agent/base/60394	Entity	
 no (Norwegian)	oslo	1	o	0	http://data.europeana.eu/place/base/155882	Entity	
-no (Norwegian)	oslo	2	os	4	http://data.europeana.eu/place/base/155882	Entity	
-no (Norwegian)	oslo	3	osl	2	http://data.europeana.eu/place/base/155882	Entity	
-no (Norwegian)	oslo	4	oslo	2	http://data.europeana.eu/place/base/155882	Entity	
+no (Norwegian)	oslo	2	os	5	http://data.europeana.eu/place/base/155882	Entity	
+no (Norwegian)	oslo	3	osl	1	http://data.europeana.eu/place/base/155882	Entity	
+no (Norwegian)	oslo	4	oslo	1	http://data.europeana.eu/place/base/155882	Entity	
 pl (Polish)	Płock	1	P	0	http://data.europeana.eu/place/base/134515	Entity	
 pl (Polish)	Płock	2	Pł	0	http://data.europeana.eu/place/base/134515	Entity	
-pl (Polish)	Płock	3	Pło	4	http://data.europeana.eu/place/base/134515	Entity	
+pl (Polish)	Płock	3	Pło	6	http://data.europeana.eu/place/base/134515	Entity	
 pl (Polish)	Płock	4	Płoc	2	http://data.europeana.eu/place/base/134515	Entity	
 pl (Polish)	Płock	5	Płock	1	http://data.europeana.eu/place/base/134515	Entity	
 pl (Polish)	Gdańsk	1	G	0	http://data.europeana.eu/place/base/134651	Entity	
@@ -358,7 +358,7 @@ pl (Polish)	Gdańsk	3	Gda	1	http://data.europeana.eu/place/base/134651	Entity
 pl (Polish)	Gdańsk	4	Gdań	1	http://data.europeana.eu/place/base/134651	Entity	
 pl (Polish)	Gdańsk	5	Gdańs	1	http://data.europeana.eu/place/base/134651	Entity	
 pl (Polish)	Gdańsk	6	Gdańsk	1	http://data.europeana.eu/place/base/134651	Entity	
-pt (Portuguese)	World War I	1	W	5	http://data.europeana.eu/concept/base/83	Entity	
+pt (Portuguese)	World War I	1	W	1	http://data.europeana.eu/concept/base/83	Entity	
 pt (Portuguese)	World War I	2	Wo	1	http://data.europeana.eu/concept/base/83	Entity	
 pt (Portuguese)	World War I	3	Wor	1	http://data.europeana.eu/concept/base/83	Entity	
 pt (Portuguese)	World War I	4	Worl	1	http://data.europeana.eu/concept/base/83	Entity	
@@ -378,12 +378,12 @@ pt (Portuguese)	Curitiba	6	Curiti	1	http://data.europeana.eu/agent/base/162494	E
 pt (Portuguese)	Curitiba	7	Curitib	1	http://data.europeana.eu/agent/base/162494	Entity	
 pt (Portuguese)	Curitiba	8	Curitiba	1	http://data.europeana.eu/agent/base/162494	Entity	
 ro (Romanian)	Peter Paul Rubens	1	P	0	http://data.europeana.eu/agent/base/113189	Entity	
-ro (Romanian)	Peter Paul Rubens	2	Pe	0	http://data.europeana.eu/agent/base/113189	Entity	
-ro (Romanian)	Peter Paul Rubens	3	Pet	5	http://data.europeana.eu/agent/base/113189	Entity	
-ro (Romanian)	Peter Paul Rubens	4	Pete	4	http://data.europeana.eu/agent/base/113189	Entity	
-ro (Romanian)	Peter Paul Rubens	5	Peter	4	http://data.europeana.eu/agent/base/113189	Entity	
-ro (Romanian)	Peter Paul Rubens	6	Peter 	3	http://data.europeana.eu/agent/base/113189	Entity	
-ro (Romanian)	Peter Paul Rubens	7	Peter P	3	http://data.europeana.eu/agent/base/113189	Entity	
+ro (Romanian)	Peter Paul Rubens	2	Pe	8	http://data.europeana.eu/agent/base/113189	Entity	
+ro (Romanian)	Peter Paul Rubens	3	Pet	1	http://data.europeana.eu/agent/base/113189	Entity	
+ro (Romanian)	Peter Paul Rubens	4	Pete	1	http://data.europeana.eu/agent/base/113189	Entity	
+ro (Romanian)	Peter Paul Rubens	5	Peter	1	http://data.europeana.eu/agent/base/113189	Entity	
+ro (Romanian)	Peter Paul Rubens	6	Peter 	1	http://data.europeana.eu/agent/base/113189	Entity	
+ro (Romanian)	Peter Paul Rubens	7	Peter P	1	http://data.europeana.eu/agent/base/113189	Entity	
 ro (Romanian)	Peter Paul Rubens	8	Peter Pa	1	http://data.europeana.eu/agent/base/113189	Entity	
 ro (Romanian)	Peter Paul Rubens	9	Peter Pau	1	http://data.europeana.eu/agent/base/113189	Entity	
 ro (Romanian)	Peter Paul Rubens	10	Peter Paul	1	http://data.europeana.eu/agent/base/113189	Entity	
@@ -397,14 +397,14 @@ ro (Romanian)	Peter Paul Rubens	17	Peter Paul Rubens	1	http://data.europeana.eu/
 ro (Romanian)	Turda	1	T	0	http://data.europeana.eu/place/base/35926	Entity	
 ro (Romanian)	Turda	2	Tu	0	http://data.europeana.eu/place/base/35926	Entity	
 ro (Romanian)	Turda	3	Tur	0	http://data.europeana.eu/place/base/35926	Entity	
-ro (Romanian)	Turda	4	Turd	4	http://data.europeana.eu/place/base/35926	Entity	
-ro (Romanian)	Turda	5	Turda	3	http://data.europeana.eu/place/base/35926	Entity	
+ro (Romanian)	Turda	4	Turd	2	http://data.europeana.eu/place/base/35926	Entity	
+ro (Romanian)	Turda	5	Turda	2	http://data.europeana.eu/place/base/35926	Entity	
 ru (Russian)	Emil Telmányi	1	E	0	http://data.europeana.eu/agent/base/48862	Entity	
 ru (Russian)	Emil Telmányi	2	Em	0	http://data.europeana.eu/agent/base/48862	Entity	
 ru (Russian)	Emil Telmányi	3	Emi	0	http://data.europeana.eu/agent/base/48862	Entity	
 ru (Russian)	Emil Telmányi	4	Emil	0	http://data.europeana.eu/agent/base/48862	Entity	
 ru (Russian)	Emil Telmányi	5	Emil 	0	http://data.europeana.eu/agent/base/48862	Entity	
-ru (Russian)	Emil Telmányi	6	Emil T	2	http://data.europeana.eu/agent/base/48862	Entity	
+ru (Russian)	Emil Telmányi	6	Emil T	1	http://data.europeana.eu/agent/base/48862	Entity	
 ru (Russian)	Emil Telmányi	7	Emil Te	1	http://data.europeana.eu/agent/base/48862	Entity	
 ru (Russian)	Emil Telmányi	8	Emil Tel	1	http://data.europeana.eu/agent/base/48862	Entity	
 ru (Russian)	Emil Telmányi	9	Emil Telm	1	http://data.europeana.eu/agent/base/48862	Entity	
@@ -413,10 +413,10 @@ ru (Russian)	Emil Telmányi	11	Emil Telmán	1	http://data.europeana.eu/agent/bas
 ru (Russian)	Emil Telmányi	12	Emil Telmány	1	http://data.europeana.eu/agent/base/48862	Entity	
 ru (Russian)	Emil Telmányi	13	Emil Telmányi	1	http://data.europeana.eu/agent/base/48862	Entity	
 ru (Russian)	Vladivostok	1	V	0	http://data.europeana.eu/place/base/199235	Entity	
-ru (Russian)	Vladivostok	2	Vl	1	http://data.europeana.eu/place/base/199235	Entity	
-ru (Russian)	Vladivostok	3	Vla	1	http://data.europeana.eu/place/base/199235	Entity	
-ru (Russian)	Vladivostok	4	Vlad	1	http://data.europeana.eu/place/base/199235	Entity	
-ru (Russian)	Vladivostok	5	Vladi	1	http://data.europeana.eu/place/base/199235	Entity	
+ru (Russian)	Vladivostok	2	Vl	0	http://data.europeana.eu/place/base/199235	Entity	
+ru (Russian)	Vladivostok	3	Vla	0	http://data.europeana.eu/place/base/199235	Entity	
+ru (Russian)	Vladivostok	4	Vlad	0	http://data.europeana.eu/place/base/199235	Entity	
+ru (Russian)	Vladivostok	5	Vladi	0	http://data.europeana.eu/place/base/199235	Entity	
 ru (Russian)	Vladivostok	6	Vladiv	1	http://data.europeana.eu/place/base/199235	Entity	
 ru (Russian)	Vladivostok	7	Vladivo	1	http://data.europeana.eu/place/base/199235	Entity	
 ru (Russian)	Vladivostok	8	Vladivos	1	http://data.europeana.eu/place/base/199235	Entity	
@@ -427,7 +427,7 @@ sk (Slovak)	ján kollár	1	j	0	http://data.europeana.eu/agent/base/69315	Entity
 sk (Slovak)	ján kollár	2	já	0	http://data.europeana.eu/agent/base/69315	Entity	
 sk (Slovak)	ján kollár	3	ján	0	http://data.europeana.eu/agent/base/69315	Entity	
 sk (Slovak)	ján kollár	4	ján 	0	http://data.europeana.eu/agent/base/69315	Entity	
-sk (Slovak)	ján kollár	5	ján k	8	http://data.europeana.eu/agent/base/69315	Entity	
+sk (Slovak)	ján kollár	5	ján k	9	http://data.europeana.eu/agent/base/69315	Entity	
 sk (Slovak)	ján kollár	6	ján ko	5	http://data.europeana.eu/agent/base/69315	Entity	
 sk (Slovak)	ján kollár	7	ján kol	1	http://data.europeana.eu/agent/base/69315	Entity	
 sk (Slovak)	ján kollár	8	ján koll	1	http://data.europeana.eu/agent/base/69315	Entity	
@@ -436,7 +436,7 @@ sk (Slovak)	ján kollár	10	ján kollár	1	http://data.europeana.eu/agent/base/6
 sk (Slovak)	Trenčín	1	T	0	http://data.europeana.eu/place/base/35540	Entity	
 sk (Slovak)	Trenčín	2	Tr	0	http://data.europeana.eu/place/base/35540	Entity	
 sk (Slovak)	Trenčín	3	Tre	0	http://data.europeana.eu/place/base/35540	Entity	
-sk (Slovak)	Trenčín	4	Tren	7	http://data.europeana.eu/place/base/35540	Entity	
+sk (Slovak)	Trenčín	4	Tren	10	http://data.europeana.eu/place/base/35540	Entity	
 sk (Slovak)	Trenčín	5	Trenč	1	http://data.europeana.eu/place/base/35540	Entity	
 sk (Slovak)	Trenčín	6	Trenčí	1	http://data.europeana.eu/place/base/35540	Entity	
 sk (Slovak)	Trenčín	7	Trenčín	1	http://data.europeana.eu/place/base/35540	Entity	
@@ -450,7 +450,7 @@ sl (Slovene)	cerknica	7	cerknic	1	http://data.europeana.eu/place/base/85433	Enti
 sl (Slovene)	cerknica	8	cerknica	1	http://data.europeana.eu/place/base/85433	Entity	
 sl (Slovene)	cankar	1	c	0	http://data.europeana.eu/agent/base/69554	Entity	
 sl (Slovene)	cankar	2	ca	0	http://data.europeana.eu/agent/base/69554	Entity	
-sl (Slovene)	cankar	3	can	0	http://data.europeana.eu/agent/base/69554	Entity	
+sl (Slovene)	cankar	3	can	9	http://data.europeana.eu/agent/base/69554	Entity	
 sl (Slovene)	cankar	4	cank	1	http://data.europeana.eu/agent/base/69554	Entity	
 sl (Slovene)	cankar	5	canka	1	http://data.europeana.eu/agent/base/69554	Entity	
 sl (Slovene)	cankar	6	cankar	1	http://data.europeana.eu/agent/base/69554	Entity	
@@ -466,14 +466,14 @@ sv (Swedish)	cyanotype	9	cyanotype	1	http://data.europeana.eu/concept/base/1697	
 sv (Swedish)	Fagerhult	1	F	0	http://data.europeana.eu/place/base/33998	Entity	
 sv (Swedish)	Fagerhult	2	Fa	0	http://data.europeana.eu/place/base/33998	Entity	
 sv (Swedish)	Fagerhult	3	Fag	0	http://data.europeana.eu/place/base/33998	Entity	
-sv (Swedish)	Fagerhult	4	Fage	0	http://data.europeana.eu/place/base/33998	Entity	
-sv (Swedish)	Fagerhult	5	Fager	9	http://data.europeana.eu/place/base/33998	Entity	
-sv (Swedish)	Fagerhult	6	Fagerh	3	http://data.europeana.eu/place/base/33998	Entity	
+sv (Swedish)	Fagerhult	4	Fage	8	http://data.europeana.eu/place/base/33998	Entity	
+sv (Swedish)	Fagerhult	5	Fager	3	http://data.europeana.eu/place/base/33998	Entity	
+sv (Swedish)	Fagerhult	6	Fagerh	1	http://data.europeana.eu/place/base/33998	Entity	
 sv (Swedish)	Fagerhult	7	Fagerhu	1	http://data.europeana.eu/place/base/33998	Entity	
 sv (Swedish)	Fagerhult	8	Fagerhul	1	http://data.europeana.eu/place/base/33998	Entity	
 sv (Swedish)	Fagerhult	9	Fagerhult	1	http://data.europeana.eu/place/base/33998	Entity	
-en	Wolfgang Amadeus Mozart	1	W	0	http://data.europeana.eu/agent/base/146951	Entity	
-en	Wolfgang Amadeus Mozart	2	Wo	7	http://data.europeana.eu/agent/base/146951	Entity	
+en	Wolfgang Amadeus Mozart	1	W	7	http://data.europeana.eu/agent/base/146951	Entity	
+en	Wolfgang Amadeus Mozart	2	Wo	2	http://data.europeana.eu/agent/base/146951	Entity	
 en	Wolfgang Amadeus Mozart	3	Wol	1	http://data.europeana.eu/agent/base/146951	Entity	
 en	Wolfgang Amadeus Mozart	4	Wolf	1	http://data.europeana.eu/agent/base/146951	Entity	
 en	Wolfgang Amadeus Mozart	5	Wolfg	1	http://data.europeana.eu/agent/base/146951	Entity	
@@ -496,9 +496,9 @@ en	Wolfgang Amadeus Mozart	21	Wolfgang Amadeus Moza	1	http://data.europeana.eu/a
 en	Wolfgang Amadeus Mozart	22	Wolfgang Amadeus Mozar	1	http://data.europeana.eu/agent/base/146951	Entity	
 en	Wolfgang Amadeus Mozart	23	Wolfgang Amadeus Mozart	1	http://data.europeana.eu/agent/base/146951	Entity	
 en	Leonardo da Vinci	1	L	0	http://data.europeana.eu/agent/base/146741	Entity	
-en	Leonardo da Vinci	2	Le	0	http://data.europeana.eu/agent/base/146741	Entity	
-en	Leonardo da Vinci	3	Leo	3	http://data.europeana.eu/agent/base/146741	Entity	
-en	Leonardo da Vinci	4	Leon	2	http://data.europeana.eu/agent/base/146741	Entity	
+en	Leonardo da Vinci	2	Le	6	http://data.europeana.eu/agent/base/146741	Entity	
+en	Leonardo da Vinci	3	Leo	1	http://data.europeana.eu/agent/base/146741	Entity	
+en	Leonardo da Vinci	4	Leon	1	http://data.europeana.eu/agent/base/146741	Entity	
 en	Leonardo da Vinci	5	Leona	1	http://data.europeana.eu/agent/base/146741	Entity	
 en	Leonardo da Vinci	6	Leonar	1	http://data.europeana.eu/agent/base/146741	Entity	
 en	Leonardo da Vinci	7	Leonard	1	http://data.europeana.eu/agent/base/146741	Entity	
@@ -513,10 +513,10 @@ en	Leonardo da Vinci	15	Leonardo da Vin	1	http://data.europeana.eu/agent/base/14
 en	Leonardo da Vinci	16	Leonardo da Vinc	1	http://data.europeana.eu/agent/base/146741	Entity	
 en	Leonardo da Vinci	17	Leonardo da Vinci	1	http://data.europeana.eu/agent/base/146741	Entity	
 en	Paris	1	P	0	http://data.europeana.eu/place/base/41488	Entity	
-en	Paris	2	Pa	7	http://data.europeana.eu/place/base/41488	Entity	
-en	Paris	3	Par	2	http://data.europeana.eu/place/base/41488	Entity	
-en	Paris	4	Pari	1	http://data.europeana.eu/place/base/41488	Entity	
-en	Paris	5	Paris	1	http://data.europeana.eu/place/base/41488	Entity	
+en	Paris	2	Pa	8	http://data.europeana.eu/place/base/41488	Entity	
+en	Paris	3	Par	4	http://data.europeana.eu/place/base/41488	Entity	
+en	Paris	4	Pari	2	http://data.europeana.eu/place/base/41488	Entity	
+en	Paris	5	Paris	2	http://data.europeana.eu/place/base/41488	Entity	
 en	Netherlands Institute for Sound and Vision	1	N	0	http://data.europeana.eu/organization/1482250000000338645 	Entity	
 en	Netherlands Institute for Sound and Vision	2	Ne	0	http://data.europeana.eu/organization/1482250000000338645 	Entity	
 en	Netherlands Institute for Sound and Vision	3	Net	0	http://data.europeana.eu/organization/1482250000000338645 	Entity	
@@ -560,11 +560,11 @@ en	Netherlands Institute for Sound and Vision	40	Netherlands Institute for Sound
 en	Netherlands Institute for Sound and Vision	41	Netherlands Institute for Sound and Visio	0	http://data.europeana.eu/organization/1482250000000338645 	Entity	
 en	Netherlands Institute for Sound and Vision	42	Netherlands Institute for Sound and Vision	0	http://data.europeana.eu/organization/1482250000000338645 	Entity	
 en	Rome	1	R	0	http://data.europeana.eu/place/base/143433	Entity	
-en	Rome	2	Ro	5	http://data.europeana.eu/place/base/143433	Entity	
+en	Rome	2	Ro	7	http://data.europeana.eu/place/base/143433	Entity	
 en	Rome	3	Rom	1	http://data.europeana.eu/place/base/143433	Entity	
 en	Rome	4	Rome	1	http://data.europeana.eu/place/base/143433	Entity	
 en	Romania	1	R	0	http://data.europeana.eu/place/base/110	Entity	
-en	Romania	2	Ro	6	http://data.europeana.eu/place/base/110	Entity	
+en	Romania	2	Ro	0	http://data.europeana.eu/place/base/110	Entity	
 en	Romania	3	Rom	2	http://data.europeana.eu/place/base/110	Entity	
 en	Romania	4	Roma	2	http://data.europeana.eu/place/base/110	Entity	
 en	Romania	5	Roman	1	http://data.europeana.eu/place/base/110	Entity	

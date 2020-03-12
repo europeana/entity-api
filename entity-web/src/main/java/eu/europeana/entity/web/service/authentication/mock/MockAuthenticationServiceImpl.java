@@ -23,7 +23,12 @@ import eu.europeana.entity.web.exception.authorization.UserAuthorizationExceptio
 import eu.europeana.entity.web.service.authentication.AuthenticationService;
 import eu.europeana.entity.web.service.authentication.model.ClientApplicationImpl;
 
-
+@Deprecated
+/**
+ * not used anymore
+ * @author GordeaS
+ *
+ */
 public class MockAuthenticationServiceImpl implements AuthenticationService, ResourceServerTokenServices {
 
 	private static final String COLLECTIONS_API_KEY = "phVKTQ8g9F";

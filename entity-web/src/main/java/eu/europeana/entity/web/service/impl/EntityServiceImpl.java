@@ -15,9 +15,9 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonParser.Feature;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import eu.europeana.api.common.config.I18nConstants;
@@ -289,11 +289,9 @@ public class EntityServiceImpl extends BaseEntityServiceImpl implements EntitySe
 	    parser = jsonFactory.createParser(groupingJsonLdStr);
 	    ConceptScheme conceptScheme = mapper.readValue(parser, WebConceptSchemeImpl.class);
 	    return conceptScheme;
-	} catch (EntityAttributeInstantiationException | JsonParseException e) {
+	} catch (EntityAttributeInstantiationException | IOException e) {
 	    throw new RequestBodyValidationException(I18nConstants.CONCEPT_SCHEME_CANT_PARSE_BODY,
 		    new String[] { e.getMessage() }, e);
-	} catch (IOException e) {
-	    throw new EntityInstantiationException("Json reading exception! " + e.getMessage(), e);
 	}
     }
 

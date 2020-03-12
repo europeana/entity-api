@@ -48,7 +48,7 @@ cs (Czech)	Anton Janscha	3	Ant	0	http://data.europeana.eu/agent/base/50213	Entit
 cs (Czech)	Anton Janscha	4	Anto	0	http://data.europeana.eu/agent/base/50213	Entity	
 cs (Czech)	Anton Janscha	5	Anton	0	http://data.europeana.eu/agent/base/50213	Entity	
 cs (Czech)	Anton Janscha	6	Anton 	0	http://data.europeana.eu/agent/base/50213	Entity	
-cs (Czech)	Anton Janscha	7	Anton J	3	http://data.europeana.eu/agent/base/50213	Entity	
+cs (Czech)	Anton Janscha	7	Anton J	6	http://data.europeana.eu/agent/base/50213	Entity	
 cs (Czech)	Anton Janscha	8	Anton Ja	1	http://data.europeana.eu/agent/base/50213	Entity	
 cs (Czech)	Anton Janscha	9	Anton Jan	1	http://data.europeana.eu/agent/base/50213	Entity	
 cs (Czech)	Anton Janscha	10	Anton Jans	1	http://data.europeana.eu/agent/base/50213	Entity	
@@ -147,8 +147,8 @@ es (Spanish)	VÍllora	1	V	0	http://data.europeana.eu/place/base/206870	Entity
 es (Spanish)	VÍllora	2	VÍ	0	http://data.europeana.eu/place/base/206870	Entity	
 es (Spanish)	VÍllora	3	VÍl	0	http://data.europeana.eu/place/base/206870	Entity	
 es (Spanish)	VÍllora	4	VÍll	0	http://data.europeana.eu/place/base/206870	Entity	
-es (Spanish)	VÍllora	5	VÍllo	8	http://data.europeana.eu/place/base/206870	Entity	
-es (Spanish)	VÍllora	6	VÍllor	3	http://data.europeana.eu/place/base/206870	Entity	
+es (Spanish)	VÍllora	5	VÍllo	0	http://data.europeana.eu/place/base/206870	Entity	
+es (Spanish)	VÍllora	6	VÍllor	4	http://data.europeana.eu/place/base/206870	Entity	
 es (Spanish)	VÍllora	7	VÍllora	1	http://data.europeana.eu/place/base/206870	Entity	
 et (Estonian)	Schleswig-Holstein	1	S	0	http://data.europeana.eu/place/base/697	Entity	
 et (Estonian)	Schleswig-Holstein	2	Sc	0	http://data.europeana.eu/place/base/697	Entity	
@@ -273,7 +273,7 @@ it (Italian)	Cattapani	1	C	0	http://data.europeana.eu/agent/base/103174	Entity
 it (Italian)	Cattapani	2	Ca	0	http://data.europeana.eu/agent/base/103174	Entity	
 it (Italian)	Cattapani	3	Cat	0	http://data.europeana.eu/agent/base/103174	Entity	
 it (Italian)	Cattapani	4	Catt	0	http://data.europeana.eu/agent/base/103174	Entity	
-it (Italian)	Cattapani	5	Catta	9	http://data.europeana.eu/agent/base/103174	Entity	
+it (Italian)	Cattapani	5	Catta	0	http://data.europeana.eu/agent/base/103174	Entity	
 it (Italian)	Cattapani	6	Cattap	1	http://data.europeana.eu/agent/base/103174	Entity	
 it (Italian)	Cattapani	7	Cattapa	1	http://data.europeana.eu/agent/base/103174	Entity	
 it (Italian)	Cattapani	8	Cattapan	1	http://data.europeana.eu/agent/base/103174	Entity	
@@ -472,101 +472,3 @@ sv (Swedish)	Fagerhult	6	Fagerh	1	http://data.europeana.eu/place/base/33998	Enti
 sv (Swedish)	Fagerhult	7	Fagerhu	1	http://data.europeana.eu/place/base/33998	Entity	
 sv (Swedish)	Fagerhult	8	Fagerhul	1	http://data.europeana.eu/place/base/33998	Entity	
 sv (Swedish)	Fagerhult	9	Fagerhult	1	http://data.europeana.eu/place/base/33998	Entity	
-en	Wolfgang Amadeus Mozart	1	W	0	http://data.europeana.eu/agent/base/146951	Entity	
-en	Wolfgang Amadeus Mozart	2	Wo	0	http://data.europeana.eu/agent/base/146951	Entity	
-en	Wolfgang Amadeus Mozart	3	Wol	0	http://data.europeana.eu/agent/base/146951	Entity	
-en	Wolfgang Amadeus Mozart	4	Wolf	0	http://data.europeana.eu/agent/base/146951	Entity	
-en	Wolfgang Amadeus Mozart	5	Wolfg	0	http://data.europeana.eu/agent/base/146951	Entity	
-en	Wolfgang Amadeus Mozart	6	Wolfga	0	http://data.europeana.eu/agent/base/146951	Entity	
-en	Wolfgang Amadeus Mozart	7	Wolfgan	0	http://data.europeana.eu/agent/base/146951	Entity	
-en	Wolfgang Amadeus Mozart	8	Wolfgang	0	http://data.europeana.eu/agent/base/146951	Entity	
-en	Wolfgang Amadeus Mozart	9	Wolfgang 	0	http://data.europeana.eu/agent/base/146951	Entity	
-en	Wolfgang Amadeus Mozart	10	Wolfgang A	0	http://data.europeana.eu/agent/base/146951	Entity	
-en	Wolfgang Amadeus Mozart	11	Wolfgang Am	0	http://data.europeana.eu/agent/base/146951	Entity	
-en	Wolfgang Amadeus Mozart	12	Wolfgang Ama	0	http://data.europeana.eu/agent/base/146951	Entity	
-en	Wolfgang Amadeus Mozart	13	Wolfgang Amad	0	http://data.europeana.eu/agent/base/146951	Entity	
-en	Wolfgang Amadeus Mozart	14	Wolfgang Amade	0	http://data.europeana.eu/agent/base/146951	Entity	
-en	Wolfgang Amadeus Mozart	15	Wolfgang Amadeu	0	http://data.europeana.eu/agent/base/146951	Entity	
-en	Wolfgang Amadeus Mozart	16	Wolfgang Amadeus	0	http://data.europeana.eu/agent/base/146951	Entity	
-en	Wolfgang Amadeus Mozart	17	Wolfgang Amadeus 	0	http://data.europeana.eu/agent/base/146951	Entity	
-en	Wolfgang Amadeus Mozart	18	Wolfgang Amadeus M	0	http://data.europeana.eu/agent/base/146951	Entity	
-en	Wolfgang Amadeus Mozart	19	Wolfgang Amadeus Mo	0	http://data.europeana.eu/agent/base/146951	Entity	
-en	Wolfgang Amadeus Mozart	20	Wolfgang Amadeus Moz	0	http://data.europeana.eu/agent/base/146951	Entity	
-en	Wolfgang Amadeus Mozart	21	Wolfgang Amadeus Moza	0	http://data.europeana.eu/agent/base/146951	Entity	
-en	Wolfgang Amadeus Mozart	22	Wolfgang Amadeus Mozar	0	http://data.europeana.eu/agent/base/146951	Entity	
-en	Wolfgang Amadeus Mozart	23	Wolfgang Amadeus Mozart	0	http://data.europeana.eu/agent/base/146951	Entity	
-en	Leonardo da Vinci	1	L	0	http://data.europeana.eu/agent/base/146741	Entity	
-en	Leonardo da Vinci	2	Le	0	http://data.europeana.eu/agent/base/146741	Entity	
-en	Leonardo da Vinci	3	Leo	0	http://data.europeana.eu/agent/base/146741	Entity	
-en	Leonardo da Vinci	4	Leon	0	http://data.europeana.eu/agent/base/146741	Entity	
-en	Leonardo da Vinci	5	Leona	0	http://data.europeana.eu/agent/base/146741	Entity	
-en	Leonardo da Vinci	6	Leonar	0	http://data.europeana.eu/agent/base/146741	Entity	
-en	Leonardo da Vinci	7	Leonard	0	http://data.europeana.eu/agent/base/146741	Entity	
-en	Leonardo da Vinci	8	Leonardo	0	http://data.europeana.eu/agent/base/146741	Entity	
-en	Leonardo da Vinci	9	Leonardo 	0	http://data.europeana.eu/agent/base/146741	Entity	
-en	Leonardo da Vinci	10	Leonardo d	0	http://data.europeana.eu/agent/base/146741	Entity	
-en	Leonardo da Vinci	11	Leonardo da	0	http://data.europeana.eu/agent/base/146741	Entity	
-en	Leonardo da Vinci	12	Leonardo da 	0	http://data.europeana.eu/agent/base/146741	Entity	
-en	Leonardo da Vinci	13	Leonardo da V	0	http://data.europeana.eu/agent/base/146741	Entity	
-en	Leonardo da Vinci	14	Leonardo da Vi	0	http://data.europeana.eu/agent/base/146741	Entity	
-en	Leonardo da Vinci	15	Leonardo da Vin	0	http://data.europeana.eu/agent/base/146741	Entity	
-en	Leonardo da Vinci	16	Leonardo da Vinc	0	http://data.europeana.eu/agent/base/146741	Entity	
-en	Leonardo da Vinci	17	Leonardo da Vinci	0	http://data.europeana.eu/agent/base/146741	Entity	
-en	Paris	1	P	7	http://data.europeana.eu/place/base/41488	Entity	
-en	Paris	2	Pa	4	http://data.europeana.eu/place/base/41488	Entity	
-en	Paris	3	Par	3	http://data.europeana.eu/place/base/41488	Entity	
-en	Paris	4	Pari	2	http://data.europeana.eu/place/base/41488	Entity	
-en	Paris	5	Paris	0	http://data.europeana.eu/place/base/41488	Entity	
-en	Netherlands Institute for Sound and Vision	1	N	0	http://data.europeana.eu/organization/1482250000000338645 	Entity	
-en	Netherlands Institute for Sound and Vision	2	Ne	0	http://data.europeana.eu/organization/1482250000000338645 	Entity	
-en	Netherlands Institute for Sound and Vision	3	Net	0	http://data.europeana.eu/organization/1482250000000338645 	Entity	
-en	Netherlands Institute for Sound and Vision	4	Neth	0	http://data.europeana.eu/organization/1482250000000338645 	Entity	
-en	Netherlands Institute for Sound and Vision	5	Nethe	0	http://data.europeana.eu/organization/1482250000000338645 	Entity	
-en	Netherlands Institute for Sound and Vision	6	Nether	0	http://data.europeana.eu/organization/1482250000000338645 	Entity	
-en	Netherlands Institute for Sound and Vision	7	Netherl	0	http://data.europeana.eu/organization/1482250000000338645 	Entity	
-en	Netherlands Institute for Sound and Vision	8	Netherla	0	http://data.europeana.eu/organization/1482250000000338645 	Entity	
-en	Netherlands Institute for Sound and Vision	9	Netherlan	0	http://data.europeana.eu/organization/1482250000000338645 	Entity	
-en	Netherlands Institute for Sound and Vision	10	Netherland	0	http://data.europeana.eu/organization/1482250000000338645 	Entity	
-en	Netherlands Institute for Sound and Vision	11	Netherlands	0	http://data.europeana.eu/organization/1482250000000338645 	Entity	
-en	Netherlands Institute for Sound and Vision	12	Netherlands 	0	http://data.europeana.eu/organization/1482250000000338645 	Entity	
-en	Netherlands Institute for Sound and Vision	13	Netherlands I	0	http://data.europeana.eu/organization/1482250000000338645 	Entity	
-en	Netherlands Institute for Sound and Vision	14	Netherlands In	0	http://data.europeana.eu/organization/1482250000000338645 	Entity	
-en	Netherlands Institute for Sound and Vision	15	Netherlands Ins	0	http://data.europeana.eu/organization/1482250000000338645 	Entity	
-en	Netherlands Institute for Sound and Vision	16	Netherlands Inst	0	http://data.europeana.eu/organization/1482250000000338645 	Entity	
-en	Netherlands Institute for Sound and Vision	17	Netherlands Insti	0	http://data.europeana.eu/organization/1482250000000338645 	Entity	
-en	Netherlands Institute for Sound and Vision	18	Netherlands Instit	0	http://data.europeana.eu/organization/1482250000000338645 	Entity	
-en	Netherlands Institute for Sound and Vision	19	Netherlands Institu	0	http://data.europeana.eu/organization/1482250000000338645 	Entity	
-en	Netherlands Institute for Sound and Vision	20	Netherlands Institut	0	http://data.europeana.eu/organization/1482250000000338645 	Entity	
-en	Netherlands Institute for Sound and Vision	21	Netherlands Institute	0	http://data.europeana.eu/organization/1482250000000338645 	Entity	
-en	Netherlands Institute for Sound and Vision	22	Netherlands Institute 	0	http://data.europeana.eu/organization/1482250000000338645 	Entity	
-en	Netherlands Institute for Sound and Vision	23	Netherlands Institute f	0	http://data.europeana.eu/organization/1482250000000338645 	Entity	
-en	Netherlands Institute for Sound and Vision	24	Netherlands Institute fo	0	http://data.europeana.eu/organization/1482250000000338645 	Entity	
-en	Netherlands Institute for Sound and Vision	25	Netherlands Institute for	0	http://data.europeana.eu/organization/1482250000000338645 	Entity	
-en	Netherlands Institute for Sound and Vision	26	Netherlands Institute for 	0	http://data.europeana.eu/organization/1482250000000338645 	Entity	
-en	Netherlands Institute for Sound and Vision	27	Netherlands Institute for S	0	http://data.europeana.eu/organization/1482250000000338645 	Entity	
-en	Netherlands Institute for Sound and Vision	28	Netherlands Institute for So	0	http://data.europeana.eu/organization/1482250000000338645 	Entity	
-en	Netherlands Institute for Sound and Vision	29	Netherlands Institute for Sou	0	http://data.europeana.eu/organization/1482250000000338645 	Entity	
-en	Netherlands Institute for Sound and Vision	30	Netherlands Institute for Soun	0	http://data.europeana.eu/organization/1482250000000338645 	Entity	
-en	Netherlands Institute for Sound and Vision	31	Netherlands Institute for Sound	0	http://data.europeana.eu/organization/1482250000000338645 	Entity	
-en	Netherlands Institute for Sound and Vision	32	Netherlands Institute for Sound 	0	http://data.europeana.eu/organization/1482250000000338645 	Entity	
-en	Netherlands Institute for Sound and Vision	33	Netherlands Institute for Sound a	0	http://data.europeana.eu/organization/1482250000000338645 	Entity	
-en	Netherlands Institute for Sound and Vision	34	Netherlands Institute for Sound an	0	http://data.europeana.eu/organization/1482250000000338645 	Entity	
-en	Netherlands Institute for Sound and Vision	35	Netherlands Institute for Sound and	0	http://data.europeana.eu/organization/1482250000000338645 	Entity	
-en	Netherlands Institute for Sound and Vision	36	Netherlands Institute for Sound and 	0	http://data.europeana.eu/organization/1482250000000338645 	Entity	
-en	Netherlands Institute for Sound and Vision	37	Netherlands Institute for Sound and V	0	http://data.europeana.eu/organization/1482250000000338645 	Entity	
-en	Netherlands Institute for Sound and Vision	38	Netherlands Institute for Sound and Vi	0	http://data.europeana.eu/organization/1482250000000338645 	Entity	
-en	Netherlands Institute for Sound and Vision	39	Netherlands Institute for Sound and Vis	0	http://data.europeana.eu/organization/1482250000000338645 	Entity	
-en	Netherlands Institute for Sound and Vision	40	Netherlands Institute for Sound and Visi	0	http://data.europeana.eu/organization/1482250000000338645 	Entity	
-en	Netherlands Institute for Sound and Vision	41	Netherlands Institute for Sound and Visio	0	http://data.europeana.eu/organization/1482250000000338645 	Entity	
-en	Netherlands Institute for Sound and Vision	42	Netherlands Institute for Sound and Vision	0	http://data.europeana.eu/organization/1482250000000338645 	Entity	
-en	Rome	1	R	0	http://data.europeana.eu/place/base/143433	Entity	
-en	Rome	2	Ro	3	http://data.europeana.eu/place/base/143433	Entity	
-en	Rome	3	Rom	1	http://data.europeana.eu/place/base/143433	Entity	
-en	Rome	4	Rome	0	http://data.europeana.eu/place/base/143433	Entity	
-en	Romania	1	R	0	http://data.europeana.eu/place/base/110	Entity	
-en	Romania	2	Ro	7	http://data.europeana.eu/place/base/110	Entity	
-en	Romania	3	Rom	2	http://data.europeana.eu/place/base/110	Entity	
-en	Romania	4	Roma	2	http://data.europeana.eu/place/base/110	Entity	
-en	Romania	5	Roman	1	http://data.europeana.eu/place/base/110	Entity	
-en	Romania	6	Romani	1	http://data.europeana.eu/place/base/110	Entity	
-en	Romania	7	Romania	0	http://data.europeana.eu/place/base/110	Entity	

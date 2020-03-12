@@ -8,7 +8,6 @@
 		<artifactId>entity-api</artifactId>
 		<groupId>eu.europeana.entity</groupId>
 		<version>${version.entityApi}</version>
-		<relativePath>../pom.xml</relativePath>
 	</parent>
 
 	<artifactId>entity-eval</artifactId>

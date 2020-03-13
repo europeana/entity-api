@@ -7,6 +7,7 @@ import org.apache.solr.client.solrj.beans.Field;
 
 import eu.europeana.entity.definitions.model.ConceptScheme;
 import eu.europeana.entity.definitions.model.impl.BaseConceptScheme;
+import eu.europeana.entity.definitions.model.vocabulary.EntitySolrFields;
 import eu.europeana.entity.definitions.model.vocabulary.SolrConceptSchemeConstants;
 
 /**
@@ -129,4 +130,21 @@ public class SolrConceptSchemeImpl extends BaseConceptScheme implements SolrConc
         this.suggestFilters = suggestFilters;
     }
 
+    @Override
+	@Field(EntitySolrFields.IS_SHOWN_BY_ID)
+	public void setIsShownById(String isShownById) {
+		super.setIsShownById(isShownById);
+	}
+	
+	@Override
+	@Field(EntitySolrFields.IS_SHOWN_BY_SOURCE)
+	public void setIsShownBySource(String isShownBySource) {
+		super.setIsShownBySource(isShownBySource);
+	}
+	
+	@Override
+	@Field(EntitySolrFields.IS_SHOWN_BY_THUMBNAIL)
+	public void setIsShownByThumbnail(String isShownByThumbnail) {
+		super.setIsShownByThumbnail(isShownByThumbnail);
+	}
 }

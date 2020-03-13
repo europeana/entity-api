@@ -11,6 +11,7 @@ import eu.europeana.entity.definitions.model.Agent;
 import eu.europeana.entity.definitions.model.impl.BaseAgent;
 import eu.europeana.entity.definitions.model.vocabulary.AgentSolrFields;
 import eu.europeana.entity.definitions.model.vocabulary.ConceptSolrFields;
+import eu.europeana.entity.definitions.model.vocabulary.EntitySolrFields;
 
 public class SolrAgentImpl extends BaseAgent implements Agent {
 
@@ -104,19 +105,19 @@ public class SolrAgentImpl extends BaseAgent implements Agent {
 	}
 	        
 	@Override
-	@Field(AgentSolrFields.IS_SHOWN_BY_ID)
+	@Field(EntitySolrFields.IS_SHOWN_BY_ID)
 	public void setIsShownById(String isShownById) {
 		super.setIsShownById(isShownById);
 	}
 	
 	@Override
-	@Field(AgentSolrFields.IS_SHOWN_BY_SOURCE)
+	@Field(EntitySolrFields.IS_SHOWN_BY_SOURCE)
 	public void setIsShownBySource(String isShownBySource) {
 		super.setIsShownBySource(isShownBySource);
 	}
 	
 	@Override
-	@Field(AgentSolrFields.IS_SHOWN_BY_THUMBNAIL)
+	@Field(EntitySolrFields.IS_SHOWN_BY_THUMBNAIL)
 	public void setIsShownByThumbnail(String isShownByThumbnail) {
 		super.setIsShownByThumbnail(isShownByThumbnail);
 	}

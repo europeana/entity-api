@@ -9,6 +9,7 @@ import org.apache.solr.client.solrj.beans.Field;
 import eu.europeana.entity.definitions.model.Place;
 import eu.europeana.entity.definitions.model.impl.BasePlace;
 import eu.europeana.entity.definitions.model.vocabulary.ConceptSolrFields;
+import eu.europeana.entity.definitions.model.vocabulary.EntitySolrFields;
 import eu.europeana.entity.definitions.model.vocabulary.PlaceSolrFields;
 
 public class SolrPlaceImpl extends BasePlace implements Place {
@@ -132,5 +133,23 @@ public class SolrPlaceImpl extends BasePlace implements Place {
 	@Field(PlaceSolrFields.MODIFIED)
 	public void setModified(Date modified) {
 	    	super.setModified(modified);
+	}
+	
+	@Override
+	@Field(EntitySolrFields.IS_SHOWN_BY_ID)
+	public void setIsShownById(String isShownById) {
+		super.setIsShownById(isShownById);
+	}
+	
+	@Override
+	@Field(EntitySolrFields.IS_SHOWN_BY_SOURCE)
+	public void setIsShownBySource(String isShownBySource) {
+		super.setIsShownBySource(isShownBySource);
+	}
+	
+	@Override
+	@Field(EntitySolrFields.IS_SHOWN_BY_THUMBNAIL)
+	public void setIsShownByThumbnail(String isShownByThumbnail) {
+		super.setIsShownByThumbnail(isShownByThumbnail);
 	}
 }

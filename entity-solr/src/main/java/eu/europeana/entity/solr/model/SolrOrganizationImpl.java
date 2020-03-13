@@ -9,6 +9,7 @@ import org.apache.solr.client.solrj.beans.Field;
 import eu.europeana.entity.definitions.model.Organization;
 import eu.europeana.entity.definitions.model.impl.BaseOrganization;
 import eu.europeana.entity.definitions.model.vocabulary.ConceptSolrFields;
+import eu.europeana.entity.definitions.model.vocabulary.EntitySolrFields;
 import eu.europeana.entity.definitions.model.vocabulary.OrganizationSolrFields;
 
 /**
@@ -203,4 +204,21 @@ public class SolrOrganizationImpl extends BaseOrganization implements Organizati
 	    	super.setModified(modified);
 	}
 
+	@Override
+	@Field(EntitySolrFields.IS_SHOWN_BY_ID)
+	public void setIsShownById(String isShownById) {
+		super.setIsShownById(isShownById);
+	}
+	
+	@Override
+	@Field(EntitySolrFields.IS_SHOWN_BY_SOURCE)
+	public void setIsShownBySource(String isShownBySource) {
+		super.setIsShownBySource(isShownBySource);
+	}
+	
+	@Override
+	@Field(EntitySolrFields.IS_SHOWN_BY_THUMBNAIL)
+	public void setIsShownByThumbnail(String isShownByThumbnail) {
+		super.setIsShownByThumbnail(isShownByThumbnail);
+	}
 }

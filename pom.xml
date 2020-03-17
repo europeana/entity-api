@@ -12,12 +12,12 @@
 
 	<repositories>
 		<repository>
-		    <id>artifactory.eanadev.org</id>
+		    <id>artifactory.eanadev.org-ext</id>
 			<name>artifactory.eanadev.org-releases (external libs)</name>
 			<url>http://artifactory.eanadev.org/artifactory/ext-release-local/</url>
 		</repository>
 		<repository>
-		    <id>artifactory.eanadev.org</id>
+		    <id>artifactory.eanadev.org-repo1</id>
 			<name>artifactory.eanadev.org-releases-repo1 (external libs)</name>
 			<url>http://artifactory.eanadev.org/artifactory/repo1/</url>
 		</repository>

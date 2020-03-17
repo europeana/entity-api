@@ -22,6 +22,11 @@
 			<url>http://artifactory.eanadev.org/artifactory/repo1/</url>
 		</repository>
 		<repository>
+		    <id>artifactory.eanadev.org-gradle-libs</id>
+			<name>artifactory.eanadev.org-releases-gradle-libs (external libs)</name>
+			<url>http://artifactory.eanadev.org/artifactory/gradle-libs/</url>
+		</repository>
+		<repository>
 			<id>libs-release-local</id>
 			<name>europeana-releases</name>
 			<url>http://artifactory.eanadev.org/artifactory/libs-release-local/</url>

@@ -36,7 +36,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<version.java>1.8</version.java>
 		<version.junit>4.12</version.junit>
-		<version.corelib>2.9.0</version.corelib>
+		<version.corelib>2.9.2</version.corelib>
 		<version.entityApi>0.8-SNAPSHOT</version.entityApi>
 		<version.annotationLd>1.1.5</version.annotationLd>
 		<version.commonsLang3>3.0</version.commonsLang3>

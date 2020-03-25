@@ -18,6 +18,8 @@ public interface EntityConfiguration {
 
 	public static final String AUTHORIZATION_API_NAME = "authorization.api.name";
 
+	public static final String API_VERSION = "entity.api.version";
+
 	public static final String SOLR_ENTITY_URL = "solr.entity.url";
 	
 	public String getComponentName();
@@ -41,7 +43,8 @@ public interface EntityConfiguration {
 	
 	public String getAuthorizationApiName();
 
-
+	public String getApiVersion();
+	    
 	List<String> getSolrServeUrls();
 	
 }

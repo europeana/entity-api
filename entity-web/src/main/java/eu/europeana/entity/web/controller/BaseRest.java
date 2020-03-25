@@ -1,6 +1,5 @@
 package eu.europeana.entity.web.controller;
 
-import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,10 +23,6 @@ import eu.europeana.api.commons.utils.ResultsPageSerializer;
 import eu.europeana.api.commons.web.controller.BaseRestController;
 import eu.europeana.api.commons.web.exception.HttpException;
 import eu.europeana.api.commons.web.http.HttpHeaders;
-import eu.europeana.corelib.edm.model.schemaorg.ContextualEntity;
-import eu.europeana.corelib.edm.utils.JsonLdSerializer;
-import eu.europeana.corelib.edm.utils.SchemaOrgTypeFactory;
-import eu.europeana.corelib.edm.utils.SchemaOrgUtils;
 import eu.europeana.entity.definitions.exceptions.ConceptSchemeProfileValidationException;
 import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException;
 import eu.europeana.entity.definitions.exceptions.UnsupportedFormatTypeException;
@@ -43,6 +38,7 @@ import eu.europeana.entity.web.exception.HeaderValidationException;
 import eu.europeana.entity.web.exception.ParamValidationException;
 import eu.europeana.entity.web.http.EntityHttpHeaders;
 import eu.europeana.entity.web.jsonld.EntityResultsPageSerializer;
+import eu.europeana.entity.web.jsonld.EntitySchemaOrgSerializer;
 import eu.europeana.entity.web.service.EntityService;
 import eu.europeana.entity.web.service.authorization.AuthorizationService;
 import eu.europeana.entity.web.xml.EntityXmlSerializer;
@@ -342,46 +338,21 @@ public abstract class BaseRest extends BaseRestController {
      * @param format The format extension
      * @return entity in jsonLd format
      * @throws UnsupportedEntityTypeException
+     * @throws HttpException 
      */
-    protected String serialize(Entity entity, FormatTypes format) throws UnsupportedEntityTypeException {
+    protected String serialize(Entity entity, FormatTypes format) throws UnsupportedEntityTypeException, HttpException {
 
 	String responseBody = null;
-	ContextualEntity thingObject = null;
 
 	if (FormatTypes.jsonld.equals(format)) {
 	    EuropeanaEntityLd entityLd = new EuropeanaEntityLd(entity);
 	    return entityLd.toString(4);
 	} else if (FormatTypes.schema.equals(format)) {
-	    responseBody = serializeSchema(entity, responseBody, thingObject);
+	    responseBody = (new EntitySchemaOrgSerializer()).serializeEntity(entity);
 	} else if (FormatTypes.xml.equals(format)) {
 	    responseBody = entityXmlSerializer.serializeXml(entity);
 	}
 	return responseBody;
-    }
-
-    /**
-     * This method serializes Entity object applying schema.org serialization.
-     * 
-     * @param entity      The Entity object
-     * @param entityType  The type of the entity
-     * @param jsonLd      The resulting json-ld string
-     * @param thingObject The object in corelib format
-     * @return The serialized entity in json-ld string format
-     * @throws UnsupportedEntityTypeException
-     */
-    private String serializeSchema(Entity entity, String jsonLd, ContextualEntity thingObject)
-	    throws UnsupportedEntityTypeException {
-	thingObject = SchemaOrgTypeFactory.createContextualEntity(entity);
-
-	SchemaOrgUtils.processEntity(entity, thingObject);
-	JsonLdSerializer serializer = new JsonLdSerializer();
-	try {
-	    jsonLd = serializer.serialize(thingObject);
-	} catch (IOException e) {
-	    throw new UnsupportedEntityTypeException(
-		    "Serialization to schema.org failed for " + thingObject.getId() + e.getMessage());
-	}
-	return jsonLd;
     }
 
 

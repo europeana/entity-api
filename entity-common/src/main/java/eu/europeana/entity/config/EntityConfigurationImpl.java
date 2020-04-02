@@ -68,4 +68,9 @@ public class EntityConfigurationImpl implements EntityConfiguration {
 	    }
 	    return solrServerUrls;
 	}
+	
+	@Override
+	public String getApiVersion() {
+	    return getEntityProperties().getProperty(API_VERSION);
+	}	
 }

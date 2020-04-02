@@ -121,7 +121,11 @@ public class ConceptSchemeController extends BaseRest {
 	headers.add(HttpHeaders.AUTHORIZATION, HttpHeaders.PREFER);
 	headers.add(HttpHeaders.LINK, EntityHttpHeaders.VALUE_LDP_BASIC_CONTAINER);
 	headers.add(HttpHeaders.LINK, HttpHeaders.VALUE_LDP_RESOURCE);
-	headers.add(HttpHeaders.ETAG, generateETag(storedConceptScheme.getModified(), null));
+	headers.add(HttpHeaders.ETAG, generateETag(
+		storedConceptScheme.getModified()
+		, WebEntityConstants.FORMAT_JSONLD
+		, getApiVersion()
+		));
 	headers.add(HttpHeaders.ALLOW, HttpHeaders.ALLOW_POST);
 	headers.add(EntityHttpHeaders.PREFERENCE_APPLIED, ldProfile.getPreferHeaderValue());
 	headers.add(EntityHttpHeaders.CACHE_CONTROL, EntityHttpHeaders.VALUE_CACHE_CONTROL);
@@ -158,7 +162,11 @@ public class ConceptSchemeController extends BaseRest {
 	    // if the concept scheme doesn’t exist, respond with HTTP 404
 	    // if the entity is disabled respond with HTTP 410
 	    ConceptScheme storedConceptScheme = getEntityService().getConceptSchemeById(identifier);
-	    String eTag = generateETag(storedConceptScheme.getModified(), null);
+	    String eTag = generateETag(
+		    storedConceptScheme.getModified()
+		    , WebEntityConstants.FORMAT_JSONLD
+		    , getApiVersion()
+		    );
 	    if (((WebConceptSchemeImpl) storedConceptScheme).isDisabled()) {
 		throw new EntityStateException(I18nConstants.MESSAGE_NOT_ACCESSIBLE,
 			I18nConstants.MESSAGE_NOT_ACCESSIBLE, new String[] { "disabled" });
@@ -220,7 +228,12 @@ public class ConceptSchemeController extends BaseRest {
 	    // if the Set doesn’t exist, respond with HTTP 404
 	    // if the Set is disabled respond with HTTP 410
 	    ConceptScheme existingConceptScheme = getEntityService().getConceptSchemeById(identifier);
-	    checkIfMatchHeader(existingConceptScheme.getModified().hashCode(), request);
+	    String eTagOrigin = generateETag(
+		    existingConceptScheme.getModified()
+		    , WebEntityConstants.FORMAT_JSONLD
+		    , getApiVersion()
+		    );
+	    checkIfMatchHeader(eTagOrigin, request);
 
 	    // if the user set is disabled and the user is not an admin, respond with HTTP
 	    // 410
@@ -230,14 +243,22 @@ public class ConceptSchemeController extends BaseRest {
 	    if (((WebConceptSchemeImpl) existingConceptScheme).isDisabled()) {
 		getEntityService().deleteConceptScheme(existingConceptScheme.getEntityIdentifier());
 		httpStatus = HttpStatus.NO_CONTENT;
-		eTag = generateETag(new Date(), null);
+		eTag = generateETag(
+			new Date()
+			, WebEntityConstants.FORMAT_JSONLD
+			, getApiVersion()
+			);
 
 	    } else {
 		httpStatus = HttpStatus.NO_CONTENT;
 		ConceptScheme updated = getEntityService().disableConceptScheme(existingConceptScheme);
 		//remove concept scheme from entities
 		ConceptScheme updatedEntitiesWithConceptScheme = getEntityService().updateEntitiesWithConceptScheme(updated);		
-		eTag = generateETag(updatedEntitiesWithConceptScheme.getModified(), null);
+		eTag = generateETag(
+			updatedEntitiesWithConceptScheme.getModified()
+			, WebEntityConstants.FORMAT_JSONLD
+			, getApiVersion()
+			);
 	    }
 
 	    // build response
@@ -287,7 +308,12 @@ public class ConceptSchemeController extends BaseRest {
 	    // retrieve an existing concept scheme based on its identifier
 	    ConceptScheme existingConceptScheme = getEntityService().getConceptSchemeById(identifier);
 
-	    checkIfMatchHeader(existingConceptScheme.getModified().hashCode(), request);
+	    String eTagOrigin = generateETag(
+		    existingConceptScheme.getModified()
+		    , WebEntityConstants.FORMAT_JSONLD
+		    , getApiVersion()
+		    );
+	    checkIfMatchHeader(eTagOrigin, request);
 
 	    // check if the user is the owner of the set or admin, otherwise respond with
 	    // 403
@@ -300,7 +326,11 @@ public class ConceptSchemeController extends BaseRest {
 
 	    if (((WebConceptSchemeImpl) existingConceptScheme).isDisabled()) {
 		httpStatus = HttpStatus.GONE;
-		eTag = generateETag(existingConceptScheme.getModified(), null);
+		eTag = generateETag(
+			existingConceptScheme.getModified()
+			, WebEntityConstants.FORMAT_JSONLD
+			, getApiVersion()
+			);
 	    } else {
 		// parse fields of the new user set to an object
 		ConceptScheme newConceptScheme = getEntityService().parseConceptSchemeLd(conceptScheme);
@@ -318,7 +348,11 @@ public class ConceptSchemeController extends BaseRest {
 			.updateConceptScheme((PersistentConceptScheme) existingConceptScheme, newConceptScheme);
 
 		httpStatus = HttpStatus.OK;
-		eTag = generateETag(updatedConceptScheme.getModified(), null);
+		eTag = generateETag(
+			updatedConceptScheme.getModified()
+			, WebEntityConstants.FORMAT_JSONLD
+			, getApiVersion()
+			);
 		
 		//update entities with concept scheme
 		ConceptScheme updatedEntitiesWithConceptScheme = getEntityService().updateEntitiesWithConceptScheme(updatedConceptScheme);

@@ -45,5 +45,5 @@ entity.properties.timestamp=-1
 
 entity.suggester.snippets=50
 
-# Entity API version
+# Entity API version used for eTag generation
 entity.api.version=

@@ -12,6 +12,7 @@ import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.springframework.http.ResponseEntity;
 
+import eu.europeana.api.commons.web.definitions.WebFields;
 import eu.europeana.entity.client.config.ClientConfiguration;
 import eu.europeana.entity.client.model.result.EntitySearchResults;
 import eu.europeana.entity.definitions.model.Entity;
@@ -65,7 +66,7 @@ public class EntityApiConnection extends BaseApiConnection {
 		url += namespace + WebEntityConstants.SLASH;
     	url += identifier;
 		url += WebEntityConstants.PAR_CHAR;
-		url += "wskey" + WebEntityConstants.EQUALS + apiKey;
+		url += "wskey" + WebFields.EQUALS + apiKey;
 		
 		/**
 		 * Execute Europeana API request

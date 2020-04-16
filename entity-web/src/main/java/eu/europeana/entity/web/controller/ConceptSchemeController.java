@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import eu.europeana.api.common.config.I18nConstants;
 import eu.europeana.api.common.config.swagger.SwaggerSelect;
 import eu.europeana.api.commons.definitions.vocabulary.CommonApiConstants;
+import eu.europeana.api.commons.web.definitions.WebFields;
 import eu.europeana.api.commons.web.exception.HttpException;
 import eu.europeana.api.commons.web.http.HttpHeaders;
 import eu.europeana.entity.definitions.exceptions.EntityInstantiationException;
@@ -123,7 +124,7 @@ public class ConceptSchemeController extends BaseRest {
 	headers.add(HttpHeaders.LINK, HttpHeaders.VALUE_LDP_RESOURCE);
 	headers.add(HttpHeaders.ETAG, generateETag(
 		storedConceptScheme.getModified()
-		, WebEntityConstants.FORMAT_JSONLD
+		, WebFields.FORMAT_JSONLD
 		, getApiVersion()
 		));
 	headers.add(HttpHeaders.ALLOW, HttpHeaders.ALLOW_POST);
@@ -164,7 +165,7 @@ public class ConceptSchemeController extends BaseRest {
 	    ConceptScheme storedConceptScheme = getEntityService().getConceptSchemeById(identifier);
 	    String eTag = generateETag(
 		    storedConceptScheme.getModified()
-		    , WebEntityConstants.FORMAT_JSONLD
+		    , WebFields.FORMAT_JSONLD
 		    , getApiVersion()
 		    );
 	    if (((WebConceptSchemeImpl) storedConceptScheme).isDisabled()) {
@@ -230,7 +231,7 @@ public class ConceptSchemeController extends BaseRest {
 	    ConceptScheme existingConceptScheme = getEntityService().getConceptSchemeById(identifier);
 	    String eTagOrigin = generateETag(
 		    existingConceptScheme.getModified()
-		    , WebEntityConstants.FORMAT_JSONLD
+		    , WebFields.FORMAT_JSONLD
 		    , getApiVersion()
 		    );
 	    checkIfMatchHeader(eTagOrigin, request);
@@ -245,7 +246,7 @@ public class ConceptSchemeController extends BaseRest {
 		httpStatus = HttpStatus.NO_CONTENT;
 		eTag = generateETag(
 			new Date()
-			, WebEntityConstants.FORMAT_JSONLD
+			, WebFields.FORMAT_JSONLD
 			, getApiVersion()
 			);
 
@@ -256,7 +257,7 @@ public class ConceptSchemeController extends BaseRest {
 		ConceptScheme updatedEntitiesWithConceptScheme = getEntityService().updateEntitiesWithConceptScheme(updated);		
 		eTag = generateETag(
 			updatedEntitiesWithConceptScheme.getModified()
-			, WebEntityConstants.FORMAT_JSONLD
+			, WebFields.FORMAT_JSONLD
 			, getApiVersion()
 			);
 	    }
@@ -310,7 +311,7 @@ public class ConceptSchemeController extends BaseRest {
 
 	    String eTagOrigin = generateETag(
 		    existingConceptScheme.getModified()
-		    , WebEntityConstants.FORMAT_JSONLD
+		    , WebFields.FORMAT_JSONLD
 		    , getApiVersion()
 		    );
 	    checkIfMatchHeader(eTagOrigin, request);
@@ -328,7 +329,7 @@ public class ConceptSchemeController extends BaseRest {
 		httpStatus = HttpStatus.GONE;
 		eTag = generateETag(
 			existingConceptScheme.getModified()
-			, WebEntityConstants.FORMAT_JSONLD
+			, WebFields.FORMAT_JSONLD
 			, getApiVersion()
 			);
 	    } else {
@@ -350,7 +351,7 @@ public class ConceptSchemeController extends BaseRest {
 		httpStatus = HttpStatus.OK;
 		eTag = generateETag(
 			updatedConceptScheme.getModified()
-			, WebEntityConstants.FORMAT_JSONLD
+			, WebFields.FORMAT_JSONLD
 			, getApiVersion()
 			);
 		

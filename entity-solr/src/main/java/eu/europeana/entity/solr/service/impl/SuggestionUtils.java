@@ -128,7 +128,7 @@ public class SuggestionUtils {
 		preview.setPreferredLabel(prefLabel);
 
 		Map<String, List<String>> altLabel = getValuesAsLanguageMapList(entityNode, SuggestionFields.ALT_LABEL, preferredLanguages);
-		preview.setHiddenLabel(altLabel);
+		preview.setAltLabel(altLabel);
 		
 		
 		Map<String, List<String>> hiddenLabel = getValuesAsLanguageMapList(entityNode, SuggestionFields.HIDDEN_LABEL, preferredLanguages);

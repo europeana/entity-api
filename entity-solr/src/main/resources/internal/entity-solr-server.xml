@@ -7,23 +7,39 @@
 		http://www.springframework.org/schema/beans/spring-beans.xsd
 	">
 
+	<!-- basically what we are doing here is
+               1. CloudSolrClient.Builder builder = new CloudSolrClient.Builder();
+               2. builder = builder.withZkHost(zookeeperUrl).withConnectionTimeout(tiemout);
+               3. CloudSolrClient client = builder.build();
+                  client.setDefaultCollection(core);
+          The lazy-init is only set so it works in unit tests in other modules -->
+        <bean id="entity_solrcloudclient_builder_init" class="org.apache.solr.client.solrj.impl.CloudSolrClient.Builder" lazy-init="true"/>
 
-	<bean id="entity_solr_client_clientbuilderBean"
-		class="org.apache.solr.client.solrj.impl.LBHttpSolrClient.Builder" />
+        <bean id="entity_solrcloudclient_builder_zkHost" class="org.apache.solr.client.solrj.impl.CloudSolrClient.Builder"
+              factory-bean="entity_solrcloudclient_builder_init"
+              factory-method="withZkHost" lazy-init="true">
+            <constructor-arg value="#{entityProperties['entity.solr.zookeeper.url']}"/>
+        </bean>
+        
+        <bean id="entity_solrcloudclient_builder" class="org.apache.solr.client.solrj.impl.CloudSolrClient.Builder"
+              factory-bean="entity_solrcloudclient_builder_zkHost"
+              factory-method="withConnectionTimeout" lazy-init="true">
+            <constructor-arg value="#{entityProperties['solr.entity.timeout']}"/>
+        </bean>
 
-	<bean id="entity_solr_client_clientBuilder"
-		class="org.apache.solr.client.solrj.impl.LBHttpSolrClient.Builder"
-		factory-bean="entity_solr_client_clientbuilderBean"
-		factory-method="withBaseSolrUrls">
-		<constructor-arg
-			value="#{entityProperties['solr.entity.url'].split(',')}" />
-	</bean>
-
+        <bean id="entity_solr_server" class="org.apache.solr.client.solrj.impl.CloudSolrClient"
+              factory-method="build" factory-bean="entity_solrcloudclient_builder">
+              <property name="defaultCollection"
+				value="#{entityProperties['entity.solr.collection']}" />
+        </bean>      
+	
+	<!-- 
 	<bean id="entity_solr_server"
 		class="org.apache.solr.client.solrj.SolrClient"
 		factory-bean="entity_solr_client_clientBuilder" factory-method="build">
 		<property name="connectionTimeout"
 			value="#{entityProperties['solr.entity.timeout']}" />
 	</bean>
+	 -->
 
 </beans>

@@ -16,6 +16,7 @@ public class EntityPreviewImpl implements EntityPreview{
 	String language;
 	Map<String, String> preferredLabel;
 	Map<String, List<String>> hiddenLabel;
+	Map<String, List<String>> altLabel;
 	String timeSpanStart;
 	String timeSpanEnd;
 	EntityTypes entityType;
@@ -127,6 +128,16 @@ public class EntityPreviewImpl implements EntityPreview{
 	@Override
 	public void setHiddenLabel(Map<String, List<String>> hiddenLabel) {
 		this.hiddenLabel = hiddenLabel;
+	}
+
+	@Override
+	public Map<String, List<String>> getAltLabel() {
+	    return altLabel;
+	}
+
+	@Override
+	public void setAltLabel(Map<String, List<String>> altlabel) {
+	    this.altLabel = altlabel;
 	}
 
 	@Override

@@ -27,7 +27,7 @@ public interface SuggestionFields {
 	public static final String LATITUDE = WebEntityFields.LATITUDE; // "latitude";
 	public static final String LONGITUDE = WebEntityFields.LONGITUDE; // "longitude";
 	public static final String PREF_LABEL = WebEntityFields.PREF_LABEL; // "prefLabel";
-//	public static final String ALT_LABEL = WebEntityFields.ALT_LABEL; // "altLabel";
+	public static final String ALT_LABEL = WebEntityFields.ALT_LABEL; // "altLabel";
 	public static final String HIDDEN_LABEL = WebEntityFields.HIDDEN_LABEL; // "hiddenLabel";
 	public static final String TYPE = WebEntityFields.TYPE; // "type";
 	public static final String PROFESSION_OR_OCCUPATION = WebEntityFields.PROFESSION_OR_OCCUPATION;

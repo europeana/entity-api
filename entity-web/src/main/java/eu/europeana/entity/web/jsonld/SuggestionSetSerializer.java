@@ -25,214 +25,223 @@ import eu.europeana.entity.web.model.view.TimeSpanPreview;
 
 public class SuggestionSetSerializer extends JsonLd {
 
-	public SuggestionSetSerializer(){
-		super();
-		setPropOrderComparator(new EntityJsonComparator());
+    public SuggestionSetSerializer() {
+	super();
+	setPropOrderComparator(new EntityJsonComparator());
+    }
+
+    ResultSet<? extends EntityPreview> entitySet;
+
+    public ResultSet<? extends EntityPreview> getEntitySet() {
+	return entitySet;
+    }
+
+    public void setConceptSet(ResultSet<? extends EntityPreview> entitySet) {
+	this.entitySet = entitySet;
+    }
+
+    /**
+     * @param conceptSet
+     */
+    public SuggestionSetSerializer(ResultSet<? extends EntityPreview> entitySet) {
+	super();
+	setPropOrderComparator(new EntityJsonComparator());
+	registerContainerProperty(WebEntityConstants.IS_PART_OF);
+	registerContainerProperty(WebEntityConstants.ITEMS);
+	setConceptSet(entitySet);
+    }
+
+    /**
+     * Adds the given concept to this JsonLd object using the resource's subject as
+     * key. If the key is NULL and there does not exist a resource with an empty
+     * String as key the resource will be added using an empty String ("") as key.
+     * 
+     * @param concept
+     * @throws HttpException
+     */
+    public String serialize() throws HttpException {
+
+	setUseTypeCoercion(false);
+	setUseCuries(true);
+	setUsedNamespaces(namespacePrefixMap);
+
+	JsonLdResource jsonLdResource = new JsonLdResource();
+	jsonLdResource.setSubject("");
+
+	JsonLdProperty contextProperty = new JsonLdProperty(WebEntityConstants.AT_CONTEXT);
+	contextProperty.getValues().add(new JsonLdPropertyValue(WebEntityConstants.LDP_CONTEXT));
+	contextProperty.getValues().add(new JsonLdPropertyValue(WebEntityConstants.ENTITY_CONTEXT));
+
+	jsonLdResource.putProperty(contextProperty);
+
+	// TODO: update JSONLD output and add the @language:en to context
+
+	jsonLdResource.putProperty(WebEntityConstants.TYPE, CommonLdConstants.RESULT_PAGE);
+	jsonLdResource.putProperty(WebEntityConstants.TOTAL, getEntitySet().getResultSize());
+
+	serializeItems(jsonLdResource);
+
+	put(jsonLdResource);
+
+	return toString(4);
+    }
+
+    protected void serializeItems(JsonLdResource jsonLdResource) throws HttpException {
+
+	// do not serialize if empty
+	if (getEntitySet().isEmpty())
+	    return;
+
+	JsonLdProperty containsProperty = new JsonLdProperty(WebEntityConstants.ITEMS);
+	JsonLdPropertyValue propertyValue;
+
+	for (EntityPreview entityPreview : getEntitySet().getResults()) {
+	    propertyValue = buildEntityPreviewPropertyValue(entityPreview);
+	    containsProperty.addValue(propertyValue);
 	}
 
-	ResultSet<? extends EntityPreview> entitySet;
+	jsonLdResource.putProperty(containsProperty);
 
-	public ResultSet<? extends EntityPreview> getEntitySet() {
-		return entitySet;
+    }
+
+    private JsonLdPropertyValue buildEntityPreviewPropertyValue(EntityPreview entityPreview) throws HttpException {
+
+	JsonLdPropertyValue entityPreviewPropValue = new JsonLdPropertyValue();
+
+	// id
+	entityPreviewPropValue.putProperty(new JsonLdProperty(WebEntityConstants.ID, entityPreview.getEntityId()));
+	JsonLdProperty prefLabelProp = buildMapOfStringsProperty(WebEntityConstants.PREF_LABEL,
+		entityPreview.getPreferredLabel(), "");
+	if (prefLabelProp != null) {
+	    entityPreviewPropValue.putProperty(prefLabelProp);
 	}
 
-	public void setConceptSet(ResultSet<? extends EntityPreview> entitySet) {
-		this.entitySet = entitySet;
+	// altLabel
+	if (entityPreview.getAltLabel() != null && !entityPreview.getAltLabel().isEmpty()) {
+	    JsonLdProperty altLabelProp = buildMapProperty(WebEntityConstants.ALT_LABEL,
+		    entityPreview.getAltLabel(), "");
+	    entityPreviewPropValue.putProperty(altLabelProp);
 	}
 
-	/**
-	 * @param conceptSet
-	 */
-	public SuggestionSetSerializer(ResultSet<? extends EntityPreview> entitySet) {
-		super();
-		setPropOrderComparator(new EntityJsonComparator());		
-		registerContainerProperty(WebEntityConstants.IS_PART_OF);
-		registerContainerProperty(WebEntityConstants.ITEMS);
-		setConceptSet(entitySet);
+	// hiddenLabel
+	if (entityPreview.getHiddenLabel() != null && !entityPreview.getHiddenLabel().isEmpty()) {
+	    JsonLdProperty hiddenLabelProp = buildMapProperty(WebEntityConstants.HIDDEN_LABEL,
+		    entityPreview.getHiddenLabel(), "");
+	    entityPreviewPropValue.putProperty(hiddenLabelProp);
+	} else
+	    getLogger().warn("No hidden labels available for entity: " + entityPreview.getEntityId());
+
+	// depiction
+	if (entityPreview.getDepiction() != null)
+	    entityPreviewPropValue
+		    .putProperty(new JsonLdProperty(WebEntityConstants.DEPICTION, entityPreview.getDepiction()));
+
+	String type = entityPreview.getType();
+	EntityTypes entityType = null;
+	try {
+	    entityType = EntityTypes.getByInternalType(type);
+	} catch (UnsupportedEntityTypeException e) {
+	    throw new HttpException(null, I18nConstants.UNSUPPORTED_ENTITY_TYPE, new String[] { type },
+		    HttpStatus.NOT_FOUND, null);
 	}
 
-	/**
-	 * Adds the given concept to this JsonLd object using the resource's subject
-	 * as key. If the key is NULL and there does not exist a resource with an
-	 * empty String as key the resource will be added using an empty String ("")
-	 * as key.
-	 * 
-	 * @param concept
-	 * @throws HttpException 
-	 */
-	public String serialize() throws HttpException {
+	if (entityType != null) {
+	    entityPreviewPropValue
+		    .putProperty(new JsonLdProperty(WebEntityConstants.TYPE, entityType.getInternalType()));
 
-		setUseTypeCoercion(false);
-		setUseCuries(true);
-		setUsedNamespaces(namespacePrefixMap);
+	    switch (entityType) {
+	    case Organization:
+		putOrganizationSpecificProperties((OrganizationPreview) entityPreview, entityPreviewPropValue);
+		break;
 
-		JsonLdResource jsonLdResource = new JsonLdResource();
-		jsonLdResource.setSubject("");
-		
-		JsonLdProperty contextProperty = new JsonLdProperty(WebEntityConstants.AT_CONTEXT);
-		contextProperty.getValues().add(new JsonLdPropertyValue(WebEntityConstants.LDP_CONTEXT));
-		contextProperty.getValues().add(new JsonLdPropertyValue(WebEntityConstants.ENTITY_CONTEXT));
+	    case Concept:
+		// add top concept, when available
+		break;
 
-		jsonLdResource.putProperty(contextProperty);
+	    case Agent:
+		putAgentSpecificProperties((AgentPreview) entityPreview, entityPreviewPropValue);
+		break;
 
-		// TODO: update JSONLD output and add the @language:en to context
+	    case Place:
+		putPlaceSpecificProperties((PlacePreview) entityPreview, entityPreviewPropValue);
+		break;
 
-		jsonLdResource.putProperty(WebEntityConstants.TYPE, CommonLdConstants.RESULT_PAGE);
-		jsonLdResource.putProperty(WebEntityConstants.TOTAL, getEntitySet().getResultSize());
+	    case Timespan:
+		putTimespanSpecificProperties((TimeSpanPreview) entityPreview, entityPreviewPropValue);
+		break;
 
-		serializeItems(jsonLdResource);
+	    case ConceptScheme:
+		break;
 
-		put(jsonLdResource);
+	    default:
+		break;
+	    }
 
-		return toString(4);
+	    entityPreviewPropValue.putProperty(new JsonLdProperty(WebEntityConstants.ID, entityPreview.getEntityId()));
 	}
 
-	protected void serializeItems(JsonLdResource jsonLdResource) throws HttpException {
+	return entityPreviewPropValue;
+    }
 
-		// do not serialize if empty
-		if (getEntitySet().isEmpty())
-			return;
+    private void putTimespanSpecificProperties(TimeSpanPreview entityPreview,
+	    JsonLdPropertyValue entityPreviewPropValue) {
+	if (entityPreview.getBegin() != null)
+	    entityPreviewPropValue.putProperty(new JsonLdProperty(WebEntityConstants.BEGIN, entityPreview.getBegin()));
 
-		JsonLdProperty containsProperty = new JsonLdProperty(WebEntityConstants.ITEMS);
-		JsonLdPropertyValue propertyValue;
+	if (entityPreview.getEnd() != null)
+	    entityPreviewPropValue.putProperty(new JsonLdProperty(WebEntityConstants.END, entityPreview.getEnd()));
+    }
 
-		for (EntityPreview entityPreview : getEntitySet().getResults()) {
-			propertyValue = buildEntityPreviewPropertyValue(entityPreview);
-			containsProperty.addValue(propertyValue);
-		}
+    private void putPlaceSpecificProperties(PlacePreview entityPreview, JsonLdPropertyValue entityPreviewPropValue) {
 
-		jsonLdResource.putProperty(containsProperty);
+	List<ResourcePreview> partOfList = entityPreview.getIsPartOf();
+	JsonLdProperty prefLabelProp;
 
-	}
-
-	private JsonLdPropertyValue buildEntityPreviewPropertyValue(EntityPreview entityPreview) throws HttpException {
-
-		JsonLdPropertyValue entityPreviewPropValue = new JsonLdPropertyValue();
-
-		// id
-		entityPreviewPropValue.putProperty(new JsonLdProperty(WebEntityConstants.ID, entityPreview.getEntityId()));
-		JsonLdProperty prefLabelProp = buildMapOfStringsProperty(WebEntityConstants.PREF_LABEL, entityPreview.getPreferredLabel(), 
-				"");
-		if (prefLabelProp != null) {
-			entityPreviewPropValue.putProperty(prefLabelProp);
-		}
-		
-		// hiddenLabel
-		if(entityPreview.getHiddenLabel() != null && !entityPreview.getHiddenLabel().isEmpty()){
-			JsonLdProperty hiddenLabelProp = buildMapProperty(WebEntityConstants.HIDDEN_LABEL, entityPreview.getHiddenLabel(), 
-					"");
-			entityPreviewPropValue.putProperty(hiddenLabelProp);
-		}
-		else
-			getLogger().warn("No hidden labels available for entity: " + entityPreview.getEntityId());
-		
-		// depiction
-		if (entityPreview.getDepiction() != null)
-			entityPreviewPropValue.putProperty(new JsonLdProperty(WebEntityConstants.DEPICTION, entityPreview.getDepiction()));
-
-		String type = entityPreview.getType();
-		EntityTypes entityType = null;
-		try {
-			entityType = EntityTypes.getByInternalType(type);
-		} catch (UnsupportedEntityTypeException e) {
-			throw new HttpException(null, I18nConstants.UNSUPPORTED_ENTITY_TYPE, new String[]{type}, HttpStatus.NOT_FOUND, null);
-		}
-
-		if (entityType != null) {
-			entityPreviewPropValue
-					.putProperty(new JsonLdProperty(WebEntityConstants.TYPE, entityType.getInternalType()));
-
-			switch (entityType) {
-			case Organization:
-				putOrganizationSpecificProperties((OrganizationPreview) entityPreview, entityPreviewPropValue);
-				break;
-
-			case Concept:
-				// add top concept, when available
-				break;
-				
-			case Agent:
-				putAgentSpecificProperties((AgentPreview) entityPreview, entityPreviewPropValue);
-				break;
-
-			case Place:
-				putPlaceSpecificProperties((PlacePreview) entityPreview, entityPreviewPropValue);
-				break;
-
-			case Timespan:
-				putTimespanSpecificProperties((TimeSpanPreview) entityPreview, entityPreviewPropValue);
-				break;
-
-			case ConceptScheme:
-				break;
-
-			default:
-				break;
-			}
-
-			entityPreviewPropValue.putProperty(new JsonLdProperty(WebEntityConstants.ID, entityPreview.getEntityId()));
-		}
-
-		return entityPreviewPropValue;
-	}
-
-	private void putTimespanSpecificProperties(TimeSpanPreview entityPreview,
-			JsonLdPropertyValue entityPreviewPropValue) {
-		if (entityPreview.getBegin() != null)
-			entityPreviewPropValue.putProperty(new JsonLdProperty(WebEntityConstants.BEGIN, entityPreview.getBegin()));
-
-		if (entityPreview.getEnd() != null)
-			entityPreviewPropValue.putProperty(new JsonLdProperty(WebEntityConstants.END, entityPreview.getEnd()));
-	}
-
-	private void putPlaceSpecificProperties(PlacePreview entityPreview, JsonLdPropertyValue entityPreviewPropValue) {
-
-		List<ResourcePreview> partOfList = entityPreview.getIsPartOf();
-		JsonLdProperty prefLabelProp;
-		
-		if (partOfList != null && !partOfList.isEmpty()) {
-			JsonLdProperty isPartOfProp = new JsonLdProperty(WebEntityConstants.IS_PART_OF);
-			JsonLdPropertyValue propValue;
-			for (ResourcePreview resourcePreview : partOfList) {
-				propValue = new JsonLdPropertyValue();
-				propValue.getValues().put(WebEntityConstants.ID, resourcePreview.getHttpUri());
+	if (partOfList != null && !partOfList.isEmpty()) {
+	    JsonLdProperty isPartOfProp = new JsonLdProperty(WebEntityConstants.IS_PART_OF);
+	    JsonLdPropertyValue propValue;
+	    for (ResourcePreview resourcePreview : partOfList) {
+		propValue = new JsonLdPropertyValue();
+		propValue.getValues().put(WebEntityConstants.ID, resourcePreview.getHttpUri());
 //				propValue.getValues().put(WebEntityConstants.PREF_LABEL, resourcePreview.getPrefLabel());
-				prefLabelProp = buildMapOfStringsProperty(WebEntityConstants.PREF_LABEL, resourcePreview.getPrefLabel(), 
-						"");
-				propValue.getPropertyMap().put(WebEntityConstants.PREF_LABEL, prefLabelProp);
-				
-				isPartOfProp.addValue(propValue);
-			}
+		prefLabelProp = buildMapOfStringsProperty(WebEntityConstants.PREF_LABEL, resourcePreview.getPrefLabel(),
+			"");
+		propValue.getPropertyMap().put(WebEntityConstants.PREF_LABEL, prefLabelProp);
 
-			entityPreviewPropValue.putProperty(isPartOfProp);
-		}
+		isPartOfProp.addValue(propValue);
+	    }
+
+	    entityPreviewPropValue.putProperty(isPartOfProp);
 	}
+    }
 
-	private void putAgentSpecificProperties(AgentPreview entityPreview, JsonLdPropertyValue entityPreviewPropValue) {
-		if (entityPreview.getDateOfBirth() != null)
-			entityPreviewPropValue
-					.putProperty(new JsonLdProperty(WebEntityConstants.DATE_OF_BIRTH, entityPreview.getDateOfBirth()));
+    private void putAgentSpecificProperties(AgentPreview entityPreview, JsonLdPropertyValue entityPreviewPropValue) {
+	if (entityPreview.getDateOfBirth() != null)
+	    entityPreviewPropValue
+		    .putProperty(new JsonLdProperty(WebEntityConstants.DATE_OF_BIRTH, entityPreview.getDateOfBirth()));
 
-		if (entityPreview.getDateOfDeath() != null)
-			entityPreviewPropValue
-					.putProperty(new JsonLdProperty(WebEntityConstants.DATE_OF_DEATH, entityPreview.getDateOfDeath()));
+	if (entityPreview.getDateOfDeath() != null)
+	    entityPreviewPropValue
+		    .putProperty(new JsonLdProperty(WebEntityConstants.DATE_OF_DEATH, entityPreview.getDateOfDeath()));
 
-		if (entityPreview.getProfessionOrOccuation() != null && !entityPreview.getProfessionOrOccuation().isEmpty())
-			entityPreviewPropValue.putProperty(buildMapProperty(WebEntityConstants.PROFESSION_OR_OCCUPATION, entityPreview.getProfessionOrOccuation(), 
-					""));
-	}
+	if (entityPreview.getProfessionOrOccuation() != null && !entityPreview.getProfessionOrOccuation().isEmpty())
+	    entityPreviewPropValue.putProperty(buildMapProperty(WebEntityConstants.PROFESSION_OR_OCCUPATION,
+		    entityPreview.getProfessionOrOccuation(), ""));
+    }
 
-	private void putOrganizationSpecificProperties(OrganizationPreview entityPreview, JsonLdPropertyValue entityPreviewPropValue) {
-		if (entityPreview.getAcronym() != null && !entityPreview.getAcronym().isEmpty())
-			entityPreviewPropValue.putProperty(buildMapProperty(WebEntityConstants.ACRONYM, entityPreview.getAcronym(), null));
+    private void putOrganizationSpecificProperties(OrganizationPreview entityPreview,
+	    JsonLdPropertyValue entityPreviewPropValue) {
+	if (entityPreview.getAcronym() != null && !entityPreview.getAcronym().isEmpty())
+	    entityPreviewPropValue
+		    .putProperty(buildMapProperty(WebEntityConstants.ACRONYM, entityPreview.getAcronym(), null));
 
-		if (entityPreview.getCountry() != null)
-			entityPreviewPropValue
-					.putProperty(new JsonLdProperty(WebEntityConstants.COUNTRY, entityPreview.getCountry()));
+	if (entityPreview.getCountry() != null)
+	    entityPreviewPropValue
+		    .putProperty(new JsonLdProperty(WebEntityConstants.COUNTRY, entityPreview.getCountry()));
 
-		if (entityPreview.getOrganizationDomain() != null)
-			entityPreviewPropValue
-					.putProperty(new JsonLdProperty(WebEntityConstants.ORGANIZATION_DOMAIN, entityPreview.getOrganizationDomain()));
-			
-	}
+	if (entityPreview.getOrganizationDomain() != null)
+	    entityPreviewPropValue.putProperty(
+		    new JsonLdProperty(WebEntityConstants.ORGANIZATION_DOMAIN, entityPreview.getOrganizationDomain()));
+
+    }
 }

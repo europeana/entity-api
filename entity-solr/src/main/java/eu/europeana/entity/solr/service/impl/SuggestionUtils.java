@@ -78,6 +78,34 @@ public class SuggestionUtils {
 	}
 
 	/**
+	 * This method parses a payload employing preferred languages and highlighted terms.
+	 * @param payload
+	 * @param preferredLanguages
+	 * @param highlightTerms
+	 * @return parsed payload
+	 * @throws EntitySuggestionException
+	 */
+	public EntityPreview parsePayloadByLanguage(String payload, String[] preferredLanguages, Set<String> highlightTerms) 
+			throws EntitySuggestionException {	
+		EntityPreview preview = null;
+		try {
+			JsonParser parser = jsonFactory.createJsonParser(payload);
+			parser.setCodec(objectMapper);
+			
+			JsonNode payloadNode = objectMapper.readTree(payload);
+			//convert to mutable list 
+			//increase the size with 2 as additional languages may be added by language logic  
+			List<String> prefLanguagesList = new ArrayList<String>(preferredLanguages.length + 2);
+			prefLanguagesList.addAll(Arrays.asList(preferredLanguages));
+			preview = parseEntityByLanguage(payloadNode, prefLanguagesList, highlightTerms);
+
+		} catch (Exception e) {
+			throw new EntitySuggestionException("Cannot parse suggestion payload: " + payload, e);
+		}
+		return preview;
+	}
+
+	/**
 	 * This method parses entity employing preferred languages and highlighted terms.
 	 * @param entityNode
 	 * @param preferredLanguages
@@ -134,7 +162,63 @@ public class SuggestionUtils {
 		return preview;
 	}
 
-	
+	/**
+	 * This method parses entity employing preferred languages and highlighted terms.
+	 * @param entityNode
+	 * @param preferredLanguages
+	 * @param highlightTerms
+	 * @return parsed entity
+	 * @throws UnsupportedEntityTypeException
+	 */
+	private EntityPreview parseEntityByLanguage(JsonNode entityNode,  List<String> preferredLanguages, Set<String> highlightTerms) 
+			throws UnsupportedEntityTypeException {
+		EntityPreview preview;
+		JsonNode propertyNode = entityNode.get(SuggestionFields.TYPE);
+		String entityType = propertyNode.getTextValue();
+		preview = createPreviewObjectInstance(entityType);
+		preview.setType(propertyNode.getTextValue());
+		
+		propertyNode = entityNode.get(SuggestionFields.ID);
+		preview.setEntityId(propertyNode.getTextValue());
+
+		propertyNode = entityNode.get(WebEntityFields.DEPICTION);
+		if (propertyNode != null)
+			preview.setDepiction(propertyNode.getTextValue());
+		
+		//filter prefLabels to keep only prefered languages 	
+		Map<String, String> prefLabel = getValuesAsLanguageMap(entityNode, SuggestionFields.PREF_LABEL, preferredLanguages);
+		if(!containsHighlightTerm(prefLabel, highlightTerms)){
+			String[] highlightLabel = getHighlightLabel(entityNode, highlightTerms);
+			//currently missmatch between the pref label and alt label, edmAcronym
+			if(highlightLabel != null){
+				//#56 add the matched label to language list
+				String matchedLanguage = highlightLabel[0];
+				prefLabel.put(matchedLanguage, highlightLabel[1]);
+				preferredLanguages.add(matchedLanguage);
+			}
+		}
+		//Fallback no pref label matched
+		if (prefLabel.isEmpty()) {
+			//no prefLabel was matched, the suggestion was based on the acronym
+			log.error("Fallback, return all languages, no preferredLabel matched for entity: " + preview.getEntityId() 
+				+ ", using searched terms: " + StringUtils.join(highlightTerms, ", ") 
+				+ ", and languages: " + StringUtils.join(preferredLanguages, ','));
+			
+			//#EA-1368 include all languages
+			preferredLanguages.add(WebEntityConstants.PARAM_LANGUAGE_ALL);
+			
+			prefLabel = getValuesAsLanguageMap(entityNode, SuggestionFields.PREF_LABEL, preferredLanguages);		
+		} 
+		
+		preview.setPreferredLabel(prefLabel);
+
+		Map<String, List<String>> hiddenLabel = getValuesAsLanguageMapList(entityNode, SuggestionFields.HIDDEN_LABEL, preferredLanguages);
+		preview.setHiddenLabel(hiddenLabel);
+
+		setEntitySpecificProperties(preview, entityNode, preferredLanguages);
+		return preview;
+	}
+
 	/**
 	 * This method checks if highlight term from provided set is included in prefLabel.
 	 * @param prefLabels

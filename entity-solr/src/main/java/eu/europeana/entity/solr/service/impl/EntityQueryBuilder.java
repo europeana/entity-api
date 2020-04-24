@@ -94,19 +94,26 @@ public class EntityQueryBuilder extends QueryBuilder {
 	 * @param scope
 	 * @param rows
 	 * @param snippets
+	 * @param languages
 	 * @return Solr query
 	 */
 	public SolrQuery buildSuggestByLabelQuery(String text, List<EntityTypes> entityTypes, String scope, int rows,
-			int snippets) {
+			int snippets, List<String> languages) {
 
-		String query = OrganizationSolrFields.LABEL + ":(" + text + "*)";
+		String query;
+		if (languages == null || languages.isEmpty()) {
+		    query = OrganizationSolrFields.LABEL + ":(" + text + "*)";
+		} else {
+		    query = buildQueryByLabelAndLanguages(text, languages);		   
+		}
+
 		SolrQuery solrQuery = new SolrQuery(query);
 		solrQuery.setRequestHandler(SolrEntityService.HANDLER_SELECT);
 		addQueryFilterParam(solrQuery, entityTypes, scope, true);
 
 		String[] fields;
 
-		// ?q=label%3AMoz*&sort=derived_score+desc&rows=100&fl=payload%2C+id%2C+derived_score&wt=json&indent=true&hl=true&hl.fl=label&hl.q=Moz*&hl.method=unified&hl.tag.pre=%3Cb%3E&&hl.tag.post=%3C/b%3E
+		// ?q=(label.de%3AMo* OR label.it%3AMo*)&sort=derived_score+desc&rows=100&fl=payload%2C+id%2C+derived_score&wt=json&indent=true&hl=true&hl.fl=label&hl.q=Moz*&hl.method=unified&hl.tag.pre=%3Cb%3E&&hl.tag.post=%3C/b%3E
 		fields = new String[] { OrganizationSolrFields.ID, OrganizationSolrFields.PAYLOAD,
 				OrganizationSolrFields.DERIVED_SCORE };
 		solrQuery.set(CommonParams.SORT, ConceptSolrFields.DERIVED_SCORE + " " + DESC);
@@ -124,6 +131,33 @@ public class EntityQueryBuilder extends QueryBuilder {
 		solrQuery.setFields(fields);
 
 		return solrQuery;
+	}
+	
+
+	/**
+	 * This method selects entities by label and provided languages, which should be included in the
+	 * response
+	 * 
+	 * @param label
+	 * @param languages
+	 * @return Solr query for label by provided languages
+	 */
+	private String buildQueryByLabelAndLanguages(String label, List<String> languages) {
+	    if (languages.size() == 1)
+		return buildOneLanguageLabelQuery(label, languages.get(0));
+	    
+	    String disjunction = String.join(OR, toLabelsStringArray(label, languages));
+		return "(" + disjunction + ")";
+	}	
+	
+	/**
+	 * This method builds a query for label and one language
+	 * @param label
+	 * @param language
+	 * @return
+	 */
+	private static String buildOneLanguageLabelQuery(String label, String language) {
+	    return OrganizationSolrFields.LABEL + "." + language + ":(" + label + "*)";
 	}
 
 	/**
@@ -158,6 +192,20 @@ public class EntityQueryBuilder extends QueryBuilder {
 			internalEntityTypes[i] = entityTypes.get(i).getInternalType();
 		}
 		return internalEntityTypes;
+	}
+
+	/**
+	 * Convert a list of languages for label into an array of strings
+	 * 
+	 * @param languages The array of languages
+	 * @return array of strings
+	 */
+	static String[] toLabelsStringArray(String label, List<String> languages) {
+	    String[] queryLanguages = new String[languages.size()];
+	    for (int i = 0; i < languages.size(); i++) {
+		queryLanguages[i] = buildOneLanguageLabelQuery(label, languages.get(i));
+	    }
+	    return queryLanguages;
 	}
 
 	protected void verifySortField(String fieldName) {

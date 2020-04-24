@@ -62,7 +62,7 @@ public class SearchController extends BaseRest {
 	    @RequestParam(value = WebEntityConstants.QUERY_PARAM_SCOPE, required = false) String scope,
 	    @RequestParam(value = WebEntityConstants.QUERY_PARAM_TYPE, defaultValue = WebEntityConstants.PARAM_TYPE_ALL) String type,
 	    @RequestParam(value = CommonApiConstants.QUERY_PARAM_ROWS, defaultValue = WebEntityConstants.PARAM_DEFAULT_ROWS) int rows,
-	    @RequestParam(value = WebEntityConstants.ALGORITHM, required = false, defaultValue = WebEntityConstants.SUGGEST_ALGORITHM_DEFAULT) String algorithm,
+	    @RequestParam(value = WebEntityConstants.ALGORITHM, required = false, defaultValue = WebEntityConstants.SUGGEST_ALGORITHM_FOR_LANGUAGE) String algorithm,
 	    HttpServletRequest request)
 	    throws HttpException {
 

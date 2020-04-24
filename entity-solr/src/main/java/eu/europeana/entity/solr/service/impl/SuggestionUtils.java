@@ -134,7 +134,6 @@ public class SuggestionUtils {
 		return preview;
 	}
 
-	
 	/**
 	 * This method checks if highlight term from provided set is included in prefLabel.
 	 * @param prefLabels

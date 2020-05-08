@@ -49,7 +49,10 @@
 		<version.servletJstl>1.2</version.servletJstl>
 		<version.mapstruct>1.2.0.Final</version.mapstruct>
 		<version.log4j2>2.9.1</version.log4j2>
-		<httpclient.version>4.4.1</httpclient.version>
+		<version.javax.annotation>1.3.2</version.javax.annotation>
+<!--  not used 
+		<version.httpclient>4.4.1</version.httpclient>
+-->		
 	
 	</properties>
 	<modules>

@@ -17,7 +17,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonParser.Feature;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import eu.europeana.api.common.config.I18nConstants;
@@ -28,7 +27,6 @@ import eu.europeana.api.commons.definitions.search.result.impl.ResultsPageImpl;
 import eu.europeana.api.commons.definitions.vocabulary.CommonApiConstants;
 import eu.europeana.api.commons.web.exception.HttpException;
 import eu.europeana.entity.definitions.exceptions.EntityAttributeInstantiationException;
-import eu.europeana.entity.definitions.exceptions.EntityInstantiationException;
 import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException;
 import eu.europeana.entity.definitions.model.ConceptScheme;
 import eu.europeana.entity.definitions.model.Entity;
@@ -116,6 +114,9 @@ public class EntityServiceImpl extends BaseEntityServiceImpl implements EntitySe
 		break;
 	    case suggestByLabel:
 		res = solrEntityService.suggestByLabel(text, language, entityTypes, scope, rows);
+		break;
+	    case suggestForLanguage:
+		res = solrEntityService.suggestByLanguage(text, language, entityTypes, scope, rows);
 		break;
 	    default:
 		throw new ParamValidationException(WebEntityConstants.ALGORITHM, "" + algorithm);

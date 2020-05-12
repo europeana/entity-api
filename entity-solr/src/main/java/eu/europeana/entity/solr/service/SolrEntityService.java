@@ -75,6 +75,20 @@ public interface SolrEntityService {
 	 */
 	public ResultSet<? extends EntityPreview> suggestByLabel(String text, String[] requestedLanguages, List<EntityTypes> entityTypes, String scope,  int rows) throws EntitySuggestionException;
 
+	/**
+	 * This method retrieves available Entities that meet the query criteria using search 
+	 * by language algorithm
+	 * @param searchQuery The query text
+	 * @param requestedLanguages
+	 * @param entityTypes
+	 * @param scope
+	 * @param rows
+	 * @return
+	 * @throws EntityRetrievalException 
+	 * @throws EntitySuggestionException 
+	 */
+	public ResultSet<? extends EntityPreview> suggestByLanguage(String text, String[] requestedLanguages, List<EntityTypes> entityTypes, String scope,  int rows) throws EntitySuggestionException;
+
 	
 //	/**
 //	 * Performs a lookup for the entity in all 4 datasets:

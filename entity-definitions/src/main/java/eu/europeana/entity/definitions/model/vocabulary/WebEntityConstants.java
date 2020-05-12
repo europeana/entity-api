@@ -69,6 +69,7 @@ public interface WebEntityConstants extends WebEntityFields{
 	public static final String ALGORITHM = "algorithm";
 	//see SuggestAlgorithmTypes.suggestByLabel
 	public static final String SUGGEST_ALGORITHM_DEFAULT = "suggestByLabel"; 
+	public static final String SUGGEST_ALGORITHM_FOR_LANGUAGE = "suggestForLanguage"; 
 	public static final String FIELD_LABEL = "label";
 	
 	// Query definitions

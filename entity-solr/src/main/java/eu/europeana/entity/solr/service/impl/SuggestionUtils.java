@@ -78,6 +78,34 @@ public class SuggestionUtils {
 	}
 
 	/**
+	 * This method parses a payload employing preferred languages and highlighted terms.
+	 * @param payload
+	 * @param preferredLanguages
+	 * @param highlightTerms
+	 * @return parsed payload
+	 * @throws EntitySuggestionException
+	 */
+	public EntityPreview parsePayloadByLanguage(String payload, String[] preferredLanguages, Set<String> highlightTerms) 
+			throws EntitySuggestionException {	
+		EntityPreview preview = null;
+		try {
+			JsonParser parser = jsonFactory.createJsonParser(payload);
+			parser.setCodec(objectMapper);
+			
+			JsonNode payloadNode = objectMapper.readTree(payload);
+			//convert to mutable list 
+			//increase the size with 2 as additional languages may be added by language logic  
+			List<String> prefLanguagesList = new ArrayList<String>(preferredLanguages.length + 2);
+			prefLanguagesList.addAll(Arrays.asList(preferredLanguages));
+			preview = parseEntity(payloadNode, prefLanguagesList, highlightTerms);
+
+		} catch (Exception e) {
+			throw new EntitySuggestionException("Cannot parse suggestion payload: " + payload, e);
+		}
+		return preview;
+	}
+
+	/**
 	 * This method parses entity employing preferred languages and highlighted terms.
 	 * @param entityNode
 	 * @param preferredLanguages

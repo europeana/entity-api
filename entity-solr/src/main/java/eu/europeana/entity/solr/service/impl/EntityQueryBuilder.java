@@ -198,6 +198,20 @@ public class EntityQueryBuilder extends QueryBuilder {
 		return internalEntityTypes;
 	}
 
+	/**
+	 * Convert a list of languages for label into an array of strings
+	 * 
+	 * @param languages The array of languages
+	 * @return array of strings
+	 */
+	static String[] toLabelsStringArray(String label, List<String> languages) {
+	    String[] queryLanguages = new String[languages.size()];
+	    for (int i = 0; i < languages.size(); i++) {
+		queryLanguages[i] = buildQuery(label, languages.get(i));
+	    }
+	    return queryLanguages;
+	}
+
 	protected void verifySortField(String fieldName) {
 		// TODO: implement when field list is specified
 	}

@@ -65,7 +65,7 @@ public class EntityApiConnection extends BaseApiConnection {
 		url += namespace + WebEntityConstants.SLASH;
     	url += identifier;
 		url += WebEntityConstants.PAR_CHAR;
-		url += "wskey" + WebEntityConstants.EQUALS + apiKey;
+		url += "wskey=" + apiKey;
 		
 		/**
 		 * Execute Europeana API request

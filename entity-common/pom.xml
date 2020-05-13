@@ -1,13 +1,14 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	
+
 	<artifactId>entity-common</artifactId>
 	<name>Europeana Entity Collection - Commons</name>
 	<organization>
 		<name>Europeana Foundation + AIT</name>
 	</organization>
 	<url>http://www.europeanalabs.eu</url>
-	
+
 	<parent>
 		<artifactId>entity-api</artifactId>
 		<groupId>eu.europeana.entity</groupId>
@@ -30,7 +31,7 @@
 			<artifactId>spring-context</artifactId>
 			<version>${version.spring}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-core</artifactId>
@@ -40,6 +41,12 @@
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-slf4j-impl</artifactId>
 			<version>${version.log4j2}</version>
-		</dependency>		
+		</dependency>
+
+		<dependency>
+			<groupId>javax.annotation</groupId>
+			<artifactId>javax.annotation-api</artifactId>
+			<version>1.3.2</version>
+		</dependency>
 	</dependencies>
 </project>

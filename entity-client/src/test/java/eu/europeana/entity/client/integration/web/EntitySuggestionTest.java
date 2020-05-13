@@ -20,11 +20,13 @@ public class EntitySuggestionTest extends BaseEntityTest {
 
 	
 	private final String SUGGESTION_TEXT = "marcus";
+	private final String SUGGESTION_TEXT_LANGUAGES = "Mo";
 	private final String SUGGESTION_LANGUAGE = "";
+	private final String SUGGESTION_LANGUAGES = "tr,lv";
 	private final String SUGGESTION_ROWS_COUNT = "10";
 
 					
-	@Test
+//	@Test
 	public void getSuggestion() throws JsonParseException {
 				
 		/**
@@ -42,4 +44,20 @@ public class EntitySuggestionTest extends BaseEntityTest {
 	}
 	
 	
+    @Test
+    public void getSuggestionByLanguages() throws JsonParseException {
+    
+        /**
+        * get suggestion by text and language
+        */
+        List<Entity> response = getApiClient().getSuggestions(
+            getApiKey()
+            , SUGGESTION_TEXT_LANGUAGES
+            , SUGGESTION_LANGUAGES
+            , SUGGESTION_ROWS_COUNT
+            );
+        
+        assertNotNull(response);
+        assertTrue(response.size() > 0);
+        }	
 }

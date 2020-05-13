@@ -5,8 +5,6 @@ public interface WebEntityConstants extends WebEntityFields{
 	// REST API query
 	public static final String SLASH = "/";
 	public static final String PAR_CHAR = "?";
-	public static final String AND = "&";
-	public static final String EQUALS = "=";
 		
 	public static final String PATH_PARAM_TYPE = "type";
 	public static final String PATH_PARAM_NAMESPACE = "namespace";
@@ -71,6 +69,7 @@ public interface WebEntityConstants extends WebEntityFields{
 	public static final String ALGORITHM = "algorithm";
 	//see SuggestAlgorithmTypes.suggestByLabel
 	public static final String SUGGEST_ALGORITHM_DEFAULT = "suggestByLabel"; 
+	public static final String SUGGEST_ALGORITHM_FOR_LANGUAGE = "suggestForLanguage"; 
 	public static final String FIELD_LABEL = "label";
 	
 	// Query definitions
@@ -82,8 +81,7 @@ public interface WebEntityConstants extends WebEntityFields{
 	public static final String USER_ANONYMOUNS = "anonymous";
 	public static final String PROFILE_MINIMAL = "minimal";	
 	public final static String BASE_CONCEPT_SCHEME_URL = "http://data.europeana.eu/scheme/";
-	public static final String USER_TOKEN = "userToken";
-
+	
 	// Web application
 	public static final String CONCEPT_SCHEME = "conceptScheme";	
 	public static final String CONCEPT_SCHEME_APPLICATION_NAME = "webConceptScheme";

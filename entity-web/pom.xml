@@ -74,13 +74,13 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>eu.europeana.corelib</groupId>
 			<artifactId>corelib-utils</artifactId>
 			<version>${version.corelib}</version>
 		</dependency>
-		
+
 		<!-- spring -->
 		<dependency>
 			<groupId>io.springfox</groupId>
@@ -162,13 +162,18 @@
 					<groupId>org.springframework.boot</groupId>
 					<artifactId>spring-boot-starter-logging</artifactId>
 				</exclusion>
+				<exclusion>
+					<groupId>ch.qos.logback</groupId>
+					<artifactId>logback-classic</artifactId>
+				</exclusion>
 			</exclusions>
+
 		</dependency>
 
 		<dependency>
-		    <groupId>com.fasterxml.jackson.dataformat</groupId>
-		    <artifactId>jackson-dataformat-xml</artifactId>
-		    <version>${version.jackson}</version>
+			<groupId>com.fasterxml.jackson.dataformat</groupId>
+			<artifactId>jackson-dataformat-xml</artifactId>
+			<version>${version.jackson}</version>
 		</dependency>
 
 		<dependency>
@@ -176,6 +181,14 @@
 			<artifactId>jettison</artifactId>
 			<version>1.1</version>
 		</dependency>
+
+		<!-- fixes for JDK 11 -->
+		<dependency>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+			<version>${version.jaxb}</version>
+		</dependency>
+
 	</dependencies>
 
 </project>

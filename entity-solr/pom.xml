@@ -17,6 +17,13 @@
 	
 	
 	<dependencies>
+		
+		<dependency>
+			<groupId>javax.annotation</groupId>
+			<artifactId>javax.annotation-api</artifactId>
+			<version>${version.javax.annotation}</version>
+		</dependency>
+		
 		<dependency>
 			<groupId>eu.europeana.entity</groupId>
 			<artifactId>entity-common</artifactId>

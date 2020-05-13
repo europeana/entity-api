@@ -199,34 +199,38 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
     public ResultSet<? extends EntityPreview> suggestByLabel(String text, String[] requestedLanguages,
 	    List<EntityTypes> entityTypes, String scope, int rows) throws EntitySuggestionException {
 
-	ResultSet<? extends EntityPreview> res = null;
-
 	SolrQuery solrQuery = new EntityQueryBuilder().buildSuggestByLabelQuery(text, entityTypes, scope, rows,
 		entityConfiguration.getSuggesterSnippets(), null);
 
-	try {
-	    getLogger().debug("invoke select handler: " + SolrEntityService.HANDLER_SELECT);
-	    getLogger().debug("suggest text: " + text);
-	    QueryResponse rsp = solrServer.query(solrQuery);
-
-	    res = buildSuggestionSetForSearchByLabel(text, rsp, requestedLanguages, rows);
-	    getLogger().debug("search obj res size: " + res.getResultSize());
-	} catch (RuntimeException | SolrServerException | IOException e) {
-	    throw new EntitySuggestionException(
-		    "Unexpected exception occured when searching entities: " + solrQuery.toString(), e);
-	}
-	return res;
+	return fetchSuggestions(text, requestedLanguages, rows, solrQuery);
     }
-
+    
     @Override
     public ResultSet<? extends EntityPreview> suggestByLanguage(String text, String[] requestedLanguages,
 	    List<EntityTypes> entityTypes, String scope, int rows) throws EntitySuggestionException {
 
-	ResultSet<? extends EntityPreview> res = null;
-
-	SolrQuery solrQuery = new EntityQueryBuilder().buildSuggestByLabelQuery(text, entityTypes, scope, rows,
+	SolrQuery solrQuery = new EntityQueryBuilder().buildSuggesForLanguageQuery(text, entityTypes, scope, rows,
 		entityConfiguration.getSuggesterSnippets(), Arrays.asList(requestedLanguages));
 
+//	ResultSet<? extends EntityPreview> res = null;
+//	try {
+//	    getLogger().debug("invoke select handler: " + SolrEntityService.HANDLER_SELECT);
+//	    getLogger().debug("suggest text: " + text);
+//	    QueryResponse rsp = solrServer.query(solrQuery);
+//
+//	    res = buildSuggestionSet(text, rsp, requestedLanguages, rows);
+//	    getLogger().debug("search obj res size: " + res.getResultSize());
+//	} catch (RuntimeException | SolrServerException | IOException e) {
+//	    throw new EntitySuggestionException(
+//		    "Unexpected exception occured when searching entities: " + solrQuery.toString(), e);
+//	}
+//	return res;
+	return fetchSuggestions(text, requestedLanguages, rows, solrQuery);
+    }
+
+    private ResultSet<? extends EntityPreview> fetchSuggestions(String text, String[] requestedLanguages, int rows,
+	    SolrQuery solrQuery) throws EntitySuggestionException {
+	ResultSet<? extends EntityPreview> res = null;
 	try {
 	    getLogger().debug("invoke select handler: " + SolrEntityService.HANDLER_SELECT);
 	    getLogger().debug("suggest text: " + text);
@@ -240,6 +244,7 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 	}
 	return res;
     }
+
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
     protected <T extends EntityPreview> ResultSet<T> buildSuggestionSet(QueryResponse rsp, String[] requestedLanguages,
@@ -271,47 +276,7 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 	return resultSet;
     }
 
-    /**
-     * This method builds a preview for an entity object for use case
-     * "suggestByLabel"
-     * 
-     * @param searchedTerm
-     * @param rsp
-     * @param requestedLanguages
-     * @param rows
-     * @return entity preview
-     * @throws EntitySuggestionException
-     */
-    @SuppressWarnings({ "unchecked" })
-    protected <T extends EntityPreview> ResultSet<T> buildSuggestionSetForSearchByLabel(String searchedTerm,
-	    QueryResponse rsp, String[] requestedLanguages, int rows) throws EntitySuggestionException {
-
-	ResultSet<T> resultSet = new ResultSet<>();
-	List<T> resultList = new ArrayList<T>();
-	Map<String, Set<String>> highlightingResultMap = extractHighlightsMap(rsp);
-
-	SolrDocumentList docList = rsp.getResults();
-	if (docList != null) {
-	    T preview;
-	    String payload;
-	    String id;
-	    Set<String> highlights;
-
-	    for (SolrDocument solrDocument : docList) {
-		id = (String) solrDocument.getFieldValue(SuggestionFields.ID);
-		highlights = highlightingResultMap.get(id);
-		payload = (String) solrDocument.getFieldValue(SuggestionFields.PAYLOAD);
-		preview = (T) getSuggestionHelper().parsePayload(payload, requestedLanguages, highlights);
-		resultList.add(preview);
-	    }
-	}
-
-	resultSet.setResults(resultList);
-	resultSet.setResultSize(resultList.size());
-
-	return resultSet;
-    }
-
+   
     /**
      * This method builds a preview for an entity object for use case
      * "suggestByLanguage"
@@ -365,6 +330,7 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 	// retrieve highlighting mapping
 	Map<String, Map<String, List<String>>> highlightingMap = rsp.getHighlighting();
 
+	//
 	for (Entry<String, Map<String, List<String>>> pair : highlightingMap.entrySet()) {
 	    String id = pair.getKey();
 	    Set<String> termSet = new HashSet<String>();
@@ -373,7 +339,10 @@ public class SolrEntityServiceImpl extends BaseEntityService implements SolrEnti
 		    String extractedTerm = extractHighlightedTerm(term);
 		    termSet.add(extractedTerm);
 		}
-		highlightingResultMap.put(id, termSet);
+		if(!termSet.isEmpty()) {
+		    //on multiple highlighted fields only the one mathced has an entry
+		    highlightingResultMap.put(id, termSet);
+		}
 	    }
 	}
 	return highlightingResultMap;

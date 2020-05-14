@@ -4,7 +4,7 @@ import eu.europeana.entity.definitions.exceptions.UnsupportedAlgorithmTypeExcept
 
 public enum SuggestAlgorithmTypes {
 
-	suggest, suggestByLabel, suggestForLanguage;
+	suggest, suggestByLabel, monolingual;
 	
 	public static SuggestAlgorithmTypes getByName(String name) throws UnsupportedAlgorithmTypeException{
 

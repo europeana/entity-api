@@ -115,7 +115,7 @@ public class EntityServiceImpl extends BaseEntityServiceImpl implements EntitySe
 	    case suggestByLabel:
 		res = solrEntityService.suggestByLabel(text, language, entityTypes, scope, rows);
 		break;
-	    case suggestForLanguage:
+	    case monolingual:
 		res = solrEntityService.suggestByLanguage(text, language, entityTypes, scope, rows);
 		break;
 	    default:

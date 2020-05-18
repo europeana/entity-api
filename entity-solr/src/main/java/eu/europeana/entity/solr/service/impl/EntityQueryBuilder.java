@@ -36,6 +36,8 @@ public class EntityQueryBuilder extends QueryBuilder {
     public SolrQuery toSolrQuery(Query searchQuery, String searchHandler, List<EntityTypes> entityTypes, String scope) {
 	SolrQuery solrQuery = super.toSolrQuery(searchQuery, searchHandler);
 	addQueryFilterParam(solrQuery, entityTypes, scope, false);
+	//with solr 7 default param is not available in index configurations anymore
+	solrQuery.set(PARAM_QUERY_OPERATOR, SimpleParams.AND_OPERATOR);
 	return solrQuery;
     }
 
@@ -159,6 +161,9 @@ public class EntityQueryBuilder extends QueryBuilder {
 	}
 	solrQuery.set(HighlightParams.Q, query);
 	solrQuery.setFields(fields);
+	
+	//with solr 7 default param is not available in index configurations anymore
+	solrQuery.set(PARAM_QUERY_OPERATOR, SimpleParams.AND_OPERATOR);
 
 	return solrQuery;
     }

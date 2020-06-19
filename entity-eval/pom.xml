@@ -1,4 +1,4 @@
- <?xml version="1.0"?>
+<?xml version="1.0"?>
 
 <!-- Copyright 2007-2012 The Europeana Foundation Licenced under the EUPL, 
 	Version 1.1 (the "Licence") and subsequent versions as approved by the European 
@@ -16,8 +16,9 @@
 	<parent>
 		<artifactId>entity-api</artifactId>
 		<groupId>eu.europeana.entity</groupId>
-		<version>${version.entityApi}</version>
-		<relativePath>../pom.xml</relativePath>
+		<version>0.6-SNAPSHOT</version>
+		<!-- version>${version.entityApi}</version-->
+		<!-- relativePath>../pom.xml</relativePath-->
 	</parent>
 
 	<artifactId>entity-eval</artifactId>

@@ -6,9 +6,7 @@
 	Unless required by applicable law or agreed to in writing, software distributed 
 	under the Licence is distributed on an "AS IS" basis, without warranties 
 	or conditions of any kind, either express or implied. See the Licence for 
-	the specific language governing permissions and limitations under the Licence. -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	the specific language governing permissions and limitations under the Licence. --><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>eu.europeana.entity</groupId>
@@ -72,7 +70,8 @@
 		<module>entity-solr</module>
 		<module>entity-mongo</module>
 		<module>entity-web</module>
-	</modules>
+		<module>entity-contentfull</module>
+  </modules>
 	<build>
 		<!-- configure source and output locations -->
 		<directory>target</directory>

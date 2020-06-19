@@ -16,7 +16,8 @@
 	<parent>
 		<artifactId>entity-api</artifactId>
 		<groupId>eu.europeana.entity</groupId>
-		<version>${version.entityApi}</version>
+		<!-- version>${version.entityApi}</version-->
+		<version>0.6-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>entity-definitions</artifactId>

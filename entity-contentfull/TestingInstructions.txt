@@ -1,0 +1,30 @@
+In order to test the app please follow the preparation steps below:
+
+1) Use this app for generating the .jar file used in the entity-contentfull module: https://github.com/contentful/the-example-app.java.
+For building the .jar file, add this code to the existing build.gradle file:
+
+
+task fatJar(type: Jar) {
+	manifest {
+        attributes 'Implementation-Title': 'Gradle Jar File Example',
+        	'Implementation-Version': version,
+        	'Main-Class': mainClassName
+    }
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
+and configure building with Gradle in eclipse using the tasks: "clean fatJar". Then import the generated .jar file into local Maven repository.
+
+2)	Follow further the instructions provided on the page in 1). To download the Contentfull client from this page: https://www.npmjs.com/package/contentful-cli, I used the npm based download. To configure the npm, I used the Git Bash based configuration. More info on how to configure the npm to work with Git Bash can be found here: https://blog.theodo.com/2017/01/use-git-ssh-and-npm-on-windows-with-git-bash/
+
+3)	When you start the server with Gradle, it needs to be stopped so to start it again. Here is a guide on how to stop the process running on some port (in our case 8080): https://stackoverflow.com/questions/39632667/how-do-i-kill-the-process-currently-using-a-port-on-localhost-in-windows. 
+
+4)	To add the spaceId, deliveryToken, and previewToken go to the Contentfull web page and in Settings/API keys create a new key. All tokens and spaceId will be shown.
+
+5)  When you create your Contentfull account with the Contentfull client, you can then create some Entity to test the app methods or use the content that is already created with the the-example-app.java
+
+6)	For all required steps I used the Git Bash command prompt
+
+

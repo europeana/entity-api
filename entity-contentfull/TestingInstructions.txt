@@ -21,10 +21,8 @@ and configure building with Gradle in eclipse using the tasks: "clean fatJar". T
 
 3)	When you start the server with Gradle, it needs to be stopped so to start it again. Here is a guide on how to stop the process running on some port (in our case 8080): https://stackoverflow.com/questions/39632667/how-do-i-kill-the-process-currently-using-a-port-on-localhost-in-windows. 
 
-4)	To add the spaceId, deliveryToken, and previewToken go to the Contentfull web page and in Settings/API keys create a new key. All tokens and spaceId will be shown.
+4)  You should be able to modify the content in Contentful, if I invite you as a user. So please send me a request if you need an invitation.
 
-5)  When you create your Contentfull account with the Contentfull client, you can then create some Entity to test the app methods or use the content that is already created with the the-example-app.java
-
-6)	For all required steps I used the Git Bash command prompt
+5)	For all required steps I used the Git Bash command prompt
 
 

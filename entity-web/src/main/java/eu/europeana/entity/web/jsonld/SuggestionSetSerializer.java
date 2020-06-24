@@ -2,6 +2,7 @@ package eu.europeana.entity.web.jsonld;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.stanbol.commons.jsonld.JsonLd;
 import org.apache.stanbol.commons.jsonld.JsonLdProperty;
 import org.apache.stanbol.commons.jsonld.JsonLdPropertyValue;
@@ -14,8 +15,10 @@ import eu.europeana.api.commons.definitions.vocabulary.CommonLdConstants;
 import eu.europeana.api.commons.web.exception.HttpException;
 import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException;
 import eu.europeana.entity.definitions.model.ResourcePreview;
+import eu.europeana.entity.definitions.model.impl.BaseEntity;
 import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
+import eu.europeana.entity.definitions.model.vocabulary.WebEntityFields;
 import eu.europeana.entity.utils.jsonld.EntityJsonComparator;
 import eu.europeana.entity.web.model.view.AgentPreview;
 import eu.europeana.entity.web.model.view.EntityPreview;
@@ -104,6 +107,29 @@ public class SuggestionSetSerializer extends JsonLd {
 
     }
 
+    /**
+     * This method constructs isShownBy property
+     * @param entity
+     * @param field
+     * @return jsonLd property for isShownBy field
+     */
+    private JsonLdProperty createIsShownByResource(EntityPreview entity, String field) {
+		
+	JsonLdProperty isShownByProperty = new JsonLdProperty(field);
+	JsonLdPropertyValue isShownByValue = new JsonLdPropertyValue();
+		
+	if (!StringUtils.isEmpty(entity.getIsShownById())) { 			
+		isShownByValue.putProperty(new JsonLdProperty(WebEntityFields.ID, entity.getIsShownById()));
+		isShownByValue.putProperty(new JsonLdProperty(WebEntityFields.TYPE, WebEntityFields.WEB_RESOURCE));
+	}
+	if (!StringUtils.isEmpty(entity.getIsShownBySource())) 			
+		isShownByValue.putProperty(new JsonLdProperty(WebEntityFields.SOURCE, entity.getIsShownBySource()));
+	if (!StringUtils.isEmpty(entity.getIsShownByThumbnail())) 			
+		isShownByValue.putProperty(new JsonLdProperty(WebEntityFields.THUMBNAIL, entity.getIsShownByThumbnail()));
+	isShownByProperty.addValue(isShownByValue);		
+	return isShownByProperty;
+    }
+
     private JsonLdPropertyValue buildEntityPreviewPropertyValue(EntityPreview entityPreview) throws HttpException {
 
 	JsonLdPropertyValue entityPreviewPropValue = new JsonLdPropertyValue();
@@ -135,6 +161,11 @@ public class SuggestionSetSerializer extends JsonLd {
 	if (entityPreview.getDepiction() != null)
 	    entityPreviewPropValue
 		    .putProperty(new JsonLdProperty(WebEntityConstants.DEPICTION, entityPreview.getDepiction()));
+	//isShownBy
+	if (!StringUtils.isEmpty((entityPreview).getIsShownById())) {	
+	    entityPreviewPropValue.putProperty(createIsShownByResource(
+			entityPreview, WebEntityFields.IS_SHOWN_BY));	
+	}
 
 	String type = entityPreview.getType();
 	EntityTypes entityType = null;

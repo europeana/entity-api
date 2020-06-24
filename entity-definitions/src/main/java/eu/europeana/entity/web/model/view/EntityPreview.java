@@ -47,4 +47,11 @@ public interface EntityPreview extends IdBean {
 	void setAltLabel(Map<String, List<String>> altabel);
 	Map<String, List<String>> getAltLabel();
 	
+	public void setIsShownById(String id);
+	public String getIsShownById();
+	public void setIsShownBySource(String source);
+	public String getIsShownBySource();
+	public void setIsShownByThumbnail(String thumbnail);
+	public String getIsShownByThumbnail();
+	
 }

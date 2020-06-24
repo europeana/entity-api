@@ -162,6 +162,8 @@ public class SuggestionUtils {
 		Map<String, List<String>> hiddenLabel = getValuesAsLanguageMapList(entityNode, SuggestionFields.HIDDEN_LABEL, preferredLanguages);
 		preview.setHiddenLabel(hiddenLabel);
 		
+		putIsShownByProperties(entityNode, preview);
+				
 		setEntitySpecificProperties(preview, entityNode, preferredLanguages);
 		return preview;
 	}
@@ -311,6 +313,27 @@ public class SuggestionUtils {
 		if (propertyNode != null)
 			preview.setInscheme(propertyNode.getTextValue());
 
+	}
+
+	/**
+	 * This method reads isShownBy properties from the payload and saves them in entity
+	 * preview object
+	 * @param payloadNode
+	 * @param preview
+	 */
+	private void putIsShownByProperties(JsonNode payloadNode, EntityPreview preview) {
+		JsonNode propertyNode = payloadNode.get(SuggestionFields.IS_SHOWN_BY);
+		if (propertyNode != null) {
+		    JsonNode idNode = propertyNode.get(WebEntityFields.ID);
+		    if (idNode != null)
+			preview.setIsShownById(idNode.getTextValue());
+		    JsonNode sourceNode = propertyNode.get(WebEntityFields.SOURCE);
+		    if (sourceNode != null)
+			preview.setIsShownBySource(sourceNode.getTextValue());
+		    JsonNode thumbnailNode = propertyNode.get(WebEntityFields.THUMBNAIL);
+		    if (thumbnailNode != null)
+			preview.setIsShownByThumbnail(idNode.getTextValue());
+		}
 	}
 
 	private void putAgentSpecificProperties(AgentPreview preview, JsonNode payloadNode, List<String> preferredLanguages) {

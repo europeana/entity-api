@@ -57,6 +57,19 @@ public interface WebEntityProtocolApi {
 	 */
 	public List<Entity> getSuggestions(String apiKey, String text, String language, String rows);
 
+	/**
+	 * This method returns entity suggestions depending on given text, algorithm, types, scope and
+	 * language.
+	 * @param apiKey
+	 * @param text
+	 * @param language
+	 * @param rows
+	 * @param scope
+	 * @param algorithm
+	 * @param type
+	 * @return response success.
+	 */
+	public String getSuggestionsExt(String apiKey, String text, String language, String rows, String scope, String algorithm, String type);
 	
 	/**
 	 * Performs a lookup for the entity in all 4 datasets:

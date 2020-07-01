@@ -87,6 +87,32 @@ public class WebEntityProtocolApiImpl extends BaseEntityApi implements WebEntity
 		return res.getItems();
 	}
 
+	/* (non-Javadoc)
+	 * @see eu.europeana.entity.client.web.WebEntityProtocolApi#getSuggestionsExt(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+	 */
+	public String getSuggestionsExt(
+		String apiKey
+		, String text
+		, String language
+		, String rows
+		, String scope
+		, String algorithm
+		, String type
+		) {
+		EntitySearchResults res;
+		try {
+			res = apiConnection.getSuggestionsExt(apiKey, text, language, rows, scope, algorithm, type);
+			if (StringUtils.isNotEmpty(res.getError()))
+				throw new TechnicalRuntimeException(
+						"Authorisation failed", null);
+		} catch (IOException e) {
+			throw new TechnicalRuntimeException(
+					"Exception occured when invoking the EntityJsonApi getSuggestion method", e);
+		}
+
+		return res.getSuccess();	
+	}
+
 	@Override
 	public List<Entity> resolveEntityByUri(String apiKey, String uri) {
 //		public ResponseEntity<String> resolveEntityByUri(String apiKey, String uri) {

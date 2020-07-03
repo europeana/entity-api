@@ -170,7 +170,8 @@ public class ConceptSchemeController extends BaseRest {
 		    );
 	    if (((WebConceptSchemeImpl) storedConceptScheme).isDisabled()) {
 		throw new EntityStateException(I18nConstants.MESSAGE_NOT_ACCESSIBLE,
-			I18nConstants.MESSAGE_NOT_ACCESSIBLE, new String[] { "disabled" });
+			I18nConstants.MESSAGE_NOT_ACCESSIBLE, new String[] { 
+				WebEntityConstants.ENTITY_API_RESOURCE, "disabled" });
 	    }
 	    
 	    applyProfile(storedConceptScheme, ldProfile);
@@ -423,7 +424,8 @@ public class ConceptSchemeController extends BaseRest {
 	    ConceptScheme storedConceptScheme = getEntityService().getConceptSchemeById(identifier);
 	    if (((WebConceptSchemeImpl) storedConceptScheme).isDisabled()) {
 		throw new EntityStateException(I18nConstants.MESSAGE_NOT_ACCESSIBLE,
-			I18nConstants.MESSAGE_NOT_ACCESSIBLE, new String[] { "disabled" });
+			I18nConstants.MESSAGE_NOT_ACCESSIBLE, new String[] { 
+				WebEntityConstants.ENTITY_API_RESOURCE, "disabled" });
 
 	    }
 

@@ -82,12 +82,14 @@ public class EntityServiceImpl extends BaseEntityServiceImpl implements EntitySe
 	    throw new HttpException(e.getMessage(), I18nConstants.SERVER_ERROR_CANT_RETRIEVE_URI,
 		    new String[] { entityUri }, HttpStatus.INTERNAL_SERVER_ERROR, e);
 	} catch (UnsupportedEntityTypeException e) {
-	    throw new HttpException(null, I18nConstants.UNSUPPORTED_ENTITY_TYPE, new String[] { type },
+	    throw new HttpException(null, I18nConstants.UNSUPPORTED_ENTITY_TYPE, new String[] { 
+		    WebEntityConstants.ENTITY_API_RESOURCE, type },
 		    HttpStatus.NOT_FOUND, null);
 	}
 	// if not found send appropriate error message
 	if (result == null)
-	    throw new HttpException(null, I18nConstants.RESOURCE_NOT_FOUND, new String[] { entityUri },
+	    throw new HttpException(null, I18nConstants.RESOURCE_NOT_FOUND, new String[] { 
+		    WebEntityConstants.ENTITY_API_RESOURCE, entityUri },
 		    HttpStatus.NOT_FOUND, null);
 
 	return result;
@@ -140,7 +142,8 @@ public class EntityServiceImpl extends BaseEntityServiceImpl implements EntitySe
 	}
 	// if not found send appropriate error message
 	if (result == null)
-	    throw new HttpException(null, I18nConstants.CANT_FIND_BY_SAME_AS_URI, new String[] { uri },
+	    throw new HttpException(null, I18nConstants.CANT_FIND_BY_SAME_AS_URI, new String[] { 
+		    WebEntityConstants.ENTITY_API_RESOURCE, uri },
 		    HttpStatus.NOT_FOUND);
 
 	return result;

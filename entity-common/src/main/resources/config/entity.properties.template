@@ -5,9 +5,6 @@
 #string value indicating if the application runs in "production", "test", "development" environment 
 entity.environment=development
 
-#string value indicating default user token
-#default.user.token=tester1
-
 #string value representing the key used for JWT signature verification 
 europeana.apikey.jwttoken.siganturekey= 
 #URL of the APIKEY service

@@ -71,7 +71,7 @@ public class SearchController extends BaseRest {
 	    verifyReadAccess(request);
 
 	    // validate text parameter
-	    validateTextParam(text);
+	    String validatedText = preProcessQuery(text);
 
 	    // validate algorithm parameter
 	    SuggestAlgorithmTypes suggestType = validateAlgorithmParam(algorithm);
@@ -89,7 +89,7 @@ public class SearchController extends BaseRest {
 	    String[] requestedLanguages = queryBuilder.toArray(language);
 
 	    // perform search
-	    ResultSet<? extends EntityPreview> results = entityService.suggest(text, requestedLanguages, entityTypes,
+     	    ResultSet<? extends EntityPreview> results = entityService.suggest(validatedText, requestedLanguages, entityTypes,
 		    scope, null, rows, suggestType);
 
 	    // serialize results

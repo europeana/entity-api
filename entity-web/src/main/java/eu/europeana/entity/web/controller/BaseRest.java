@@ -2,6 +2,8 @@ package eu.europeana.entity.web.controller;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -52,9 +54,13 @@ public abstract class BaseRest extends BaseRestController {
     EntityXmlSerializer entityXmlSerializer;
 
     Logger logger = LogManager.getLogger(getClass());
+    
+    Pattern pattern = null;
 
     public BaseRest() {
 	super();
+	String regexPattern = "[^A-Za-z0-9]";
+	pattern = Pattern.compile(regexPattern);
     }
 
     public AuthorizationService getAuthorizationService() {
@@ -160,6 +166,32 @@ public abstract class BaseRest extends BaseRestController {
 	}
 
 	return text;
+    }
+    
+    /**
+     * This method verifies that the provided text parameter is a valid one. It
+     * should not contain field names e.g. "who:mozart" and special characters e.g. " or (
+     * 
+     * @param text
+     * @return validated text
+     * @throws ParamValidationException
+     */    
+    protected String preProcessQuery(String text) throws ParamValidationException {
+	String res = validateTextParam(text);
+	
+	StringBuffer sb = new StringBuffer(); 
+	Matcher m = pattern.matcher(res);
+	while (m.find())
+	{
+	    String repString = "";
+	    if (repString != null)    
+	        m.appendReplacement(sb, repString);
+	}
+	m.appendTail(sb);
+	String resSpecChar = sb.toString();
+	if (StringUtils.isNotBlank(resSpecChar))
+	    res = resSpecChar;
+	return res;
     }
 
     /**

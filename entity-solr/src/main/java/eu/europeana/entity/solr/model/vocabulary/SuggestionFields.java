@@ -31,6 +31,7 @@ public interface SuggestionFields {
 	public static final String HIDDEN_LABEL = WebEntityFields.HIDDEN_LABEL; // "hiddenLabel";
 	public static final String TYPE = WebEntityFields.TYPE; // "type";
 	public static final String PROFESSION_OR_OCCUPATION = WebEntityFields.PROFESSION_OR_OCCUPATION;
+	public static final String IS_SHOWN_BY = WebEntityFields.IS_SHOWN_BY; // "isShownBy";
 
 //TODO: remove .. not supported anymore	
 //	public static final String COUNTRY =  WebEntityFields.COUNTRY;

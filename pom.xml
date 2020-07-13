@@ -37,7 +37,7 @@
 		<version.java>1.8</version.java>
 		<version.junit>4.12</version.junit>
 		<version.corelib>2.9.2</version.corelib>
-		<version.commonsApi>0.2.9</version.commonsApi>
+		<version.commonsApi>0.2.10-SNAPSHOT</version.commonsApi>
 		<version.entityApi>0.9-SNAPSHOT</version.entityApi>
 		<version.annotationLd>1.1.5</version.annotationLd>
 		<version.commonsLang3>3.0</version.commonsLang3>

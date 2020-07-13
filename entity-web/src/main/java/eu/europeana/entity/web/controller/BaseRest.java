@@ -34,6 +34,7 @@ import eu.europeana.entity.definitions.model.search.SearchProfiles;
 import eu.europeana.entity.definitions.model.vocabulary.LdProfiles;
 import eu.europeana.entity.definitions.model.vocabulary.SuggestAlgorithmTypes;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
+import eu.europeana.entity.definitions.model.vocabulary.WebEntityFields;
 import eu.europeana.entity.utils.jsonld.EuropeanaEntityLd;
 import eu.europeana.entity.web.exception.ParamValidationException;
 import eu.europeana.entity.web.jsonld.EntityResultsPageSerializer;
@@ -54,12 +55,13 @@ public abstract class BaseRest extends BaseRestController {
     EntityXmlSerializer entityXmlSerializer;
 
     Logger logger = LogManager.getLogger(getClass());
-    
+
     Pattern pattern = null;
 
     public BaseRest() {
 	super();
-	String regexPattern = "[^A-Za-z0-9]";
+	//String regexPattern = "[^A-Za-z0-9]"
+	String regexPattern = "\\p{Punct}";
 	pattern = Pattern.compile(regexPattern);
     }
 
@@ -87,9 +89,9 @@ public abstract class BaseRest extends BaseRestController {
     }
 
     public String getApiVersion() {
-    	return getAuthorizationService().getConfiguration().getApiVersion();
+	return getAuthorizationService().getConfiguration().getApiVersion();
     }
-    
+
     /**
      * This method returns the json-ld serialization for the given results page,
      * according to the specifications of the provided search profile
@@ -144,54 +146,74 @@ public abstract class BaseRest extends BaseRestController {
 	    throw new ParamValidationException(I18nConstants.INVALID_PARAM_VALUE, WebEntityConstants.QUERY_PARAM_FORMAT,
 		    extension, HttpStatus.NOT_FOUND, null);
 	}
-
     }
 
     /**
      * This method verifies that the provided text parameter is a valid one. It
-     * should not contain field names e.g. "who:mozart"
+     * should not contain field names e.g. "who:mozart" and special characters e.g.
+     * " or (
      * 
      * @param text
      * @return validated text
      * @throws ParamValidationException
      */
-    protected String validateTextParam(String text) throws ParamValidationException {
-	if (StringUtils.isBlank(text)) {
+    protected String preProcessQuery(String text) throws ParamValidationException {
+	if (text == null) {
 	    return null;
 	}
-
-	if (text.contains(WebEntityConstants.FIELD_DELIMITER)) {
-	    throw new ParamValidationException(I18nConstants.INVALID_PARAM_VALUE, WebEntityConstants.QUERY_PARAM_TEXT,
-		    text);
+	// remove solr field names
+	String query = removeSolrFieldNames(text);
+	//remove AND OR
+	if(query.contains(WebEntityConstants.SOLR_AND)) {
+	    query = query.replaceAll(WebEntityConstants.SOLR_AND, " ");
 	}
 
-	return text;
+	if(query.contains(WebEntityConstants.SOLR_OR)) {
+	    query = query.replaceAll(WebEntityConstants.SOLR_OR, " ");
+	}
+		
+	//remove punctuation
+//	StringBuffer sb = new StringBuffer();
+	Matcher matcher = pattern.matcher(query);	
+	if(matcher.find()) {
+	    query = matcher.replaceAll(" ");
+	}
+//	while (matcher.find()) {
+//	    String repString = "";
+//	    if (repString != null)
+//		matcher.appendReplacement(sb, repString);
+//	}
+//	matcher.appendTail(sb);
+//	String resSpecChar = sb.toString();
+//	if (StringUtils.isNotBlank(resSpecChar))
+//	    res = resSpecChar;
+	return query;
     }
-    
-    /**
-     * This method verifies that the provided text parameter is a valid one. It
-     * should not contain field names e.g. "who:mozart" and special characters e.g. " or (
-     * 
-     * @param text
-     * @return validated text
-     * @throws ParamValidationException
-     */    
-    protected String preProcessQuery(String text) throws ParamValidationException {
-	String res = validateTextParam(text);
-	
-	StringBuffer sb = new StringBuffer(); 
-	Matcher m = pattern.matcher(res);
-	while (m.find())
-	{
-	    String repString = "";
-	    if (repString != null)    
-	        m.appendReplacement(sb, repString);
+
+    private String removeSolrFieldNames(String text) {
+	if (!text.contains(WebEntityConstants.FIELD_DELIMITER)) {
+	    return text;
 	}
-	m.appendTail(sb);
-	String resSpecChar = sb.toString();
-	if (StringUtils.isNotBlank(resSpecChar))
-	    res = resSpecChar;
-	return res;
+	String query = text;
+	String solrField;
+	while (query.contains(WebEntityConstants.FIELD_DELIMITER)) {
+	    solrField = extractSolrFieldName(query);
+	    query = StringUtils.replaceOnce(query, solrField, " ");
+	}
+	return query;
+    }
+
+    protected String extractSolrFieldName(String query) {
+	int end = query.indexOf(WebEntityConstants.FIELD_DELIMITER);
+	//include delimiter
+	String fieldName = query.substring(0, end+1);
+	int start_space = StringUtils.lastIndexOf(fieldName, " ");
+	int start_bracket = StringUtils.lastIndexOf(fieldName, "(");
+	int start = Math.max(start_space, start_bracket);
+	// if none start from beginning
+	start = Math.max(0, start);
+	fieldName = fieldName.substring(start);
+	return fieldName;
     }
 
     /**
@@ -209,7 +231,6 @@ public abstract class BaseRest extends BaseRestController {
 		    WebEntityConstants.QUERY_PARAM_ALGORITHM, algorithm);
 	}
     }
- 
 
     /**
      * This methods applies Linked Data profile to a concept scheme
@@ -348,7 +369,7 @@ public abstract class BaseRest extends BaseRestController {
      * @param format The format extension
      * @return entity in jsonLd format
      * @throws UnsupportedEntityTypeException
-     * @throws HttpException 
+     * @throws HttpException
      */
     protected String serialize(Entity entity, FormatTypes format) throws UnsupportedEntityTypeException, HttpException {
 

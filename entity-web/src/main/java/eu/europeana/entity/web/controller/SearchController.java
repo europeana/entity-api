@@ -70,11 +70,11 @@ public class SearchController extends BaseRest {
 	    // Check client access (a valid “wskey” must be provided)
 	    verifyReadAccess(request);
 
-	    // validate text parameter
-	    String validatedText = preProcessQuery(text);
-
 	    // validate algorithm parameter
 	    SuggestAlgorithmTypes suggestType = validateAlgorithmParam(algorithm);
+
+	    // validate text parameter
+	    String validatedText = preProcessQuery(text);
 
 	    EntityQueryBuilder queryBuilder = new EntityQueryBuilder();
 	    

@@ -43,6 +43,8 @@ public interface WebEntityConstants extends WebEntityFields{
 	 */
 	public static final String SOLR_INTERNAL_TYPE = "internal_type";
 	public static final String FIELD_DELIMITER = ":";
+	public static final String SOLR_AND = " AND ";
+	public static final String SOLR_OR = " OR ";
 	
 	/**
 	 * Model attribute names

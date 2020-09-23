@@ -3,3 +3,7 @@
 **/.settings/
 **.classpath
 **.log
+
+#IntelliJ project files
+.idea
+*.iml

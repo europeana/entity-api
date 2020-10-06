@@ -7,6 +7,7 @@ import eu.europeana.entity.solr.model.SolrConceptImpl;
 import eu.europeana.entity.solr.model.SolrConceptSchemeImpl;
 import eu.europeana.entity.solr.model.SolrOrganizationImpl;
 import eu.europeana.entity.solr.model.SolrPlaceImpl;
+import eu.europeana.entity.solr.model.SolrTimespanImpl;
 
 
 public class EntityObjectFactory extends AbstractModelObjectFactory<Entity, EntityTypes>{
@@ -59,7 +60,7 @@ public class EntityObjectFactory extends AbstractModelObjectFactory<Entity, Enti
 			ret = SolrPlaceImpl.class;
 			break;
 		case Timespan:
-			ret = SolrPlaceImpl.class;
+			ret = SolrTimespanImpl.class;
 			break;
 		case ConceptScheme:
 			ret = SolrConceptSchemeImpl.class;

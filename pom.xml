@@ -34,18 +34,20 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<version.java>1.8</version.java>
+		<version.java>1.9</version.java>
 		<version.junit>4.12</version.junit>
 		<version.corelib>2.9.2</version.corelib>
-		<version.commonsApi>0.2.10-SNAPSHOT</version.commonsApi>
+		<version.commonsApi>0.2.11-SNAPSHOT</version.commonsApi>
 		<version.entityApi>0.9-SNAPSHOT</version.entityApi>
-		<version.annotationLd>1.1.5</version.annotationLd>
+		<version.annotationLd>1.1.6</version.annotationLd>
 		<version.commonsLang3>3.0</version.commonsLang3>
-		<version.spring>5.1.7.RELEASE</version.spring>
+		<version.spring>5.2.7.RELEASE</version.spring>
 		<version.springBoot>2.1.5.RELEASE</version.springBoot>
 		<version.jackson>2.9.10</version.jackson>
 		<version.jaxb>2.3.1</version.jaxb>
+		<!-- 
 		<version.codehausJackson>1.9.9</version.codehausJackson>
+		 -->
 		<version.apacheSolr>7.7.2</version.apacheSolr>
 		<version.servletJstl>1.2</version.servletJstl>
 		<version.mapstruct>1.2.0.Final</version.mapstruct>

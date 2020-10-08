@@ -83,6 +83,7 @@ public interface WebEntityConstants extends WebEntityFields{
 	public static final String USER_ANONYMOUNS = "anonymous";
 	public static final String PROFILE_MINIMAL = "minimal";	
 	public final static String BASE_CONCEPT_SCHEME_URL = "http://data.europeana.eu/scheme/";
+	public static final String ENTITY_API_RESOURCE = "entity";
 	
 	// Web application
 	public static final String CONCEPT_SCHEME = "conceptScheme";	

@@ -23,7 +23,10 @@ public interface ConceptSolrFields extends EntitySolrFields{
 	//Fields common to some entities
 	public static final String HAS_PART                 = "dcterms_hasPart";
 	public static final String IS_PART_OF               = "dcterms_isPartOf";
+	public static final String IS_NEXT_IN_SEQUENCE = "edm_isNextInSequence";
 	
 	public static final String IN_SCHEME = "inScheme";
-	
+
+	public static final String BEGIN                    = "edm_begin";
+	public static final String END                      = "edm_end";
 }

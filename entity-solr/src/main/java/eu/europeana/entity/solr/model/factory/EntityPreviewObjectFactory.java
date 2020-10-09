@@ -60,6 +60,7 @@ public class EntityPreviewObjectFactory extends AbstractModelObjectFactory<Entit
 			break;
 		case Timespan:
 			ret = TimeSpanPreviewImpl.class;
+			break;
 		case ConceptScheme:
 			//not supported yet 
 		default:

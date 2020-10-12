@@ -97,8 +97,10 @@
 				<version>3.8.0</version>
 				<configuration>
 					<release>${version.javac.release}</release>
+					<!-- 
 					<source>${version.java}</source>
 					<target>${version.java}</target>
+					 -->
 				</configuration>
 			</plugin>
 		</plugins>

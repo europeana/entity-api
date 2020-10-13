@@ -118,7 +118,6 @@ public class ResolveController extends BaseRest {
 	
 	private ResponseEntity<String> createResponse(String type, String namespace, String identifier, FormatTypes outFormat,  String contentType, HttpServletRequest request) throws HttpException{
 	    try {
-//		validateApiKey(request);
 		verifyReadAccess(request);
         	Entity entity = entityService.retrieveByUrl(type, namespace, identifier);
         	String jsonLd = serialize(entity, outFormat);

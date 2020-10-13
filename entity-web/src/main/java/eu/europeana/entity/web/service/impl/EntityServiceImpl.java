@@ -69,7 +69,7 @@ public class EntityServiceImpl extends BaseEntityServiceImpl implements EntitySe
 	stringBuilder.append(BASE_URL_DATA);
 	if (StringUtils.isNotEmpty(type))
 	    stringBuilder.append(type.toLowerCase() + "/");
-	if (StringUtils.isNotEmpty(namespace) && !EntityTypes.Organization.getInternalType().equalsIgnoreCase(type))
+	if (StringUtils.isNotEmpty(namespace) && hasNamespaceInId(type))
 	    stringBuilder.append(namespace + "/");
 	if (StringUtils.isNotEmpty(identifier))
 	    stringBuilder.append(identifier);
@@ -93,6 +93,10 @@ public class EntityServiceImpl extends BaseEntityServiceImpl implements EntitySe
 		    HttpStatus.NOT_FOUND, null);
 
 	return result;
+    }
+
+    private boolean hasNamespaceInId(String type) {
+	return !EntityTypes.Organization.getInternalType().equalsIgnoreCase(type) && !EntityTypes.Timespan.getInternalType().equalsIgnoreCase(type);
     }
 
     /*

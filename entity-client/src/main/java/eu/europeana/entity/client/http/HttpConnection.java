@@ -188,7 +188,7 @@ public class HttpConnection {
 	public ResponseEntity<String>  getURL(String url) throws IOException {
         HttpClient client = this.getHttpClient(CONNECTION_RETRIES, TIMEOUT_CONNECTION);
         GetMethod get = new GetMethod(url);
-	if (StringUtils.isNotBlank(REQUEST_HEADER_NAME) && StringUtils.isNotBlank(REQUEST_HEADER_VALUE)) {
+	if (!url.contains("wskey=") && StringUtils.isNotBlank(REQUEST_HEADER_NAME) && StringUtils.isNotBlank(REQUEST_HEADER_VALUE)) {
             get.setRequestHeader(REQUEST_HEADER_NAME, REQUEST_HEADER_VALUE);
         }
 

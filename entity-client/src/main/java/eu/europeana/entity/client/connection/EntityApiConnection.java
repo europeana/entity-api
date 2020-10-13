@@ -65,7 +65,7 @@ public class EntityApiConnection extends BaseApiConnection {
 		String url = getEntityServiceUri() + WebEntityConstants.SLASH;
 		url += type + WebEntityConstants.SLASH;
 		url += namespace + WebEntityConstants.SLASH;
-    	url += identifier;
+		url += identifier;
 		url += WebEntityConstants.PAR_CHAR;
 		url += "wskey=" + apiKey;
 		

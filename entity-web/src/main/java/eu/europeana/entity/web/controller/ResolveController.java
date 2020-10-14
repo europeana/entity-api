@@ -165,8 +165,6 @@ public class ResolveController extends BaseRest {
 
 		try {
 			verifyReadAccess(request);
-//			validateApiKey(request);
-
 			String entityUri = entityService.resolveByUri(uri.trim());
 					
 			MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>(5);

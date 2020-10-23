@@ -3,8 +3,6 @@ package eu.europeana.entity.definitions.model.vocabulary;
 public interface AgentSolrFields extends ConceptSolrFields{
 		
 	public static final String DATE                     = "dc_date";
-	public static final String BEGIN                    = "edm_begin";
-	public static final String END                      = "edm_end";
 	public static final String HAS_MET                  = "edm_hasMet";
 	public static final String IS_RELATED_TO            = "edm_isRelatedTo";
 	public static final String NAME                     = "foaf_name";

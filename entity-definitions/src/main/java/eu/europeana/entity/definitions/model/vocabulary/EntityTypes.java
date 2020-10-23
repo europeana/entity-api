@@ -85,9 +85,9 @@ public enum EntityTypes implements EntityKeyword{
 			
 	public static EntityTypes getByInternalType(String internalType) throws UnsupportedEntityTypeException{
 
-		for(EntityTypes agentType : EntityTypes.values()){
-			if(agentType.getInternalType().equalsIgnoreCase(internalType))
-				return agentType;
+		for(EntityTypes entityType : EntityTypes.values()){
+			if(entityType.getInternalType().equalsIgnoreCase(internalType))
+				return entityType;
 		}
 		throw new UnsupportedEntityTypeException(internalType);
 	}	

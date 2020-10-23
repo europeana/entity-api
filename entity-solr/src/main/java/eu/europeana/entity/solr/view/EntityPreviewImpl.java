@@ -22,6 +22,11 @@ public class EntityPreviewImpl implements EntityPreview{
 	EntityTypes entityType;
 	String depiction;
 	
+        // isShownBy fields
+	private String isShownById;
+	private String isShownBySource;
+	private String isShownByThumbnail;
+	
 	@Override
 	public Date getTimestampUpdated() {
 		// TODO Auto-generated method stub
@@ -147,6 +152,30 @@ public class EntityPreviewImpl implements EntityPreview{
 
 	public void setDepiction(String depiction) {
 		this.depiction = depiction;
+	}
+	
+	public String getIsShownById() {
+		return isShownById;
+	}
+	
+	public void setIsShownById(String isShownById) {
+		this.isShownById = isShownById;
+	}
+
+	public String getIsShownBySource() {
+		return isShownBySource;
+	}
+	
+	public void setIsShownBySource(String isShownBySource) {
+		this.isShownBySource = isShownBySource;
+	}
+
+	public String getIsShownByThumbnail() {
+		return isShownByThumbnail;
+	}
+	
+	public void setIsShownByThumbnail(String isShownByThumbnail) {
+		this.isShownByThumbnail = isShownByThumbnail;
 	}
 	
 }

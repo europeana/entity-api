@@ -70,11 +70,11 @@ public class SearchController extends BaseRest {
 	    // Check client access (a valid “wskey” must be provided)
 	    verifyReadAccess(request);
 
-	    // validate text parameter
-	    validateTextParam(text);
-
 	    // validate algorithm parameter
 	    SuggestAlgorithmTypes suggestType = validateAlgorithmParam(algorithm);
+
+	    // validate text parameter
+	    String validatedText = preProcessQuery(text);
 
 	    EntityQueryBuilder queryBuilder = new EntityQueryBuilder();
 	    
@@ -89,7 +89,7 @@ public class SearchController extends BaseRest {
 	    String[] requestedLanguages = queryBuilder.toArray(language);
 
 	    // perform search
-	    ResultSet<? extends EntityPreview> results = entityService.suggest(text, requestedLanguages, entityTypes,
+     	    ResultSet<? extends EntityPreview> results = entityService.suggest(validatedText, requestedLanguages, entityTypes,
 		    scope, null, rows, suggestType);
 
 	    // serialize results

@@ -39,13 +39,6 @@
 			<version>${version.junit}</version>
 			<scope>test</scope>
 		</dependency>
-<!-- 
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-jdk14</artifactId>
-			<version>${version.slf4j}</version>
-		</dependency>
- -->
 
 		<dependency>
 			<groupId>org.codehaus.jettison</groupId>
@@ -53,13 +46,6 @@
 			<version>1.1</version>
 		</dependency>
 
-<!--		
-		<dependency>
-			<groupId>com.google.code.gson</groupId>
-			<artifactId>gson</artifactId>
-			<version>2.3.1</version>
-		</dependency>
--->		
 		<dependency>
             <groupId>org.apache.jena</groupId>
             <artifactId>apache-jena-libs</artifactId> 
@@ -69,6 +55,10 @@
             	<exclusion>
             		<groupId>log4j</groupId>
             		<artifactId>log4j</artifactId>
+            	</exclusion>
+            	<exclusion>
+            		<groupId>org.slf4j</groupId>
+            		<artifactId>slf4j-log4j12</artifactId>
             	</exclusion>
             </exclusions>
 		</dependency>

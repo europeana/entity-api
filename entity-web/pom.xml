@@ -100,6 +100,13 @@
 			<version>2.0-m01</version>
 		</dependency>
 
+				<dependency>
+			<groupId>com.fasterxml.jackson.dataformat</groupId>
+			<artifactId>jackson-dataformat-xml</artifactId>
+			<version>${version.jackson}</version>
+		</dependency>
+		
+		<!-- 
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
@@ -111,7 +118,8 @@
 			<artifactId>jackson-module-jaxb-annotations</artifactId>
 			<version>${version.jackson}</version>
 		</dependency>
-
+		 -->
+		
 		<dependency>
 			<groupId>org.mapstruct</groupId>
 			<artifactId>mapstruct-jdk8</artifactId>
@@ -168,12 +176,6 @@
 				</exclusion>
 			</exclusions>
 
-		</dependency>
-
-		<dependency>
-			<groupId>com.fasterxml.jackson.dataformat</groupId>
-			<artifactId>jackson-dataformat-xml</artifactId>
-			<version>${version.jackson}</version>
 		</dependency>
 
 		<dependency>

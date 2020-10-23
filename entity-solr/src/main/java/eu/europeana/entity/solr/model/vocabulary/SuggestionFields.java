@@ -16,8 +16,8 @@ public interface SuggestionFields {
 	public static final String PAYLOAD = "payload";
 
 	//TODO: update to correct values from specs
-	public static final String TIME_SPAN_START = "lifespanStart";
-	public static final String TIME_SPAN_END = "lifespanEnd";
+	public static final String TIME_SPAN_START = "begin";
+	public static final String TIME_SPAN_END = "end";
 	public static final String IN_SCHEME = "inScheme";
 	
 	public static final String ID = WebEntityFields.ID; // "id";
@@ -31,6 +31,7 @@ public interface SuggestionFields {
 	public static final String HIDDEN_LABEL = WebEntityFields.HIDDEN_LABEL; // "hiddenLabel";
 	public static final String TYPE = WebEntityFields.TYPE; // "type";
 	public static final String PROFESSION_OR_OCCUPATION = WebEntityFields.PROFESSION_OR_OCCUPATION;
+	public static final String IS_SHOWN_BY = WebEntityFields.IS_SHOWN_BY; // "isShownBy";
 
 //TODO: remove .. not supported anymore	
 //	public static final String COUNTRY =  WebEntityFields.COUNTRY;

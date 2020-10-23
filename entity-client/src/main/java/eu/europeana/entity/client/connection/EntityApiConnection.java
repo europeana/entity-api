@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.httpclient.URIException;
+import org.apache.commons.httpclient.util.URIUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
@@ -63,7 +65,7 @@ public class EntityApiConnection extends BaseApiConnection {
 		String url = getEntityServiceUri() + WebEntityConstants.SLASH;
 		url += type + WebEntityConstants.SLASH;
 		url += namespace + WebEntityConstants.SLASH;
-    	url += identifier;
+		url += identifier;
 		url += WebEntityConstants.PAR_CHAR;
 		url += "wskey=" + apiKey;
 		
@@ -141,6 +143,39 @@ public class EntityApiConnection extends BaseApiConnection {
 			) throws IOException {
 		
 		String url = buildUrl(apiKey, query, language, rows);
+		
+		/**
+		 * Execute Europeana API request
+		 */
+		String json = getJSONResult(url);
+		
+		return getEntitySearchResults(language, json);
+	}
+
+	/**
+	 * This method returns a list of Entity objects for the passed query.
+         * E.g. http://localhost:8080/entity/suggest?wskey=apidemo&text=ro&language=en&rows=10&type=agent,concept&scope=europeana&algorithm=monolingual
+	 * @param apiKey
+         * @param query The query string
+	 * @param language
+	 * @param rows
+	 * @param scope
+	 * @param algorithm
+	 * @param type
+	 * @return entity operation response
+	 * @throws IOException
+	 */
+	public EntitySearchResults getSuggestionsExt (
+			String apiKey
+			, String query
+			, String language
+			, String rows
+			, String scope
+			, String algorithm
+			, String type
+			) throws IOException {
+		
+		String url = buildUrlExt(apiKey, query, language, rows, scope, algorithm, type);
 		
 		/**
 		 * Execute Europeana API request
@@ -256,6 +291,54 @@ public class EntityApiConnection extends BaseApiConnection {
 			builder.append("&rows=10");
 				
 		return builder.toString();		
+	}
+	
+	/**
+	 * This method constructs url dependent on search parameter.
+	 * @param apiKey
+	 * @param query
+	 * @param language
+	 * @param rows
+	 * @param scope
+	 * @param algorithm
+	 * @param type
+	 * @return query
+	 */
+	private String buildUrlExt(String apiKey, String query, String language, String rows, 
+		String scope, String algorithm, String type) {		
+		
+		StringBuilder builder = new StringBuilder();
+		builder.append("wskey=").append(apiKey);
+		if (StringUtils.isNotEmpty(query)) {
+			builder.append("&text=").append(query);
+		}
+		if (StringUtils.isNotEmpty(language))
+			builder.append("&language=").append(language);
+		else
+			builder.append("&language=en");
+		if (StringUtils.isNotEmpty(rows))
+			builder.append("&rows=").append(rows);
+		else
+			builder.append("&rows=10");
+		if (StringUtils.isNotEmpty(scope))
+			builder.append("&scope=").append(scope);
+		if (StringUtils.isNotEmpty(algorithm))
+			builder.append("&algorithm=").append(algorithm);
+		if (StringUtils.isNotEmpty(type))
+			builder.append("&type=").append(type);
+				
+		String parameterUrl = builder.toString();
+		String encodedUrl = "";
+		try {
+		    encodedUrl = URIUtil.encodePath(parameterUrl);
+		} catch (URIException e) {
+		    e.printStackTrace();
+		}		
+		
+		StringBuilder builderRes = new StringBuilder();
+		builderRes.append(getEntityServiceUri());
+		builderRes.append("/suggest?").append(encodedUrl);
+		return builderRes.toString();
 	}
 	
 	/**

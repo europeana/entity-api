@@ -29,13 +29,15 @@ import eu.europeana.entity.definitions.model.vocabulary.EntityTypes;
 public class EntityRetrievalTest extends BaseEntityTest { 
 
 
-	private final String TEST_ENTITY_TYPE = EntityTypes.Agent.getInternalType();
+	private final String TEST_ENTITY_TYPE = EntityTypes.Agent.getInternalType().toLowerCase();
 	private final String TEST_ENTITY_NAMESPACE = "base";
 	private final String TEST_ENTITY_ID = "33041";
 
-	private final String TEST_PLACE_ENTITY_TYPE = EntityTypes.Place.getInternalType();
+	private final String TEST_PLACE_ENTITY_TYPE = EntityTypes.Place.getInternalType().toLowerCase();
 	private final String TEST_PLACE_ENTITY_NAMESPACE = "base";
 	private final String TEST_PLACE_ENTITY_ID = "124437";
+	
+	private final String TEST_TIMESPAN_ENTITY_ID = "1";
 	
 	private final String TEST_DBPEDIA_RESOLVE_URI = "http://dbpedia.org/resource/Charles_Dickens"; 
 	private final String TEST_EUROPEANA_RESOLVE_RESPONSE_URI = "http://data.europeana.eu/agent/base/59904";
@@ -84,6 +86,22 @@ public class EntityRetrievalTest extends BaseEntityTest {
 		validateResponse(response, HttpStatus.OK);
 	}
 	
+	@Test
+	public void getTimespanEntity() throws JsonParseException, IllegalAccessException, 
+									IllegalArgumentException, InvocationTargetException {
+		
+		/**
+		 * get entity by type, namespace and identifier
+		 */
+		ResponseEntity<String> response = retrieveEntity(
+				getApiKey()
+				, EntityTypes.Timespan.getInternalType().toLowerCase()
+				, TEST_PLACE_ENTITY_NAMESPACE
+				, TEST_TIMESPAN_ENTITY_ID
+				);
+		
+		validateResponse(response, HttpStatus.OK);
+	}
 	
 	@Test
 	public void resolveEntity() throws JsonParseException, IllegalAccessException, 

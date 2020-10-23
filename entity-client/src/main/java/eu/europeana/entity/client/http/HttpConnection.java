@@ -15,6 +15,7 @@ import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.PutMethod;
 import org.apache.commons.httpclient.params.HttpMethodParams;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
@@ -33,11 +34,16 @@ public class HttpConnection {
     private static final int STATUS_OK_END = 299;
     private static final int STATUS_UNAUTHORIZED = 401;
     private static final String ENCODING = "UTF-8";
+    private static final String REQUEST_HEADER_NAME = "Authorization";
+    private static final String REQUEST_HEADER_VALUE = "Bearer";
     private HttpClient httpClient = null;
 
     public String getURLContent(String url) throws IOException {
         HttpClient client = this.getHttpClient(CONNECTION_RETRIES, TIMEOUT_CONNECTION);
         GetMethod get = new GetMethod(url);
+	if (StringUtils.isNotBlank(REQUEST_HEADER_NAME) && StringUtils.isNotBlank(REQUEST_HEADER_VALUE)) {
+            get.setRequestHeader(REQUEST_HEADER_NAME, REQUEST_HEADER_VALUE);
+        }
 
         try {
             client.executeMethod(get);
@@ -182,6 +188,9 @@ public class HttpConnection {
 	public ResponseEntity<String>  getURL(String url) throws IOException {
         HttpClient client = this.getHttpClient(CONNECTION_RETRIES, TIMEOUT_CONNECTION);
         GetMethod get = new GetMethod(url);
+	if (!url.contains("wskey=") && StringUtils.isNotBlank(REQUEST_HEADER_NAME) && StringUtils.isNotBlank(REQUEST_HEADER_VALUE)) {
+            get.setRequestHeader(REQUEST_HEADER_NAME, REQUEST_HEADER_VALUE);
+        }
 
         try {
             client.executeMethod(get);

@@ -13,13 +13,9 @@ import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.codehaus.jackson.JsonFactory;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.annotate.JsonAutoDetect.Visibility;
-import org.codehaus.jackson.annotate.JsonMethod;
-import org.codehaus.jackson.map.DeserializationConfig;
-import org.codehaus.jackson.map.ObjectMapper;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import eu.europeana.entity.definitions.exceptions.UnsupportedEntityTypeException;
 import eu.europeana.entity.definitions.model.ResourcePreview;
@@ -41,9 +37,10 @@ public class SuggestionUtils {
 
 	private final Logger log = LogManager.getLogger(getClass());
 
-	protected static ObjectMapper objectMapper = new ObjectMapper().setVisibility(JsonMethod.FIELD, Visibility.ANY)
-			.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-	protected static final JsonFactory jsonFactory = new JsonFactory();
+	protected static ObjectMapper objectMapper = new ObjectMapper();
+//	.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
+//			.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+//	protected static final JsonFactory jsonFactory = new JsonFactory();
 
 	public Logger getLog() {
 		return log;
@@ -61,9 +58,6 @@ public class SuggestionUtils {
 			throws EntitySuggestionException {	
 		EntityPreview preview = null;
 		try {
-			JsonParser parser = jsonFactory.createJsonParser(payload);
-			parser.setCodec(objectMapper);
-			
 			JsonNode payloadNode = objectMapper.readTree(payload);
 			//convert to mutable list 
 			//increase the size with 2 as additional languages may be added by language logic  
@@ -85,25 +79,25 @@ public class SuggestionUtils {
 	 * @return parsed payload
 	 * @throws EntitySuggestionException
 	 */
-	public EntityPreview parsePayloadByLanguage(String payload, String[] preferredLanguages, Set<String> highlightTerms) 
-			throws EntitySuggestionException {	
-		EntityPreview preview = null;
-		try {
-			JsonParser parser = jsonFactory.createJsonParser(payload);
-			parser.setCodec(objectMapper);
-			
-			JsonNode payloadNode = objectMapper.readTree(payload);
-			//convert to mutable list 
-			//increase the size with 2 as additional languages may be added by language logic  
-			List<String> prefLanguagesList = new ArrayList<String>(preferredLanguages.length + 2);
-			prefLanguagesList.addAll(Arrays.asList(preferredLanguages));
-			preview = parseEntity(payloadNode, prefLanguagesList, highlightTerms);
-
-		} catch (Exception e) {
-			throw new EntitySuggestionException("Cannot parse suggestion payload: " + payload, e);
-		}
-		return preview;
-	}
+//	public EntityPreview parsePayloadByLanguage(String payload, String[] preferredLanguages, Set<String> highlightTerms) 
+//			throws EntitySuggestionException {	
+//		EntityPreview preview = null;
+//		try {
+////			JsonParser parser = jsonFactory.createJsonParser(payload);
+////			parser.setCodec(objectMapper);
+//			
+//			JsonNode payloadNode = objectMapper.readTree(payload);
+//			//convert to mutable list 
+//			//increase the size with 2 as additional languages may be added by language logic  
+//			List<String> prefLanguagesList = new ArrayList<String>(preferredLanguages.length + 2);
+//			prefLanguagesList.addAll(Arrays.asList(preferredLanguages));
+//			preview = parseEntity(payloadNode, prefLanguagesList, highlightTerms);
+//
+//		} catch (Exception e) {
+//			throw new EntitySuggestionException("Cannot parse suggestion payload: " + payload, e);
+//		}
+//		return preview;
+//	}
 
 	/**
 	 * This method parses entity employing preferred languages and highlighted terms.
@@ -117,16 +111,16 @@ public class SuggestionUtils {
 			throws UnsupportedEntityTypeException {
 		EntityPreview preview;
 		JsonNode propertyNode = entityNode.get(SuggestionFields.TYPE);
-		String entityType = propertyNode.getTextValue();
+		String entityType = propertyNode.asText();
 		preview = createPreviewObjectInstance(entityType);
-		preview.setType(propertyNode.getTextValue());
+		preview.setType(propertyNode.asText());
 		
 		propertyNode = entityNode.get(SuggestionFields.ID);
-		preview.setEntityId(propertyNode.getTextValue());
+		preview.setEntityId(propertyNode.asText());
 
 		propertyNode = entityNode.get(WebEntityFields.DEPICTION);
 		if (propertyNode != null)
-			preview.setDepiction(propertyNode.getTextValue());
+			preview.setDepiction(propertyNode.asText());
 		
 		//filter prefLabels to keep only prefered languages 	
 		Map<String, String> prefLabel = getValuesAsLanguageMap(entityNode, SuggestionFields.PREF_LABEL, preferredLanguages);
@@ -162,6 +156,8 @@ public class SuggestionUtils {
 		Map<String, List<String>> hiddenLabel = getValuesAsLanguageMapList(entityNode, SuggestionFields.HIDDEN_LABEL, preferredLanguages);
 		preview.setHiddenLabel(hiddenLabel);
 		
+		putIsShownByProperties(entityNode, preview);
+				
 		setEntitySpecificProperties(preview, entityNode, preferredLanguages);
 		return preview;
 	}
@@ -203,7 +199,7 @@ public class SuggestionUtils {
 	private String[] getHighlightLabel(JsonNode entityNode, Set<String> highlightTerms) {
 		JsonNode jsonNode = entityNode.get(SuggestionFields.PREF_LABEL);
 		if (jsonNode != null) {
-			Iterator<Entry<String, JsonNode>> itr = jsonNode.getFields();
+			Iterator<Entry<String, JsonNode>> itr = jsonNode.fields();
 			Entry<String, JsonNode> currentEntry;
 			String label;
 			
@@ -229,7 +225,7 @@ public class SuggestionUtils {
 		boolean includeAllLanguages = preferredLanguages.contains(WebEntityConstants.PARAM_LANGUAGE_ALL);
 
 		if (jsonNode != null) {
-			Iterator<Entry<String, JsonNode>> itr = jsonNode.getFields();
+			Iterator<Entry<String, JsonNode>> itr = jsonNode.fields();
 			while (itr.hasNext()) {
 				Entry<String, JsonNode> currentEntry = itr.next();
 				// include only preferredLanguages, allow also All
@@ -237,7 +233,7 @@ public class SuggestionUtils {
 					ArrayList<String> valueList = new ArrayList<String>();
 					for (JsonNode value : currentEntry.getValue()) {
 							//need to extract text value, otherwise 
-							valueList.add( value.getTextValue());
+							valueList.add( value.textValue());
 					}
 					languageMap.put(currentEntry.getKey(), valueList);
 				}
@@ -261,7 +257,7 @@ public class SuggestionUtils {
 		boolean includeAllLanguages = preferredLanguages.contains(WebEntityConstants.PARAM_LANGUAGE_ALL);
 		
 		if (jsonNode != null) {
-			Iterator<Entry<String, JsonNode>> itr = jsonNode.getFields();
+			Iterator<Entry<String, JsonNode>> itr = jsonNode.fields();
 			while (itr.hasNext()) {
 				Entry<String, JsonNode> currentEntry = itr.next();
 				//include only preferredLanguages, allow also All
@@ -309,19 +305,40 @@ public class SuggestionUtils {
 	private void putConceptSpecificProperties(ConceptPreview preview, JsonNode payloadNode) {
 		JsonNode propertyNode = payloadNode.get(SuggestionFields.IN_SCHEME);
 		if (propertyNode != null)
-			preview.setInscheme(propertyNode.getTextValue());
+			preview.setInscheme(propertyNode.textValue());
 
+	}
+
+	/**
+	 * This method reads isShownBy properties from the payload and saves them in entity
+	 * preview object
+	 * @param payloadNode
+	 * @param preview
+	 */
+	private void putIsShownByProperties(JsonNode payloadNode, EntityPreview preview) {
+		JsonNode propertyNode = payloadNode.get(SuggestionFields.IS_SHOWN_BY);
+		if (propertyNode != null) {
+		    JsonNode idNode = propertyNode.get(WebEntityFields.ID);
+		    if (idNode != null)
+			preview.setIsShownById(idNode.textValue());
+		    JsonNode sourceNode = propertyNode.get(WebEntityFields.SOURCE);
+		    if (sourceNode != null)
+			preview.setIsShownBySource(sourceNode.textValue());
+		    JsonNode thumbnailNode = propertyNode.get(WebEntityFields.THUMBNAIL);
+		    if (thumbnailNode != null)
+			preview.setIsShownByThumbnail(idNode.textValue());
+		}
 	}
 
 	private void putAgentSpecificProperties(AgentPreview preview, JsonNode payloadNode, List<String> preferredLanguages) {
 
 		JsonNode propertyNode = payloadNode.get(SuggestionFields.DATE_OF_BIRTH);
 		if (propertyNode != null)
-			preview.setDateOfBirth(propertyNode.getTextValue());
+			preview.setDateOfBirth(propertyNode.textValue());
 
 		propertyNode = payloadNode.get(SuggestionFields.DATE_OF_DEATH);
 		if (propertyNode != null)
-			preview.setDateOfDeath(propertyNode.getTextValue());
+			preview.setDateOfDeath(propertyNode.textValue());
 
 		propertyNode = payloadNode.get(SuggestionFields.PROFESSION_OR_OCCUPATION);
 		if (propertyNode != null){
@@ -341,12 +358,12 @@ public class SuggestionUtils {
 		//only english versions are available for now, and the structure is not a language map
 		JsonNode propertyNode = payloadNode.get(WebEntityFields.COUNTRY);
 		if (propertyNode != null)
-			preview.setCountry(propertyNode.getTextValue());
+			preview.setCountry(propertyNode.textValue());
 		
 		//only english versions are available for now, and the structure is not a language map
 		propertyNode = payloadNode.get(WebEntityFields.ORGANIZATION_DOMAIN);
 		if (propertyNode != null)
-			preview.setOrganizationDomain(propertyNode.getTextValue());
+			preview.setOrganizationDomain(propertyNode.textValue());
 	}
 
 	private void putPlaceSpecificProperties(PlacePreview preview, JsonNode payloadNode, List<String> preferredLanguages) {
@@ -357,7 +374,7 @@ public class SuggestionUtils {
 			Entry<String, JsonNode> entry;
 			ResourcePreview resourcePreview;
 			Map<String, String> languageMap;
-			for (Iterator<Entry<String, JsonNode>> iterator = propertyNode.getFields(); iterator.hasNext();) {
+			for (Iterator<Entry<String, JsonNode>> iterator = propertyNode.fields(); iterator.hasNext();) {
 				entry = (Entry<String, JsonNode>) iterator.next();
 				resourcePreview = new ResourcePreviewImpl(); 
 				
@@ -374,11 +391,11 @@ public class SuggestionUtils {
 		JsonNode propertyNode = payloadNode.get(SuggestionFields.TIME_SPAN_START);
 
 		if (propertyNode != null)
-			preview.setBegin(propertyNode.getTextValue());
+			preview.setBegin(propertyNode.textValue());
 
 		propertyNode = payloadNode.get(SuggestionFields.TIME_SPAN_END);
 		if (propertyNode != null)
-			preview.setEnd(propertyNode.getTextValue());
+			preview.setEnd(propertyNode.textValue());
 
 	}
 

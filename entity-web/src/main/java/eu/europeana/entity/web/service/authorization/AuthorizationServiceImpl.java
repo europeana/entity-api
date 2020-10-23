@@ -10,15 +10,10 @@ import eu.europeana.api.commons.definitions.vocabulary.Role;
 import eu.europeana.api.commons.service.authorization.BaseAuthorizationService;
 import eu.europeana.entity.config.EntityConfiguration;
 import eu.europeana.entity.web.model.vocabulary.UserRoles;
-import eu.europeana.entity.web.service.authentication.AuthenticationService;
 
 public class AuthorizationServiceImpl extends BaseAuthorizationService implements AuthorizationService {
 
     protected final Logger logger = LogManager.getLogger(getClass());
-
-//    @Resource
-    @Deprecated
-    AuthenticationService authenticationService;
 
     @Resource
     EntityConfiguration configuration;
@@ -26,21 +21,8 @@ public class AuthorizationServiceImpl extends BaseAuthorizationService implement
     @Resource(name = "commons_oauth2_europeanaClientDetailsService")
     ClientDetailsService clientDetailsService;
 
-    @Deprecated
-    public AuthorizationServiceImpl(AuthenticationService authenticationService) {
-	this.authenticationService = authenticationService;
-    }
-
     public AuthorizationServiceImpl() {
 
-    }
-
-    public AuthenticationService getAuthenticationService() {
-	return authenticationService;
-    }
-
-    public void setAuthenticationService(AuthenticationService authenticationService) {
-	this.authenticationService = authenticationService;
     }
 
     public EntityConfiguration getConfiguration() {

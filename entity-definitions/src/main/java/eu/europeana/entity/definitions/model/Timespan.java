@@ -1,13 +1,17 @@
 package eu.europeana.entity.definitions.model;
 
-public interface Timespan extends Entity{
+public interface Timespan extends Entity {
 
-	public String[] getBegin();
+    void setIsNextInSequence(String[] isNextInSequence);
 
-	public void setBegin(String[] begin);
+    String[] getIsNextInSequence();
 
-	public String[] getEnd();
+    public String getBeginString();
 
-	public void setEnd(String[] end);
+    public void setBegin(String begin);
+
+    public String getEndString();
+
+    public void setEnd(String end);
 
 }

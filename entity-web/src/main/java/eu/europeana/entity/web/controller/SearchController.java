@@ -178,9 +178,9 @@ public class SearchController extends BaseRest {
 	    // process facet
 	    String[] facets = queryBuilder.toArray(facet);
 
-	    // process sort param
-	    String[] sortCriteria = queryBuilder.toArray(sort);
-
+	    // process sort param, convert multiple sort criteria to string array 
+	    String[] sortCriteria = queryBuilder.toArray(sort); 
+	    
 	    // perform search
 	    Query searchQuery = queryBuilder.buildSearchQuery(queryString, qf, facets, sortCriteria, page, pageSize,
 		    searchProfile, retFields);

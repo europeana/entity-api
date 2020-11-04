@@ -1,0 +1,69 @@
+{
+	"sys": {
+		"space": {
+			"sys": {
+				"type": "Link",
+				"linkType": "Space",
+				"id": "pvmprah8an19"
+			}
+		},
+		"id": "76TE0baW4eeIfxMNCMMtfo",
+		"type": "Entry",
+		"createdAt": "2020-07-02T06:46:34.056Z",
+		"updatedAt": "2020-07-07T07:16:22.771Z",
+		"environment": {
+			"sys": {
+				"id": "master",
+				"type": "Link",
+				"linkType": "Environment"
+			}
+		},
+		"publishedVersion": 15,
+		"publishedAt": "2020-07-02T07:21:32.735Z",
+		"firstPublishedAt": "2020-07-02T07:10:44.769Z",
+		"createdBy": {
+			"sys": {
+				"type": "Link",
+				"linkType": "User",
+				"id": "3V6bxIKkVx8LdewEldRpZw"
+			}
+		},
+		"updatedBy": {
+			"sys": {
+				"type": "Link",
+				"linkType": "User",
+				"id": "3V6bxIKkVx8LdewEldRpZw"
+			}
+		},
+		"publishedCounter": 2,
+		"version": 17,
+		"publishedBy": {
+			"sys": {
+				"type": "Link",
+				"linkType": "User",
+				"id": "3V6bxIKkVx8LdewEldRpZw"
+			}
+		},
+		"contentType": {
+			"sys": {
+				"type": "Link",
+				"linkType": "ContentType",
+				"id": "entityPage"
+			}
+		}
+	},
+	"fields": {
+		"name": {
+			"en-US": "Wolfgang Amadeus Mozart "
+		},
+		"identifier": {
+			"en-US": "http://www.wikidata.org/entity/Q254"
+		},
+		"description": {
+			"en-US": "Austrian composer of the Classical period"
+		},
+		"genre": {
+			"en-US": "music"
+		}
+	}
+}

@@ -1,0 +1,207 @@
+  {
+  "name": "Collection Page",
+  "description": "",
+  "displayField": "name",
+  "fields": [
+    {
+      "id": "name",
+      "name": "Title",
+      "type": "Symbol",
+      "localized": true,
+      "required": true,
+      "validations": [
+        {
+          "size": {
+            "max": 100
+          }
+        }
+      ],
+      "disabled": false,
+      "omitted": false
+    },
+    {
+      "id": "identifier",
+      "name": "Entity ID",
+      "type": "Symbol",
+      "localized": false,
+      "required": true,
+      "validations": [
+        {
+          "unique": true
+        }
+      ],
+      "disabled": false,
+      "omitted": false
+    },
+    {
+      "id": "description",
+      "name": "Description",
+      "type": "Symbol",
+      "localized": true,
+      "required": false,
+      "validations": [],
+      "disabled": false,
+      "omitted": false
+    },
+    {
+      "id": "primaryImageOfPage",
+      "name": "Featured image",
+      "type": "Link",
+      "localized": false,
+      "required": false,
+      "validations": [
+        {
+          "linkContentType": [
+            "imageWithAttribution"
+          ]
+        }
+      ],
+      "disabled": false,
+      "omitted": false,
+      "linkType": "Entry"
+    },
+    {
+      "id": "hasPart",
+      "name": "Sections",
+      "type": "Array",
+      "localized": false,
+      "required": false,
+      "validations": [],
+      "disabled": false,
+      "omitted": false,
+      "items": {
+        "type": "Link",
+        "validations": [
+          {
+            "linkContentType": [
+              "cardGroup",
+              "richText"
+            ]
+          }
+        ],
+        "linkType": "Entry"
+      }
+    },
+    {
+      "id": "genre",
+      "name": "Theme",
+      "type": "Symbol",
+      "localized": false,
+      "required": false,
+      "validations": [
+        {
+          "in": [
+            "archaeology",
+            "art",
+            "fashion",
+            "industrial",
+            "manuscript",
+            "map",
+            "migration",
+            "music",
+            "nature",
+            "newspaper",
+            "photography",
+            "sport",
+            "ww1"
+          ]
+        }
+      ],
+      "disabled": false,
+      "omitted": false
+    },
+    {
+      "id": "slug",
+      "name": "Slug",
+      "type": "Symbol",
+      "localized": false,
+      "required": false,
+      "validations": [],
+      "disabled": true,
+      "omitted": false
+    },
+    {
+      "id": "type",
+      "name": "Entity type",
+      "type": "Symbol",
+      "localized": false,
+      "required": false,
+      "validations": [],
+      "disabled": true,
+      "omitted": false
+    },
+    {
+      "id": "relatedLinks",
+      "name": "Related collection cards",
+      "type": "Array",
+      "localized": false,
+      "required": false,
+      "validations": [
+        {
+          "size": {
+            "max": 4
+          }
+        }
+      ],
+      "disabled": false,
+      "omitted": false,
+      "items": {
+        "type": "Link",
+        "validations": [
+          {
+            "linkContentType": [
+              "automatedEntityCard"
+            ]
+          }
+        ],
+        "linkType": "Entry"
+      }
+    }
+  ],
+  "sys": {
+    "space": {
+      "sys": {
+        "type": "Link",
+        "linkType": "Space",
+        "id": "0nnnmvjykbzf"
+      }
+    },
+    "id": "entityPage",
+    "type": "ContentType",
+    "createdAt": "2019-09-18T13:52:28.257Z",
+    "updatedAt": "2020-03-20T13:34:05.613Z",
+    "environment": {
+      "sys": {
+        "id": "master",
+        "type": "Link",
+        "linkType": "Environment"
+      }
+    },
+    "publishedVersion": 79,
+    "publishedAt": "2020-03-20T13:34:05.613Z",
+    "firstPublishedAt": "2019-09-18T13:52:28.812Z",
+    "createdBy": {
+      "sys": {
+        "type": "Link",
+        "linkType": "User",
+        "id": "0T8IsZQap5jwH1mbVDaW3r"
+      }
+    },
+    "updatedBy": {
+      "sys": {
+        "type": "Link",
+        "linkType": "User",
+        "id": "1ALu1dFy6Mlnp7doJfmCGd"
+      }
+    },
+    "publishedCounter": 40,
+    "version": 80,
+    "publishedBy": {
+      "sys": {
+        "type": "Link",
+        "linkType": "User",
+        "id": "1ALu1dFy6Mlnp7doJfmCGd"
+      }
+    }
+  }
+}

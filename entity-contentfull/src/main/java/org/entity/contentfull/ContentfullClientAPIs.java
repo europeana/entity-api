@@ -1,11 +1,16 @@
 package org.entity.contentfull;
 
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.commons.io.IOUtils;
+import org.entity.contentfull.parser.ContentfullTypeParser;
 
 import com.contentful.java.cda.CDAArray;
 import com.contentful.java.cda.CDAClient;
@@ -60,6 +65,16 @@ public class ContentfullClientAPIs
           String dataChange= "2020-06-20T13:36:47.680Z";
           List<CDAEntry> res = getEntriesChangedAfterDate(client,dataChange);
 
+          
+          
+          //testing the parsing of the contentfull types
+  		  InputStream inputStream = ContentfullClientAPIs.class.getClassLoader().getResourceAsStream("ContentfullType-example.json");
+  		  String contentfullTypeJsonStr = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
+
+          ContentfullTypeParser fieldParser = new ContentfullTypeParser();
+          fieldParser.parseContentfullType(contentfullTypeJsonStr);
+
+          
           
       		int dummy=0;
       		dummy++;

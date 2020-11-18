@@ -13,5 +13,7 @@ public interface Timespan extends Entity {
     public String getEndString();
 
     public void setEnd(String end);
+    
+	public String[] getIsPartOfArray();
 
 }

@@ -81,27 +81,13 @@
 		</testResources>
 
 		<!-- plugins -->
-		<!--
-		<plugins>
-			<plugin>
-				<inherited>true</inherited>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<release>${version.javac.release}</release>
-					<source>${version.java}</source>
-					<target>${version.java}</target>
-				</configuration>
-			</plugin>
-		</plugins>
-		-->
-		<plugins>
+    <plugins>
         <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
         </plugin>
-        </plugins>
-        <pluginManagement>
+     </plugins>
+     <pluginManagement>
             <plugins>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -113,6 +99,6 @@
                     </configuration>
                 </plugin>
             </plugins>
-        </pluginManagement>
+     </pluginManagement>
 	</build>
 </project>

@@ -19,11 +19,11 @@ public class BaseTimespan extends BaseEntity implements Timespan, eu.europeana.c
 	this.isNextInSequence = isNextInSequence;
     }
 
-    public void setBegin(String begin) {
+    public void setBeginString(String begin) {
         this.begin = begin;
     }
 
-    public void setEnd(String end) {
+    public void setEndString(String end) {
         this.end = end;
     }
 

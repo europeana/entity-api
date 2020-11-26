@@ -103,14 +103,14 @@ public class SolrTimespanImpl extends BaseTimespan implements Timespan {
 
     @Override
     @Field(ConceptSolrFields.BEGIN)
-    public void setBegin(String begin) {
-	super.setBegin(begin);
+    public void setBeginString(String begin) {
+	super.setBeginString(begin);
     }
     
     @Override
     @Field(ConceptSolrFields.END)
-    public void setEnd(String end) {
-        super.setEnd(end);
+    public void setEndString(String end) {
+        super.setEndString(end);
     }
 
     // TECHNICAL FIELDS

@@ -326,7 +326,7 @@ public class SuggestionUtils {
 			preview.setIsShownBySource(sourceNode.textValue());
 		    JsonNode thumbnailNode = propertyNode.get(WebEntityFields.THUMBNAIL);
 		    if (thumbnailNode != null)
-			preview.setIsShownByThumbnail(idNode.textValue());
+			preview.setIsShownByThumbnail(thumbnailNode.textValue());
 		}
 	}
 

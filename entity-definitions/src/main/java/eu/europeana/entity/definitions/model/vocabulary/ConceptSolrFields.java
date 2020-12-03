@@ -5,6 +5,8 @@ public interface ConceptSolrFields extends EntitySolrFields{
 	//TODO: move common fields to EntitySolr Fields
 	public static final String ALT_LABEL = "skos_altLabel";
 	public static final String ALT_LABEL_ALL = ALT_LABEL + ".*";
+	public static final String HIDDEN_LABEL = "skos_hiddenLabel";
+	public static final String HIDDEN_LABEL_ALL = HIDDEN_LABEL + ".*";
 	public static final String CLOSE_MATCH = "skos_closeMatch";
 	public static final String BROAD_MATCH = "skos_broadMatch";
 	public static final String EXACT_MATCH = "skos_exactMatch";
@@ -17,7 +19,6 @@ public interface ConceptSolrFields extends EntitySolrFields{
 	public static final String NOTE_ALL = NOTE + ".*";
 	public static final String NOTATION = "skos_notation";
 	public static final String NOTATION_ALL = NOTATION + ".*";
-	public static final String HIDDEN_LABEL = "skos_hiddenLabel";
 	
 	public static final String IDENTIFIER               = "dc_identifier";
 	//Fields common to some entities

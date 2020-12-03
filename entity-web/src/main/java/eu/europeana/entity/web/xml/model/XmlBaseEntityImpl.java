@@ -60,4 +60,9 @@ public class XmlBaseEntityImpl {
 		return RdfXmlUtils.convertToXmlMultilingualString(entity.getAltLabel());
 	}
 	
+	@JacksonXmlElementWrapper(useWrapping=false)
+	@JacksonXmlProperty(localName = XmlConstants.XML_OWL_SAME_AS)
+	public List<RdfResource> getSameAs(){
+	    	return RdfXmlUtils.convertToRdfResource(entity.getSameAs());
+	}
 }

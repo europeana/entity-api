@@ -19,63 +19,64 @@ import eu.europeana.entity.definitions.model.Place;
     	XmlConstants.XML_OWL_SAME_AS, XmlConstants.XML_ORE_IS_AGGREGATED_BY})
 public class XmlPlaceImpl extends XmlBaseEntityImpl {
     
-    	@JsonIgnore
-    	private Place place;
-    
     	public XmlPlaceImpl(Place place) {
     	    	super(place);
-    	    	this.place = place;
     	}
 	
 	@JacksonXmlProperty(localName = XmlConstants.XML_WGS84_POS_LAT)
 	public Float getLatitude() {
-		return place.getLatitude();
+		return getPlace().getLatitude();
 	}
 
 	@JacksonXmlProperty(localName = XmlConstants.XML_WGS84_POS_LONG)
 	public Float getLongitude() {
-		return place.getLongitude();
+		return getPlace().getLongitude();
 	}
 
 	@JacksonXmlProperty(localName = XmlConstants.XML_WGS84_POS_ALT)
 	public Float getAltitude() {
-		return place.getAltitude();
+		return getPlace().getAltitude();
 	}
 	
 	@JacksonXmlElementWrapper(useWrapping=false)
 	@JacksonXmlProperty(localName = XmlConstants.XML_SKOS_HIDDEN_LABEL)
 	public List<XmlMultilingualString> getHiddenLabel() {
-		return RdfXmlUtils.convertToXmlMultilingualString(place.getHiddenLabel());
+		return RdfXmlUtils.convertToXmlMultilingualString(getPlace().getHiddenLabel());
 	}
 	
 	@JacksonXmlElementWrapper(useWrapping=false)
 	@JacksonXmlProperty(localName = XmlConstants.XML_SKOS_NOTE)
 	public List<XmlMultilingualString> getNote() {
-		return RdfXmlUtils.convertToXmlMultilingualString(place.getNote());
+		return RdfXmlUtils.convertToXmlMultilingualString(getPlace().getNote());
 	}
 	
 	@JacksonXmlElementWrapper(useWrapping=false)
 	@JacksonXmlProperty(localName = XmlConstants.XML_DCTERMS_HAS_PART)
 	public List<RdfResource> getHasPart() {
-	    	return RdfXmlUtils.convertToRdfResource(place.getHasPart());
+	    	return RdfXmlUtils.convertToRdfResource(getPlace().getHasPart());
 	}
 
 	@JacksonXmlElementWrapper(useWrapping=false)
 	@JacksonXmlProperty(localName  = XmlConstants.XML_DCTERMS_IS_PART_OF)
 	public List<RdfResource> getIsPartOf() {
-	    	return RdfXmlUtils.convertToRdfResource(place.getIsPartOfArray());
+	    	return RdfXmlUtils.convertToRdfResource(getPlace().getIsPartOfArray());
 	}
 	
 	@JacksonXmlElementWrapper(useWrapping=false)
 	@JacksonXmlProperty(localName = XmlConstants.XML_EDM_IS_NEXT_IN_SEQUENCE)
 	public List<RdfResource> getIsNextInSequence() {
-		return RdfXmlUtils.convertToRdfResource(place.getIsNextInSequence());
+		return RdfXmlUtils.convertToRdfResource(getPlace().getIsNextInSequence());
 	}
 	
 	@JacksonXmlElementWrapper(useWrapping=false)
 	@JacksonXmlProperty(localName = XmlConstants.XML_OWL_SAME_AS)
 	public List<RdfResource> getSameAs(){
-	    	return RdfXmlUtils.convertToRdfResource(place.getSameAs());
+	    	return RdfXmlUtils.convertToRdfResource(getPlace().getSameAs());
+	}
+
+	@JsonIgnore
+	private Place getPlace() {
+	    return (Place)entity;
 	}
     	
 }

@@ -20,93 +20,88 @@ import eu.europeana.entity.definitions.model.Organization;;
     	XmlConstants.XML_OWL_SAME_AS, XmlConstants.XML_ORE_IS_AGGREGATED_BY})
 public class XmlOrganizationImpl extends XmlBaseEntityImpl {
 
-	@JsonIgnore
-	private Organization organization;
-    
 	public XmlOrganizationImpl(Organization organization) {
 	    	super(organization);
-	    	this.organization = organization;
 	}
 	
 	@JacksonXmlElementWrapper(useWrapping=false)
 	@JacksonXmlProperty(localName = XmlConstants.XML_EDM_ACRONYM)
 	public List<XmlMultilingualString> getAcronym() {		
-		return RdfXmlUtils.convertToXmlMultilingualString(organization.getAcronym());
+		return RdfXmlUtils.convertToXmlMultilingualString(getOrganization().getAcronym());
 	}
 	
 	@JacksonXmlElementWrapper(useWrapping=false)
 	@JacksonXmlProperty(localName = XmlConstants.XML_DC_DESCRIPTION)
 	public List<XmlMultilingualString> getDescription() {
-		return RdfXmlUtils.convertMapToXmlMultilingualString(organization.getDescription());
+		return RdfXmlUtils.convertMapToXmlMultilingualString(getOrganization().getDescription());
 	}
 	
 	@JacksonXmlProperty(localName = XmlConstants.XML_FOAF_LOGO)
 	public EdmWebResource getLogo() {
-	    	if(organization.getLogo() == null)
+	    	if(getOrganization().getLogo() == null)
 	    	    return null;
-		return new EdmWebResource(organization.getLogo());
+		return new EdmWebResource(getOrganization().getLogo());
 	}
 	
 	@JacksonXmlElementWrapper(useWrapping=false)
 	@JacksonXmlProperty(localName = XmlConstants.XML_EDM_EUROPEANA_ROLE)
 	public List<XmlMultilingualString> getEuropeanaRole() {
-		return RdfXmlUtils.convertToXmlMultilingualString(organization.getEuropeanaRole());
+		return RdfXmlUtils.convertToXmlMultilingualString(getOrganization().getEuropeanaRole());
 	}
 	
 	@JacksonXmlElementWrapper(useWrapping=false)
 	@JacksonXmlProperty(localName = XmlConstants.XML_EDM_ORGANIZATION_DOMAIN)
 	public List<XmlMultilingualString> getOrganizationDomain() {
-		return RdfXmlUtils.convertToXmlMultilingualString(organization.getOrganizationDomain());
+		return RdfXmlUtils.convertToXmlMultilingualString(getOrganization().getOrganizationDomain());
 	}
 	
 	@JacksonXmlElementWrapper(useWrapping=false)
 	@JacksonXmlProperty(localName = XmlConstants.XML_EDM_GEOGRAPHIC_LEVEL)
 	public List<XmlMultilingualString> getGeographicLevel() {
-		return RdfXmlUtils.convertMapToXmlMultilingualString(organization.getGeographicLevel());
+		return RdfXmlUtils.convertMapToXmlMultilingualString(getOrganization().getGeographicLevel());
 	}
 	
 	@JacksonXmlProperty(localName = XmlConstants.XML_EDM_COUNTRY)
 	public String getCountry() {
-	    	if(organization.getCountry() == null || organization.getCountry().isEmpty())
+	    	if(getOrganization().getCountry() == null || getOrganization().getCountry().isEmpty())
 	    	    return null;
-		return organization.getCountry();
+		return getOrganization().getCountry();
 	}
 	
 	@JacksonXmlProperty(localName = XmlConstants.XML_FOAF_HOMEPAGE)
 	public RdfResource getHomepage() {
-	    	if(organization.getHomepage() == null)
+	    	if(getOrganization().getHomepage() == null)
 	    	    return null;
-		return new RdfResource(organization.getHomepage());
+		return new RdfResource(getOrganization().getHomepage());
 	}
 	
 	@JacksonXmlElementWrapper(useWrapping=false)
 	@JacksonXmlProperty(localName = XmlConstants.XML_FOAF_PHONE)
 	public List<String> getPhone() {
-	    	if(organization.getPhone() == null || organization.getPhone().size() == 0)
+	    	if(getOrganization().getPhone() == null || getOrganization().getPhone().size() == 0)
 	    	    return null;
-		return organization.getPhone();
+		return getOrganization().getPhone();
 	}
 	
 	@JacksonXmlElementWrapper(useWrapping=false)
 	@JacksonXmlProperty(localName = XmlConstants.XML_FOAF_MBOX)
 	public List<String> getMbox() {
-	    	if(organization.getMbox() == null || organization.getMbox().size() == 0)
+	    	if(getOrganization().getMbox() == null || getOrganization().getMbox().size() == 0)
 	    	    return null;
-		return organization.getMbox();
+		return getOrganization().getMbox();
 	}
 	
 	@JacksonXmlElementWrapper(useWrapping=false)
 	@JacksonXmlProperty(localName = XmlConstants.XML_DC_IDENTIFIER)
 	public String[] getIdentifier() {
-	    	return organization.getIdentifier();
-	}
-	
-	@JacksonXmlElementWrapper(useWrapping=false)
-	@JacksonXmlProperty(localName = XmlConstants.XML_OWL_SAME_AS)
-	public List<RdfResource> getSameAs(){
-	    	return RdfXmlUtils.convertToRdfResource(organization.getSameAs());
+	    	return getOrganization().getIdentifier();
 	}
 
+	@JsonIgnore
+	private Organization getOrganization() {
+	    return (Organization)entity;
+	}
+	
 	/*
 	 *  ElementWrapper works only on lists and maps.
 	 *  This conversion is needed, because we have a two level object 
@@ -115,7 +110,7 @@ public class XmlOrganizationImpl extends XmlBaseEntityImpl {
 	@JacksonXmlElementWrapper(localName = XmlConstants.XML_VCARD_HAS_ADDRESS)
 	@JacksonXmlProperty(localName = XmlConstants.XML_VCARD_ADDRESS)
 	public XmlAddressImpl[] getHasAddress() {
-	    	XmlAddressImpl[] tmp = {new XmlAddressImpl(organization)};
+	    	XmlAddressImpl[] tmp = {new XmlAddressImpl(getOrganization())};
 	    	return tmp;
 	}
 }

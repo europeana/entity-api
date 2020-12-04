@@ -38,6 +38,7 @@ public final class XmlConstants {
     public static final String XML_EDM_HASMET = "edm:hasMet";
     public static final String XML_EDM_IS_RELATED_TO = "edm:isRelatedTo";
     public static final String XML_FOAF_NAME = "foaf:name";
+    public static final String XML_FOAF_THUMBNAIL = "foaf:thumbnail";
     public static final String XML_RDAGR2_BIOGRAPHICAL_INFORMATION = "rdaGr2:biographicalInformation";
     public static final String XML_RDAGR2_DATE_OF_BIRTH = "rdaGr2:dateOfBirth";
     public static final String XML_RDAGR2_DATE_OF_DEATH = "rdaGr2:dateOfDeath";

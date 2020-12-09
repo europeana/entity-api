@@ -1,5 +1,6 @@
 package eu.europeana.entity.web.xml.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -18,10 +19,18 @@ public class XmlBaseEntityImpl {
     	Entity entity;
     	@JsonIgnore
     	String aggregationId;
+    	@JsonIgnore
+    	List<Object> relatedElementsToSerialize;
     	
-    	public XmlBaseEntityImpl(Entity entity) {
+    	
+    	public List<Object> getRelatedElementsToSerialize() {
+			return relatedElementsToSerialize;
+		}
+
+		public XmlBaseEntityImpl(Entity entity) {
     	    	this.entity = entity;
     	    	aggregationId = entity.getAbout() + "#aggregation";
+    	    	relatedElementsToSerialize = new ArrayList<Object>();
     	}
     	
 	@JacksonXmlProperty(isAttribute= true, localName = XmlConstants.XML_RDF_ABOUT)
@@ -68,9 +77,10 @@ public class XmlBaseEntityImpl {
 	}
 	
 	@JacksonXmlElementWrapper(useWrapping=false)
-	@JacksonXmlProperty(localName = XmlConstants.XML_EDM_WEB_RESOURCE)
-	public XmlWebResourceImpl getIsShownBy() {
-	    	return new XmlWebResourceImpl(((BaseEntity)entity).getIsShownById(),((BaseEntity)entity).getIsShownBySource(), ((BaseEntity)entity).getIsShownByThumbnail());
+	@JacksonXmlProperty(localName = XmlConstants.XML_EDM_IS_SHOWN_BY)
+	public RdfResource getIsShownBy() {
+		relatedElementsToSerialize.add(new XmlWebResourceImpl(((BaseEntity)entity).getIsShownById(),((BaseEntity)entity).getIsShownBySource(), ((BaseEntity)entity).getIsShownByThumbnail()));
+	    return new RdfResource(((BaseEntity)entity).getIsShownById());
 	}
 
 }

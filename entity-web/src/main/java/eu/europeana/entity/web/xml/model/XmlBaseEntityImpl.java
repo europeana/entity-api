@@ -7,7 +7,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
-import eu.europeana.entity.definitions.model.Entity;;
+import eu.europeana.entity.definitions.model.Entity;
+import eu.europeana.entity.definitions.model.impl.BaseEntity;;
 
 
 @JsonInclude(value = JsonInclude.Include.NON_EMPTY)
@@ -65,4 +66,11 @@ public class XmlBaseEntityImpl {
 	public List<RdfResource> getSameAs(){
 	    	return RdfXmlUtils.convertToRdfResource(entity.getSameAs());
 	}
+	
+	@JacksonXmlElementWrapper(useWrapping=false)
+	@JacksonXmlProperty(localName = XmlConstants.XML_EDM_WEB_RESOURCE)
+	public XmlWebResourceImpl getIsShownBy() {
+	    	return new XmlWebResourceImpl(((BaseEntity)entity).getIsShownById(),((BaseEntity)entity).getIsShownBySource(), ((BaseEntity)entity).getIsShownByThumbnail());
+	}
+
 }

@@ -44,12 +44,6 @@ public class XmlTimespanImpl extends XmlBaseEntityImpl {
 	public List<XmlMultilingualString> getHiddenLabel() {
 		return RdfXmlUtils.convertToXmlMultilingualString(entity.getHiddenLabel());
 	}
-	
-	@JacksonXmlElementWrapper(useWrapping=false)
-	@JacksonXmlProperty(localName = XmlConstants.XML_EDM_WEB_RESOURCE)
-	public XmlWebResourceImpl getIsShownBy() {
-	    	return new XmlWebResourceImpl(((Timespan)entity).getIsShownById(),((Timespan)entity).getIsShownBySource(), ((Timespan)entity).getIsShownByThumbnail());
-	}
 
 	@JacksonXmlElementWrapper(useWrapping=false)
 	@JacksonXmlProperty(localName = XmlConstants.XML_EDM_IS_NEXT_IN_SEQUENCE)

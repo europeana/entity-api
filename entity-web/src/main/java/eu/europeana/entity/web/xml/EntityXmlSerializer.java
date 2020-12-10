@@ -121,7 +121,7 @@ public class EntityXmlSerializer {
 		    strBuilder.append(objectMapper.writeValueAsString(xmlElement));
 
 		    //add related elements to be serialized outside of the given xmlElement
-		    List<Object> additionalElementsToSerialize = xmlElement.getRelatedElementsToSerialize();
+		    List<Object> additionalElementsToSerialize = xmlElement.getReferencedWebResources();
 		    for (Object elem : additionalElementsToSerialize)
 		    {
 		    	strBuilder.append(objectMapper.writeValueAsString(elem));

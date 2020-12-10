@@ -19,6 +19,10 @@ public class XmlBaseEntityImpl {
     	Entity entity;
     	@JsonIgnore
     	String aggregationId;
+    	/**
+    	 * relatedElementsToSerialize - this list is maintained by each serialized entity and contains the entities that
+    	 * need to be serialized in addition, outside of the given entity
+    	 */
     	@JsonIgnore
     	List<Object> relatedElementsToSerialize;
     	

@@ -1,5 +1,7 @@
 package eu.europeana.entity.web.xml;
 
+import java.util.List;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -117,6 +119,14 @@ public class EntityXmlSerializer {
 		    StringBuilder strBuilder = new StringBuilder();
 		    strBuilder.append(outputHeader);
 		    strBuilder.append(objectMapper.writeValueAsString(xmlElement));
+
+		    //add related elements to be serialized outside of the given xmlElement
+		    List<Object> additionalElementsToSerialize = xmlElement.getRelatedElementsToSerialize();
+		    for (Object elem : additionalElementsToSerialize)
+		    {
+		    	strBuilder.append(objectMapper.writeValueAsString(elem));
+		    }
+
 		    XmlAggregationImpl xmlAggregation = xmlElement.createXmlAggregation();
 		    if(xmlAggregation != null)
 			strBuilder.append(objectMapper.writeValueAsString(xmlAggregation));

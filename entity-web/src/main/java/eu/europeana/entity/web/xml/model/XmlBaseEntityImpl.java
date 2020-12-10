@@ -1,5 +1,6 @@
 package eu.europeana.entity.web.xml.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -7,7 +8,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
-import eu.europeana.entity.definitions.model.Entity;;
+import eu.europeana.entity.definitions.model.Entity;
+import eu.europeana.entity.definitions.model.impl.BaseEntity;;
 
 
 @JsonInclude(value = JsonInclude.Include.NON_EMPTY)
@@ -17,10 +19,22 @@ public class XmlBaseEntityImpl {
     	Entity entity;
     	@JsonIgnore
     	String aggregationId;
+    	/**
+    	 * relatedElementsToSerialize - this list is maintained by each serialized entity and contains the entities that
+    	 * need to be serialized in addition, outside of the given entity
+    	 */
+    	@JsonIgnore
+    	List<Object> relatedElementsToSerialize;
     	
-    	public XmlBaseEntityImpl(Entity entity) {
+    	
+    	public List<Object> getRelatedElementsToSerialize() {
+			return relatedElementsToSerialize;
+		}
+
+		public XmlBaseEntityImpl(Entity entity) {
     	    	this.entity = entity;
     	    	aggregationId = entity.getAbout() + "#aggregation";
+    	    	relatedElementsToSerialize = new ArrayList<Object>();
     	}
     	
 	@JacksonXmlProperty(isAttribute= true, localName = XmlConstants.XML_RDF_ABOUT)
@@ -65,4 +79,12 @@ public class XmlBaseEntityImpl {
 	public List<RdfResource> getSameAs(){
 	    	return RdfXmlUtils.convertToRdfResource(entity.getSameAs());
 	}
+	
+	@JacksonXmlElementWrapper(useWrapping=false)
+	@JacksonXmlProperty(localName = XmlConstants.XML_EDM_IS_SHOWN_BY)
+	public RdfResource getIsShownBy() {
+		relatedElementsToSerialize.add(new XmlWebResourceImpl(((BaseEntity)entity).getIsShownById(),((BaseEntity)entity).getIsShownBySource(), ((BaseEntity)entity).getIsShownByThumbnail()));
+	    return new RdfResource(((BaseEntity)entity).getIsShownById());
+	}
+
 }

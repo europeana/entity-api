@@ -6,6 +6,7 @@ public final class XmlConstants {
     public static final String XML_RDF_RESOURCE = "rdf:resource";
     public static final String XML_LANG = "xml:lang";
     public static final String XML_EDM_WEB_RESOURCE = "edm:WebResource";
+    public static final String XML_EDM_IS_SHOWN_BY = "edm:isShownBy";
     public static final String XML_DC_SOURCE = "dc:source";
     
     public static final String XML_SKOS_CONCEPT = "skos:Concept";
@@ -38,6 +39,7 @@ public final class XmlConstants {
     public static final String XML_EDM_HASMET = "edm:hasMet";
     public static final String XML_EDM_IS_RELATED_TO = "edm:isRelatedTo";
     public static final String XML_FOAF_NAME = "foaf:name";
+    public static final String XML_FOAF_THUMBNAIL = "foaf:thumbnail";
     public static final String XML_RDAGR2_BIOGRAPHICAL_INFORMATION = "rdaGr2:biographicalInformation";
     public static final String XML_RDAGR2_DATE_OF_BIRTH = "rdaGr2:dateOfBirth";
     public static final String XML_RDAGR2_DATE_OF_DEATH = "rdaGr2:dateOfDeath";

@@ -17,5 +17,5 @@ public interface Timespan extends Entity {
     public String[] getIsPartOfArray();
 
     public void setIsPartOfArray(String[] isPartOf);
-
+   
 }

@@ -24,17 +24,17 @@ public class XmlBaseEntityImpl {
     	 * need to be serialized in addition, outside of the given entity
     	 */
     	@JsonIgnore
-    	List<Object> relatedElementsToSerialize;
+    	List<Object> referencedWebResources;
     	
     	
-    	public List<Object> getRelatedElementsToSerialize() {
-			return relatedElementsToSerialize;
+    	public List<Object> getReferencedWebResources() {
+			return referencedWebResources;
 		}
 
 		public XmlBaseEntityImpl(Entity entity) {
     	    	this.entity = entity;
     	    	aggregationId = entity.getAbout() + "#aggregation";
-    	    	relatedElementsToSerialize = new ArrayList<Object>();
+    	    	referencedWebResources = new ArrayList<Object>();
     	}
     	
 	@JacksonXmlProperty(isAttribute= true, localName = XmlConstants.XML_RDF_ABOUT)
@@ -83,8 +83,15 @@ public class XmlBaseEntityImpl {
 	@JacksonXmlElementWrapper(useWrapping=false)
 	@JacksonXmlProperty(localName = XmlConstants.XML_EDM_IS_SHOWN_BY)
 	public RdfResource getIsShownBy() {
-		relatedElementsToSerialize.add(new XmlWebResourceImpl(((BaseEntity)entity).getIsShownById(),((BaseEntity)entity).getIsShownBySource(), ((BaseEntity)entity).getIsShownByThumbnail()));
-	    return new RdfResource(((BaseEntity)entity).getIsShownById());
+		if (((BaseEntity)entity).getIsShownById()!=null)
+		{
+		    referencedWebResources.add(new XmlWebResourceImpl(((BaseEntity)entity).getIsShownById(),((BaseEntity)entity).getIsShownBySource(), ((BaseEntity)entity).getIsShownByThumbnail()));
+	        return new RdfResource(((BaseEntity)entity).getIsShownById());
+		}
+		else
+		{
+			return null;
+		}
 	}
 
 }

@@ -72,6 +72,14 @@
 					<groupId>eu.europeana.corelib</groupId>
 					<artifactId>corelib-storage</artifactId>
 				</exclusion>
+				<exclusion>
+					<groupId>dev.morphia.morphia</groupId>
+					<artifactId>morphia-core</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.mongodb</groupId>
+					<artifactId>mongodb-driver-core</artifactId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 

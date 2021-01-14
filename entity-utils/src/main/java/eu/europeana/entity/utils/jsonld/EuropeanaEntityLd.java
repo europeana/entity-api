@@ -62,6 +62,7 @@ public class EuropeanaEntityLd extends JsonLd {
 	putMapOfStringProperty(WebEntityFields.PREF_LABEL, ((BaseEntity) entity).getPrefLabelStringMap(), "",
 		ldResource);
 	putMapOfStringListProperty(WebEntityFields.ALT_LABEL, entity.getAltLabel(), "", ldResource);
+	putMapOfStringListProperty(WebEntityFields.HIDDEN_LABEL, entity.getHiddenLabel(), "", ldResource);
 	putMapOfStringListProperty(WebEntityFields.NOTE, entity.getNote(), "", ldResource);
 
 	// common administrative information (created, modified)

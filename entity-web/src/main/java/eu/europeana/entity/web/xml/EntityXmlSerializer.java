@@ -1,5 +1,7 @@
 package eu.europeana.entity.web.xml;
 
+import java.util.List;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -12,12 +14,14 @@ import eu.europeana.entity.solr.model.SolrAgentImpl;
 import eu.europeana.entity.solr.model.SolrConceptImpl;
 import eu.europeana.entity.solr.model.SolrOrganizationImpl;
 import eu.europeana.entity.solr.model.SolrPlaceImpl;
+import eu.europeana.entity.solr.model.SolrTimespanImpl;
 import eu.europeana.entity.web.xml.model.XmlAgentImpl;
 import eu.europeana.entity.web.xml.model.XmlAggregationImpl;
 import eu.europeana.entity.web.xml.model.XmlBaseEntityImpl;
 import eu.europeana.entity.web.xml.model.XmlConceptImpl;
 import eu.europeana.entity.web.xml.model.XmlOrganizationImpl;
 import eu.europeana.entity.web.xml.model.XmlPlaceImpl;
+import eu.europeana.entity.web.xml.model.XmlTimespanImpl;
 
 public class EntityXmlSerializer {
 
@@ -61,6 +65,17 @@ public class EntityXmlSerializer {
 	    	"         xmlns:skos=\"http://www.w3.org/2004/02/skos/core#\"\r\n " +
 		"         xmlns:dcterms=\"http://purl.org/dc/terms/\" >";
     	private final String XML_END_TAG = "</rdf:RDF>";
+    	private final String XML_HEADER_TAG_TIMESPAN = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" + 
+		" <rdf:RDF xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\r\n" + 
+		"         xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\r\n" + 
+		"         xmlns:dc=\"http://purl.org/dc/elements/1.1/\"\r\n" + 
+		"         xmlns:edm=\"http://www.europeana.eu/schemas/edm/\"\r\n" + 
+		"         xmlns:foaf=\"http://xmlns.com/foaf/0.1/\"\r\n" + 
+		"         xmlns:rdaGr2=\"http://rdvocab.info/ElementsGr2/\"\r\n" + 
+		"         xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\r\n" + 
+		"	  xmlns:ore=\"http://www.openarchives.org/ore/terms/\"\r\n" +
+		"         xmlns:skos=\"http://www.w3.org/2004/02/skos/core#\"\r\n" + 
+		"         xmlns:dcterms=\"http://purl.org/dc/terms/\" >";
     
     	/**
 	 * This method serializes Entity object to xml formats.
@@ -94,12 +109,24 @@ public class EntityXmlSerializer {
     			xmlElement = new XmlOrganizationImpl((SolrOrganizationImpl) entity);
     			outputHeader = XML_HEADER_TAG_ORGANIZATION;
     		    }
+    		    else if(entity instanceof SolrTimespanImpl) {
+    			xmlElement = new XmlTimespanImpl((SolrTimespanImpl) entity);
+    			outputHeader = XML_HEADER_TAG_TIMESPAN;
+    		    }
     		    else {
     			throw new UnsupportedEntityTypeException("Serialization to xml failed for " + entity.getAbout());
     		    }
 		    StringBuilder strBuilder = new StringBuilder();
 		    strBuilder.append(outputHeader);
 		    strBuilder.append(objectMapper.writeValueAsString(xmlElement));
+
+		    //add related elements to be serialized outside of the given xmlElement
+		    List<Object> additionalElementsToSerialize = xmlElement.getReferencedWebResources();
+		    for (Object elem : additionalElementsToSerialize)
+		    {
+		    	strBuilder.append(objectMapper.writeValueAsString(elem));
+		    }
+
 		    XmlAggregationImpl xmlAggregation = xmlElement.createXmlAggregation();
 		    if(xmlAggregation != null)
 			strBuilder.append(objectMapper.writeValueAsString(xmlAggregation));

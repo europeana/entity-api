@@ -8,10 +8,14 @@ public interface Timespan extends Entity {
 
     public String getBeginString();
 
-    public void setBegin(String begin);
+    public void setBeginString(String begin);
 
     public String getEndString();
 
-    public void setEnd(String end);
+    public void setEndString(String end);
 
+    public String[] getIsPartOfArray();
+
+    public void setIsPartOfArray(String[] isPartOf);
+   
 }

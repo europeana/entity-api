@@ -66,6 +66,14 @@ public class SolrTimespanImpl extends BaseTimespan implements Timespan {
 	super.setAltLabel(normalizedAltLabel);
     }
 
+    @Override
+    @Field(ConceptSolrFields.HIDDEN_LABEL_ALL)
+    public void setHiddenLabel(Map<String, List<String>> hiddenLabel) {
+	Map<String, List<String>> normalizedHiddenLabel = SolrUtils.normalizeStringListMap(ConceptSolrFields.HIDDEN_LABEL,
+		hiddenLabel);
+	super.setHiddenLabel(normalizedHiddenLabel);
+    }
+    
     /**
      * Concept fields
      */
@@ -103,14 +111,14 @@ public class SolrTimespanImpl extends BaseTimespan implements Timespan {
 
     @Override
     @Field(ConceptSolrFields.BEGIN)
-    public void setBegin(String begin) {
-	super.setBegin(begin);
+    public void setBeginString(String begin) {
+	super.setBeginString(begin);
     }
     
     @Override
     @Field(ConceptSolrFields.END)
-    public void setEnd(String end) {
-        super.setEnd(end);
+    public void setEndString(String end) {
+        super.setEndString(end);
     }
 
     // TECHNICAL FIELDS

@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-import eu.europeana.api.commons.definitions.utils.DateUtils;
 import eu.europeana.entity.definitions.model.Entity;;
 
 @JacksonXmlRootElement(localName = XmlConstants.XML_ORE_AGGREGATION)

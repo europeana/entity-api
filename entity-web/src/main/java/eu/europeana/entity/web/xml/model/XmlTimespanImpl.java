@@ -12,9 +12,13 @@ import eu.europeana.entity.definitions.model.Timespan;
 
 @JacksonXmlRootElement(localName = XmlConstants.XML_EDM_TIMESPAN)
 @JsonInclude(value = JsonInclude.Include.NON_EMPTY)
-@JsonPropertyOrder({XmlConstants.XML_FOAF_DEPICTION, XmlConstants.XML_SKOS_PREF_LABEL, XmlConstants.XML_SKOS_ALT_LABEL, XmlConstants.XML_SKOS_HIDDEN_LABEL,
-    	XmlConstants.XML_EDM_BEGIN,XmlConstants.XML_EDM_END,XmlConstants.XML_DCTERMS_IS_PART_OF,XmlConstants.XML_OWL_SAME_AS,
-    	XmlConstants.XML_EDM_WEB_RESOURCE, XmlConstants.XML_EDM_IS_NEXT_IN_SEQUENCE})
+@JsonPropertyOrder({
+    XmlConstants.XML_RDF_ABOUT, XmlConstants.XML_RDF_TYPE, 
+    XmlConstants.XML_FOAF_DEPICTION, XmlConstants.XML_EDM_IS_SHOWN_BY,  
+    XmlConstants.XML_SKOS_PREF_LABEL, XmlConstants.XML_SKOS_ALT_LABEL, XmlConstants.XML_SKOS_HIDDEN_LABEL,
+    XmlConstants.XML_EDM_BEGIN,XmlConstants.XML_EDM_END,XmlConstants.XML_SKOS_NOTE, 
+    XmlConstants.XML_DCTERMS_HAS_PART, XmlConstants.XML_DCTERMS_IS_PART_OF, 
+    XmlConstants.XML_EDM_IS_NEXT_IN_SEQUENCE, XmlConstants.XML_OWL_SAME_AS})
 public class XmlTimespanImpl extends XmlBaseEntityImpl {
     	
     	public XmlTimespanImpl(Timespan timespan) {

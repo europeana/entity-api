@@ -3,7 +3,6 @@ package eu.europeana.entity.web.xml.model;
 public final class XmlConstants {
 
     public static final String XML_RDF_ABOUT = "rdf:about";
-    public static final String XML_RDF_TYPE = "rdf:type";
     public static final String XML_RDF_RESOURCE = "rdf:resource";
     public static final String XML_LANG = "xml:lang";
     public static final String XML_EDM_WEB_RESOURCE = "edm:WebResource";

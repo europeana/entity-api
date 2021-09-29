@@ -17,7 +17,6 @@
     </Root>
       
     <Logger name="eu.europeana.entity" level="INFO" additivity="true">
-		<appender-ref ref="Console"/>
 	</Logger>
   </Loggers>
 </Configuration> 

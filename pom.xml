@@ -49,7 +49,7 @@
 		<version.apacheSolr>7.7.2</version.apacheSolr>
 		<version.servletJstl>1.2</version.servletJstl>
 		<version.mapstruct>1.2.0.Final</version.mapstruct>
-		<version.log4j2>2.9.1</version.log4j2>
+		<version.log4j2>2.15.0</version.log4j2>
 		<version.javax.annotation>1.3.2</version.javax.annotation>
 	</properties>
 	<modules>

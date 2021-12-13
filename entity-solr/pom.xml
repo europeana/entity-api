@@ -70,72 +70,11 @@
 		</dependency>
                 					
 		<!-- Other -->
-		<!-- 
-		<dependency>
-                <groupId>org.apache.solr</groupId>
-                <artifactId>solr-core</artifactId>
-                <version>${version.apacheSolr}</version>
-                <scope>test</scope>
-			    <exclusions>
-                	<exclusion>
-                		<artifactId>jdk.tools</artifactId>
-                		<groupId>jdk.tools</groupId>
-                	</exclusion>
-                	<exclusion>
-                		<artifactId>lucene-core</artifactId>
-                		<groupId>org.apache.lucene</groupId>
-                	</exclusion>
-                	<exclusion>
-                		<artifactId>wstx-asl</artifactId>
-                		<groupId>org.codehaus.woodstox</groupId>
-                	</exclusion>
-                	<exclusion>
-                		<artifactId>commons-lang</artifactId>
-                		<groupId>commons-lang</groupId>
-                	</exclusion>
-                	<exclusion>
-                		<groupId>log4j</groupId>
-                		<artifactId>log4j</artifactId>
-                	</exclusion>
-                </exclusions>
-		</dependency>
-	    <dependency>
-			<groupId>org.apache.solr</groupId>
-			<artifactId>solr-test-framework</artifactId>
-			<version>${version.apacheSolr}</version>
-			<scope>test</scope>
-			<exclusions>
-				<exclusion>
-					<artifactId>lucene-core</artifactId>
-					<groupId>org.apache.lucene</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>wstx-asl</artifactId>
-					<groupId>org.codehaus.woodstox</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>commons-lang</artifactId>
-					<groupId>commons-lang</groupId>
-				</exclusion>
-				<exclusion>
-					<groupId>log4j</groupId>
-					<artifactId>log4j</artifactId>
-				</exclusion>
-			</exclusions>
-	    </dependency>
-	     -->
 	    <dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
 			<version>${version.spring}</version>
 		</dependency>
-		<!-- 
-        <dependency>
-            <groupId>org.codehaus.jackson</groupId>
-            <artifactId>jackson-xc</artifactId>
-            <version>${version.codehausJackson}</version>
-        </dependency>
-         -->
          <dependency>
 			<groupId>com.fasterxml.jackson.module</groupId>
 			<artifactId>jackson-module-jaxb-annotations</artifactId>

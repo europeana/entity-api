@@ -33,11 +33,5 @@
     
     <!-- USING OTHER MODULES -->
 	<beans:import resource="entity-web-beans.xml"/>
-    
-    <!-- configurable error messages -->
-    <beans:bean id="i18nService" class="eu.europeana.api.commons.config.i18n.I18nServiceImpl">
-    	<beans:property name="messageSource" ref="entity_i18n_messageSource"/>
-    </beans:bean>
-    	
    
 </beans:beans>

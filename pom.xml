@@ -40,7 +40,7 @@
 		<version.corelib>2.12.0</version.corelib>
 		<version.commonsApi>0.2.12</version.commonsApi>
 		<version.entityApi>0.11-SNAPSHOT</version.entityApi>
-		<version.annotationLd>1.1.6</version.annotationLd>
+		<version.annotationLd>1.1.7</version.annotationLd>
 		<version.commonsLang3>3.0</version.commonsLang3>
 		<version.spring>5.2.7.RELEASE</version.spring>
 		<version.springBoot>2.1.5.RELEASE</version.springBoot>

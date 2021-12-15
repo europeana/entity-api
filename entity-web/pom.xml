@@ -51,6 +51,12 @@
 			<groupId>eu.europeana.entity</groupId>
 			<artifactId>entity-solr</artifactId>
 			<version>${version.entityApi}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.logging.log4j</groupId>
+					<artifactId>log4j-core</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>
@@ -63,6 +69,12 @@
 			<groupId>eu.europeana.entity</groupId>
 			<artifactId>entity-mongo</artifactId>
 			<version>${version.entityApi}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.logging.log4j</groupId>
+					<artifactId>log4j-core</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>
@@ -92,6 +104,14 @@
 					<groupId>org.mongodb</groupId>
 					<artifactId>mongodb-driver-core</artifactId>
 				</exclusion>
+				<exclusion>
+					<groupId>org.apache.logging.log4j</groupId>
+					<artifactId>log4j-core</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.apache.logging.log4j</groupId>
+					<artifactId>log4j-slf4j-impl</artifactId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 
@@ -99,6 +119,16 @@
 			<groupId>eu.europeana.corelib</groupId>
 			<artifactId>corelib-utils</artifactId>
 			<version>${version.corelib}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.logging.log4j</groupId>
+					<artifactId>log4j-core</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.apache.logging.log4j</groupId>
+					<artifactId>log4j-slf4j-impl</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<!-- spring -->

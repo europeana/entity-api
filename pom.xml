@@ -8,7 +8,7 @@
 	<artifactId>entity-api</artifactId>
 	<version>${version.entityApi}</version>
 	<packaging>pom</packaging>
-	<name>Entity API parent</name>
+	<name>Entity API - Version 1</name>
 
 	<repositories>
 		<repository>

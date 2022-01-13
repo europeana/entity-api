@@ -32,6 +32,7 @@ public class EntityQueryBuilder extends QueryBuilder {
     public static final String DESC = "desc";
     public static final String OR = " " + SimpleParams.OR_OPERATOR + " ";
     public static final String AND = " " + SimpleParams.AND_OPERATOR + " ";
+    public static final String DEFAULT_SORT = "score desc,id asc";
 
     public SolrQuery toSolrQuery(Query searchQuery, String searchHandler, List<EntityTypes> entityTypes, String scope) {
 	SolrQuery solrQuery = super.toSolrQuery(searchQuery, searchHandler);
@@ -281,9 +282,11 @@ public class EntityQueryBuilder extends QueryBuilder {
 	if (profile != null) {
 	    profileName = profile.name();
 	}
-
 	if (retFields != null) {
 	    retFields = buildCustomSelectionFields(retFields);
+	}
+	if (sort == null) {
+	  sort = toArray(DEFAULT_SORT);
 	}
 
 	Query query = builder.buildSearchQuery(queryString, qf, facets, retFields, sort, page, pageSize, maxPageSize,

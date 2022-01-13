@@ -85,6 +85,8 @@
 			</exclusions>
 		</dependency>
 
+<!--  -->
+
 <!--  TODO: remove spring dependency -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -95,7 +97,7 @@
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
-			<version>2.7</version>
+			<version>2.3</version>
 		</dependency>
 	</dependencies>
 	

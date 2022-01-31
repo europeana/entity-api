@@ -6,9 +6,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.gson.Gson;
 import org.apache.commons.httpclient.URIException;
 import org.apache.commons.httpclient.util.URIUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.DeserializationConfig;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
@@ -68,10 +73,6 @@ public class EntityApiConnection extends BaseApiConnection {
 		url += identifier;
 		url += WebEntityConstants.PAR_CHAR;
 		url += "wskey=" + apiKey;
-		
-		/**
-		 * Execute Europeana API request
-		 */
 		return getURL(url);		
 	}
 
@@ -84,11 +85,7 @@ public class EntityApiConnection extends BaseApiConnection {
 	 * @throws IOException
 	 */
 	public EntitySearchResults retrieveEntityWithUrl(String url)  throws IOException {
-		/**
-		 * Execute Europeana API request
-		 */
 		String json = getJSONResult(url);
-		
 		return getEntityResolveResults(json);		
 	}
 
@@ -116,12 +113,7 @@ public class EntityApiConnection extends BaseApiConnection {
 			) throws IOException {
 		
 		String url = buildSearchUrl(apiKey, query, language, type, sort, page, pageSize);
-		
-		/**
-		 * Execute Europeana API request
-		 */
 		String json = getJSONResult(url);
-		
 		return getEntitySearchResults(language, json);
 	}
 	
@@ -143,12 +135,7 @@ public class EntityApiConnection extends BaseApiConnection {
 			) throws IOException {
 		
 		String url = buildUrl(apiKey, query, language, rows);
-		
-		/**
-		 * Execute Europeana API request
-		 */
 		String json = getJSONResult(url);
-		
 		return getEntitySearchResults(language, json);
 	}
 
@@ -176,12 +163,7 @@ public class EntityApiConnection extends BaseApiConnection {
 			) throws IOException {
 		
 		String url = buildUrlExt(apiKey, query, language, rows, scope, algorithm, type);
-		
-		/**
-		 * Execute Europeana API request
-		 */
 		String json = getJSONResult(url);
-		
 		return getEntitySearchResults(language, json);
 	}
 
@@ -192,6 +174,7 @@ public class EntityApiConnection extends BaseApiConnection {
 	 */
 	@Deprecated //- please implement proper response parsing using Jackson
 	public EntitySearchResults getEntitySearchResults(String language, String json) {
+		//System.out.println(json);
 		EntitySearchResults asr = new EntitySearchResults();
 		asr.setSuccess("true");
 		asr.setAction("create:/entity/suggest");
@@ -200,20 +183,30 @@ public class EntityApiConnection extends BaseApiConnection {
         	if (json.contains("Unauthorized")) {
         		asr.setError(json);
         	} else {
-        		if(jsonListObj.has(WebEntityConstants.ITEMS)) {
-		        	JSONArray jsonArray = jsonListObj.getJSONArray(WebEntityConstants.ITEMS);
-		        	if(jsonArray!=null && jsonArray.length()>0){
-				        List<Entity> entityList = new ArrayList<Entity>();
+        		if (jsonListObj.has(WebEntityConstants.ITEMS)) {
+        			JSONArray jsonArray = jsonListObj.getJSONArray(WebEntityConstants.ITEMS);
+		        	if (jsonArray!=null && jsonArray.length() > 0){
+		        		List<Entity> entityList = new ArrayList<>();
 		                for (int i = 0; i < jsonArray.length(); i++) {
-		                	JSONObject jsonObj = jsonArray.getJSONObject(i);
-		                	BaseEntity entityObject = new BaseEntity();
-				        	entityObject.setEntityId(jsonObj.getString(WebEntityFields.ID));
-	//			        	Map<String, List<String>> prefLabelMap = new HashMap<String, List<String>>();
-				        	Map<String, String> prefLabelMap = new HashMap<String, String>();
-				        	String label = jsonObj.getString((WebEntityFields.PREF_LABEL));
-	//						prefLabelMap.put(language, Arrays.asList(label));
-							prefLabelMap.put(language, label);
-				        	entityObject.setPrefLabelStringMap(prefLabelMap);
+							//BaseEntity entityObject = new BaseEntity();
+							String jsonObj = String.valueOf(jsonArray.getJSONObject(i));
+
+							System.out.println(jsonObj);
+							Gson gson = new Gson();
+//							BaseEntity entityObject = gson.fromJson(jsonObj, BaseEntity.class);
+							ObjectMapper objectMapper = new ObjectMapper()
+									.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+							BaseEntity entityObject = new ObjectMapper().readValue(jsonObj, BaseEntity.class);
+
+							System.out.println(entityObject);
+
+							// set all the values
+//				        	entityObject.setEntityId(jsonObj.getString(WebEntityFields.ID));
+//				        	Map<String, String> prefLabelMap = new HashMap<>();
+//				        	String label = jsonObj.getString((WebEntityFields.PREF_LABEL));
+//
+//							prefLabelMap.put(language, label);
+//				        	entityObject.setPrefLabelStringMap(prefLabelMap);
 							entityList.add(entityObject);
 					    }
 					    asr.setItems(entityList);
@@ -221,6 +214,13 @@ public class EntityApiConnection extends BaseApiConnection {
         		}
         	}
 		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (JsonParseException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return asr;
@@ -234,14 +234,16 @@ public class EntityApiConnection extends BaseApiConnection {
 	 */
 	//TODO: implement reliable response parsing using jackson
 	public EntitySearchResults getEntityResolveResults(String json) {
+		System.out.println(json);
 		EntitySearchResults asr = new EntitySearchResults();
 		asr.setSuccess("true");
 		asr.setAction("create:/entity/resolve");
 		try {
-        	JSONObject jsonObj = new JSONObject(json);
         	if (json.contains("Unauthorized")) {
         		asr.setError(json);
-        	} else {
+        	}
+        	else {
+				JSONObject jsonObj = new JSONObject(json);
 //	        	JSONArray jsonArray = jsonListObj.getJSONArray(("contains"));
 //	        	if(jsonArray!=null && jsonArray.length()>0){
 			        List<Entity> entityList = new ArrayList<Entity>();

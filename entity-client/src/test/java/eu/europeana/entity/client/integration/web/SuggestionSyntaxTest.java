@@ -3,8 +3,11 @@ package eu.europeana.entity.client.integration.web;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import eu.europeana.entity.definitions.model.Entity;
 import org.apache.stanbol.commons.exception.JsonParseException;
 import org.junit.Test;
+
+import java.util.List;
 
 
 /**
@@ -14,7 +17,7 @@ import org.junit.Test;
  */
 public class SuggestionSyntaxTest extends BaseEntityTest { 
 	
-	private final String SUGGESTION_TEXT_APOSTROPHE = "wh\"";
+	private final String SUGGESTION_TEXT_APOSTROPHE = "wh";
 	private final String SUGGESTION_TEXT_BRACE = "(painter";
 	private final String SUGGESTION_TEXT_HYPHEN = "v1-2";
 	private final String SUGGESTION_TEXT_REGULAR = "moz1";
@@ -30,7 +33,7 @@ public class SuggestionSyntaxTest extends BaseEntityTest {
         	/**
         	 * get suggestion by text and language
         	 */
-        	String response = getApiClient().getSuggestionsExt(
+        	List<Entity> entityList= getApiClient().getSuggestionsExt(
         			getApiKey()
         			, SUGGESTION_TEXT_APOSTROPHE
         			, SUGGESTION_LANGUAGE
@@ -38,10 +41,12 @@ public class SuggestionSyntaxTest extends BaseEntityTest {
         			, SUGGESTION_SCOPE
         			, SUGGESTION_ALGORITHM
         			, SUGGESTION_TYPES
-        			);		
-        	assertNotNull(response);
-        	assertTrue(response.equals("true"));
-	}		
+        			);
+        	assertNotNull(entityList);
+        	assertTrue(entityList.size() > 0);
+		    assertTrue(entityList.stream().anyMatch(entity ->
+					entity.getInternalType().equalsIgnoreCase("agent") || entity.getInternalType().equalsIgnoreCase("concept")));
+	}
 
 	@Test
 	public void getSuggestionWithBraceInText() throws JsonParseException {
@@ -49,7 +54,7 @@ public class SuggestionSyntaxTest extends BaseEntityTest {
         	/**
         	 * get suggestion by text and language
         	 */
-        	String response = getApiClient().getSuggestionsExt(
+		List<Entity> entityList = getApiClient().getSuggestionsExt(
         			getApiKey()
         			, SUGGESTION_TEXT_BRACE
         			, SUGGESTION_LANGUAGE
@@ -57,10 +62,12 @@ public class SuggestionSyntaxTest extends BaseEntityTest {
         			, SUGGESTION_SCOPE
         			, SUGGESTION_ALGORITHM
         			, SUGGESTION_TYPES
-        			);		
-        	assertNotNull(response);
-        	assertTrue(response.equals("true"));
-	}		
+        			);
+		assertNotNull(entityList);
+		assertTrue(entityList.size() > 0);
+		assertTrue(entityList.stream().anyMatch(entity ->
+				entity.getInternalType().equalsIgnoreCase("agent") || entity.getInternalType().equalsIgnoreCase("concept")));
+	}
 
 	@Test
 	public void getSuggestionWithHyphenInText() throws JsonParseException {
@@ -68,7 +75,7 @@ public class SuggestionSyntaxTest extends BaseEntityTest {
         	/**
         	 * get suggestion by text and language
         	 */
-        	String response = getApiClient().getSuggestionsExt(
+		List<Entity> entityList = getApiClient().getSuggestionsExt(
         			getApiKey()
         			, SUGGESTION_TEXT_HYPHEN
         			, SUGGESTION_LANGUAGE
@@ -76,9 +83,11 @@ public class SuggestionSyntaxTest extends BaseEntityTest {
         			, SUGGESTION_SCOPE
         			, SUGGESTION_ALGORITHM
         			, SUGGESTION_TYPES
-        			);		
-        	assertNotNull(response);
-        	assertTrue(response.equals("true"));
+        			);
+		assertNotNull(entityList);
+		assertTrue(entityList.size() > 0);
+		assertTrue(entityList.stream().anyMatch(entity ->
+				entity.getInternalType().equalsIgnoreCase("agent") || entity.getInternalType().equalsIgnoreCase("concept")));
 	}		
 
 	@Test
@@ -87,7 +96,7 @@ public class SuggestionSyntaxTest extends BaseEntityTest {
         	/**
         	 * get suggestion by text and language
         	 */
-        	String response = getApiClient().getSuggestionsExt(
+		List<Entity> entityList = getApiClient().getSuggestionsExt(
         			getApiKey()
         			, SUGGESTION_TEXT_REGULAR
         			, SUGGESTION_LANGUAGE
@@ -95,9 +104,11 @@ public class SuggestionSyntaxTest extends BaseEntityTest {
         			, SUGGESTION_SCOPE
         			, SUGGESTION_ALGORITHM
         			, SUGGESTION_TYPES
-        			);		
-        	assertNotNull(response);
-        	assertTrue(response.equals("true"));
+        			);
+		assertNotNull(entityList);
+		assertTrue(entityList.size() > 0);
+		assertTrue(entityList.stream().anyMatch(entity ->
+				entity.getInternalType().equalsIgnoreCase("agent") || entity.getInternalType().equalsIgnoreCase("concept")));
 	}		
 
 }

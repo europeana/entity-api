@@ -21,12 +21,8 @@ import eu.europeana.entity.definitions.model.Entity;
 public class BaseEntityTest {
 
 	protected Logger log = LogManager.getLogger(getClass());
-
-	public String TEST_WSKEY = "apidemo";
-
 	private WebEntityProtocolApi apiClient;
 
-	
 	@Before
 	public void initObjects() {
 		apiClient = new WebEntityProtocolApiImpl();
@@ -36,7 +32,6 @@ public class BaseEntityTest {
 		return apiClient;
 	}
 
-	
 	/**
 	 * This method retrieves test entity object
 	 * 
@@ -51,10 +46,6 @@ public class BaseEntityTest {
 			, String type
 			, String namespace
 			, String identifier) {
-
-		/**
-		 * get entity
-		 */
 		ResponseEntity<String> storedResponse = getApiClient().retrieveEntity(
 				apiKey, type, namespace, identifier);
 		return storedResponse;
@@ -71,8 +62,6 @@ public class BaseEntityTest {
 	protected List<Entity> resolveEntity(
 			String apiKey
 			, String uri) {
-
-		
 		List<Entity> storedResponse = getApiClient().resolveEntityByUri(
 				apiKey, uri);
 		if (storedResponse == null)
@@ -82,9 +71,7 @@ public class BaseEntityTest {
 		return storedResponse;
 	}
 
-	
 	public String getApiKey() {
-
 		return ClientConfiguration.getInstance().getApiKey();
 		// return TEST_WSKEY;
 	}
@@ -97,5 +84,4 @@ public class BaseEntityTest {
 		assertEquals(response.getStatusCode(), status);
 		assertNotNull(response.getBody());		
 	}
-
 }

@@ -72,8 +72,6 @@ public class WebEntityProtocolApiImpl extends BaseEntityApi implements WebEntity
 			, String language
 			, String rows
 			) {
-
-		System.out.println(getApiConnection().getApiKey());
 		EntitySearchResults res;
 		try {
 			res = apiConnection.getSuggestions(apiKey, text, language, rows);

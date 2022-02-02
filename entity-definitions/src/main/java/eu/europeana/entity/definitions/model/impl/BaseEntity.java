@@ -94,14 +94,6 @@ public class BaseEntity implements Entity, RankedEntity {
 		this.internalType = internalType;
 	}
 
-//	public String[] getSameAs() {
-//		return sameAs;
-//	}
-//
-//	public void setSameAs(String[] sameAs) {
-//		this.sameAs = sameAs;
-//	}
-
 	public String getEntityId() {
 		return entityId;
 	}
@@ -173,18 +165,6 @@ public class BaseEntity implements Entity, RankedEntity {
 	public void setIsRelatedTo(String[] isRelatedTo) {
 		this.isRelatedTo = isRelatedTo;
 	}
-
-//	@Override
-//	public ObjectId getId() {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//	@Override
-//	public void setId(ObjectId id) {
-//		// TODO Auto-generated method stub
-//
-//	}
 
 	public String[] getHasPart() {
 		return hasPart;

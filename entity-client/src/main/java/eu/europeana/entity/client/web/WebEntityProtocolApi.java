@@ -69,7 +69,7 @@ public interface WebEntityProtocolApi {
 	 * @param type
 	 * @return response success.
 	 */
-	public String getSuggestionsExt(String apiKey, String text, String language, String rows, String scope, String algorithm, String type);
+	public List<Entity> getSuggestionsExt(String apiKey, String text, String language, String rows, String scope, String algorithm, String type);
 	
 	/**
 	 * Performs a lookup for the entity in all 4 datasets:

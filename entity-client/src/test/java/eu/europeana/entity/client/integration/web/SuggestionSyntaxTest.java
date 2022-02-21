@@ -3,8 +3,10 @@ package eu.europeana.entity.client.integration.web;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import org.apache.stanbol.commons.exception.JsonParseException;
+import eu.europeana.entity.definitions.model.Entity;
 import org.junit.Test;
+
+import java.util.List;
 
 
 /**
@@ -14,10 +16,10 @@ import org.junit.Test;
  */
 public class SuggestionSyntaxTest extends BaseEntityTest { 
 	
-	private final String SUGGESTION_TEXT_APOSTROPHE = "wh\"";
+	private final String SUGGESTION_TEXT_APOSTROPHE = "vermeer\'";
 	private final String SUGGESTION_TEXT_BRACE = "(painter";
-	private final String SUGGESTION_TEXT_HYPHEN = "v1-2";
-	private final String SUGGESTION_TEXT_REGULAR = "moz1";
+	private final String SUGGESTION_TEXT_HYPHEN = "paris-b";
+	private final String SUGGESTION_TEXT_REGULAR = "test";
 	private final String SUGGESTION_LANGUAGE = "en";
 	private final String SUGGESTION_ROWS_COUNT = "10";
 	private final String SUGGESTION_SCOPE = "europeana";
@@ -25,79 +27,64 @@ public class SuggestionSyntaxTest extends BaseEntityTest {
 	private final String SUGGESTION_TYPES = "agent,concept";
 					
 	@Test
-	public void getSuggestionWithApostropheInText() throws JsonParseException {
-				
-        	/**
-        	 * get suggestion by text and language
-        	 */
-        	String response = getApiClient().getSuggestionsExt(
-        			getApiKey()
-        			, SUGGESTION_TEXT_APOSTROPHE
-        			, SUGGESTION_LANGUAGE
-        			, SUGGESTION_ROWS_COUNT
-        			, SUGGESTION_SCOPE
-        			, SUGGESTION_ALGORITHM
-        			, SUGGESTION_TYPES
-        			);		
-        	assertNotNull(response);
-        	assertTrue(response.equals("true"));
+	public void getSuggestionWithApostropheInText() {
+		List<Entity> entityList= getApiClient().getSuggestionsExt(
+				getApiKey(),
+				SUGGESTION_TEXT_APOSTROPHE,
+				SUGGESTION_LANGUAGE,
+				SUGGESTION_ROWS_COUNT,
+				SUGGESTION_SCOPE,
+				SUGGESTION_ALGORITHM,
+				SUGGESTION_TYPES);
+		checkResults(entityList);
+	}
+
+	@Test
+	public void getSuggestionWithBraceInText() {
+		List<Entity> entityList = getApiClient().getSuggestionsExt(
+				getApiKey(),
+				SUGGESTION_TEXT_BRACE,
+				SUGGESTION_LANGUAGE,
+				SUGGESTION_ROWS_COUNT,
+				SUGGESTION_SCOPE,
+				SUGGESTION_ALGORITHM,
+				SUGGESTION_TYPES);
+
+		checkResults(entityList);
+	}
+
+	@Test
+	public void getSuggestionWithHyphenInText() {
+		List<Entity> entityList = getApiClient().getSuggestionsExt(
+				getApiKey(),
+				SUGGESTION_TEXT_HYPHEN,
+				SUGGESTION_LANGUAGE,
+				SUGGESTION_ROWS_COUNT,
+				SUGGESTION_SCOPE,
+				SUGGESTION_ALGORITHM,
+				SUGGESTION_TYPES);
+
+		checkResults(entityList);
 	}		
 
 	@Test
-	public void getSuggestionWithBraceInText() throws JsonParseException {
-				
-        	/**
-        	 * get suggestion by text and language
-        	 */
-        	String response = getApiClient().getSuggestionsExt(
-        			getApiKey()
-        			, SUGGESTION_TEXT_BRACE
-        			, SUGGESTION_LANGUAGE
-        			, SUGGESTION_ROWS_COUNT
-        			, SUGGESTION_SCOPE
-        			, SUGGESTION_ALGORITHM
-        			, SUGGESTION_TYPES
-        			);		
-        	assertNotNull(response);
-        	assertTrue(response.equals("true"));
-	}		
+	public void getSuggestionWithoutSpecialCharactersInText() {
+		List<Entity> entityList = getApiClient().getSuggestionsExt(
+				getApiKey(),
+				SUGGESTION_TEXT_REGULAR,
+				SUGGESTION_LANGUAGE,
+				SUGGESTION_ROWS_COUNT,
+				SUGGESTION_SCOPE,
+				SUGGESTION_ALGORITHM,
+				SUGGESTION_TYPES);
 
-	@Test
-	public void getSuggestionWithHyphenInText() throws JsonParseException {
-				
-        	/**
-        	 * get suggestion by text and language
-        	 */
-        	String response = getApiClient().getSuggestionsExt(
-        			getApiKey()
-        			, SUGGESTION_TEXT_HYPHEN
-        			, SUGGESTION_LANGUAGE
-        			, SUGGESTION_ROWS_COUNT
-        			, SUGGESTION_SCOPE
-        			, SUGGESTION_ALGORITHM
-        			, SUGGESTION_TYPES
-        			);		
-        	assertNotNull(response);
-        	assertTrue(response.equals("true"));
-	}		
+		checkResults(entityList);
+	}
 
-	@Test
-	public void getSuggestionWithoutSpecialCharactersInText() throws JsonParseException {
-				
-        	/**
-        	 * get suggestion by text and language
-        	 */
-        	String response = getApiClient().getSuggestionsExt(
-        			getApiKey()
-        			, SUGGESTION_TEXT_REGULAR
-        			, SUGGESTION_LANGUAGE
-        			, SUGGESTION_ROWS_COUNT
-        			, SUGGESTION_SCOPE
-        			, SUGGESTION_ALGORITHM
-        			, SUGGESTION_TYPES
-        			);		
-        	assertNotNull(response);
-        	assertTrue(response.equals("true"));
-	}		
-
+	private void checkResults(List<Entity> entityList){
+		assertNotNull(entityList);
+		assertTrue(entityList.size() > 0);
+		assertTrue(entityList.stream().anyMatch(entity ->
+				entity.getInternalType().equalsIgnoreCase("agent") || entity.getInternalType().equalsIgnoreCase("concept")));
+	}
 }

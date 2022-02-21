@@ -41,13 +41,8 @@ public class HttpConnection {
     public String getURLContent(String url) throws IOException {
         HttpClient client = this.getHttpClient(CONNECTION_RETRIES, TIMEOUT_CONNECTION);
         GetMethod get = new GetMethod(url);
-	if (StringUtils.isNotBlank(REQUEST_HEADER_NAME) && StringUtils.isNotBlank(REQUEST_HEADER_VALUE)) {
-            get.setRequestHeader(REQUEST_HEADER_NAME, REQUEST_HEADER_VALUE);
-        }
-
         try {
             client.executeMethod(get);
-
             if (get.getStatusCode() >= STATUS_OK_START && get.getStatusCode() <= STATUS_OK_END) {
                 byte[] byteResponse = get.getResponseBody();
                 String res = new String(byteResponse, ENCODING);

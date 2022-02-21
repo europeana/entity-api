@@ -21,7 +21,6 @@ import eu.europeana.entity.definitions.model.impl.BaseEntity;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityConstants;
 import eu.europeana.entity.definitions.model.vocabulary.WebEntityFields;
 
-
 /**
  * @author GrafR
  *
@@ -31,8 +30,7 @@ public class EntityApiConnection extends BaseApiConnection {
 	/**
 	 * Create a new connection to the Entity Service (REST API).
 	 * 
-	 * @param apiKey
-	 *            API Key required to access the API
+	 * @param apiKey API Key required to access the API
 	 */
 	public EntityApiConnection(String entityServiceUri, String apiKey) {
 		super(entityServiceUri, apiKey);
@@ -42,7 +40,6 @@ public class EntityApiConnection extends BaseApiConnection {
 		this(ClientConfiguration.getInstance().getServiceUri(),
 				ClientConfiguration.getInstance().getApiKey());
 	}
-	
 
 	/**
 	 * This method retrieves Entity object from REST interface.
@@ -68,10 +65,6 @@ public class EntityApiConnection extends BaseApiConnection {
 		url += identifier;
 		url += WebEntityConstants.PAR_CHAR;
 		url += "wskey=" + apiKey;
-		
-		/**
-		 * Execute Europeana API request
-		 */
 		return getURL(url);		
 	}
 
@@ -84,11 +77,7 @@ public class EntityApiConnection extends BaseApiConnection {
 	 * @throws IOException
 	 */
 	public EntitySearchResults retrieveEntityWithUrl(String url)  throws IOException {
-		/**
-		 * Execute Europeana API request
-		 */
 		String json = getJSONResult(url);
-		
 		return getEntityResolveResults(json);		
 	}
 
@@ -116,12 +105,7 @@ public class EntityApiConnection extends BaseApiConnection {
 			) throws IOException {
 		
 		String url = buildSearchUrl(apiKey, query, language, type, sort, page, pageSize);
-		
-		/**
-		 * Execute Europeana API request
-		 */
 		String json = getJSONResult(url);
-		
 		return getEntitySearchResults(language, json);
 	}
 	
@@ -143,12 +127,7 @@ public class EntityApiConnection extends BaseApiConnection {
 			) throws IOException {
 		
 		String url = buildUrl(apiKey, query, language, rows);
-		
-		/**
-		 * Execute Europeana API request
-		 */
 		String json = getJSONResult(url);
-		
 		return getEntitySearchResults(language, json);
 	}
 
@@ -176,12 +155,7 @@ public class EntityApiConnection extends BaseApiConnection {
 			) throws IOException {
 		
 		String url = buildUrlExt(apiKey, query, language, rows, scope, algorithm, type);
-		
-		/**
-		 * Execute Europeana API request
-		 */
 		String json = getJSONResult(url);
-		
 		return getEntitySearchResults(language, json);
 	}
 
@@ -200,18 +174,18 @@ public class EntityApiConnection extends BaseApiConnection {
         	if (json.contains("Unauthorized")) {
         		asr.setError(json);
         	} else {
-        		if(jsonListObj.has(WebEntityConstants.ITEMS)) {
-		        	JSONArray jsonArray = jsonListObj.getJSONArray(WebEntityConstants.ITEMS);
-		        	if(jsonArray!=null && jsonArray.length()>0){
-				        List<Entity> entityList = new ArrayList<Entity>();
+        		if (jsonListObj.has(WebEntityConstants.ITEMS)) {
+        			JSONArray jsonArray = jsonListObj.getJSONArray(WebEntityConstants.ITEMS);
+		        	if (jsonArray!=null && jsonArray.length() > 0){
+		        		List<Entity> entityList = new ArrayList<>();
 		                for (int i = 0; i < jsonArray.length(); i++) {
-		                	JSONObject jsonObj = jsonArray.getJSONObject(i);
-		                	BaseEntity entityObject = new BaseEntity();
+							BaseEntity entityObject = new BaseEntity();
+							JSONObject jsonObj = jsonArray.getJSONObject(i);
+							// set all the values
 				        	entityObject.setEntityId(jsonObj.getString(WebEntityFields.ID));
-	//			        	Map<String, List<String>> prefLabelMap = new HashMap<String, List<String>>();
-				        	Map<String, String> prefLabelMap = new HashMap<String, String>();
+				        	entityObject.setInternalType(jsonObj.getString(WebEntityFields.TYPE));
+				        	Map<String, String> prefLabelMap = new HashMap<>();
 				        	String label = jsonObj.getString((WebEntityFields.PREF_LABEL));
-	//						prefLabelMap.put(language, Arrays.asList(label));
 							prefLabelMap.put(language, label);
 				        	entityObject.setPrefLabelStringMap(prefLabelMap);
 							entityList.add(entityObject);
@@ -238,29 +212,23 @@ public class EntityApiConnection extends BaseApiConnection {
 		asr.setSuccess("true");
 		asr.setAction("create:/entity/resolve");
 		try {
-        	JSONObject jsonObj = new JSONObject(json);
         	if (json.contains("Unauthorized")) {
         		asr.setError(json);
-        	} else {
-//	        	JSONArray jsonArray = jsonListObj.getJSONArray(("contains"));
-//	        	if(jsonArray!=null && jsonArray.length()>0){
-			        List<Entity> entityList = new ArrayList<Entity>();
-//	                for (int i = 0; i < jsonArray.length(); i++) {
-//	                	JSONObject jsonObj = jsonArray.getJSONObject(i);
-	                	BaseEntity entityObject = new BaseEntity();
-			        	entityObject.setEntityId(jsonObj.getString(WebEntityFields.ID));
-//			        	entityObject.setEntityId(jsonObj.getString("@id"));
-//			        	entityList.add(entityObject);
-//				    }
-				    asr.setItems(entityList);
-//				}
+        	}
+        	else {
+				JSONObject jsonObj = new JSONObject(json);
+				List<Entity> entityList = new ArrayList<>();
+				BaseEntity entityObject = new BaseEntity();
+				entityObject.setEntityId(jsonObj.getString(WebEntityFields.ID));
+				entityObject.setInternalType(jsonObj.getString(WebEntityFields.TYPE));
+				entityList.add(entityObject);
+				asr.setItems(entityList);
         	}
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 		return asr;
 	}
-
 
 	/**
 	 * This method constructs url dependent on search parameter.
@@ -270,13 +238,9 @@ public class EntityApiConnection extends BaseApiConnection {
 	 * @param rows
 	 * @return query
 	 */
-	private String buildUrl(String apiKey, String query, String language, String rows) {		
-		
+	private String buildUrl(String apiKey, String query, String language, String rows) {
 		StringBuilder builder = new StringBuilder();
 		builder.append(getEntityServiceUri());
-//		String wskey = apiKey;
-//		if (StringUtils.isEmpty(apiKey))
-//			wskey = getApiKey();
 		builder.append("/suggest?wskey=").append(apiKey);
 		if (StringUtils.isNotEmpty(query)) {
 			builder.append("&text=").append(query);
@@ -352,13 +316,9 @@ public class EntityApiConnection extends BaseApiConnection {
 	 * @param pageSize
 	 * @return query
 	 */
-	private String buildSearchUrl(String apiKey, String query, String language, String type, String sort, String page, String pageSize) {		
-		
+	private String buildSearchUrl(String apiKey, String query, String language, String type, String sort, String page, String pageSize) {
 		StringBuilder builder = new StringBuilder();
 		builder.append(getEntityServiceUri());
-//		String wskey = apiKey;
-//		if (StringUtils.isEmpty(apiKey))
-//			wskey = getApiKey();
 		builder.append("/search?wskey=").append(apiKey);
 		if (StringUtils.isNotEmpty(query)) {
 			builder.append("&query=").append(query);
@@ -396,7 +356,6 @@ public class EntityApiConnection extends BaseApiConnection {
 	 * @throws IOException
 	 */
 	public EntitySearchResults resolveEntityByUri (
-//			public ResponseEntity<String> resolveEntityByUri (
 				String apiKey
 				, String uri
 				)  throws IOException {
@@ -407,16 +366,8 @@ public class EntityApiConnection extends BaseApiConnection {
 		if (StringUtils.isNotEmpty(uri)) {
 			builder.append("&uri=").append(uri);
 		}				
-		String queryUrl = builder.toString();		
-
-		/**
-		 * Execute API request
-		 */
-//		return getURL(queryUrl);		
+		String queryUrl = builder.toString();
 		String json = getJSONResult(queryUrl);
-		
 		return getEntityResolveResults(json);
 	}
-
-	
 }

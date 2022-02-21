@@ -72,7 +72,6 @@ public class WebEntityProtocolApiImpl extends BaseEntityApi implements WebEntity
 			, String language
 			, String rows
 			) {
-
 		EntitySearchResults res;
 		try {
 			res = apiConnection.getSuggestions(apiKey, text, language, rows);
@@ -90,7 +89,7 @@ public class WebEntityProtocolApiImpl extends BaseEntityApi implements WebEntity
 	/* (non-Javadoc)
 	 * @see eu.europeana.entity.client.web.WebEntityProtocolApi#getSuggestionsExt(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 	 */
-	public String getSuggestionsExt(
+	public List<Entity> getSuggestionsExt(
 		String apiKey
 		, String text
 		, String language
@@ -110,7 +109,7 @@ public class WebEntityProtocolApiImpl extends BaseEntityApi implements WebEntity
 					"Exception occured when invoking the EntityJsonApi getSuggestion method", e);
 		}
 
-		return res.getSuccess();	
+		return res.getItems();
 	}
 
 	@Override

@@ -31,5 +31,13 @@
 			<artifactId>commons-lang3</artifactId>
 			<version>${version.commonsLang3}</version>
 		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-annotations -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+			<version>${version.jackson}</version>
+		</dependency>
+
 	</dependencies>
 </project>

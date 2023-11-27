@@ -1,3 +1,6 @@
+**This project is not maintained anymore**
+
+---
 # entity-api
 API powering entity search &amp; retrieval; see [entity.europeana.eu/](https://entity.europeana.eu/)
 
